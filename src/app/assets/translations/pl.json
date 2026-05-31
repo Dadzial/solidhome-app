@@ -1,0 +1,29 @@
+{
+  "authPages": {
+    "solidHome": "Solid Home",
+    "subTitle": "Połącz swój,\ndom",
+    "description": "Solid Home to kompletny ekosystem dla Twojego domu. To miejsce, gdzie absolutna precyzja spotyka się z czystą estetyką. Projektujemy doświadczenia, a nie tylko technologię. Przejmij pełną kontrolę nad swoim światem—jednym, intuicyjnym dotknięciem.",
+    "login": "Zaloguj się",
+    "signUp": "Zarejestruj się",
+    "welcomeBack": "Witaj ponownie",
+    "welcomeBackDescription": "Wprowadź swoje dane, aby uzyskać dostęp do panelu.",
+    "enterUsername": "Wprowadź nazwę użytkownika",
+    "enterPassword": "Wprowadź hasło",
+    "userNamePlaceholder": "np. użytkownik123",
+    "passwordPlaceholder": "np. Hasło!",
+    "forgotPassword": "Zapomniałeś hasła?",
+    "rememberMe": "Zapamiętaj mnie",
+    "loginButton": "Zaloguj",
+    "createAccount": "Utwórz konto",
+    "createAccountDescription": "Dołącz do społeczności Solid Home",
+    "enterEmail": "Wprowadź email",
+    "emailPlaceholder": "przykład@gmail.com",
+    "register": "Zarejestruj",
+    "passwordRecovery": "Odzyskiwanie hasła",
+    "passwordRecoveryDescription": "Wprowadź swój email, aby otrzymać link do resetowania hasła.",
+    "sendResetLink": "Wyślij link resetujący",
+    "resetPassword": "Zresetuj hasło",
+    "resetPasswordDescription": "Utwórz nowe hasło",
+    "confirmPassword": "Potwierdź"
+  }
+}
