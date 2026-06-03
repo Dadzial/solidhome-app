@@ -1,1 +1,10 @@
-<p>theme-button works!</p>
+<button
+  class="cursor-pointer bg-background-secondary shadow-xl rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 hover:scale-105"
+  (click)="themeService.toggleTheme()"
+>
+  <svg-icon
+    [src]="themeService.theme() === 'light' ? 'assets/icons/sun.svg' : 'assets/icons/moon.svg'"
+    [applyClass]="true"
+    class="w-6 h-6 text-accent"
+  />
+</button>

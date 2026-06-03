@@ -3,7 +3,7 @@
 <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
 	 width="800px" height="800px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
 <g>
-	<circle fill-rule="evenodd" clip-rule="evenodd"  cx="32.003" cy="32.005" r="16.001"/>
+	<circle fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"  cx="32.003" cy="32.005" r="16.001"/>
 	<path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"  d="M12.001,31.997c0-2.211-1.789-4-4-4H4c-2.211,0-4,1.789-4,4
 		s1.789,4,4,4h4C10.212,35.997,12.001,34.208,12.001,31.997z"/>
 	<path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"  d="M12.204,46.139l-2.832,2.833c-1.563,1.562-1.563,4.094,0,5.656
