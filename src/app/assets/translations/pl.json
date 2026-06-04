@@ -1,7 +1,7 @@
 {
   "authPages": {
-    "solidHome": "Solid Home",
-    "subTitle": "Połącz swoją,\nprzestrzeń",
+    "solidHome": "Solid <span class=\"text-accent\">Home</span>",
+    "subTitle": "Połącz swoją,\n<span class=\"text-accent\">przestrzeń</span>",
     "description": "Solid Home to kompletny ekosystem dla Twojego domu.\nTo miejsce, gdzie absolutna precyzja spotyka się z czystą estetyką.\nProjektujemy doświadczenia, a nie tylko technologię.\nPrzejmij pełną kontrolę nad swoim światem—jednym, intuicyjnym dotknięciem.",
     "login": "Zaloguj się",
     "signUp": "Zarejestruj się",

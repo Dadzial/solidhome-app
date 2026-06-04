@@ -1,7 +1,7 @@
 {
   "authPages" : {
-    "solidHome": "Solid Home",
-    "subTitle": "Connect your,\nliving",
+    "solidHome": "Solid <span class=\"text-accent\">Home</span>",
+    "subTitle": "Connect your,\n<span class=\"text-accent\">living</span>",
     "description": "Solid Home is a seamless home ecosystem.\nIt is where absolute precision meets pure aesthetics.\nWe design experiences, not just technology.\nTake full control of your world—with a single, intuitive touch.",
     "login": "Login",
     "signUp": "Sign up",
