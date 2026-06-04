@@ -23,10 +23,6 @@ export class TranslationsService {
     localStorage.setItem('lang', lang);
   }
 
-  toggle() {
-    this.setLanguage(this.currentLang() === 'pl' ? 'en' : 'pl');
-  }
-
   private getSavedLang(): Language {
     const saved = localStorage.getItem('lang') as Language;
     if (saved === 'pl' || saved === 'en') return saved;

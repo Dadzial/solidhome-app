@@ -7,7 +7,7 @@
         [class.bg-accent]="authMode() === 'login'"
         [class.bg-background-secondary]="authMode() !== 'login'"
       >
-        Login
+        {{ 'authPages.login' | translate }}
       </button>
       <div class="w-px bg-divider"></div>
       <button
@@ -16,15 +16,15 @@
         [class.bg-accent]="authMode() === 'signup'"
         [class.bg-background-secondary]="authMode() !== 'signup'"
       >
-        Signup
+        {{ 'authPages.signUp' | translate }}
       </button>
     </div>
 
-    <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-2">Welcome Back</h2>
-    <p class="text-body-14-medium text-text-primary mb-8 text-start px-2">Enter your credentials to access your dashboard.</p>
+    <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.welcomeBack' | translate }}</h2>
+    <p class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.welcomeBackDescription' | translate }}</p>
     <form class="space-y-8 px-2">
       <div>
-        <label for="username" class="block text-body-16-medium mb-2 text-text-primary">Enter username</label>
+        <label for="username" class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterUsername' | translate }}</label>
         <div class="relative flex items-center">
           <svg-icon
             src="assets/icons/user.svg"
@@ -34,15 +34,15 @@
           <input
             id="username"
             type="text"
-            placeholder="e.g.,user123"
+            placeholder="{{ 'authPages.userNamePlaceholder' | translate }}"
             class="w-full pl-12 py-4 border border-text-primary text-text-primary opacity-60 rounded-lg text-body-16-medium"
           />
         </div>
       </div>
       <div>
         <div class="flex justify-between items-center mb-2">
-          <label for="password" class="text-body-16-medium text-text-primary">Enter password</label>
-          <a href="#" class="text-body-14-medium text-accent hover:underline cursor-pointer">Forgot password?</a>
+          <label for="password" class="text-body-16-medium text-text-primary">{{ 'authPages.enterPassword' | translate }}</label>
+          <a href="#" class="text-body-14-medium text-accent hover:underline cursor-pointer">{{ 'authPages.forgotPassword' | translate }}</a>
         </div>
         <div class="relative flex items-center">
           <svg-icon
@@ -53,7 +53,7 @@
           <input
             id="password"
             type="password"
-            placeholder="e.g.,P@ssword!"
+            placeholder="{{ 'authPages.passwordPlaceholder' | translate }}"
             class="w-full pl-12 py-4 border border-text-primary text-text-primary opacity-60 rounded-lg text-body-16-medium"
           />
         </div>
@@ -72,7 +72,7 @@
               <div class="w-6 h-6 rounded border border-accent opacity-60"></div>
             }
           </div>
-          <label (click)="toggleRememberMe()" class="text-body-14-medium text-accent cursor-pointer select-none">Remember me</label>
+          <label (click)="toggleRememberMe()" class="text-body-14-medium text-accent cursor-pointer select-none">{{ 'authPages.rememberMe' | translate }}</label>
         </div>
       </div>
       <div class="flex justify-center">
@@ -80,7 +80,7 @@
           type="submit"
           class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer"
         >
-          Log in
+          {{ 'authPages.loginButton' | translate }}
         </button>
       </div>
     </form>
