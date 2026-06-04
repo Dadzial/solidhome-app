@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-register-from',
   imports: [],
-  templateUrl: './register-from.component.html',
+  templateUrl: './register-form.component.html',
   styles: ``,
 })
-export class RegisterFromComponent {}
+export class RegisterFormComponent {}
