@@ -29,42 +29,49 @@
 
 @utility text-headline-bold-h1-45 {
   font-family: var(--font-app), sans-serif;
-  font-size: 2.813rem;
+  font-size: 2.8125rem;
   font-weight: 700;
   line-height: 1.2;
 }
 
 @utility text-body-35-semibold {
   font-family: var(--font-app), sans-serif;
-  font-size: 1.8rem;
+  font-size: 2.1875rem;
   font-weight: 600;
   line-height: 1.2;
 }
 
 @utility text-body-30-semibold {
   font-family: var(--font-app), sans-serif;
-  font-size: 1.8rem;
+  font-size: 1.875rem;
   font-weight: 600;
   line-height: 1.2;
 }
 
 @utility text-body-25-medium {
   font-family: var(--font-app), sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.5625rem;
   font-weight: 500;
   line-height: 1.2;
 }
 
 @utility text-body-25-bold {
   font-family: var(--font-app), sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.5625rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+@utility text-body-18-bold {
+  font-family: var(--font-app), sans-serif;
+  font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.2;
 }
 
 @utility text-body-18-regular {
   font-family: var(--font-app), sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 400;
   line-height: 1.2;
 }
