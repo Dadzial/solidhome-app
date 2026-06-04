@@ -7,7 +7,12 @@ import { LoginFormComponent } from '@features/auth/components/login-form/login-f
 @Component({
   selector: 'app-auth-page',
   standalone: true,
-  imports: [ThemeButtonComponent, LangButtonComponent, LoginFormComponent,TranslateModule],
+  imports: [
+    ThemeButtonComponent,
+    LangButtonComponent,
+    LoginFormComponent,
+    TranslateModule,
+  ],
   templateUrl: './auth-page.component.html',
   styles: ``,
 })

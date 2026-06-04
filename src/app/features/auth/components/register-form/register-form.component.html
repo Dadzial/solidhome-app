@@ -1,1 +1,86 @@
-<p>register-from works!</p>
+<div class="w-full h-full flex items-center justify-center">
+  <div class="w-full p-10 pt-0 bg-background-secondary rounded-xl shadow-md overflow-hidden">
+    <div class="flex bg-background-primary -mx-10 mb-10 border-b border-divider">
+      <button
+        (click)="setMode('login')"
+        class="flex-1 py-5 text-body-18-bold transition-all duration-300 cursor-pointer text-text-primary"
+        [class.bg-accent]="authMode() === 'login'"
+        [class.bg-background-secondary]="authMode() !== 'login'"
+      >
+        {{ 'authPages.login' | translate }}
+      </button>
+      <div class="w-px bg-divider"></div>
+      <button
+        (click)="setMode('signup')"
+        class="flex-1 py-5 text-body-18-bold transition-all duration-300 cursor-pointer text-text-primary"
+        [class.bg-accent]="authMode() === 'signup'"
+        [class.bg-background-secondary]="authMode() !== 'signup'"
+      >
+        {{ 'authPages.signUp' | translate }}
+      </button>
+    </div>
+
+    <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.createAccount' | translate }}</h2>
+    <p class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.createAccountDescription' | translate }}</p>
+    <form class="space-y-8 px-2">
+      <div>
+        <label for="username" class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterUsername' | translate }}</label>
+        <div class="relative flex items-center">
+          <svg-icon
+            src="assets/icons/user.svg"
+            [applyClass]="true"
+            class="absolute left-2.5 w-6 h-6 text-text-primary"
+          />
+          <input
+            id="username"
+            type="text"
+            placeholder="{{ 'authPages.userNamePlaceholder' | translate }}"
+            class="w-full pl-12 py-4 border border-text-primary text-text-primary opacity-60 rounded-lg text-body-16-medium"
+          />
+        </div>
+      </div>
+      <div>
+        <label for="email" class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterEmail' | translate }}</label>
+        <div class="relative flex items-center">
+          <svg-icon
+            src="assets/icons/email.svg"
+            [applyClass]="true"
+            class="absolute left-2.5 w-6 h-6 text-text-primary"
+          />
+          <input
+            id="username"
+            type="text"
+            placeholder="{{ 'authPages.emailPlaceholder' | translate }}"
+            class="w-full pl-12 py-4 border border-text-primary text-text-primary opacity-60 rounded-lg text-body-16-medium"
+          />
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between items-center mb-2">
+          <label for="password" class="text-body-16-medium text-text-primary">{{ 'authPages.enterPassword' | translate }}</label>
+        </div>
+        <div class="relative flex items-center">
+          <svg-icon
+            src="assets/icons/lock.svg"
+            [applyClass]="true"
+            class="absolute left-2.5 w-6 h-6 text-text-primary"
+          />
+          <input
+            id="password"
+            type="password"
+            placeholder="{{ 'authPages.passwordPlaceholder' | translate }}"
+            class="w-full pl-12 py-4 border border-text-primary text-text-primary opacity-60 rounded-lg text-body-16-medium"
+          />
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <button
+          type="submit"
+          class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer"
+        >
+          {{ 'authPages.register' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
