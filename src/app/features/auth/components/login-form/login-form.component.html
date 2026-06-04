@@ -1,1 +1,88 @@
-<p>login-form works!</p>
+<div class="w-full h-full flex items-center justify-center">
+  <div class="w-full max-w-lg p-8 pt-0 bg-background-secondary rounded-lg shadow-md overflow-hidden">
+    <div class="flex bg-background-primary -mx-8 mb-8 border-b border-divider">
+      <button
+        (click)="setMode('login')"
+        class="flex-1 py-4 text-body-15-bold transition-all duration-300 cursor-pointer text-text-primary"
+        [class.bg-accent]="authMode() === 'login'"
+        [class.bg-background-secondary]="authMode() !== 'login'"
+      >
+        Login
+      </button>
+      <div class="w-px bg-divider"></div>
+      <button
+        (click)="setMode('signup')"
+        class="flex-1 py-4 text-body-15-bold transition-all duration-300 cursor-pointer text-text-primary"
+        [class.bg-accent]="authMode() === 'signup'"
+        [class.bg-background-secondary]="authMode() !== 'signup'"
+      >
+        Signup
+      </button>
+    </div>
+
+    <h2 class="text-body-24-semibold text-text-primary mb-2 text-start">Welcome Back</h2>
+    <p class="text-body-14-medium text-text-primary mb-6 text-start">Enter your credentials to access your dashboard.</p>
+    <form class="space-y-6">
+      <div>
+        <label for="username" class="block text-body-16-medium mb-1 text-text-primary">Enter username</label>
+        <div class="relative flex items-center">
+          <svg-icon
+            src="assets/icons/user.svg"
+            [applyClass]="true"
+            class="absolute left-1.5 w-5 h-5 text-text-primary"
+          />
+          <input
+            id="username"
+            type="text"
+            placeholder="e.g.,user123"
+            class="w-full pl-10  py-3 border border-text-primary text-text-primary opacity-60 rounded-md"
+          />
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label for="password" class="text-body-16-medium text-text-primary">Enter password</label>
+          <a href="#" class="text-body-14-medium text-accent hover:underline cursor-pointer">Forgot password?</a>
+        </div>
+        <div class="relative flex items-center">
+          <svg-icon
+            src="assets/icons/lock.svg"
+            [applyClass]="true"
+            class="absolute left-1.5 w-5 h-5 text-text-primary"
+          />
+          <input
+            id="password"
+            type="password"
+            placeholder="e.g.,P@ssword!"
+            class="w-full pl-10 py-3 border border-text-primary text-text-primary opacity-60 rounded-md"
+          />
+        </div>
+        <div class="mt-2 flex items-center">
+          <div
+            (click)="toggleRememberMe()"
+            class="mr-2 cursor-pointer w-5 h-5 flex items-center justify-center"
+          >
+            @if (rememberMe()) {
+              <svg-icon
+                src="assets/icons/checkbox.svg"
+                [applyClass]="true"
+                class="w-5 h-5 text-accent rounded"
+              />
+            } @else {
+              <div class="w-5 h-5 rounded border border-accent opacity-60"></div>
+            }
+          </div>
+          <label (click)="toggleRememberMe()" class="text-body-14-medium text-accent cursor-pointer select-none">Remember me</label>
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <button
+          type="submit"
+          class="w-1/2 bg-accent text-text-primary py-3 rounded-lg text-body-18-bold transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer"
+        >
+          Log in
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
