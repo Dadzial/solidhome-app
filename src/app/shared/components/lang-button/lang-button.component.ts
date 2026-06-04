@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component , inject } from '@angular/core';
+import { TranslationsService} from '@core/services/translations/translations.service';
 
 @Component({
   selector: 'app-lang-button',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
   templateUrl: './lang-button.component.html',
   styles: ``,
 })
-export class LangButtonComponent {}
+export class LangButtonComponent {
+  public translationsService = inject(TranslationsService);
+}
