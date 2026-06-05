@@ -23,9 +23,15 @@
         <app-login-form
           class="w-full max-w-xl"
           (switchToSignup)="authMode.set('signUp')"
+          (switchToVerify)="authMode.set('verify')"
         />
-      } @else {
+      } @else if (authMode() === 'signUp') {
         <app-register-form
+          class="w-full max-w-xl"
+          (switchToLogin)="authMode.set('login')"
+        />
+      } @else if (authMode() === 'verify') {
+        <app-verify-form
           class="w-full max-w-xl"
           (switchToLogin)="authMode.set('login')"
         />

@@ -1,1 +1,43 @@
-<p>verify-form works!</p>
+<div class="w-full h-full flex items-center justify-center">
+  <div class="w-full p-10 pt-0 bg-background-secondary rounded-xl shadow-md overflow-hidden">
+    <div class="flex bg-background-primary -mx-10 mb-10 border-b border-divider">
+      <button
+        (click)="switchToLogin.emit()"
+        class="flex-1 py-5 text-body-18-bold transition-all duration-300 cursor-pointer text-text-primary bg-accent"
+      >
+        {{ 'authPages.backToLogin' | translate }}
+      </button>
+      <div class="w-px bg-divider"></div>
+    </div>
+    <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.passwordRecovery' | translate }}</h2>
+    <p class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.passwordRecoveryDescription' | translate }}</p>
+    <form class="space-y-8 px-2">
+      <div>
+        <label for="username" class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterEmail' | translate }}</label>
+        <div class="relative flex items-center">
+          <svg-icon
+            src="assets/icons/email.svg"
+            [applyClass]="true"
+            class="absolute left-2.5 w-6 h-6 text-text-primary"
+          />
+          <input
+            id="email"
+            type="text"
+            placeholder="{{ 'authPages.emailPlaceholder' | translate }}"
+            class="w-full pl-12 py-4 border border-text-primary text-text-primary opacity-60 rounded-lg text-body-16-medium"
+          />
+        </div>
+      </div>
+      <div>
+      </div>
+      <div class="flex justify-center">
+        <button
+          type="submit"
+          class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer"
+        >
+          {{ 'authPages.sendResetLink' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

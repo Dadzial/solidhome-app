@@ -11,6 +11,7 @@ import { SvgIconComponent } from 'angular-svg-icon';
 })
 export class LoginFormComponent {
   public switchToSignup = output<void>();
+  public switchToVerify = output<void>();
   public rememberMe = signal<boolean>(false);
 
   public toggleRememberMe(): void {

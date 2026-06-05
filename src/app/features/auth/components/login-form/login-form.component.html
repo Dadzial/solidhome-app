@@ -37,7 +37,7 @@
       <div>
         <div class="flex justify-between items-center mb-2">
           <label for="password" class="text-body-16-medium text-text-primary">{{ 'authPages.enterPassword' | translate }}</label>
-          <a href="#" class="text-body-14-medium text-accent hover:underline cursor-pointer">{{ 'authPages.forgotPassword' | translate }}</a>
+          <a (click)="switchToVerify.emit()" class="text-body-14-medium text-accent hover:underline cursor-pointer">{{ 'authPages.forgotPassword' | translate }}</a>
         </div>
         <div class="relative flex items-center">
           <svg-icon

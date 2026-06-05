@@ -19,6 +19,7 @@
     "enterEmail": "Wprowadź email",
     "emailPlaceholder": "przykład@gmail.com",
     "register": "Zarejestruj",
+    "backToLogin": "Powrót do logowania",
     "passwordRecovery": "Odzyskiwanie hasła",
     "passwordRecoveryDescription": "Wprowadź swój email, aby otrzymać link do resetowania hasła.",
     "sendResetLink": "Wyślij link resetujący",

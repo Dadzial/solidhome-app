@@ -19,6 +19,7 @@
     "enterEmail": "Enter email",
     "emailPlaceholder": "example@gmail.com",
     "register": "Register",
+    "backToLogin": "Back to login",
     "passwordRecovery": "Password Recovery",
     "passwordRecoveryDescription": "Enter your email to receive a password reset link.",
     "sendResetLink": "Send reset link",
