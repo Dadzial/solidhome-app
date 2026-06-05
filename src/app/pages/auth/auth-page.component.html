@@ -19,7 +19,17 @@
       </div>
     </div>
     <div class="flex flex-col items-center justify-center p-4">
-      <app-login-form class="w-full max-w-xl" />
+      @if (authMode() === 'login') {
+        <app-login-form
+          class="w-full max-w-xl"
+          (switchToSignup)="authMode.set('signUp')"
+        />
+      } @else {
+        <app-register-form
+          class="w-full max-w-xl"
+          (switchToLogin)="authMode.set('login')"
+        />
+      }
     </div>
   </div>
   <footer class="flex items-center justify-between pt-4">

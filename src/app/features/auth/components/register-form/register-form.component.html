@@ -2,24 +2,18 @@
   <div class="w-full p-10 pt-0 bg-background-secondary rounded-xl shadow-md overflow-hidden">
     <div class="flex bg-background-primary -mx-10 mb-10 border-b border-divider">
       <button
-        (click)="setMode('login')"
-        class="flex-1 py-5 text-body-18-bold transition-all duration-300 cursor-pointer text-text-primary"
-        [class.bg-accent]="authMode() === 'login'"
-        [class.bg-background-secondary]="authMode() !== 'login'"
+        (click)="switchToLogin.emit()"
+        class="flex-1 py-5 text-body-18-bold transition-all duration-300 cursor-pointer text-text-primary bg-background-secondary"
       >
         {{ 'authPages.login' | translate }}
       </button>
       <div class="w-px bg-divider"></div>
       <button
-        (click)="setMode('signup')"
-        class="flex-1 py-5 text-body-18-bold transition-all duration-300 cursor-pointer text-text-primary"
-        [class.bg-accent]="authMode() === 'signup'"
-        [class.bg-background-secondary]="authMode() !== 'signup'"
+        class="flex-1 py-5 text-body-18-bold transition-all duration-300 cursor-pointer text-text-primary bg-accent"
       >
         {{ 'authPages.signUp' | translate }}
       </button>
     </div>
-
     <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.createAccount' | translate }}</h2>
     <p class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.createAccountDescription' | translate }}</p>
     <form class="space-y-8 px-2">
