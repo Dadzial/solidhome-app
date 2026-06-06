@@ -3,7 +3,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { form, FormField } from '@angular/forms/signals';
 
-
 interface LoginCredentials {
   username: string;
   password: string;
