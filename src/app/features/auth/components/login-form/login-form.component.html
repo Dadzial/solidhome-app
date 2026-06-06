@@ -57,7 +57,7 @@
             (click)="toggleRememberMe()"
             class="mr-3 cursor-pointer w-6 h-6 flex items-center justify-center"
           >
-            @if (rememberMe()) {
+            @if (loginForm.rememberMe()) {
               <svg-icon
                 src="assets/icons/checkbox.svg"
                 [applyClass]="true"
