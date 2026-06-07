@@ -8,6 +8,7 @@ import {
   required,
   submit,
 } from '@angular/forms/signals';
+import {Router} from '@angular/router';
 import { LoginService } from '@features/auth/services/login/login.service';
 
 interface LoginCredentials {
@@ -33,6 +34,7 @@ export class LoginFormComponent {
   public switchToSignup = output<void>();
   public switchToVerify = output<void>();
   private loginService = inject(LoginService);
+  private router = inject(Router);
 
   public isLoading = signal(false);
   public serverError = signal<string | null>(null);
@@ -63,7 +65,7 @@ export class LoginFormComponent {
               error: (err: ApiError) => reject(err),
             });
           });
-
+          this.router.navigate(['dashboard']);
         } catch (err) {
           const apiError = err as ApiError;
           this.triggerTemporaryErrors(apiError.details?.[0] ?? apiError.error);
