@@ -1,5 +1,5 @@
 {
-  "authPages" : {
+  "authPages": {
     "solidHome": "Solid <span class=\"text-accent\">Home</span>",
     "subTitle": "Connect your,\n<span class=\"text-accent\">living</span>",
     "description": "Solid Home is a seamless home ecosystem.\nIt is where absolute precision meets pure aesthetics.\nWe design experiences, not just technology.\nTake full control of your world—with a single, intuitive touch.",
@@ -26,5 +26,15 @@
     "resetPassword": "Reset Password",
     "resetPasswordDescription": "Create a new password",
     "confirmPassword": "Confirm"
+  },
+  "authPagesErrors": {
+    "emailRequired": "Email is required",
+    "emailInvalid": "Enter a valid email address",
+    "userNameRequired": "Username is required",
+    "userNameMinLength": "Username must be at least 3 characters",
+    "userNameMaxLength": "Username cannot exceed 30 characters",
+    "userNamePattern": "Username can only contain letters and numbers",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 8 characters"
   }
 }

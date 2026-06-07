@@ -10,6 +10,7 @@
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-divider: var(--divider);
+  --color-text-error: var(--text-error);
 }
 
 :root {
@@ -19,6 +20,7 @@
   --text-primary: #363434;
   --text-secondary: #00C7CE;
   --divider: #BDBDBD;
+  --text-error : #F44336;
 }
 
 .dark {
@@ -28,6 +30,7 @@
   --text-primary: #FFFFFF;
   --text-secondary: #00C7CE;
   --divider: #BDBDBD;
+  --text-error : #F44336;
 }
 
 
@@ -92,5 +95,12 @@
   font-family: var(--font-app), sans-serif;
   font-size: 0.75rem;
   font-weight: 400;
+  line-height: 1.2;
+}
+
+@utility text-body-10-medium {
+  font-family: var(--font-app), sans-serif;
+  font-size: 0.625rem;
+  font-weight: 500;
   line-height: 1.2;
 }

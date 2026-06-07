@@ -30,7 +30,7 @@ export class RegisterService {
 
   public register(data: RegisterRequest) {
     return this.http
-      .post<RegisterResponse>(`${this.apiUrl}/user/register`, data)
+      .post<RegisterResponse>(`${this.apiUrl}/create`, data)
       .pipe(catchError(this.handleError));
   }
 

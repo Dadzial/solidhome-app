@@ -14,67 +14,110 @@
         {{ 'authPages.signUp' | translate }}
       </button>
     </div>
+
     <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.createAccount' | translate }}</h2>
     <p class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.createAccountDescription' | translate }}</p>
-    <form class="space-y-8 px-2">
-      <div>
-        <label for="username" class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterUsername' | translate }}</label>
+
+    <form [formRoot]="registerForm" (submit)="onSubmit($event)" novalidate class="space-y-8 px-2">
+      <div class="relative">
+        <label class="block text-body-16-medium mb-2 text-text-primary">
+          {{ 'authPages.enterUsername' | translate }}
+        </label>
         <div class="relative flex items-center">
-          <svg-icon
-            src="assets/icons/user.svg"
-            [applyClass]="true"
-            class="absolute left-2.5 w-6 h-6 text-text-primary"
-          />
+          <svg-icon src="assets/icons/user.svg" [applyClass]="true"
+                    class="absolute left-2.5 w-6 h-6 text-text-primary"/>
           <input
-            id="username"
             type="text"
+            [formField]="registerForm.userName"
             placeholder="{{ 'authPages.userNamePlaceholder' | translate }}"
-            class="w-full pl-12 py-4 border border-text-primary text-text-primary opacity-60 rounded-lg text-body-16-medium"
+            class="w-full pl-12 py-4 border rounded-lg text-body-16-medium text-text-primary opacity-60 focus:outline-none"
+            [class.border-red-500]="showLocalErrors() && registerForm.userName().invalid()"
+            [class.border-text-primary]="!(showLocalErrors() && registerForm.userName().invalid())"
           />
         </div>
+        <div class="absolute top-[calc(100%+4px)] left-0">
+          @if (showLocalErrors() && registerForm.userName().invalid()) {
+            @for (error of registerForm.userName().errors(); track error.kind) {
+              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+            }
+          }
+        </div>
       </div>
-      <div>
-        <label for="email" class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterEmail' | translate }}</label>
+
+      <div class="relative">
+        <label class="block text-body-16-medium mb-2 text-text-primary">
+          {{ 'authPages.enterEmail' | translate }}
+        </label>
         <div class="relative flex items-center">
-          <svg-icon
-            src="assets/icons/email.svg"
-            [applyClass]="true"
-            class="absolute left-2.5 w-6 h-6 text-text-primary"
-          />
+          <svg-icon src="assets/icons/email.svg" [applyClass]="true"
+                    class="absolute left-2.5 w-6 h-6 text-text-primary"/>
           <input
-            id="email"
-            type="text"
+            type="email"
+            [formField]="registerForm.email"
             placeholder="{{ 'authPages.emailPlaceholder' | translate }}"
-            class="w-full pl-12 py-4 border border-text-primary text-text-primary opacity-60 rounded-lg text-body-16-medium"
+            class="w-full pl-12 py-4 border rounded-lg text-body-16-medium text-text-primary opacity-60 focus:outline-none"
+            [class.border-red-500]="showLocalErrors() && registerForm.email().invalid()"
+            [class.border-text-primary]="!(showLocalErrors() && registerForm.email().invalid())"
           />
         </div>
-      </div>
-      <div>
-        <div class="flex justify-between items-center mb-2">
-          <label for="password" class="text-body-16-medium text-text-primary">{{ 'authPages.enterPassword' | translate }}</label>
+        <div class="absolute top-[calc(100%+4px)] left-0">
+          @if (showLocalErrors() && registerForm.email().invalid()) {
+            @for (error of registerForm.email().errors(); track error.kind) {
+              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+            }
+          }
         </div>
+      </div>
+
+      <div class="relative">
+        <label class="block text-body-16-medium mb-2 text-text-primary">
+          {{ 'authPages.enterPassword' | translate }}
+        </label>
         <div class="relative flex items-center">
-          <svg-icon
-            src="assets/icons/lock.svg"
-            [applyClass]="true"
-            class="absolute left-2.5 w-6 h-6 text-text-primary"
-          />
+          <svg-icon src="assets/icons/lock.svg" [applyClass]="true"
+                    class="absolute left-2.5 w-6 h-6 text-text-primary"/>
           <input
-            id="password"
             type="password"
+            [formField]="registerForm.password"
             placeholder="{{ 'authPages.passwordPlaceholder' | translate }}"
-            class="w-full pl-12 py-4 border border-text-primary text-text-primary opacity-60 rounded-lg text-body-16-medium"
+            class="w-full pl-12 py-4 border rounded-lg text-body-16-medium text-text-primary opacity-60 focus:outline-none"
+            [class.border-red-500]="showLocalErrors() && registerForm.password().invalid()"
+            [class.border-text-primary]="!(showLocalErrors() && registerForm.password().invalid())"
           />
         </div>
+        <div class="absolute top-[calc(100%+4px)] left-0">
+          @if (showLocalErrors() && registerForm.password().invalid()) {
+            @for (error of registerForm.password().errors(); track error.kind) {
+              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+            }
+          }
+        </div>
       </div>
-      <div class="flex justify-center">
-        <button
-          type="submit"
-          class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer"
-        >
-          {{ 'authPages.register' | translate }}
-        </button>
+
+      <div class="flex flex-col items-center">
+        <div class="flex justify-center w-full">
+          <button
+            type="submit"
+            [disabled]="isLoading()"
+            class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold
+               transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer
+               disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            @if (isLoading()) {
+              <span class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+            }
+            {{ 'authPages.register' | translate }}
+          </button>
+        </div>
+        <div class="relative w-full h-0">
+          @if (serverError()) {
+            <p class="absolute top-2 left-0 w-full text-center text-text-error text-body-10-medium">
+              {{ serverError() }}
+            </p>
+          }
+        </div>
       </div>
     </form>
   </div>
 </div>
+

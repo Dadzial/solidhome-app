@@ -26,5 +26,15 @@
     "resetPassword": "Zresetuj hasło",
     "resetPasswordDescription": "Utwórz nowe hasło",
     "confirmPassword": "Potwierdź"
+  },
+  "authPagesErrors": {
+    "emailRequired": "Email jest wymagany",
+    "emailInvalid": "Podaj poprawny adres email",
+    "userNameRequired": "Nazwa użytkownika jest wymagana",
+    "userNameMinLength": "Nazwa użytkownika musi mieć minimum 3 znaki",
+    "userNameMaxLength": "Nazwa użytkownika może mieć maksimum 30 znaków",
+    "userNamePattern": "Nazwa użytkownika może zawierać tylko litery i cyfry",
+    "passwordRequired": "Hasło jest wymagane",
+    "passwordMinLength": "Hasło musi mieć minimum 8 znaków"
   }
 }
