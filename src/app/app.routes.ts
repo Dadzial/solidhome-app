@@ -5,5 +5,10 @@ export const routes: Routes = [
     path: '',
     loadComponent: () => import('./pages/auth/auth-page.component')
       .then(m => m.AuthPageComponent)
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./pages/dashboard/dashboard.component')
+      .then(m => m.DashboardComponent)
   }
 ];
