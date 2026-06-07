@@ -1,7 +1,17 @@
 import { Component, output, inject, signal } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { email, form, FormField, FormRoot, maxLength, minLength, pattern, required, submit,} from '@angular/forms/signals';
+import {
+  email,
+  form,
+  FormField,
+  FormRoot,
+  maxLength,
+  minLength,
+  pattern,
+  required,
+  submit,
+} from '@angular/forms/signals';
 import { RegisterService } from '@features/auth/services/register/register.service';
 
 interface RegisterCredentials {
@@ -93,6 +103,6 @@ export class RegisterFormComponent {
       this.registerForm.email().reset();
       this.registerForm.userName().reset();
       this.registerForm.password().reset();
-    }, 2000);
+    }, 3000);
   }
 }
