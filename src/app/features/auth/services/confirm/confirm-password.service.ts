@@ -36,7 +36,7 @@ export class ConfirmPasswordService {
       return throwError(() => error.error as ApiError);
     }
     if (error.status === 401) {
-      return throwError(() => ({ error: 'Invalid username or password' }));
+      return throwError(() => ({ error: 'Invalid password' }));
     }
     if (error.status === 429) {
       return throwError(() => ({ error: 'Too many requests, try again later' }));
