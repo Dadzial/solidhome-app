@@ -4,12 +4,11 @@ import { environment } from '@environments/environment';
 import { catchError, throwError } from 'rxjs';
 
 interface VerifyEmailRequest {
-  userName: string;
-  password: string;
+  email: string;
 }
 
 interface VerifyEmailResponse {
-  code :number
+  message: string;
 }
 
 interface ApiError {

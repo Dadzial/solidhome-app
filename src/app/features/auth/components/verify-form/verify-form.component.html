@@ -11,9 +11,9 @@
     </div>
     <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.passwordRecovery' | translate }}</h2>
     <p class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.passwordRecoveryDescription' | translate }}</p>
-    <form class="space-y-8 px-2">
-      <div>
-        <label for="username" class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterEmail' | translate }}</label>
+    <form [formRoot]="verifyEmailForm" (submit)="onSubmit($event)" novalidate class="space-y-8 px-2">
+      <div class="relative">
+        <label for="email" class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterEmail' | translate }}</label>
         <div class="relative flex items-center">
           <svg-icon
             src="assets/icons/email.svg"
@@ -22,21 +22,45 @@
           />
           <input
             id="email"
-            type="text"
+            type="email"
+            [formField]="verifyEmailForm.email"
             placeholder="{{ 'authPages.emailPlaceholder' | translate }}"
-            class="w-full pl-12 py-4 border border-text-primary text-text-primary opacity-60 rounded-lg text-body-16-medium"
+            class="w-full pl-12 py-4 border rounded-lg text-body-16-medium text-text-primary opacity-60 focus:outline-none"
+            [class.border-red-500]="showLocalErrors() && verifyEmailForm.email().invalid()"
+            [class.border-text-primary]="!(showLocalErrors() && verifyEmailForm.email().invalid())"
           />
         </div>
+        <div class="absolute top-[calc(100%+4px)] left-0">
+          @if (showLocalErrors() && verifyEmailForm.email().invalid()) {
+            @for (error of verifyEmailForm.email().errors(); track error.kind) {
+              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+            }
+          }
+        </div>
       </div>
-      <div>
-      </div>
-      <div class="flex justify-center">
-        <button
-          type="submit"
-          class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer"
-        >
-          {{ 'authPages.sendResetLink' | translate }}
-        </button>
+      <div class="flex flex-col items-center">
+        <div class="flex justify-center w-full">
+          <button
+            type="submit"
+            [disabled]="isLoading()"
+            class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold
+                   transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer
+                   disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            @if (isLoading()) {
+              <span class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+            }
+            {{ 'authPages.sendResetLink' | translate }}
+          </button>
+        </div>
+
+        <div class="relative w-full h-0">
+          @if (serverError()) {
+            <p class="absolute top-2 left-0 w-full text-center text-text-error text-body-10-medium">
+              {{ serverError() }}
+            </p>
+          }
+        </div>
       </div>
     </form>
   </div>
