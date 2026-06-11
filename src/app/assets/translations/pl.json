@@ -25,7 +25,9 @@
     "sendResetLink": "Wyślij link resetujący",
     "resetPassword": "Zresetuj hasło",
     "resetPasswordDescription": "Utwórz nowe hasło",
-    "confirmPassword": "Potwierdź"
+    "confirmPassword": "Potwierdź",
+    "enterVerificationCode": "Wprowadź kod weryfikacyjny",
+    "verificationCodePlaceholder": "np. 123456"
   },
   "authPagesErrors": {
     "emailRequired": "Email jest wymagany",

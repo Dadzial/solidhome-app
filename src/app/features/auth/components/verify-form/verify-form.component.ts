@@ -29,6 +29,7 @@ interface ApiError {
 })
 export class VerifyFormComponent {
   public switchToLogin = output<void>();
+  public switchToNewPassword = output<void>();
   private verifyService = inject(VerifyEmailService);
 
   public isLoading = signal(false);
@@ -56,7 +57,7 @@ export class VerifyFormComponent {
                 error: (err: ApiError) => reject(err),
               });
             });
-            this.switchToLogin.emit();
+            this.switchToNewPassword.emit();
           } catch (err) {
             const apiError = err as ApiError;
             this.triggerTemporaryErrors(apiError.details?.[0] ?? apiError.error);

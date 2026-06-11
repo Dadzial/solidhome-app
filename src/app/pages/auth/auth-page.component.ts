@@ -5,6 +5,7 @@ import {LangButtonComponent} from '@shared/components/lang-button/lang-button.co
 import { LoginFormComponent } from '@features/auth/components/login-form/login-form.component';
 import { RegisterFormComponent } from '@features/auth/components/register-form/register-form.component';
 import {VerifyFormComponent} from '@features/auth/components/verify-form/verify-form.component';
+import { RestoreFormComponent } from '@features/auth/components/restore-form/restore-form.component';
 
 @Component({
   selector: 'app-auth-page',
@@ -16,10 +17,11 @@ import {VerifyFormComponent} from '@features/auth/components/verify-form/verify-
     TranslateModule,
     RegisterFormComponent,
     VerifyFormComponent,
+    RestoreFormComponent,
   ],
   templateUrl: './auth-page.component.html',
   styles: ``,
 })
 export class AuthPageComponent {
-  public authMode = signal<'login' | 'signUp' | 'verify'>('login');
+  public authMode = signal<'login' | 'signUp' | 'verify' | 'restore'>('login');
 }

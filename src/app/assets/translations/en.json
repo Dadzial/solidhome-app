@@ -25,7 +25,9 @@
     "sendResetLink": "Send reset link",
     "resetPassword": "Reset Password",
     "resetPasswordDescription": "Create a new password",
-    "confirmPassword": "Confirm"
+    "confirmPassword": "Confirm",
+    "enterVerificationCode": "Enter verification code",
+    "verificationCodePlaceholder": "e.g., 123456"
   },
   "authPagesErrors": {
     "emailRequired": "Email is required",

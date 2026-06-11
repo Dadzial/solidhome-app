@@ -34,6 +34,12 @@
         <app-verify-form
           class="w-full max-w-xl"
           (switchToLogin)="authMode.set('login')"
+          (switchToNewPassword)="authMode.set('restore')"
+        />
+      } @else if (authMode() === 'restore') {
+        <app-restore-form
+          class="w-full max-w-xl"
+          (switchToLogin)="authMode.set('login')"
         />
       }
     </div>

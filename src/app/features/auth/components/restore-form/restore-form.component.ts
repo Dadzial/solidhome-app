@@ -1,6 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, output, inject, signal } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
+import {
+  form,
+  FormField,
+  FormRoot,
+  required,
+  submit } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
+
+interface NewPasswordCredentials {
+  code : string;
+  newPassword : string;
+}
+
+interface ApiError {
+  error: string;
+  details?: string[];
+  value?: string;
+}
 
 @Component({
   selector: 'app-restore-form',
@@ -9,4 +26,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './restore-form.component.html',
   styles: ``,
 })
-export class RestoreFormComponent {}
+export class RestoreFormComponent {
+  public switchToLogin = output<void>();
+}
