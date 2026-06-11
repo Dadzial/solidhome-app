@@ -4,16 +4,16 @@ import { environment } from '@environments/environment';
 import { catchError, throwError } from 'rxjs';
 
 
-export interface LoginRequest {
+interface LoginRequest {
   userName: string;
   password: string;
 }
 
-export interface LoginResponse {
+interface LoginResponse {
   token: string;
 }
 
-export interface ApiError {
+interface ApiError {
   error: string;
   details?: string[];
   value?: string;

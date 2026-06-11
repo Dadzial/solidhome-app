@@ -3,19 +3,19 @@ import {environment} from "@environments/environment";
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
 
-export interface RegisterRequest {
+interface RegisterRequest {
   email: string;
   userName: string;
   password: string;
 }
 
-export interface RegisterResponse {
+interface RegisterResponse {
   _id: string;
   email: string;
   userName: string;
 }
 
-export interface ApiError {
+interface ApiError {
   error: string;
   details?: string[];
   value?: string;
