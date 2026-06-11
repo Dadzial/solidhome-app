@@ -4,12 +4,12 @@ import { environment } from '@environments/environment';
 import { catchError, throwError } from 'rxjs';
 
 interface ConfirmPasswordRequest {
-  message: string;
+  code: string;
   password: string;
 }
 
-interface VerifyEmailResponse {
-  newPassword: string;
+interface ConfirmPasswordResponse {
+  message: string;
 }
 
 interface ApiError {
@@ -27,7 +27,7 @@ export class ConfirmPasswordService {
 
   public confirmNewPassword(data: ConfirmPasswordRequest) {
     return this.http
-      .post<VerifyEmailResponse>(`${this.apiUrl}/reset/password`, data)
+      .post<ConfirmPasswordResponse>(`${this.apiUrl}/reset/password`, data)
       .pipe(catchError(this.handleError));
   }
 
