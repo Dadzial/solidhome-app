@@ -34,7 +34,7 @@
 }
 
 
-@utility text-headline-h1-36-bolid {
+@utility text-headline-h1-36-bold {
   font-family: var(--font-app), sans-serif;
   font-size: 2.25rem;
   font-weight: 700;
