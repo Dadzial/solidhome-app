@@ -1,11 +1,13 @@
-<div class="relative w-full h-12 flex items-center justify-between bg-background-secondary px-3 shadow-xl z-50">
+<div class="relative w-full h-12 flex items-center justify-between bg-background-secondary px-3 z-50" [class.shadow-xl]="!isMobileMenuOpen()">
   <div class="flex items-center gap-3">
     <img src="assets/pictures/home.png" alt="Logo" class="w-8 h-8" />
     <h1 class="text-body-24-bold pt-0.5 text-text-primary"
         [innerHTML]="'authPages.solidHome' | translate">
     </h1>
   </div>
-  <div class="flex items-center gap-5 h-full">
+
+  <!-- Desktop Menu -->
+  <div class="hidden lg:flex items-center gap-5 h-full">
     <a routerLink="/home" routerLinkActive="!text-accent border-b-3 border-accent" [routerLinkActiveOptions]="{exact: true}" class="h-full flex items-center text-text-primary text-body-16-semibold px-2 hover:text-accent">
       {{ 'home.navbar.home' | translate }}
     </a>
@@ -21,9 +23,47 @@
     <a routerLink="/security" routerLinkActive="!text-accent border-b-3 border-accent" class="h-full flex items-center text-text-primary text-body-16-semibold px-2 hover:text-accent">
       {{ 'home.navbar.security' | translate }}
     </a>
-    <div class="flex items-center gap-5 ">
+    <div class="flex items-center gap-5 ml-2">
       <svg-icon src="assets/icons/settings.svg" [applyClass]="true" class="w-6 h-6 text-accent cursor-pointer transition-all duration-300 hover:scale-110 hover:brightness-125 active:scale-90"/>
       <svg-icon src="assets/icons/logout.svg" [applyClass]="true" class="w-6 h-6 text-accent cursor-pointer rotate-90 transition-all duration-300 hover:scale-110 hover:brightness-125 active:scale-90" (click)="logout()"/>
     </div>
   </div>
+
+  <!-- Mobile Menu Button -->
+  <div class="flex lg:hidden items-center">
+    <svg-icon src="assets/icons/menu_mobile.svg" [applyClass]="true" class="w-7 h-7 text-text-primary cursor-pointer transition-transform duration-200 active:scale-90" (click)="toggleMobileMenu()"/>
+  </div>
+</div>
+
+<!-- Mobile Menu Dropdown -->
+<div class="absolute top-12 left-0 w-full bg-background-secondary shadow-xl z-40 flex flex-col lg:hidden transition-all duration-300 ease-in-out overflow-hidden"
+     [class.max-h-0]="!isMobileMenuOpen()"
+     [class.max-h-[600px]]="isMobileMenuOpen()"
+     [class.opacity-0]="!isMobileMenuOpen()"
+     [class.opacity-100]="isMobileMenuOpen()">
+    <a routerLink="/home" routerLinkActive="!text-accent bg-background-tertiary" [routerLinkActiveOptions]="{exact: true}" class="px-4 py-6 text-text-primary text-body-18-bold hover:text-accent" (click)="toggleMobileMenu()">
+      {{ 'home.navbar.home' | translate }}
+    </a>
+    <a routerLink="/lights" routerLinkActive="!text-accent bg-background-tertiary" class="px-4 py-6 text-text-primary text-body-18-bold hover:text-accent" (click)="toggleMobileMenu()">
+      {{ 'home.navbar.lights' | translate }}
+    </a>
+    <a routerLink="/gates" routerLinkActive="!text-accent bg-background-tertiary" class="px-4 py-6 text-text-primary text-body-18-bold hover:text-accent" (click)="toggleMobileMenu()">
+      {{ 'home.navbar.gatesAndDoors' | translate }}
+    </a>
+    <a routerLink="/air" routerLinkActive="!text-accent bg-background-tertiary" class="px-4 py-6 text-text-primary text-body-18-bold hover:text-accent" (click)="toggleMobileMenu()">
+      {{ 'home.navbar.air' | translate }}
+    </a>
+    <a routerLink="/security" routerLinkActive="!text-accent bg-background-tertiary" class="px-4 py-6 text-text-primary text-body-18-bold hover:text-accent" (click)="toggleMobileMenu()">
+      {{ 'home.navbar.security' | translate }}
+    </a>
+    <div class=" py-6 flex items-center justify-around">
+      <div class="flex items-center gap-3 cursor-pointer transition-all duration-300 hover:brightness-125 active:scale-95">
+        <svg-icon src="assets/icons/settings.svg" [applyClass]="true" class="w-6 h-6 text-accent"/>
+        <span class="text-accent text-body-16-semibold">{{ 'home.navbar.settings' | translate }}</span>
+      </div>
+      <div class="flex items-center gap-3 cursor-pointer transition-all duration-300 hover:brightness-125 active:scale-95" (click)="logout()">
+        <svg-icon src="assets/icons/logout.svg" [applyClass]="true" class="w-6 h-6 text-accent rotate-90"/>
+        <span class="text-accent text-body-16-semibold">{{ 'home.navbar.logout' | translate }}</span>
+      </div>
+    </div>
 </div>

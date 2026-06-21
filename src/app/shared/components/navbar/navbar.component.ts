@@ -14,6 +14,11 @@ import { LogoutService } from '@core/services/logout/logout.service';
 export class NavbarComponent {
   private logoutService = inject(LogoutService);
   private router = inject(Router);
+  public isMobileMenuOpen = signal(false);
+
+  public toggleMobileMenu(): void {
+    this.isMobileMenuOpen.update(val => !val);
+  }
 
   public logout(): void {
     this.logoutService.logout().subscribe({

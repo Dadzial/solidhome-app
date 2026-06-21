@@ -45,7 +45,9 @@
       "lights": "Oświetlenie",
       "gatesAndDoors": "Bramy i drzwi",
       "air": "Powietrze",
-      "security": "Bezpieczeństwo"
+      "security": "Bezpieczeństwo",
+      "settings": "Ustawienia",
+      "logout": "Wyloguj"
     }
   }
 }

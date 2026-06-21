@@ -45,7 +45,9 @@
       "lights": "Lights",
       "gatesAndDoors": "Gates and Doors",
       "air": "Air",
-      "security": "Security"
+      "security": "Security",
+      "settings": "Settings",
+      "logout": "Logout"
     }
   }
 }
