@@ -5,12 +5,18 @@
      [class.-translate-y-2]="!isOpen()"
      [class.pointer-events-none]="!isOpen()">
 
-  <div class="p-5 flex flex-col gap-6 w-full">
+  <div class="p-5 flex flex-col gap-1 w-full">
     <div class="flex items-center justify-between pb-4">
-      <h2 class="t text-body-18-bold  text-text-primary">{{ 'home.navbar.settings' | translate }}</h2>
+      <h2 class="text-body-18-bold text-text-primary">{{ 'home.navbar.settings' | translate }}</h2>
       <button (click)="closeSettings.emit()" class="text-text-primary hover:text-accent transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-background-tertiary">
         <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-6 h-6 cursor-pointer"/>
       </button>
+    </div>
+    <h2 class="text-body-16-semibold text-text-primary">{{'home.settingsModal.themeColor' | translate }}</h2>
+    <div class="flex flex-row gap-2">
+      <div class="">
+
+      </div>
     </div>
   </div>
 </div>

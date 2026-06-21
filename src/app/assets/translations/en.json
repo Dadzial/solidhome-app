@@ -49,6 +49,9 @@
       "settings": "Settings",
       "logout": "Logout"
     },
+    "settingsModal": {
+      "themeColor": "Accent color"
+    },
     "welcomeMessage": "Welcome"
   }
 }

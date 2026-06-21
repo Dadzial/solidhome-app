@@ -49,6 +49,9 @@
       "settings": "Ustawienia",
       "logout": "Wyloguj"
     },
+    "settingsModal": {
+      "themeColor": "Kolor akcentu"
+    },
     "welcomeMessage": "Witaj"
   }
 }
