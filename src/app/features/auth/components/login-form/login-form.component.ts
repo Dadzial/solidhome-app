@@ -10,6 +10,7 @@ import {
 } from '@angular/forms/signals';
 import {Router} from '@angular/router';
 import { LoginService } from '@features/auth/services/login/login.service';
+import { LoadingService } from '@core/services/loading/loading.service';
 
 interface LoginCredentials {
   userName: string;
@@ -35,6 +36,7 @@ export class LoginFormComponent {
   public switchToVerify = output<void>();
   private loginService = inject(LoginService);
   private router = inject(Router);
+  private loadingService = inject(LoadingService);
 
   public isLoading = signal(false);
   public serverError = signal<string | null>(null);
@@ -61,13 +63,19 @@ export class LoginFormComponent {
               next: (response) => {
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('userId', response.userId);
-                //  rememberMe logic would be here
                 resolve();
               },
               error: (err: ApiError) => reject(err),
             });
           });
-          this.router.navigate(['home']);
+
+          this.loadingService.showLoadingWindow();
+
+          setTimeout(() => {
+            this.router.navigate(['home']);
+            setTimeout(() => this.loadingService.hideLoadingWindow(), 300);
+          }, 800);
+
         } catch (err) {
           const apiError = err as ApiError;
           this.triggerTemporaryErrors(apiError.details?.[0] ?? apiError.error);

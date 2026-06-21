@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-spinner-loader',
-  imports: [],
+  imports: [TranslateModule],
+  standalone: true,
   templateUrl: './spinner-loader.component.html',
   styles: ``,
 })
