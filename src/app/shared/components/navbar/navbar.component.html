@@ -24,7 +24,7 @@
       {{ 'home.navbar.security' | translate }}
     </a>
     <div class="flex items-center gap-5 ml-2">
-      <svg-icon src="assets/icons/settings.svg" [applyClass]="true" class="w-6 h-6 text-accent cursor-pointer transition-all duration-300 hover:scale-110 hover:brightness-125 active:scale-90"/>
+      <svg-icon src="assets/icons/settings.svg" [applyClass]="true" class="w-6 h-6 text-accent cursor-pointer transition-all duration-300 hover:scale-110 hover:brightness-125 active:scale-90 settings-toggle-btn" (click)="toggleSettings()"/>
       <svg-icon src="assets/icons/logout.svg" [applyClass]="true" class="w-6 h-6 text-accent cursor-pointer rotate-90 transition-all duration-300 hover:scale-110 hover:brightness-125 active:scale-90" (click)="logout()"/>
     </div>
   </div>
@@ -55,8 +55,8 @@
     <a routerLink="/security" routerLinkActive="!text-accent bg-background-tertiary" class="px-4 py-6 text-text-primary text-body-18-bold hover:text-accent" (click)="toggleMobileMenu()">
       {{ 'home.navbar.security' | translate }}
     </a>
-    <div class=" py-6 flex items-center justify-around">
-      <div class="flex items-center gap-3 cursor-pointer transition-all duration-300 hover:brightness-125 active:scale-95">
+    <div class="mt-auto py-6 flex items-center justify-around bg-background-primary shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+      <div class="flex items-center gap-3 cursor-pointer transition-all duration-300 hover:brightness-125 active:scale-95 settings-toggle-btn" (click)="toggleSettings()">
         <svg-icon src="assets/icons/settings.svg" [applyClass]="true" class="w-6 h-6 text-accent"/>
         <span class="text-accent text-body-16-semibold">{{ 'home.navbar.settings' | translate }}</span>
       </div>
@@ -66,3 +66,5 @@
       </div>
     </div>
 </div>
+
+<app-settings-modal [isOpen]="isSettingsOpen()" (closeSettings)="isSettingsOpen.set(false)" />

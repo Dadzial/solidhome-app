@@ -1,0 +1,16 @@
+<div (appClickOutside)="isOpen() ? closeSettings.emit() : null"
+     class="fixed top-14 right-2 sm:right-3 w-80 bg-background-secondary rounded-lg shadow-sm z-100  flex flex-col origin-top-right transition-all duration-200 ease-out"
+     [class.opacity-0]="!isOpen()"
+     [class.scale-95]="!isOpen()"
+     [class.-translate-y-2]="!isOpen()"
+     [class.pointer-events-none]="!isOpen()">
+
+  <div class="p-5 flex flex-col gap-6 w-full">
+    <div class="flex items-center justify-between pb-4">
+      <h2 class="t text-body-18-bold  text-text-primary">{{ 'home.navbar.settings' | translate }}</h2>
+      <button (click)="closeSettings.emit()" class="text-text-primary hover:text-accent transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-background-tertiary">
+        <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-6 h-6 cursor-pointer"/>
+      </button>
+    </div>
+  </div>
+</div>
