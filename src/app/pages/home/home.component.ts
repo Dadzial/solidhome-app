@@ -4,8 +4,9 @@ import { ThemeButtonComponent } from '@shared/components/theme-button/theme-butt
 import { LangButtonComponent } from '@shared/components/lang-button/lang-button.component';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-home',
   imports: [NavbarComponent, LangButtonComponent, ThemeButtonComponent],
+  standalone: true,
   templateUrl: './home.component.html',
   styles: ``,
 })
