@@ -7,7 +7,7 @@ import { LangButtonComponent } from '@shared/components/lang-button/lang-button.
   selector: 'app-lights',
   imports: [NavbarComponent, LangButtonComponent, ThemeButtonComponent],
   standalone: true,
-  templateUrl: './lights.component.html',
+  templateUrl: './lights-page.component.html',
   styles: ``,
 })
-export class LightsComponent {}
+export class LightsPageComponent {}

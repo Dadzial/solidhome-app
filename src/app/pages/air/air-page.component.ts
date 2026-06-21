@@ -7,7 +7,7 @@ import { LangButtonComponent } from '@shared/components/lang-button/lang-button.
   selector: 'app-air',
   imports: [NavbarComponent, LangButtonComponent, ThemeButtonComponent],
   standalone: true,
-  templateUrl: './air.component.html',
+  templateUrl: './air-page.component.html',
   styles: ``,
 })
-export class AirComponent {}
+export class AirPageComponent {}

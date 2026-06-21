@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AirComponent } from './air.component';
+import { AirPageComponent } from './air-page.component';
 
-describe('AirComponent', () => {
-  let component: AirComponent;
-  let fixture: ComponentFixture<AirComponent>;
+describe('AirPageComponent', () => {
+  let component: AirPageComponent;
+  let fixture: ComponentFixture<AirPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AirComponent],
+      imports: [AirPageComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AirComponent);
+    fixture = TestBed.createComponent(AirPageComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

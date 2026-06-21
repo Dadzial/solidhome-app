@@ -7,7 +7,7 @@ import { LangButtonComponent } from '@shared/components/lang-button/lang-button.
   selector: 'app-security',
   imports: [NavbarComponent, LangButtonComponent, ThemeButtonComponent],
   standalone: true,
-  templateUrl: './security.component.html',
+  templateUrl: './security-page.component.html',
   styles: ``,
 })
-export class SecurityComponent {}
+export class SecurityPageComponent {}

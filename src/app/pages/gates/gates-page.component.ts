@@ -7,7 +7,7 @@ import { LangButtonComponent } from '@shared/components/lang-button/lang-button.
   selector: 'app-gates',
   imports: [NavbarComponent, LangButtonComponent, ThemeButtonComponent],
   standalone: true,
-  templateUrl: './gates.component.html',
+  templateUrl: './gates-page.component.html',
   styles: ``,
 })
-export class GatesComponent {}
+export class GatesPageComponent {}

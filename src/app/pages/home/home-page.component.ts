@@ -7,7 +7,7 @@ import { LangButtonComponent } from '@shared/components/lang-button/lang-button.
   selector: 'app-home',
   imports: [NavbarComponent, LangButtonComponent, ThemeButtonComponent],
   standalone: true,
-  templateUrl: './home.component.html',
+  templateUrl: './home-page.component.html',
   styles: ``,
 })
-export class HomeComponent {}
+export class HomePageComponent {}

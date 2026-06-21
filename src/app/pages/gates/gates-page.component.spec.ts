@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GatesComponent } from './gates.component';
+import { GatesPageComponent } from './gates-page.component';
 
-describe('GatesComponent', () => {
-  let component: GatesComponent;
-  let fixture: ComponentFixture<GatesComponent>;
+describe('GatesPageComponent', () => {
+  let component: GatesPageComponent;
+  let fixture: ComponentFixture<GatesPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GatesComponent],
+      imports: [GatesPageComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(GatesComponent);
+    fixture = TestBed.createComponent(GatesPageComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

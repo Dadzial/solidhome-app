@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SecurityComponent } from './security.component';
+import { SecurityPageComponent } from './security-page.component';
 
-describe('SecurityComponent', () => {
-  let component: SecurityComponent;
-  let fixture: ComponentFixture<SecurityComponent>;
+describe('SecurityPageComponent', () => {
+  let component: SecurityPageComponent;
+  let fixture: ComponentFixture<SecurityPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SecurityComponent],
+      imports: [SecurityPageComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SecurityComponent);
+    fixture = TestBed.createComponent(SecurityPageComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
