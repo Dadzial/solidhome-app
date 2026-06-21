@@ -1,21 +1,27 @@
 <div (appClickOutside)="isOpen() ? closeSettings.emit() : null"
-     class="fixed top-14 right-2 sm:right-3 w-80 bg-background-secondary rounded-lg shadow-sm z-100  flex flex-col origin-top-right transition-all duration-200 ease-out"
+     class="fixed top-14 right-2 sm:right-3 w-80 bg-background-secondary rounded-lg shadow-sm z-100 flex flex-col origin-top-right transition-all duration-200 ease-out"
      [class.opacity-0]="!isOpen()"
      [class.scale-95]="!isOpen()"
      [class.-translate-y-2]="!isOpen()"
      [class.pointer-events-none]="!isOpen()">
 
-  <div class="p-5 flex flex-col gap-1 w-full">
+  <div class="p-5 flex flex-col  w-full">
     <div class="flex items-center justify-between pb-4">
       <h2 class="text-body-18-bold text-text-primary">{{ 'home.navbar.settings' | translate }}</h2>
       <button (click)="closeSettings.emit()" class="text-text-primary hover:text-accent transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-background-tertiary">
         <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-6 h-6 cursor-pointer"/>
       </button>
     </div>
-    <h2 class="text-body-16-semibold text-text-primary">{{'home.settingsModal.themeColor' | translate }}</h2>
-    <div class="flex flex-row gap-2">
-      <div class="">
 
+    <div class="flex flex-col gap-3 pt-2">
+      <h2 class="text-body-16-semibold text-text-primary">{{ 'home.settingsModal.themeColor' | translate }}</h2>
+      <div class="flex flex-row justify-center flex-wrap gap-4">
+        <button class="w-8 h-8 rounded-full bg-blue-500 ring-2 ring-offset-2 ring-offset-background-secondary ring-accent transition-transform hover:scale-110 active:scale-95"></button>
+        <button class="w-8 h-8 rounded-full bg-green-500 ring-1 transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent"></button>
+        <button class="w-8 h-8 rounded-full bg-orange-500 ring-1 transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent"></button>
+        <button class="w-8 h-8 rounded-full bg-purple-500 ring-1 transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent"></button>
+        <button class="w-8 h-8 rounded-full bg-pink-500 ring-1 transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent"></button>
+        <button class="w-8 h-8 rounded-full bg-teal-500 ring-1  transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent"></button>
       </div>
     </div>
   </div>

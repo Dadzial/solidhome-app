@@ -10,6 +10,7 @@ import { ClickOutsideDirective } from '@shared/directives/click-outside/click-ou
   templateUrl: './settings-modal.component.html',
 })
 export class SettingsModalComponent {
+  public selectedColor = output()
   public isOpen = input(false);
   public closeSettings = output<void>();
 }
