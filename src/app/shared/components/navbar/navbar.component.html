@@ -5,11 +5,25 @@
         [innerHTML]="'authPages.solidHome' | translate">
     </h1>
   </div>
-  <div class="">
-
-  </div>
-  <div class="flex items-center gap-5">
-    <svg-icon src="assets/icons/settings.svg" [applyClass]="true" class="w-6 h-6 text-accent cursor-pointer"/>
-    <svg-icon src="assets/icons/logout.svg" [applyClass]="true" class="w-6 h-6 text-accent cursor-pointer rotate-90"/>
+  <div class="flex items-center gap-5 h-full">
+    <a routerLink="/home" routerLinkActive="!text-accent border-b-3 border-accent" [routerLinkActiveOptions]="{exact: true}" class="h-full flex items-center text-text-primary text-body-16-semibold px-2">
+      {{ 'home.navbar.home' | translate }}
+    </a>
+    <a routerLink="/lights" routerLinkActive="!text-accent border-b-3 border-accent" class="h-full flex items-center text-text-primary text-body-16-semibold px-2">
+      {{ 'home.navbar.lights' | translate }}
+    </a>
+    <a routerLink="/gates" routerLinkActive="!text-accent border-b-3 border-accent" class="h-full flex items-center text-text-primary text-body-16-semibold px-2">
+      {{ 'home.navbar.gatesAndDoors' | translate }}
+    </a>
+    <a routerLink="/air" routerLinkActive="!text-accent border-b-3 border-accent" class="h-full flex items-center text-text-primary text-body-16-semibold px-2">
+      {{ 'home.navbar.air' | translate }}
+    </a>
+    <a routerLink="/security" routerLinkActive="!text-accent border-b-3 border-accent" class="h-full flex items-center text-text-primary text-body-16-semibold px-2">
+      {{ 'home.navbar.security' | translate }}
+    </a>
+    <div class="flex items-center gap-5 ">
+      <svg-icon src="assets/icons/settings.svg" [applyClass]="true" class="w-6 h-6 text-accent cursor-pointer"/>
+      <svg-icon src="assets/icons/logout.svg" [applyClass]="true" class="w-6 h-6 text-accent cursor-pointer rotate-90"/>
+    </div>
   </div>
 </div>

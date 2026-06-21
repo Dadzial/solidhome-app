@@ -39,7 +39,7 @@
     "passwordRequired": "Hasło jest wymagane",
     "passwordMinLength": "Hasło musi mieć minimum 8 znaków"
   },
-  "dashboard": {
+  "home": {
     "navbar": {
       "home": "Strona główna",
       "lights": "Oświetlenie",

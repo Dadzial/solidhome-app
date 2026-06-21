@@ -39,7 +39,7 @@
     "passwordRequired": "Password is required",
     "passwordMinLength": "Password must be at least 8 characters"
   },
-  "dashboard": {
+  "home": {
     "navbar": {
       "home": "Home",
       "lights": "Lights",
