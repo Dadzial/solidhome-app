@@ -6,7 +6,7 @@ import { LangButtonComponent } from '@shared/components/lang-button/lang-button.
 @Component({
   selector: 'app-dashboard',
   imports: [NavbarComponent, LangButtonComponent, ThemeButtonComponent],
-  templateUrl: './dashboard.component.html',
+  templateUrl: './home.component.html',
   styles: ``,
 })
-export class DashboardComponent {}
+export class HomeComponent {}

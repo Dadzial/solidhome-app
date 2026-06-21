@@ -65,7 +65,7 @@ export class LoginFormComponent {
               error: (err: ApiError) => reject(err),
             });
           });
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['home']);
         } catch (err) {
           const apiError = err as ApiError;
           this.triggerTemporaryErrors(apiError.details?.[0] ?? apiError.error);

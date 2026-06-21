@@ -7,8 +7,8 @@ export const routes: Routes = [
       .then(m => m.AuthPageComponent)
   },
   {
-    path: 'dashboard',
-    loadComponent: () => import('./pages/dashboard/dashboard.component')
-      .then(m => m.DashboardComponent)
+    path: 'home',
+    loadComponent: () => import('@pages/dashboard/home.component')
+      .then(m => m.HomeComponent)
   }
 ];
