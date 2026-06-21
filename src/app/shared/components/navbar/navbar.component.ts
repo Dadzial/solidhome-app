@@ -1,7 +1,8 @@
 import { Component , signal , inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { LogoutService } from '@core/services/logout/logout.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,5 +12,28 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styles: ``,
 })
 export class NavbarComponent {
+  private logoutService = inject(LogoutService);
+  private router = inject(Router);
 
+  public logout(): void {
+    const userId = localStorage.getItem('userId');
+
+    if (userId) {
+      this.logoutService.logout({ userId }).subscribe({
+        next: () => this.handleSuccessfulLogout(),
+        error: (err) => {
+          console.error('Error in logout:', err);
+          this.handleSuccessfulLogout();
+        }
+      });
+    } else {
+      this.handleSuccessfulLogout();
+    }
+  }
+
+  private handleSuccessfulLogout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    this.router.navigate(['/']);
+  }
 }
