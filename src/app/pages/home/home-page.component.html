@@ -1,7 +1,10 @@
 <div class="w-screen h-screen flex flex-col bg-background-primary">
   <app-navbar></app-navbar>
   <div class="flex-1 p-6 overflow-y-hidden">
-    <h2 class="text-accent text-headline-h1-36-bold text-shadow-2xs">{{ 'home.welcomeMessage' | translate }}</h2>
+    <div class="flex flex-row gap-3">
+      <h2 class="text-text-primary text-headline-h1-36-bold text-shadow-2xs">{{ 'home.welcomeMessage' | translate }}</h2>
+      <h2 class="text-accent text-headline-h1-36-bold text-shadow-2xs">{{loginService.userName()}}</h2>
+    </div>
   </div>
   <footer class="flex items-center justify-between p-6">
     <app-lang-button />

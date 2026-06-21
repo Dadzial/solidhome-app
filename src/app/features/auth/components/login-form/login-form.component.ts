@@ -62,7 +62,7 @@ export class LoginFormComponent {
             this.loginService.login(credentials).subscribe({
               next: (response) => {
                 localStorage.setItem('token', response.token);
-                localStorage.setItem('userId', response.userId);
+                this.loginService.initUserFromToken();
                 resolve();
               },
               error: (err: ApiError) => reject(err),
