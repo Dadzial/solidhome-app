@@ -48,6 +48,7 @@
       "security": "Security",
       "settings": "Settings",
       "logout": "Logout"
-    }
+    },
+    "welcomeMessage": "Welcome"
   }
 }
