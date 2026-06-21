@@ -40,6 +40,12 @@
     "passwordMinLength": "Hasło musi mieć minimum 8 znaków"
   },
   "dashboard": {
-
+    "navbar": {
+      "home": "Strona główna",
+      "lights": "Oświetlenie",
+      "gatesAndDoors": "Bramy i drzwi",
+      "air": "Powietrze",
+      "security": "Bezpieczeństwo"
+    }
   }
 }
