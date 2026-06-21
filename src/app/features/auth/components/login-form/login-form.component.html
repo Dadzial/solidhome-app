@@ -98,9 +98,6 @@
                transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer
                disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            @if (isLoading()) {
-              <span class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-            }
             {{ 'authPages.loginButton' | translate }}
           </button>
         </div>

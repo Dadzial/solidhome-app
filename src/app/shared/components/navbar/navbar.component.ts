@@ -3,11 +3,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { LogoutService } from '@core/services/logout/logout.service';
+import { ClickOutsideDirective } from '@shared/directives/click-outside/click-outside.directive';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [TranslateModule, SvgIconComponent, RouterLink, RouterLinkActive],
+  imports: [TranslateModule, SvgIconComponent, RouterLink, RouterLinkActive, ClickOutsideDirective],
   templateUrl: './navbar.component.html',
   styles: ``,
 })
