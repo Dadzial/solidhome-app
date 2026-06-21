@@ -11,6 +11,7 @@ interface LoginRequest {
 
 interface LoginResponse {
   token: string;
+  userId: string;
 }
 
 interface ApiError {

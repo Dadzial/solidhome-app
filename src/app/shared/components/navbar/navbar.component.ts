@@ -16,24 +16,17 @@ export class NavbarComponent {
   private router = inject(Router);
 
   public logout(): void {
-    const userId = localStorage.getItem('userId');
-
-    if (userId) {
-      this.logoutService.logout({ userId }).subscribe({
-        next: () => this.handleSuccessfulLogout(),
-        error: (err) => {
-          console.error('Error in logout:', err);
-          this.handleSuccessfulLogout();
-        }
-      });
-    } else {
-      this.handleSuccessfulLogout();
-    }
+    this.logoutService.logout().subscribe({
+      next: () => this.handleSuccessfulLogout(),
+      error: (err) => {
+        console.error('Error in logout:', err);
+        this.handleSuccessfulLogout();
+      }
+    });
   }
 
   private handleSuccessfulLogout(): void {
     localStorage.removeItem('token');
-    localStorage.removeItem('userId');
     this.router.navigate(['/']);
   }
 }

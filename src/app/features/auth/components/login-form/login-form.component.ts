@@ -59,6 +59,8 @@ export class LoginFormComponent {
             const { rememberMe, ...credentials } = this.loginModel();
             this.loginService.login(credentials).subscribe({
               next: (response) => {
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('userId', response.userId);
                 //  rememberMe logic would be here
                 resolve();
               },

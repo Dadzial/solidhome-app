@@ -3,10 +3,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { catchError, throwError } from 'rxjs';
 
-interface LogoutRequest {
-  userId: string;
-}
-
 interface LoginResponse {
   message: string;
 }
@@ -24,9 +20,9 @@ export class LogoutService {
   private http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/user`;
 
-  public logout(data: LogoutRequest) {
+  public logout() {
     return this.http
-      .delete<LoginResponse>(`${this.apiUrl}/logout/${data.userId}`)
+      .delete<LoginResponse>(`${this.apiUrl}/logout`)
       .pipe(catchError(this.handleError));
   }
 
