@@ -6,11 +6,11 @@ import { ClickOutsideDirective } from '@shared/directives/click-outside/click-ou
 @Component({
   selector: 'app-settings-modal',
   standalone: true,
-  imports: [TranslateModule,SvgIconComponent, ClickOutsideDirective],
+  imports: [TranslateModule, SvgIconComponent, ClickOutsideDirective],
   templateUrl: './settings-modal.component.html',
 })
 export class SettingsModalComponent {
-  public selectedColor = output()
   public isOpen = input(false);
   public closeSettings = output<void>();
+  public selectedColor = output();
 }

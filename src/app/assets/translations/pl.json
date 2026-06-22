@@ -50,7 +50,17 @@
       "logout": "Wyloguj"
     },
     "settingsModal": {
-      "themeColor": "Kolor akcentu"
+      "themeColor": "Kolor akcentu",
+      "units": "Jednostki",
+      "account": "Konto",
+      "temperature": "Temperatura",
+      "pressure": "Ciśnienie",
+      "humidity": "Wilgotność",
+      "gasConcentration": "CO2",
+      "timeFormat": "Format czasu",
+      "changeUsername": "Zmień nazwę użytkownika",
+      "changeEmail": "Zmień adres email",
+      "changePassword": "Zmień hasło"
     },
     "welcomeMessage": "Witaj"
   }

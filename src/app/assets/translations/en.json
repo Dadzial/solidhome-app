@@ -50,7 +50,17 @@
       "logout": "Logout"
     },
     "settingsModal": {
-      "themeColor": "Accent color"
+      "themeColor": "Accent color",
+      "units": "Units",
+      "account": "Account",
+      "temperature": "Temperature",
+      "pressure": "Pressure",
+      "humidity": "Humidity",
+      "gasConcentration": "CO2",
+      "timeFormat": "Time format",
+      "changeUsername": "Change username",
+      "changeEmail": "Change email",
+      "changePassword": "Change password"
     },
     "welcomeMessage": "Welcome"
   }
