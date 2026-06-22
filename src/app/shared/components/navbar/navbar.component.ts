@@ -21,6 +21,9 @@ export class NavbarComponent {
 
   public toggleMobileMenu(): void {
     this.isMobileMenuOpen.update(val => !val);
+    if (this.isMobileMenuOpen()) {
+      this.isSettingsOpen.set(false);
+    }
   }
 
   public toggleSettings(): void {
