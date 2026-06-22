@@ -1,9 +1,8 @@
-import { inject, Injectable , signal,} from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { inject , Injectable , signal,} from '@angular/core';
+import { HttpClient , HttpErrorResponse } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '@environments/environment';
-import { catchError, Observable, throwError ,of} from 'rxjs';
-
+import { catchError , throwError} from 'rxjs';
 
 interface LoginRequest {
   userName: string;
@@ -12,7 +11,6 @@ interface LoginRequest {
 
 interface LoginResponse {
   token: string;
-  userId: string;
 }
 
 interface ApiError {
