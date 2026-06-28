@@ -1,1 +1,13 @@
-<p>lights-widget works!</p>
+<div class="w-full h-full p-6 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]">
+  <div class="flex flex-row items-center gap-2 mb-4">
+    <svg-icon src="assets/icons/light_bulb.svg" [applyClass]="true" class="w-9 h-9 text-text-primary"></svg-icon>
+    <h2 class="text-text-primary text-headline-h2-28-bold text-shadow-2xs pt-0.5">{{ 'home.lightsWidget.title' | translate }}</h2>
+  </div>
+
+  <div class="flex-3 w-full relative rounded-2xl overflow-hidden">
+    <img src="assets/pictures/home_preview.png" alt="Preview" class="absolute inset-0 w-full h-full object-cover scale-[1]" />
+  </div>
+  <div class="bg-accent -mx-6 h-1 opacity-10"></div>
+  <div class="flex-1 w-full pt-6">
+  </div>
+</div>

@@ -40,6 +40,7 @@
     "passwordMinLength": "Password must be at least 8 characters"
   },
   "home": {
+    "welcomeMessage": "Welcome",
     "navbar": {
       "home": "Home",
       "lights": "Lights",
@@ -62,6 +63,8 @@
       "changeEmail": "Change email",
       "changePassword": "Change password"
     },
-    "welcomeMessage": "Welcome"
+    "lightsWidget": {
+      "title": "Lights"
+    }
   }
 }

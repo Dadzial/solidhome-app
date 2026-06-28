@@ -40,6 +40,7 @@
     "passwordMinLength": "Hasło musi mieć minimum 8 znaków"
   },
   "home": {
+    "welcomeMessage": "Witaj",
     "navbar": {
       "home": "Strona główna",
       "lights": "Oświetlenie",
@@ -62,6 +63,8 @@
       "changeEmail": "Zmień adres email",
       "changePassword": "Zmień hasło"
     },
-    "welcomeMessage": "Witaj"
+    "lightsWidget": {
+      "title": "Oświetlenie"
+    }
   }
 }
