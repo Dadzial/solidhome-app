@@ -64,7 +64,8 @@
       "changePassword": "Zmień hasło"
     },
     "lightsWidget": {
-      "title": "Oświetlenie"
+      "title": "Oświetlenie",
+      "history": "Historia Użytkowania"
     }
   }
 }

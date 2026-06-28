@@ -64,7 +64,8 @@
       "changePassword": "Change password"
     },
     "lightsWidget": {
-      "title": "Lights"
+      "title": "Lights",
+      "history":"History of Usage"
     }
   }
 }
