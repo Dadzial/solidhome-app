@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { NgOptimizedImage, NgClass } from '@angular/common';
+import { LightsService } from '@features/lights/services/lights/lights.service';
 
 interface Light {
   id: string;
@@ -17,6 +18,8 @@ interface Light {
   styles: ``,
 })
 export class LightsWidgetComponent {
+  private lightsService = inject(LightsService);
+
   public readonly lights = signal<Light[]>([
     { id: 'garage', top: '40%', left: '20%', on: false },
     { id: 'kitchen', top: '10%', left: '45%', on: false },
