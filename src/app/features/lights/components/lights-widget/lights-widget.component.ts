@@ -24,14 +24,17 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   public readonly lights = signal<Light[]>([
-    { id: 'living_room', top: '40%', left: '20%', on: false },
-    { id: 'kitchen', top: '10%', left: '45%', on: false },
-    { id: 'bedroom', top: '45%', left: '70%', on: false },
-    { id: 'bathroom', top: '65%', left: '55%', on: false },
-    { id: 'hallway', top: '20%', left: '35%', on: false }
+    { id: 'living_room', top: '45%', left: '70%', on: false },
+    { id: 'kitchen', top: '50%', left: '40%', on: false },
+    { id: 'bedroom', top: '65%', left: '55%', on: false },
+    { id: 'bathroom', top: '10%', left: '45%', on: false },
+    { id: 'hallway', top: '20%', left: '35%', on: false },
+    { id: 'garage', top: '40%', left: '25%', on: false },
   ]);
 
-  ngOnInit() {
+  public hasError = signal<boolean>(false);
+
+  public ngOnInit() {
     this.lightsService
       .getStatus()
       .pipe(takeUntil(this.destroy$))
@@ -46,12 +49,16 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
               return light;
             }),
           );
+          this.hasError.set(false);
         },
-        error: (err) => console.error('Failed to load initial lights status', err),
+        error: (err) => {
+          console.error('Failed to load initial lights status', err);
+          this.hasError.set(true);
+        },
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -67,12 +74,14 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           console.log(newState);
+          this.hasError.set(false);
         },
         error: (err) => {
           console.error('Failed to update light status', err);
           this.lights.update((lights) =>
             lights.map((l) => (l.id === id ? { ...l, on: !newState } : l)),
           );
+          this.hasError.set(true);
         },
       });
   }

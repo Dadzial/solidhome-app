@@ -65,7 +65,8 @@
     },
     "lightsWidget": {
       "title": "Oświetlenie",
-      "history": "Historia Użytkowania"
+      "history": "Historia Użytkowania",
+      "lightsError": "Błąd sterowania oświetleniem <br/> Sprawdź Narzędzia developerskie."
     }
   }
 }

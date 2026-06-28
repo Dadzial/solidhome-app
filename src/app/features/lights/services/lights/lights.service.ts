@@ -8,7 +8,8 @@ export const LIGHT_ID_MAP: Record<string, number> = {
   'kitchen': 2,
   'bedroom': 3,
   'bathroom': 4,
-  'hallway': 5
+  'hallway': 5,
+  'garage': 6,
 };
 
 interface ApiError {
@@ -53,10 +54,10 @@ export class LightsService {
     if (response.status === 429) {
       return throwError(() => ({ message: 'Too many requests', details: 'Try again later' } as ApiError));
     }
-    
-    return throwError(() => ({ 
-      message: apiError.message || 'Server error', 
-      error: apiError.error || 'Something went wrong' 
+
+    return throwError(() => ({
+      message: apiError.message || 'Server error',
+      error: apiError.error || 'Something went wrong'
     } as ApiError));
   }
 }

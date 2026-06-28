@@ -65,7 +65,8 @@
     },
     "lightsWidget": {
       "title": "Lights",
-      "history":"History of Usage"
+      "history":"History of Usage",
+      "lightsError": "Lighting control is not available check DevTools."
     }
   }
 }
