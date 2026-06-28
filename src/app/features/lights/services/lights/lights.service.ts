@@ -4,12 +4,11 @@ import { environment } from '@environments/environment';
 import { catchError, throwError, Observable } from 'rxjs';
 
 export const LIGHT_ID_MAP: Record<string, number> = {
-  'garage': 1,
+  'living_room': 1,
   'kitchen': 2,
-  'hall': 3,
-  'bedroom': 4,
-  'boiler': 5,
-  'room': 6
+  'bedroom': 3,
+  'bathroom': 4,
+  'hallway': 5
 };
 
 interface ApiError {
