@@ -24,10 +24,30 @@
     }
   </div>
   <div class="bg-accent -mx-6 h-1 opacity-10"></div>
-  <div class="flex-1 w-full pt-6 overflow-y-auto">
-    <div class="flex flex-row items-center gap-2 mb-4">
+  <div class="flex-1 w-full pt-3 flex flex-col">
+    <div class="flex flex-row items-center gap-2 mb-3">
       <svg-icon src="assets/icons/history_of_use.svg" [applyClass]="true" class="w-9 h-9 text-accent"></svg-icon>
       <div class="text-text-primary text-body-18-bold">{{ 'home.lightsWidget.history' | translate }}</div>
+    </div>
+    
+    <div class="flex flex-col gap-2 overflow-y-auto pr-2 max-h-[140px]">
+      @for (item of history(); track item.id) {
+        <div class="flex items-center justify-between p-3 rounded-xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center transition-colors" 
+                 [ngClass]="item.action === 'ON' ? 'bg-accent/20 text-accent' : 'bg-text-secondary/10 text-text-primary/50'">
+              <svg-icon src="assets/icons/light_bulb.svg" [applyClass]="true" class="w-5 h-5"></svg-icon>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-body-16-semibold text-text-primary">{{ item.name }}</span>
+              <span class="text-body-14-medium text-text-primary/60">
+                Switched <span [ngClass]="item.action === 'ON' ? 'text-accent font-bold' : 'font-bold'">{{ item.action }}</span>
+              </span>
+            </div>
+          </div>
+          <span class="text-body-12-regular text-text-primary/50">{{ item.time }}</span>
+        </div>
+      }
     </div>
   </div>
 </div>

@@ -12,6 +12,13 @@ interface Light {
   on: boolean;
 }
 
+interface LightHistory {
+  id: string;
+  name: string;
+  action: 'ON' | 'OFF';
+  time: string;
+}
+
 @Component({
   selector: 'app-lights-widget',
   imports: [TranslatePipe, SvgIconComponent, NgOptimizedImage, NgClass],
@@ -30,6 +37,14 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
     { id: 'bathroom', top: '10%', left: '45%', on: false },
     { id: 'hallway', top: '20%', left: '35%', on: false },
     { id: 'garage', top: '40%', left: '25%', on: false },
+  ]);
+
+  public readonly history = signal<LightHistory[]>([
+    { id: '1', name: 'Living Room', action: 'ON', time: '10 min ago' },
+    { id: '2', name: 'Kitchen', action: 'OFF', time: '25 min ago' },
+    { id: '3', name: 'Bedroom', action: 'ON', time: '1 hour ago' },
+    { id: '4', name: 'Bathroom', action: 'OFF', time: '2 hours ago' },
+    { id: '5', name: 'Garage', action: 'ON', time: '3 hours ago' },
   ]);
 
   public hasError = signal<boolean>(false);
