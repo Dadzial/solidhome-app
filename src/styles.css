@@ -16,7 +16,14 @@
 :root {
   --background-primary: #efeeee;
   --background-secondary: #FFFFFF;
-  --accent-color: #00C7CE;
+  --theme-accent-cyan: #00C7CE;
+  --theme-accent-green: #22c55e;
+  --theme-accent-orange: #f97316;
+  --theme-accent-purple: #a855f7;
+  --theme-accent-pink: #ec4899;
+  --theme-accent-blue: #3b82f6;
+  --accent-color: var(--theme-accent-cyan);
+
   --text-primary: #363434;
   --text-secondary: #00C7CE;
   --divider: #BDBDBD;
@@ -26,7 +33,7 @@
 .dark {
   --background-primary: #262525;
   --background-secondary: #1A1818;
-  --accent-color: #00C7CE;
+  --accent-color: var(--theme-accent-cyan);
   --text-primary: #FFFFFF;
   --text-secondary: #00C7CE;
   --divider: #BDBDBD;
@@ -123,4 +130,13 @@
   font-size: 0.625rem;
   font-weight: 500;
   line-height: 1.2;
+}
+
+@utility logo-mask {
+  background-color: var(--accent-color);
+  -webkit-mask-image: url('./app/assets/pictures/home.png');
+  mask-image: url('./app/assets/pictures/home.png');
+  -webkit-mask-size: contain; mask-size: contain;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: center; mask-position: center;
 }
