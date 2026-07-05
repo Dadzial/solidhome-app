@@ -61,7 +61,13 @@
       "timeFormat": "Time format",
       "changeUsername": "Change username",
       "changeEmail": "Change email",
-      "changePassword": "Change password"
+      "changePassword": "Change password",
+      "newUsername": "New username",
+      "newEmail": "New email",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "save": "Save"
     },
     "lightsWidget": {
       "title": "Lights",
@@ -70,7 +76,8 @@
     }
   },
   "lightsPage": {
-    "title": "Lights"
+    "title": "Lights",
+    "steering": "Steering"
   },
   "gatesAndDoorsPage": {
     "title": "Gates and Doors"

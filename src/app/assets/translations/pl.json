@@ -61,7 +61,13 @@
       "timeFormat": "Format czasu",
       "changeUsername": "Zmień nazwę użytkownika",
       "changeEmail": "Zmień adres email",
-      "changePassword": "Zmień hasło"
+      "changePassword": "Zmień hasło",
+      "newUsername": "Nowa nazwa użytkownika",
+      "newEmail": "Nowy email",
+      "currentPassword": "Obecne hasło",
+      "newPassword": "Nowe hasło",
+      "confirmPassword": "Potwierdź nowe hasło",
+      "save": "Zapisz"
     },
     "lightsWidget": {
       "title": "Oświetlenie",
@@ -70,7 +76,8 @@
     }
   },
   "lightsPage": {
-    "title": "Oświetlenie"
+    "title": "Oświetlenie",
+    "steering": "Sterowanie"
   },
   "gatesAndDoorsPage": {
     "title": "Bramy i drzwi"

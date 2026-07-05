@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, signal, input, OnInit, OnDestroy } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { NgOptimizedImage, NgClass } from '@angular/common';
@@ -29,6 +29,8 @@ interface LightHistory {
 export class LightsWidgetComponent implements OnInit, OnDestroy {
   private lightsService = inject(LightsService);
   private destroy$ = new Subject<void>();
+
+  public titleKey = input<string>('home.lightsWidget.title');
 
   public readonly lights = signal<Light[]>([
     { id: 'living_room', top: '45%', left: '70%', on: false },

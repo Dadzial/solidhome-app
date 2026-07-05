@@ -16,20 +16,46 @@
     <div class="flex flex-col gap-2 mb-3">
       <h2 class="text-body-16-semibold text-text-primary">{{ 'home.settingsModal.account' | translate }}</h2>
       <div class="flex flex-col gap-1">
-        <button class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group">
-          <span class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changeUsername' | translate }}</span>
-          <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true" class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all"/>
-        </button>
+        <div class="flex flex-col">
+          <button (click)="toggleSection('username')" class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group cursor-pointer">
+            <span class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changeUsername' | translate }}</span>
+            <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true" class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all" [class.rotate-90]="expandedSection() === 'username'"/>
+          </button>
+          @if (expandedSection() === 'username') {
+            <div class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
+              <input type="text" class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none border-divider focus:border-accent transition-colors" placeholder="{{ 'home.settingsModal.newUsername' | translate }}">
+              <button class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all">{{ 'home.settingsModal.save' | translate }}</button>
+            </div>
+          }
+        </div>
 
-        <button class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group">
-          <span class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changeEmail' | translate }}</span>
-          <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true" class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all"/>
-        </button>
+        <div class="flex flex-col">
+          <button (click)="toggleSection('email')" class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group cursor-pointer">
+            <span class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changeEmail' | translate }}</span>
+            <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true" class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all" [class.rotate-90]="expandedSection() === 'email'"/>
+          </button>
+          @if (expandedSection() === 'email') {
+            <div class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
+              <input type="email" class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none border-divider focus:border-accent transition-colors" placeholder="{{ 'home.settingsModal.newEmail' | translate }}">
+              <button class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all">{{ 'home.settingsModal.save' | translate }}</button>
+            </div>
+          }
+        </div>
 
-        <button class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group">
-          <span class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changePassword' | translate }}</span>
-          <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true" class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all"/>
-        </button>
+        <div class="flex flex-col">
+          <button (click)="toggleSection('password')" class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group cursor-pointer">
+            <span class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changePassword' | translate }}</span>
+            <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true" class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all" [class.rotate-90]="expandedSection() === 'password'"/>
+          </button>
+          @if (expandedSection() === 'password') {
+            <div class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
+              <input type="password" class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none border-divider focus:border-accent transition-colors" placeholder="{{ 'home.settingsModal.currentPassword' | translate }}">
+              <input type="password" class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none border-divider focus:border-accent transition-colors" placeholder="{{ 'home.settingsModal.newPassword' | translate }}">
+              <input type="password" class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none border-divider focus:border-accent transition-colors" placeholder="{{ 'home.settingsModal.confirmPassword' | translate }}">
+              <button class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all">{{ 'home.settingsModal.save' | translate }}</button>
+            </div>
+          }
+        </div>
       </div>
     </div>
 
@@ -81,40 +107,40 @@
       <div class="flex items-center justify-between">
         <span class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.temperature' | translate }}</span>
         <div class="flex items-center p-1">
-          <button class="px-3 py-1 text-body-12-regular text-accent transition-all">°C</button>
-          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all">°F</button>
+          <button class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">°C</button>
+          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">°F</button>
         </div>
       </div>
 
       <div class="flex items-center justify-between">
         <span class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.pressure' | translate }}</span>
         <div class="flex items-center p-1">
-          <button class="px-3 py-1 text-body-12-regular text-accent transition-all">hPa</button>
-          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all">mmHg</button>
+          <button class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">hPa</button>
+          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">mmHg</button>
         </div>
       </div>
 
       <div class="flex items-center justify-between">
         <span class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.humidity' | translate }}</span>
         <div class="flex items-center p-1">
-          <button class="px-3 py-1 text-body-12-regular text-accent transition-all">%</button>
-          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all">g/m³</button>
+          <button class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">%</button>
+          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">g/m³</button>
         </div>
       </div>
 
       <div class="flex items-center justify-between">
         <span class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.gasConcentration' | translate }}</span>
         <div class="flex items-center p-1">
-          <button class="px-3 py-1 text-body-12-regular text-accent transition-all">ppm</button>
-          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all">mg/m³</button>
+          <button class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">ppm</button>
+          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">mg/m³</button>
         </div>
       </div>
 
       <div class="flex items-center justify-between">
         <span class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.timeFormat' | translate }}</span>
         <div class="flex items-center p-1">
-          <button class="px-3 py-1 text-body-12-regular text-accent transition-all">24h</button>
-          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all">12h</button>
+          <button class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">24h</button>
+          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">12h</button>
         </div>
       </div>
     </div>

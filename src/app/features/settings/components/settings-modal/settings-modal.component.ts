@@ -1,4 +1,4 @@
-import { Component, output, input, inject } from '@angular/core';
+import { Component, output, input, inject, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import {SvgIconComponent} from 'angular-svg-icon';
 import { ClickOutsideDirective } from '@shared/directives/click-outside/click-outside.directive';
@@ -15,4 +15,10 @@ export class SettingsModalComponent {
   public isOpen = input(false);
   public closeSettings = output<void>();
   public selectedColor = output();
+
+  public expandedSection = signal<'username' | 'email' | 'password' | null>(null);
+
+  toggleSection(section: 'username' | 'email' | 'password') {
+    this.expandedSection.update(current => current === section ? null : section);
+  }
 }
