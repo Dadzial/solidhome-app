@@ -45,6 +45,7 @@ export class NavbarComponent {
 
   private handleSuccessfulLogout(): void {
     localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     this.router.navigate(['/']);
   }
 }

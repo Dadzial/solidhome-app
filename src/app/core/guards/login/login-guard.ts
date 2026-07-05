@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 
 export const loginGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
   const isAuthPage = state.url === '/';
   
   if (token) {
