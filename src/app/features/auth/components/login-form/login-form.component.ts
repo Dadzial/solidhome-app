@@ -58,10 +58,14 @@ export class LoginFormComponent {
         this.serverError.set(null);
         try {
           await new Promise<void>((resolve, reject) => {
-            const { rememberMe, ...credentials } = this.loginModel();
+            const credentials = this.loginModel();
             this.loginService.login(credentials).subscribe({
               next: (response) => {
-                localStorage.setItem('token', response.token);
+                if (credentials.rememberMe) {
+                  localStorage.setItem('token', response.token);
+                } else {
+                  sessionStorage.setItem('token', response.token);
+                }
                 this.loginService.initUserFromToken();
                 resolve();
               },

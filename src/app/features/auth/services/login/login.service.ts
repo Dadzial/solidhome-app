@@ -7,6 +7,7 @@ import { catchError , throwError} from 'rxjs';
 interface LoginRequest {
   userName: string;
   password: string;
+  rememberMe?: boolean;
 }
 
 interface LoginResponse {
@@ -38,7 +39,7 @@ export class LoginService {
   }
 
   public initUserFromToken(): void {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     if (token) {
       try {
         const decoded = jwtDecode<{ userName: string }>(token);
