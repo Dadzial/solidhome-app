@@ -68,5 +68,17 @@
       "history": "Historia Użytkowania",
       "lightsError": "Błąd sterowania oświetleniem <br/> Sprawdź narzędzia developerskie."
     }
+  },
+  "lightsPage": {
+    "title": "Oświetlenie"
+  },
+  "gatesAndDoorsPage": {
+    "title": "Bramy i drzwi"
+  },
+  "airPage": {
+    "title": "Powietrze"
+  },
+  "securityPage": {
+    "title": "Bezpieczeństwo"
   }
 }

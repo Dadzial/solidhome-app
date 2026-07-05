@@ -68,5 +68,17 @@
       "history":"History of Usage",
       "lightsError": "Lighting control is not available check DevTools."
     }
+  },
+  "lightsPage": {
+    "title": "Lights"
+  },
+  "gatesAndDoorsPage": {
+    "title": "Gates and Doors"
+  },
+  "airPage": {
+    "title": "Air"
+  },
+  "securityPage": {
+    "title": "Security"
   }
 }
