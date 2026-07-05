@@ -72,6 +72,13 @@
     "lightsWidget": {
       "title": "Oświetlenie",
       "history": "Historia Użytkowania",
+      "resetHistory": "Zrestartuj historię",
+      "turnOnAll": "Włącz wszystkie",
+      "turnOffAll": "Wyłącz wszystkie",
+      "turnOnBy": "Włączone przez",
+      "turnOffBy": "Wyłączone przez",
+      "turnedOnAt": "Włączone o",
+      "turnedOffAt": "Wyłączone o",
       "lightsError": "Błąd sterowania oświetleniem <br/> Sprawdź narzędzia developerskie."
     }
   },

@@ -1,4 +1,4 @@
-import { Component, inject, signal, input, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, signal, input, computed, OnInit, OnDestroy } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { NgOptimizedImage, NgClass } from '@angular/common';
@@ -17,6 +17,7 @@ interface LightHistory {
   name: string;
   action: 'ON' | 'OFF';
   time: string;
+  user: string;
 }
 
 @Component({
@@ -42,14 +43,50 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
   ]);
 
   public readonly history = signal<LightHistory[]>([
-    { id: '1', name: 'Living Room', action: 'ON', time: '10 min ago' },
-    { id: '2', name: 'Kitchen', action: 'OFF', time: '25 min ago' },
-    { id: '3', name: 'Bedroom', action: 'ON', time: '1 hour ago' },
-    { id: '4', name: 'Bathroom', action: 'OFF', time: '2 hours ago' },
-    { id: '5', name: 'Garage', action: 'ON', time: '3 hours ago' },
+    { id: '1', name: 'Living Room', action: 'ON', time: '14:30', user: 'Damian' },
+    { id: '2', name: 'Kitchen', action: 'OFF', time: '14:15', user: 'Damian' },
+    { id: '3', name: 'Bedroom', action: 'ON', time: '13:00', user: 'System' },
+    { id: '4', name: 'Bathroom', action: 'OFF', time: '12:00', user: 'Damian' },
+    { id: '5', name: 'Garage', action: 'ON', time: '11:00', user: 'System' },
   ]);
 
   public hasError = signal<boolean>(false);
+
+  public allLightsOn = computed(() => {
+    const currentLights = this.lights();
+    return currentLights.length > 0 && currentLights.every(l => l.on);
+  });
+
+  public clearHistory() {
+    this.history.set([]);
+  }
+
+  public toggleAllLights() {
+    const targetState = !this.allLightsOn();
+    const originalLights = this.lights();
+
+    this.lights.update((lights) => lights.map((l) => ({ ...l, on: targetState })));
+
+    this.lights().forEach((l) => {
+      this.lightsService
+        .updateStatus(l.id, targetState)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.hasError.set(false);
+          },
+          error: (err) => {
+            console.error(`Failed to update light ${l.id} status`, err);
+            this.lights.update((lights) =>
+              lights.map((light) =>
+                light.id === l.id ? { ...light, on: originalLights.find((ol) => ol.id === l.id)?.on ?? false } : light
+              )
+            );
+            this.hasError.set(true);
+          }
+        });
+    });
+  }
 
   public ngOnInit() {
     this.lightsService
@@ -75,11 +112,6 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   public toggleLight(id: string) {
     this.lights.update((lights) => lights.map((l) => (l.id === id ? { ...l, on: !l.on } : l)));
 
@@ -101,5 +133,10 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
           this.hasError.set(true);
         },
       });
+  }
+
+  public ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -71,7 +71,14 @@
     },
     "lightsWidget": {
       "title": "Lights",
-      "history":"History of Usage",
+      "history": "History of Usage",
+      "resetHistory": "Reset history",
+      "turnOnAll": "Turn on all",
+      "turnOffAll": "Turn off all",
+      "turnOnBy": "Turned on by",
+      "turnOffBy": "Turned off by",
+      "turnedOnAt": "Turned on at",
+      "turnedOffAt": "Turned off at",
       "lightsError": "Lighting control is not available check DevTools."
     }
   },
