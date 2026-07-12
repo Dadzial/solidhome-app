@@ -79,7 +79,15 @@
       "turnOffBy": "Wyłączone przez",
       "turnedOnAt": "Włączone o",
       "turnedOffAt": "Wyłączone o",
-      "lightsError": "Błąd sterowania oświetleniem <br/> Sprawdź narzędzia developerskie."
+      "lightsError": "Błąd sterowania oświetleniem <br/> Sprawdź narzędzia developerskie.",
+      "rooms": {
+        "livingRoom": "Salon",
+        "kitchen": "Kuchnia",
+        "bedroom": "Sypialnia",
+        "bathroom": "Łazienka",
+        "garage": "Garaż",
+        "hallway": "Korytarz"
+      }
     }
   },
   "lightsPage": {

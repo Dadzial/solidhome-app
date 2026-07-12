@@ -79,7 +79,15 @@
       "turnOffBy": "Turned off by",
       "turnedOnAt": "Turned on at",
       "turnedOffAt": "Turned off at",
-      "lightsError": "Lighting control is not available check DevTools."
+      "lightsError": "Lighting control is not available check DevTools.",
+      "rooms": {
+        "livingRoom": "Living Room",
+        "kitchen": "Kitchen",
+        "bedroom": "Bedroom",
+        "bathroom": "Bathroom",
+        "garage": "Garage",
+        "hallway": "Hallway"
+      }
     }
   },
   "lightsPage": {

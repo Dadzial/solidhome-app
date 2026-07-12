@@ -1,5 +1,5 @@
 import { Component, inject, signal, input, computed, OnInit, OnDestroy } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { NgOptimizedImage, NgClass } from '@angular/common';
 import { LightsService, LIGHT_ID_MAP } from '@features/lights/services/lights/lights.service';
@@ -22,7 +22,7 @@ interface LightHistory {
 
 @Component({
   selector: 'app-lights-widget',
-  imports: [TranslatePipe, SvgIconComponent, NgOptimizedImage, NgClass],
+  imports: [TranslateModule, SvgIconComponent, NgOptimizedImage, NgClass],
   standalone: true,
   templateUrl: './lights-widget.component.html',
   styles: ``,
@@ -43,11 +43,12 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
   ]);
 
   public readonly history = signal<LightHistory[]>([
-    { id: '1', name: 'Living Room', action: 'ON', time: '14:30', user: 'Damian' },
-    { id: '2', name: 'Kitchen', action: 'OFF', time: '14:15', user: 'Damian' },
-    { id: '3', name: 'Bedroom', action: 'ON', time: '13:00', user: 'System' },
-    { id: '4', name: 'Bathroom', action: 'OFF', time: '12:00', user: 'Damian' },
-    { id: '5', name: 'Garage', action: 'ON', time: '11:00', user: 'System' },
+    { id: '1', name: 'home.lightsWidget.rooms.livingRoom', action: 'ON', time: '14:30', user: 'Damian' },
+    { id: '2', name: 'home.lightsWidget.rooms.kitchen', action: 'OFF', time: '14:15', user: 'Damian' },
+    { id: '3', name: 'home.lightsWidget.rooms.bedroom', action: 'ON', time: '13:00', user: 'System' },
+    { id: '4', name: 'home.lightsWidget.rooms.bathroom', action: 'OFF', time: '12:00', user: 'Damian' },
+    { id: '5', name: 'home.lightsWidget.rooms.garage', action: 'ON', time: '11:00', user: 'System' },
+    { id: '6', name: 'home.lightsWidget.rooms.hallway', action: 'ON', time: '12:00', user: 'System' },
   ]);
 
   public hasError = signal<boolean>(false);

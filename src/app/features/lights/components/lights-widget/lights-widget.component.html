@@ -59,7 +59,7 @@
               <svg-icon src="assets/icons/light_bulb.svg" [applyClass]="true" class="w-5 h-5"></svg-icon>
             </div>
             <div class="flex flex-col">
-              <span class="text-body-16-semibold text-text-primary">{{ item.name }}</span>
+              <span class="text-body-16-semibold text-text-primary">{{ item.name | translate }}</span>
               <span class="text-body-14-medium text-text-primary/60">
                 {{ (item.action === 'ON' ? 'home.lightsWidget.turnOnBy' : 'home.lightsWidget.turnOffBy') | translate }}
                 <span [ngClass]="item.action === 'ON' ? 'text-accent font-bold' : 'font-bold'">{{ item.user }}</span>
