@@ -1,5 +1,5 @@
 <div (appClickOutside)="isOpen() ? closeSettings.emit() : null"
-     class="fixed top-12 sm:top-14 right-0 sm:right-3 left-0 sm:left-auto w-full sm:w-80 bg-background-secondary rounded-b-lg sm:rounded-lg shadow-xl sm:shadow-sm z-100 flex flex-col origin-top-right transition-all duration-200 ease-out opacity-0 scale-95 -translate-y-2 pointer-events-none"
+     class="fixed top-12 sm:top-14 right-0 sm:right-3 left-0 sm:left-auto w-full sm:w-80 bg-background-secondary rounded-b-lg sm:rounded-lg shadow-xl sm:shadow-sm z-100 flex flex-col origin-top-right transition-all duration-200 ease-out opacity-0 scale-95 -translate-y-2 pointer-events-none md:border md:border-accent"
      [class.opacity-0]="!isOpen()"
      [class.scale-95]="!isOpen()"
      [class.-translate-y-2]="!isOpen()"
