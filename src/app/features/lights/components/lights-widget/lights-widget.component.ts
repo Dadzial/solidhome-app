@@ -1,7 +1,7 @@
 import { Component, inject, signal, input, computed, OnInit, OnDestroy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
-import { NgOptimizedImage, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { LightsService, LIGHT_ID_MAP } from '@features/lights/services/lights/lights.service';
 import { Subject, takeUntil } from 'rxjs';
 
