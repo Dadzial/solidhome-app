@@ -7,8 +7,8 @@ import { Subject, takeUntil } from 'rxjs';
 
 interface Light {
   id: string;
-  top: string;
-  left: string;
+  x: number;
+  y: number;
   on: boolean;
 }
 
@@ -34,18 +34,18 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
   public titleKey = input<string>('home.lightsWidget.title');
 
   public readonly lights = signal<Light[]>([
-    { id: 'living_room', top: '45%', left: '70%', on: false },
-    { id: 'kitchen', top: '50%', left: '40%', on: false },
-    { id: 'bedroom', top: '65%', left: '55%', on: false },
-    { id: 'bathroom', top: '10%', left: '45%', on: false },
-    { id: 'hallway', top: '20%', left: '35%', on: false },
-    { id: 'garage', top: '40%', left: '25%', on: false },
+    { id: 'living_room', y: 500, x: 1248, on: false },
+    { id: 'kitchen', y:780, x: 1110, on: false },
+    { id: 'boiler_room', y: 290, x: 868, on: false },
+    { id: 'bathroom', y: 180, x: 970, on: false },
+    { id: 'hallway', y: 590, x: 890, on: false },
+    { id: 'garage', y: 450, x: 655, on: false },
   ]);
 
   public readonly history = signal<LightHistory[]>([
     { id: '1', name: 'home.lightsWidget.rooms.livingRoom', action: 'ON', time: '14:30', user: 'Damian' },
     { id: '2', name: 'home.lightsWidget.rooms.kitchen', action: 'OFF', time: '14:15', user: 'Damian' },
-    { id: '3', name: 'home.lightsWidget.rooms.bedroom', action: 'ON', time: '13:00', user: 'System' },
+    { id: '3', name: 'home.lightsWidget.rooms.boilerRoom', action: 'ON', time: '13:00', user: 'System' },
     { id: '4', name: 'home.lightsWidget.rooms.bathroom', action: 'OFF', time: '12:00', user: 'Damian' },
     { id: '5', name: 'home.lightsWidget.rooms.garage', action: 'ON', time: '11:00', user: 'System' },
     { id: '6', name: 'home.lightsWidget.rooms.hallway', action: 'ON', time: '12:00', user: 'System' },

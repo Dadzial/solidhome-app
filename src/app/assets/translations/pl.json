@@ -83,10 +83,10 @@
       "rooms": {
         "livingRoom": "Salon",
         "kitchen": "Kuchnia",
-        "bedroom": "Sypialnia",
+        "boilerRoom": "Kotłownia",
         "bathroom": "Łazienka",
         "garage": "Garaż",
-        "hallway": "Korytarz"
+        "hallway": "Przedpokój"
       }
     }
   },

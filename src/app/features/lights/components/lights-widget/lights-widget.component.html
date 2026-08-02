@@ -1,22 +1,22 @@
-<div class="w-full h-full p-6 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
+<div class="@container w-full h-full p-6 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
   @if (hasError()) {
     <div class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background-secondary/40 backdrop-blur-md rounded-3xl p-6 text-center">
       <svg-icon src="assets/icons/error.svg" [applyClass]="true" class="w-12 h-12 text-text-error mb-2"></svg-icon>
       <h2 class="text-text-primary text-body-18-semibold text-shadow-sm" [innerHTML]="'home.lightsWidget.lightsError' | translate"></h2>
     </div>
   }
-  <div class="flex flex-row items-center justify-between mb-4">
+  <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
     <div class="flex items-center gap-2">
-      <svg-icon src="assets/icons/light_bulb.svg" [applyClass]="true" class="w-9 h-9 text-accent"></svg-icon>
-      <h2 class="text-text-primary text-headline-h2-28-bold text-shadow-2xs pt-0.5">{{ titleKey() | translate }}</h2>
+      <svg-icon src="assets/icons/light_bulb.svg" [applyClass]="true" class="w-9 h-9 max-md:w-7 max-md:h-7 text-accent"></svg-icon>
+      <h2 class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs pt-0.5">{{ titleKey() | translate }}</h2>
     </div>
 
-    <div class="flex items-center gap-3">
-      <span class="text-body-14-medium text-text-primary/70 select-none">
+    <div class="flex items-center gap-3 max-md:gap-2">
+      <span class="text-body-14-medium text-text-primary/70 select-none @max-md:hidden">
         {{ (allLightsOn() ? 'home.lightsWidget.turnOffAll' : 'home.lightsWidget.turnOnAll') | translate }}
       </span>
       <button (click)="toggleAllLights()"
-              class="w-12 h-6 rounded-full transition-colors relative cursor-pointer shadow-inner border border-divider"
+              class="w-12 h-6 rounded-full transition-colors relative cursor-pointer shadow-inner border border-divider shrink-0"
               [ngClass]="allLightsOn() ? 'bg-accent border-accent' : 'bg-background-primary'">
         <div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white transition-transform duration-300 shadow-sm"
              [ngClass]="allLightsOn() ? 'translate-x-[26px]' : 'translate-x-1'"></div>
@@ -25,49 +25,59 @@
   </div>
 
   <div class="flex-3 w-full relative rounded-2xl overflow-hidden">
-    <img ngSrc="assets/pictures/home_preview.png" alt="Preview" fill class="object-cover scale-[1]" />
-
-    @for (light of lights(); track light.id) {
-      <button (click)="toggleLight(light.id)"
-              class="absolute p-2 rounded-full backdrop-blur-md transition-all duration-300 border border-white/20 hover:scale-110 active:scale-95"
-              [style.top]="light.top"
-              [style.left]="light.left"
-              [ngClass]="{'bg-accent shadow-[0_0_15px_rgba(255,255,255,0.5)]': light.on, 'bg-white/30 shadow-md': !light.on}">
-        <svg-icon src="assets/icons/light_bulb.svg" [applyClass]="true" class="w-6 h-6 text-white transition-colors"></svg-icon>
-      </button>
-    }
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" class="w-full h-full absolute inset-0">
+      <image href="assets/pictures/home_preview.png" width="1920" height="1080" />
+      
+      @for (light of lights(); track light.id) {
+        <foreignObject 
+          [attr.x]="light.x - 60" 
+          [attr.y]="light.y - 60" 
+          width="120" 
+          height="120"
+          class="overflow-visible">
+          <div class="w-full h-full flex items-center justify-center">
+            <button (click)="toggleLight(light.id)"
+                    class="p-5 rounded-full backdrop-blur-md transition-all duration-300 border border-white/20 hover:scale-110 active:scale-95"
+                    [ngClass]="{'bg-accent shadow-[0_0_25px_rgba(255,255,255,0.7)]': light.on, 'bg-white/30 shadow-lg': !light.on}">
+              <svg-icon src="assets/icons/light_bulb.svg" [applyClass]="true" class="w-16 h-16 text-white transition-colors"></svg-icon>
+            </button>
+          </div>
+        </foreignObject>
+      }
+    </svg>
   </div>
-  <div class="bg-accent -mx-6 h-1 opacity-10"></div>
-  <div class="flex-1 w-full pt-3 flex flex-col">
-    <div class="flex flex-row items-center justify-between mb-3">
+  <div class="bg-accent -mx-6 max-md:-mx-4 h-1 opacity-10 mt-4 max-md:mt-3"></div>
+  <div class="flex-1 max-md:flex-none w-full pt-3 flex flex-col">
+    <div class="flex flex-row items-center justify-between mb-3 max-md:mb-2">
       <div class="flex items-center gap-2">
-        <svg-icon src="assets/icons/history_of_use.svg" [applyClass]="true" class="w-9 h-9 text-accent"></svg-icon>
-        <div class="text-text-primary text-body-18-bold">{{ 'home.lightsWidget.history' | translate }}</div>
+        <svg-icon src="assets/icons/history_of_use.svg" [applyClass]="true" class="w-9 h-9 max-md:w-7 max-md:h-7 text-accent"></svg-icon>
+        <div class="text-text-primary text-body-18-bold max-md:text-body-16-semibold">{{ 'home.lightsWidget.history' | translate }}</div>
       </div>
-      <button (click)="clearHistory()" class="flex items-center gap-2 text-text-primary/70 hover:text-accent transition-colors group cursor-pointer p-1">
-        <span class="text-body-16-medium">{{ 'home.lightsWidget.resetHistory' | translate }}</span>
-        <svg-icon src="assets/icons/restart.svg" [applyClass]="true" class="w-6 h-6 group-hover:-rotate-180 transition-transform duration-500"></svg-icon>
+      <button (click)="clearHistory()" class="flex items-center gap-2 max-md:gap-1 text-text-primary/70 hover:text-accent transition-colors group cursor-pointer p-1">
+        <span class="text-body-16-medium @max-md:hidden">{{ 'home.lightsWidget.resetHistory' | translate }}</span>
+        <svg-icon src="assets/icons/restart.svg" [applyClass]="true" class="w-6 h-6 max-md:w-5 max-md:h-5 group-hover:-rotate-180 transition-transform duration-500"></svg-icon>
       </button>
     </div>
 
-    <div class="flex flex-col gap-2 overflow-y-auto pr-2 min-h-35 max-h-35">
+    <div class="flex flex-col gap-2 overflow-y-auto pr-2 max-md:pr-1 min-h-35 max-h-35 max-md:min-h-38 max-md:max-h-38">
       @for (item of history(); track item.id) {
-        <div class="flex items-center justify-between p-3 rounded-xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
-          <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-full flex items-center justify-center transition-colors"
+        <div class="flex items-center justify-between p-3 max-md:p-4 rounded-xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
+          <div class="flex items-center gap-4 max-md:gap-3">
+            <div class="w-10 h-10 rounded-full flex shrink-0 items-center justify-center transition-colors"
                  [ngClass]="item.action === 'ON' ? 'bg-accent/20 text-accent' : 'bg-text-primary/10 text-text-primary/50'">
               <svg-icon src="assets/icons/light_bulb.svg" [applyClass]="true" class="w-5 h-5"></svg-icon>
             </div>
             <div class="flex flex-col">
-              <span class="text-body-16-semibold text-text-primary">{{ item.name | translate }}</span>
-              <span class="text-body-14-medium text-text-primary/60">
+              <span class="text-body-16-semibold max-md:text-body-14-medium text-text-primary">{{ item.name | translate }}</span>
+              <span class="text-body-14-medium max-md:text-body-12-regular text-text-primary/60">
                 {{ (item.action === 'ON' ? 'home.lightsWidget.turnOnBy' : 'home.lightsWidget.turnOffBy') | translate }}
                 <span [ngClass]="item.action === 'ON' ? 'text-accent font-bold' : 'font-bold'">{{ item.user }}</span>
               </span>
             </div>
           </div>
-          <span class="text-body-12-regular text-text-primary/50 text-right">
+          <span class="text-body-12-regular max-md:text-body-10-medium text-text-primary/50 text-right shrink-0">
             {{ (item.action === 'ON' ? 'home.lightsWidget.turnedOnAt' : 'home.lightsWidget.turnedOffAt') | translate }}
+            <br class="hidden max-md:block" />
             <span class="font-medium">{{ item.time }}</span>
           </span>
         </div>

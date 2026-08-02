@@ -6,7 +6,7 @@ import { catchError, throwError, Observable } from 'rxjs';
 export const LIGHT_ID_MAP: Record<string, number> = {
   'living_room': 1,
   'kitchen': 2,
-  'bedroom': 3,
+  'boiler_room': 3,
   'bathroom': 4,
   'hallway': 5,
   'garage': 6,

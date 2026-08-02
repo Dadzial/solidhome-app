@@ -83,7 +83,7 @@
       "rooms": {
         "livingRoom": "Living Room",
         "kitchen": "Kitchen",
-        "bedroom": "Bedroom",
+        "boilerRoom": "Boiler Room",
         "bathroom": "Bathroom",
         "garage": "Garage",
         "hallway": "Hallway"
