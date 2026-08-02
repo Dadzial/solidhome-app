@@ -92,7 +92,10 @@
   },
   "lightsPage": {
     "title": "Oświetlenie",
-    "steering": "Sterowanie"
+    "steering": "Sterowanie",
+    "schedule": "Harmonogram",
+    "scenes": "Zachowania",
+    "energy": "Zużycie energii"
   },
   "gatesAndDoorsPage": {
     "title": "Bramy i drzwi"

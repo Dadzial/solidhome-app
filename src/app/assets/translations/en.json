@@ -92,7 +92,10 @@
   },
   "lightsPage": {
     "title": "Lights",
-    "steering": "Steering"
+    "steering": "Steering",
+    "schedule": "Schedule",
+    "scenes": "Scenes",
+    "energy": "Energy Consumption"
   },
   "gatesAndDoorsPage": {
     "title": "Gates and Doors"
