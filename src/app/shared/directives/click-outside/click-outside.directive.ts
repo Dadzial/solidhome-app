@@ -13,7 +13,9 @@ export class ClickOutsideDirective {
     const targetElement = event.target as HTMLElement;
     if (!targetElement) return;
 
-    if (targetElement.closest && (targetElement.closest('#mobile-menu-btn') || targetElement.closest('.settings-toggle-btn'))) {
+    if (targetElement.closest &&
+        (targetElement.closest('#mobile-menu-btn') ||
+        targetElement.closest('.settings-toggle-btn'))) {
       return;
     }
 
