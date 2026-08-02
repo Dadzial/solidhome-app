@@ -22,7 +22,7 @@ interface LightHistory {
 
 @Component({
   selector: 'app-lights-widget',
-  imports: [TranslateModule, SvgIconComponent, NgOptimizedImage, NgClass],
+  imports: [TranslateModule, SvgIconComponent, NgClass],
   standalone: true,
   templateUrl: './lights-widget.component.html',
   styles: ``,
