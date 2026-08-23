@@ -68,18 +68,17 @@
     <div
       class="flex-1 min-h-40 bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-xl p-3 flex flex-col relative">
       <div class="absolute top-2 right-3 z-10">
-        <div class="flex bg-background-secondary rounded-lg p-0.5 border border-divider/10">
-          <button class="px-2 py-0.5 rounded-md bg-accent/20 text-accent text-body-12-regular font-bold cursor-pointer">
+        <div class="flex bg-background-secondary rounded-lg border border-divider/10 overflow-hidden">
+          <button class="px-2.5 py-1 bg-accent/20 text-accent text-body-12-regular font-bold cursor-pointer">
             {{ 'lightsPage.energy'| translate }}
           </button>
           <button
-            class="px-2 py-0.5 rounded-md text-text-primary text-body-12-regular font-medium hover:text-accent transition-colors cursor-pointer">
+            class="px-2.5 py-1 text-text-primary text-body-12-regular font-medium hover:text-accent transition-colors cursor-pointer">
             {{ 'lightsPage.time'| translate }}
           </button>
         </div>
       </div>
-      <div class="absolute inset-x-0 bottom-6 top-10 flex flex-col justify-end pointer-events-none">
-
+      <div class="absolute inset-x-0 bottom-6 pointer-events-none">
         <div class="w-full border-b border-divider/10"></div>
       </div>
       <div
