@@ -95,7 +95,11 @@
     "steering": "Sterowanie",
     "schedule": "Harmonogram",
     "scenes": "Zachowania",
-    "energy": "Zużycie energii"
+    "energyConsumption": "Zużycie energii",
+    "bestEnergyUsage": "Największe zużycie",
+    "time": "Czas",
+    "energy": "Energia",
+    "cost": "Koszt"
   },
   "gatesAndDoorsPage": {
     "title": "Bramy i drzwi"
@@ -105,5 +109,14 @@
   },
   "securityPage": {
     "title": "Bezpieczeństwo"
+  },
+  "weekdays": {
+    "mon": "Pn",
+    "tue": "Wt",
+    "wed": "Śr",
+    "thu": "Cz",
+    "fri": "Pt",
+    "sat": "Sb",
+    "sun": "Nd"
   }
 }

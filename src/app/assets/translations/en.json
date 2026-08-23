@@ -95,7 +95,11 @@
     "steering": "Steering",
     "schedule": "Schedule",
     "scenes": "Scenes",
-    "energy": "Energy Consumption"
+    "energyConsumption": "Energy",
+    "bestEnergyUsage": "Best energy usage",
+    "time": "Time",
+    "energy": "Energy",
+    "cost": "Cost"
   },
   "gatesAndDoorsPage": {
     "title": "Gates and Doors"
@@ -105,5 +109,14 @@
   },
   "securityPage": {
     "title": "Security"
+  },
+  "weekdays": {
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
   }
 }
