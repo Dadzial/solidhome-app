@@ -40,7 +40,6 @@
   --text-error : #F44336;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -55,8 +54,6 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-color);
 }
-
-
 
 @utility text-headline-h1-36-bold {
   font-family: var(--font-app), sans-serif;
@@ -121,13 +118,6 @@
   line-height: 1.2;
 }
 
-@utility text-body-14-regular {
-  font-family: var(--font-app), sans-serif;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.2;
-}
-
 @utility text-body-15-bold {
   font-family: var(--font-app), sans-serif;
   font-size: 0.9375rem;
@@ -135,10 +125,31 @@
   line-height: 1.2;
 }
 
+@utility text-body-14-regular {
+  font-family: var(--font-app), sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
 @utility text-body-12-regular {
   font-family: var(--font-app), sans-serif;
   font-size: 0.75rem;
   font-weight: 400;
+  line-height: 1.2;
+}
+
+@utility text-body-11-bold {
+  font-family: var(--font-app), sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+@utility text-body-10-bold {
+  font-family: var(--font-app), sans-serif;
+  font-size: 0.625rem;
+  font-weight: 700;
   line-height: 1.2;
 }
 

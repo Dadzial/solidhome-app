@@ -99,7 +99,8 @@
     "bestEnergyUsage": "Best energy usage",
     "time": "Time",
     "energy": "Energy",
-    "cost": "Cost"
+    "cost": "Cost",
+    "add": "Add"
   },
   "gatesAndDoorsPage": {
     "title": "Gates and Doors"

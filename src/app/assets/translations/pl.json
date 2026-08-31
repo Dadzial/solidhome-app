@@ -99,7 +99,8 @@
     "bestEnergyUsage": "Największe zużycie",
     "time": "Czas",
     "energy": "Energia",
-    "cost": "Koszt"
+    "cost": "Koszt",
+    "add" : "Dodaj"
   },
   "gatesAndDoorsPage": {
     "title": "Bramy i drzwi"

@@ -1,11 +1,63 @@
-<div class="@container w-full h-full p-6 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
-  <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
+<div class="@container w-full h-full p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
+  <div class="flex flex-row items-center justify-between mb-3 shrink-0">
     <div class="flex items-center gap-2">
-      <svg-icon src="assets/icons/lights_scenes.svg" [applyClass]="true" class="w-9 h-9 max-md:w-7 max-md:h-7 text-accent"></svg-icon>
+      <svg-icon src="assets/icons/lights_scenes.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
       <h2 class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs pt-0.5">{{'lightsPage.scenes'| translate}}</h2>
     </div>
+    <button class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-accent text-background-secondary hover:brightness-110 active:scale-95 transition-all duration-300 cursor-pointer shadow-sm shrink-0">
+      <span class="text-body-14-medium">{{ 'lightsPage.add' | translate }}</span>
+    </button>
   </div>
+  <div class="flex-1 min-h-0 overflow-y-auto pr-1 pb-1">
+    <div class="grid grid-cols-2 auto-rows-fr gap-2.5 min-h-full">
+      <button class="flex flex-col justify-between items-start p-3 rounded-2xl bg-background-primary border-2 border-accent shadow-xs hover:brightness-95 dark:hover:brightness-110 text-left transition-all cursor-pointer relative overflow-hidden group w-full min-h-22.5">
+        <div class="absolute -right-6 -top-6 w-14 h-14 bg-accent/20 rounded-full blur-lg group-hover:scale-125 transition-transform"></div>
 
-  <div class="flex-1 flex flex-col w-full relative">
+        <div class="flex items-center justify-between w-full mb-2">
+          <div class="w-9 h-9 rounded-xl bg-accent/20 flex items-center justify-center text-accent">
+            <svg-icon src="assets/icons/film.svg" [applyClass]="true" class="w-5.5 h-5.5"></svg-icon>
+          </div>
+          <span class="text-body-10-bold text-accent px-1.5 py-0.5 rounded-full bg-background-secondary tracking-wider">Aktywna</span>
+        </div>
+        <div class="w-full">
+          <h3 class="text-body-15-bold text-text-primary mb-0.5 leading-tight">Wieczór filmowy</h3>
+          <p class="text-body-12-regular text-text-primary/60">3 źródła • Salon</p>
+        </div>
+      </button>
+      <button class="flex flex-col justify-between items-start p-3 rounded-2xl bg-background-primary border-2 border-transparent hover:brightness-95 dark:hover:brightness-110 text-left transition-all cursor-pointer relative overflow-hidden group w-full min-h-22.5">
+        <div class="flex items-center justify-between w-full mb-2">
+          <div class="w-9 h-9 rounded-xl bg-accent/10 dark:bg-accent/20 flex items-center justify-center text-accent">
+            <svg-icon src="assets/icons/heart.svg" [applyClass]="true" class="w-5.5 h-5.5"></svg-icon>
+          </div>
+        </div>
+        <div class="w-full">
+          <h3 class="text-body-15-bold text-text-primary mb-0.5 leading-tight">Przytulny nastrój</h3>
+          <p class="text-body-12-regular text-text-primary/60">2 źródła • Sypialnia</p>
+        </div>
+      </button>
+      <button class="flex flex-col justify-between items-start p-3 rounded-2xl bg-background-primary border-2 border-transparent hover:brightness-95 dark:hover:brightness-110 text-left transition-all cursor-pointer relative overflow-hidden group w-full min-h-22.5">
+        <div class="flex items-center justify-between w-full mb-2">
+          <div class="w-9 h-9 rounded-xl bg-accent/10 dark:bg-accent/20 flex items-center justify-center text-accent">
+            <svg-icon src="assets/icons/work.svg" [applyClass]="true" class="w-5.5 h-5.5"></svg-icon>
+          </div>
+        </div>
+        <div class="w-full">
+          <h3 class="text-body-15-bold text-text-primary mb-0.5 leading-tight">Praca / Nauka</h3>
+          <p class="text-body-12-regular text-text-primary/60">4 źródła • Biuro</p>
+        </div>
+      </button>
+      <button class="flex flex-col justify-between items-start p-3 rounded-2xl bg-background-primary border-2 border-transparent hover:brightness-95 dark:hover:brightness-110 text-left transition-all cursor-pointer relative overflow-hidden group w-full min-h-22.5">
+        <div class="flex items-center justify-between w-full mb-2">
+          <div class="w-9 h-9 rounded-xl bg-accent/10 dark:bg-accent/20 flex items-center justify-center text-accent">
+            <svg-icon src="assets/icons/switch.svg" [applyClass]="true" class="w-5.5 h-5.5"></svg-icon>
+          </div>
+        </div>
+        <div class="w-full">
+          <h3 class="text-body-15-bold text-text-primary mb-0.5 leading-tight">Wyłącz wszystko</h3>
+          <p class="text-body-12-regular text-text-primary/60">Wszystkie lampy • Dom</p>
+        </div>
+      </button>
+
+    </div>
   </div>
 </div>

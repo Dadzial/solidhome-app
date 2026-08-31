@@ -1,11 +1,109 @@
-<div class="@container w-full h-full p-6 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
-  <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
+<div class="@container w-full h-full p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
+  <div class="flex flex-row items-center justify-between mb-3 shrink-0">
     <div class="flex items-center gap-2">
-      <svg-icon src="assets/icons/lights_schedules.svg" [applyClass]="true" class="w-9 h-9 max-md:w-7 max-md:h-7 text-accent"></svg-icon>
+      <svg-icon src="assets/icons/lights_schedules.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
       <h2 class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs pt-0.5">{{'lightsPage.schedule'| translate}}</h2>
     </div>
+    <button class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-accent text-background-secondary hover:brightness-110 active:scale-95 transition-all duration-300 cursor-pointer shrink-0">
+      <span class="text-body-14-medium">{{ 'lightsPage.add' | translate }}</span>
+    </button>
   </div>
-
-  <div class="flex-1 flex flex-col w-full relative">
+  <div class="flex-1 min-h-0 overflow-y-auto pr-1 pb-1 flex flex-col gap-2.5 w-full">
+    <div class="flex flex-row items-center justify-between p-3 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all gap-3 shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="flex flex-col items-center justify-center bg-background-secondary rounded-xl p-2 min-w-16 shadow-sm">
+          <span class="text-text-primary text-body-16-semibold leading-none">07:00</span>
+          <span class="text-accent text-body-10-bold tracking-wider mt-1">Włącz</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-body-15-bold text-text-primary">Poranne budzenie</span>
+          <div class="flex flex-wrap items-center gap-1 mt-0.5">
+            <span class="text-body-12-regular text-text-primary">Pokoje: </span>
+            <span class="text-body-11-bold text-accent">Salon, Kuchnia</span>
+          </div>
+          <div class="flex gap-1 mt-1.5">
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium bg-accent text-background-secondary">Pn</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium bg-accent text-background-secondary">Wt</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium bg-accent text-background-secondary">Śr</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium bg-accent text-background-secondary">Cz</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium bg-accent text-background-secondary">Pt</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium bg-background-secondary text-text-primary/40">Sb</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium bg-background-secondary text-text-primary/40">Nd</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 shrink-0">
+        <button class="w-10 h-5.5 rounded-full transition-colors relative cursor-pointer shadow-inner border border-divider shrink-0 bg-accent">
+          <div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white transition-transform duration-300 shadow-sm translate-x-4.5"></div>
+        </button>
+        <button class="text-text-primary/40 hover:text-text-error transition-colors cursor-pointer p-0.5">
+          <svg-icon src="assets/icons/delete.svg" [applyClass]="true" class="w-5 h-5"></svg-icon>
+        </button>
+      </div>
+    </div>
+    <div class="flex flex-row items-center justify-between p-3 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all gap-3 shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="flex flex-col items-center justify-center bg-background-secondary rounded-xl p-2 min-w-16 shadow-sm">
+          <span class="text-text-primary text-body-16-semibold leading-none">17:30</span>
+          <span class="text-accent text-body-10-medium tracking-wider mt-1 font-bold">Włącz</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-body-15-bold text-text-primary">Powrót do domu</span>
+          <div class="flex flex-wrap items-center gap-1 mt-0.5">
+            <span class="text-body-12-regular text-text-primary">Pokoje: </span>
+            <span class="text-body-11-bold text-accent">Przedpokój, Salon</span>
+          </div>
+          <div class="flex gap-1 mt-1.5">
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-accent text-background-secondary">Pn</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-accent text-background-secondary">Wt</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-accent text-background-secondary">Śr</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-accent text-background-secondary">Cz</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-accent text-background-secondary">Pt</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-background-secondary text-text-primary/40">Sb</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-background-secondary text-text-primary/40">Nd</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 shrink-0">
+        <button class="w-10 h-5.5 rounded-full transition-colors relative cursor-pointer shadow-inner border border-divider shrink-0 bg-accent">
+          <div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white transition-transform duration-300 shadow-sm translate-x-4.5"></div>
+        </button>
+        <button class="text-text-primary/40 hover:text-text-error transition-colors cursor-pointer p-0.5">
+          <svg-icon src="assets/icons/delete.svg" [applyClass]="true" class="w-5 h-5"></svg-icon>
+        </button>
+      </div>
+    </div>
+    <div class="flex flex-row items-center justify-between p-3 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all gap-3 shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="flex flex-col items-center justify-center bg-background-secondary rounded-xl p-2 min-w-16 shadow-sm opacity-70">
+          <span class="text-text-primary text-body-16-semibold leading-none">23:15</span>
+          <span class="text-text-primary/50 text-body-10-medium tracking-wider mt-1 font-bold">Wyłącz</span>
+        </div>
+        <div class="flex flex-col opacity-70">
+          <span class="text-body-15-bold text-text-primary">Tryb nocny</span>
+          <div class="flex flex-wrap items-center gap-1 mt-0.5">
+            <span class="text-body-12-regular text-text-primary">Pokoje: </span>
+            <span class="text-body-11-bold text-text-primary/80">Wszystkie</span>
+          </div>
+          <div class="flex gap-1 mt-1.5">
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-accent text-background-secondary">Pn</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-accent text-background-secondary">Wt</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-accent text-background-secondary">Śr</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-accent text-background-secondary">Cz</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-accent text-background-secondary">Pt</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-accent text-background-secondary">Sb</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-body-10-medium  bg-accent text-background-secondary">Nd</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 shrink-0">
+        <button class="w-10 h-5.5 rounded-full transition-colors relative cursor-pointer shadow-inner border border-divider shrink-0 bg-background-primary">
+          <div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white transition-transform duration-300 shadow-sm translate-x-1"></div>
+        </button>
+        <button class="text-text-primary/40 hover:text-text-error transition-colors cursor-pointer p-0.5">
+          <svg-icon src="assets/icons/delete.svg" [applyClass]="true" class="w-5 h-5"></svg-icon>
+        </button>
+      </div>
+    </div>
   </div>
 </div>

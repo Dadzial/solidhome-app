@@ -19,7 +19,7 @@
               class="w-12 h-6 rounded-full transition-colors relative cursor-pointer shadow-inner border border-divider shrink-0"
               [ngClass]="allLightsOn() ? 'bg-accent border-accent' : 'bg-background-primary'">
         <div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white transition-transform duration-300 shadow-sm"
-             [ngClass]="allLightsOn() ? 'translate-x-[26px]' : 'translate-x-1'"></div>
+             [ngClass]="allLightsOn() ? 'translate-x-6.5' : 'translate-x-1'"></div>
       </button>
     </div>
   </div>
@@ -27,12 +27,12 @@
   <div class="flex-3 w-full relative rounded-2xl overflow-hidden">
     <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" class="w-full h-full absolute inset-0">
       <image href="assets/pictures/home_preview.png" width="1920" height="1080" />
-      
+
       @for (light of lights(); track light.id) {
-        <foreignObject 
-          [attr.x]="light.x - 60" 
-          [attr.y]="light.y - 60" 
-          width="120" 
+        <foreignObject
+          [attr.x]="light.x - 60"
+          [attr.y]="light.y - 60"
+          width="120"
           height="120"
           class="overflow-visible">
           <div class="w-full h-full flex items-center justify-center">
