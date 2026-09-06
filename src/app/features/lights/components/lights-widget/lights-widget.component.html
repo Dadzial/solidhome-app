@@ -6,9 +6,9 @@
     </div>
   }
   <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
-    <div class="flex items-center gap-2">
-      <svg-icon src="assets/icons/light_bulb.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
-      <h2 class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs pt-1.5">{{ titleKey() | translate }}</h2>
+    <div class="flex items-center">
+      <svg-icon src="assets/icons/light_bulb.svg" [applyClass]="true" class="w-8 h-8 text-accent -ml-0.5"></svg-icon>
+      <h2 class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs pt-1">{{ titleKey() | translate }}</h2>
     </div>
 
     <div class="flex items-center gap-3 max-md:gap-2">
@@ -50,13 +50,13 @@
   <div class="flex-1 max-md:flex-none w-full pt-3 flex flex-col">
     <div class="flex flex-row items-center justify-between mb-3 max-md:mb-2">
       <div class="flex items-center gap-2">
-        <svg-icon src="assets/icons/history_of_use.svg" [applyClass]="true" class="w-9 h-9 max-md:w-7 max-md:h-7 text-accent"></svg-icon>
-        <div class="text-text-primary text-body-18-bold max-md:text-body-16-semibold">{{ 'home.lightsWidget.history' | translate }}</div>
+        <svg-icon src="assets/icons/history_of_use.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
+        <div class="text-text-primary text-body-18-bold max-md:text-body-16-semibold pt-1">{{ 'home.lightsWidget.history' | translate }}</div>
       </div>
       <button (click)="clearHistory()"
               [disabled]="history().length === 0"
               class="flex items-center gap-2 max-md:gap-1 text-text-primary/70 hover:text-accent transition-colors group cursor-pointer disabled:opacity-40 disabled:pointer-events-none p-1">
-        <span class="text-body-16-medium @max-md:hidden">{{ 'home.lightsWidget.resetHistory' | translate }}</span>
+        <span class="text-body-16-medium @max-md:hidden pt-0.5">{{ 'home.lightsWidget.resetHistory' | translate }}</span>
         <svg-icon src="assets/icons/restart.svg" [applyClass]="true" class="w-6 h-6 max-md:w-5 max-md:h-5 group-hover:-rotate-180 transition-transform duration-500"></svg-icon>
       </button>
     </div>
