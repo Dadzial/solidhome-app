@@ -21,7 +21,7 @@ interface ApiError {
 @Injectable({
   providedIn: 'root',
 })
-export class LightsService {
+export class LightsControlService {
   private http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/lights`;
 

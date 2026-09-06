@@ -2,7 +2,7 @@ import { Component, inject, signal, input, computed, OnInit, OnDestroy } from '@
 import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { NgClass } from '@angular/common';
-import { LightsService, LIGHT_ID_MAP } from '@features/lights/services/lights/lights.service';
+import { LightsControlService, LIGHT_ID_MAP } from '@features/lights/services/lights/lights-control.service';
 import { Subject, takeUntil } from 'rxjs';
 
 interface Light {
@@ -28,7 +28,7 @@ interface LightHistory {
   styles: ``,
 })
 export class LightsWidgetComponent implements OnInit, OnDestroy {
-  private lightsService = inject(LightsService);
+  private lightsControlService = inject(LightsControlService);
   private destroy$ = new Subject<void>();
 
   public titleKey = input<string>('home.lightsWidget.title');
@@ -69,7 +69,7 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
     this.lights.update((lights) => lights.map((l) => ({ ...l, on: targetState })));
 
     this.lights().forEach((l) => {
-      this.lightsService
+      this.lightsControlService
         .updateStatus(l.id, targetState)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
@@ -90,7 +90,7 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.lightsService
+    this.lightsControlService
       .getStatus()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -118,7 +118,7 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
 
     const newState = this.lights().find((l) => l.id === id)?.on ?? false;
 
-    this.lightsService
+    this.lightsControlService
       .updateStatus(id, newState)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
