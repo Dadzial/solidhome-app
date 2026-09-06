@@ -94,7 +94,7 @@
   "lightsPage": {
     "title": "Lights",
     "steering": "Steering",
-    "schedule": "Schedule",
+    "rules": "Rules",
     "scenes": "Scenes",
     "energyConsumption": "Energy",
     "bestEnergyUsage": "Best energy usage",
