@@ -2,7 +2,7 @@ import { Component, inject, signal, input, computed, OnInit, OnDestroy } from '@
 import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { NgClass } from '@angular/common';
-import { LightsControlService, LIGHT_ID_MAP } from '@features/lights/services/lights/lights-control.service';
+import { LightsControlService } from '@features/lights/services/lights/lights-control.service';
 import { Subject, takeUntil } from 'rxjs';
 
 interface Light {
@@ -94,14 +94,11 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
       .getStatus()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (statusMap) => {
+        next: (items) => {
           this.lights.update((lights) =>
             lights.map((light) => {
-              const numericId = LIGHT_ID_MAP[light.id];
-              if (numericId && statusMap[numericId] !== undefined) {
-                return { ...light, on: statusMap[numericId] === 1 };
-              }
-              return light;
+              const found = items.find((item) => item.name === light.id);
+              return found ? { ...light, on: found.state === 1 } : light;
             }),
           );
           this.hasError.set(false);

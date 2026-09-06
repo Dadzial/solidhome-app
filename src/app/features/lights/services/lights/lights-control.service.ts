@@ -3,14 +3,12 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { catchError, throwError, Observable } from 'rxjs';
 
-export const LIGHT_ID_MAP: Record<string, number> = {
-  'living_room': 1,
-  'kitchen': 2,
-  'boiler_room': 3,
-  'bathroom': 4,
-  'hallway': 5,
-  'garage': 6,
-};
+export interface LightItem {
+  _id?: string;
+  name: string;
+  state: 0 | 1;
+  updatedAt?: string;
+}
 
 interface ApiError {
   error?: string;
@@ -25,19 +23,19 @@ export class LightsControlService {
   private http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/lights`;
 
-  public getStatus(): Observable<Record<number, number>> {
-    return this.http.get<Record<number, number>>(`${this.apiUrl}/get-status`).pipe(
+  public getStatus(): Observable<LightItem[]> {
+    return this.http.get<LightItem[]>(`${this.apiUrl}/status/app`).pipe(
       catchError(this.handleError.bind(this))
     );
   }
 
-  public updateStatus(lightIdStr: string, state: boolean): Observable<any> {
-    const numericId = LIGHT_ID_MAP[lightIdStr];
-    if (!numericId) {
-      return throwError(() => ({ message: 'Unknown light ID', details: lightIdStr } as ApiError));
-    }
-    const payload = { [numericId.toString()]: state ? 1 : 0 };
-    return this.http.post(`${this.apiUrl}/update-status`, payload).pipe(
+  public updateStatus(name: string, state: boolean): Observable<LightItem> {
+    const payload = {
+      name: name,
+      state: state ? 1 : 0,
+    };
+
+    return this.http.post<LightItem>(`${this.apiUrl}/update`, payload).pipe(
       catchError(this.handleError.bind(this))
     );
   }
