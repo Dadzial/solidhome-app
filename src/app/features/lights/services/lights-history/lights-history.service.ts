@@ -46,10 +46,6 @@ export class LightsHistoryService {
       .pipe(catchError(this.handleError.bind(this)));
   }
 
-  public deleteHistory(): Observable<ResetHistoryResponse> {
-    return this.resetHistory();
-  }
-
   private handleError(response: HttpErrorResponse) {
     const apiError: ApiError = response.error || {};
 
