@@ -48,8 +48,7 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--background-primary);
-  border-radius: 10px;
+  background: var(--accent-color);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-color);
