@@ -2,7 +2,7 @@ import { Component, inject, signal, input, computed, OnInit, OnDestroy } from '@
 import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { NgClass } from '@angular/common';
-import { LightsControlService } from '@features/lights/services/lights/lights-control.service';
+import { LightsControlService } from '@features/lights/services/lights-control/lights-control.service';
 import { Subject, takeUntil } from 'rxjs';
 
 interface Light {
