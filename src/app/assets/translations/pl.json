@@ -80,6 +80,7 @@
       "turnedOnAt": "Włączone o",
       "turnedOffAt": "Wyłączone o",
       "lightsError": "Błąd sterowania oświetleniem <br/> Sprawdź narzędzia developerskie.",
+      "noHistory": "Brak historii zdarzeń",
       "rooms": {
         "livingRoom": "Salon",
         "kitchen": "Kuchnia",

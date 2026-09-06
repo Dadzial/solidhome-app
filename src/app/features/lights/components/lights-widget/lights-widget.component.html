@@ -53,7 +53,9 @@
         <svg-icon src="assets/icons/history_of_use.svg" [applyClass]="true" class="w-9 h-9 max-md:w-7 max-md:h-7 text-accent"></svg-icon>
         <div class="text-text-primary text-body-18-bold max-md:text-body-16-semibold">{{ 'home.lightsWidget.history' | translate }}</div>
       </div>
-      <button (click)="clearHistory()" class="flex items-center gap-2 max-md:gap-1 text-text-primary/70 hover:text-accent transition-colors group cursor-pointer p-1">
+      <button (click)="clearHistory()"
+              [disabled]="history().length === 0"
+              class="flex items-center gap-2 max-md:gap-1 text-text-primary/70 hover:text-accent transition-colors group cursor-pointer disabled:opacity-40 disabled:pointer-events-none p-1">
         <span class="text-body-16-medium @max-md:hidden">{{ 'home.lightsWidget.resetHistory' | translate }}</span>
         <svg-icon src="assets/icons/restart.svg" [applyClass]="true" class="w-6 h-6 max-md:w-5 max-md:h-5 group-hover:-rotate-180 transition-transform duration-500"></svg-icon>
       </button>
@@ -80,6 +82,11 @@
             <br class="hidden max-md:block" />
             <span class="font-medium">{{ item.time }}</span>
           </span>
+        </div>
+      } @empty {
+        <div class="flex flex-col items-center justify-center h-full min-h-35 text-center text-text-primary/40 py-4">
+          <svg-icon src="assets/icons/history_of_use.svg" [applyClass]="true" class="w-8 h-8 mb-1.5 opacity-30"></svg-icon>
+          <span class="text-body-14-medium">{{ 'home.lightsWidget.noHistory' | translate }}</span>
         </div>
       }
     </div>

@@ -3,7 +3,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { NgClass } from '@angular/common';
 import { LightsControlService } from '@features/lights/services/lights-control/lights-control.service';
-import { Subject, takeUntil } from 'rxjs';
+import { LightsHistoryService } from '@features/lights/services/lights-history/lights-history.service';
+import { Subject, takeUntil, forkJoin } from 'rxjs';
 
 interface Light {
   id: string;
@@ -20,6 +21,15 @@ interface LightHistory {
   user: string;
 }
 
+const ROOMS_NAMES_TRANSLATIONS: Record<string, string> = {
+  living_room: 'home.lightsWidget.rooms.livingRoom',
+  kitchen: 'home.lightsWidget.rooms.kitchen',
+  boiler_room: 'home.lightsWidget.rooms.boilerRoom',
+  bathroom: 'home.lightsWidget.rooms.bathroom',
+  hallway: 'home.lightsWidget.rooms.hallway',
+  garage: 'home.lightsWidget.rooms.garage',
+};
+
 @Component({
   selector: 'app-lights-widget',
   imports: [TranslateModule, SvgIconComponent, NgClass],
@@ -29,65 +39,27 @@ interface LightHistory {
 })
 export class LightsWidgetComponent implements OnInit, OnDestroy {
   private lightsControlService = inject(LightsControlService);
+  private lightsHistoryService = inject(LightsHistoryService);
   private destroy$ = new Subject<void>();
 
   public titleKey = input<string>('home.lightsWidget.title');
 
   public readonly lights = signal<Light[]>([
     { id: 'living_room', y: 500, x: 1248, on: false },
-    { id: 'kitchen', y:780, x: 1110, on: false },
+    { id: 'kitchen', y: 780, x: 1110, on: false },
     { id: 'boiler_room', y: 290, x: 868, on: false },
     { id: 'bathroom', y: 180, x: 970, on: false },
     { id: 'hallway', y: 590, x: 890, on: false },
     { id: 'garage', y: 450, x: 655, on: false },
   ]);
 
-  public readonly history = signal<LightHistory[]>([
-    { id: '1', name: 'home.lightsWidget.rooms.livingRoom', action: 'ON', time: '14:30', user: 'Damian' },
-    { id: '2', name: 'home.lightsWidget.rooms.kitchen', action: 'OFF', time: '14:15', user: 'Damian' },
-    { id: '3', name: 'home.lightsWidget.rooms.boilerRoom', action: 'ON', time: '13:00', user: 'System' },
-    { id: '4', name: 'home.lightsWidget.rooms.bathroom', action: 'OFF', time: '12:00', user: 'Damian' },
-    { id: '5', name: 'home.lightsWidget.rooms.garage', action: 'ON', time: '11:00', user: 'System' },
-    { id: '6', name: 'home.lightsWidget.rooms.hallway', action: 'ON', time: '12:00', user: 'System' },
-  ]);
-
+  public readonly history = signal<LightHistory[]>([]);
   public hasError = signal<boolean>(false);
 
   public allLightsOn = computed(() => {
     const currentLights = this.lights();
-    return currentLights.length > 0 && currentLights.every(l => l.on);
+    return currentLights.length > 0 && currentLights.every((l) => l.on);
   });
-
-  public clearHistory() {
-    this.history.set([]);
-  }
-
-  public toggleAllLights() {
-    const targetState = !this.allLightsOn();
-    const originalLights = this.lights();
-
-    this.lights.update((lights) => lights.map((l) => ({ ...l, on: targetState })));
-
-    this.lights().forEach((l) => {
-      this.lightsControlService
-        .updateStatus(l.id, targetState)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => {
-            this.hasError.set(false);
-          },
-          error: (err) => {
-            console.error(`Failed to update light ${l.id} status`, err);
-            this.lights.update((lights) =>
-              lights.map((light) =>
-                light.id === l.id ? { ...light, on: originalLights.find((ol) => ol.id === l.id)?.on ?? false } : light
-              )
-            );
-            this.hasError.set(true);
-          }
-        });
-    });
-  }
 
   public ngOnInit() {
     this.lightsControlService
@@ -108,11 +80,49 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
           this.hasError.set(true);
         },
       });
+    this.loadHistory();
   }
 
-  public toggleLight(id: string) {
-    this.lights.update((lights) => lights.map((l) => (l.id === id ? { ...l, on: !l.on } : l)));
+  public loadHistory(): void {
+    this.lightsHistoryService
+      .getHistory(20)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (items) => {
+          const mapped: LightHistory[] = items.map((item) => ({
+            id: item._id,
+            name: ROOMS_NAMES_TRANSLATIONS[item.name] || item.name,
+            action: item.state === 1 ? 'ON' : 'OFF',
+            time: new Date(item.createdAt).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            }),
+            user: item.userId?.userName || 'System',
+          }));
+          this.history.set(mapped);
+        },
+        error: (err) => {
+          console.error('Failed to load lights history', err);
+        },
+      });
+  }
 
+  public clearHistory(): void {
+    this.lightsHistoryService
+      .resetHistory()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.history.set([]);
+        },
+        error: (err) => {
+          console.error('Failed to reset lights history', err);
+        },
+      });
+  }
+
+  public toggleLight(id: string): void {
+    this.lights.update((lights) => lights.map((l) => (l.id === id ? { ...l, on: !l.on } : l)));
     const newState = this.lights().find((l) => l.id === id)?.on ?? false;
 
     this.lightsControlService
@@ -120,14 +130,41 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          console.log(newState);
           this.hasError.set(false);
+          this.loadHistory();
         },
         error: (err) => {
           console.error('Failed to update light status', err);
           this.lights.update((lights) =>
             lights.map((l) => (l.id === id ? { ...l, on: !newState } : l)),
           );
+          this.hasError.set(true);
+        },
+      });
+  }
+
+  public toggleAllLights(): void {
+    const targetState = !this.allLightsOn();
+    const originalLights = this.lights();
+
+    this.lights.update((lights) =>
+      lights.map((l) => ({ ...l, on: targetState })),
+    );
+
+    const requests = originalLights.map((l) =>
+      this.lightsControlService.updateStatus(l.id, targetState),
+    );
+
+    forkJoin(requests)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.hasError.set(false);
+          this.loadHistory();
+        },
+        error: (err) => {
+          console.error('Failed to update lights status', err);
+          this.lights.set(originalLights);
           this.hasError.set(true);
         },
       });
