@@ -1,45 +1,45 @@
 <div
-  class="@container w-full h-full p-6 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
-  <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3 flex-wrap gap-4">
+  class="@container w-full h-full p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
+  <div class="flex flex-row items-center justify-between mb-3 shrink-0 gap-2">
     <div class="flex items-center gap-2">
       <svg-icon src="assets/icons/lights_energy.svg" [applyClass]="true"
-                class="w-9 h-9 max-md:w-7 max-md:h-7 text-accent"></svg-icon>
+                class="w-8 h-8 text-accent"></svg-icon>
       <h2
         class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs pt-0.5">
         {{ 'lightsPage.energyConsumption'| translate }}</h2>
     </div>
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 shrink-0">
       <div
-        class="relative flex items-center bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-xl">
+        class="h-7 relative flex items-center bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-xl shadow-sm">
         <select
-          class="w-full bg-transparent text-accent text-body-12-regular font-bold pl-3 pr-8 py-2 cursor-pointer appearance-none outline-none">
+          class="h-full bg-transparent text-accent text-body-14-medium pl-3 pr-6.5 cursor-pointer appearance-none outline-none leading-none">
           <option class="bg-background-secondary text-text-primary">Cały dom</option>
           <option class="bg-background-secondary text-text-primary">Salon</option>
           <option class="bg-background-secondary text-text-primary">Kuchnia</option>
         </select>
-        <svg class="w-4 h-4 text-accent absolute right-2 pointer-events-none" fill="none" stroke="currentColor"
+        <svg class="w-3.5 h-3.5 text-accent absolute right-2 pointer-events-none" fill="none" stroke="currentColor"
              viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
         </svg>
       </div>
       <div
-        class="relative flex items-center bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-xl">
+        class="h-7 relative flex items-center bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-xl shadow-sm">
         <select
-          class="w-full bg-transparent text-accent text-body-12-regular font-bold pl-3 pr-8 py-2 cursor-pointer appearance-none outline-none">
+          class="h-full bg-transparent text-accent text-body-14-medium pl-3 pr-6.5 cursor-pointer appearance-none outline-none leading-none">
           <option class="bg-background-secondary text-text-primary">Cała doba</option>
           <option class="bg-background-secondary text-text-primary">Tylko Dzień</option>
           <option class="bg-background-secondary text-text-primary">Tylko Noc</option>
         </select>
-        <svg class="w-4 h-4 text-accent absolute right-2 pointer-events-none" fill="none" stroke="currentColor"
+        <svg class="w-3.5 h-3.5 text-accent absolute right-2 pointer-events-none" fill="none" stroke="currentColor"
              viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
         </svg>
       </div>
     </div>
   </div>
-  <div class="flex-1 flex flex-col w-full relative gap-4">
-    <div class="grid grid-cols-3 gap-3">
-      <div class="flex flex-col bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-xl p-3">
+  <div class="flex-1 flex flex-col w-full relative gap-3 min-h-0 overflow-y-auto pr-1 pb-1">
+    <div class="grid grid-cols-3 gap-2.5">
+      <div class="flex flex-col bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-2xl p-3">
         <span class="text-accent text-body-12-regular tracking-wider font-bold mb-1">
           {{ 'lightsPage.energy'| translate }}
         </span>
@@ -48,7 +48,7 @@
           class="text-accent text-body-12-regular pb-px">m</span>
         </span>
       </div>
-      <div class="flex flex-col bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-xl p-3">
+      <div class="flex flex-col bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-2xl p-3">
         <span class="text-accent text-body-12-regular tracking-wider font-bold mb-1">
           {{ 'lightsPage.time'| translate }}
         </span>
@@ -56,7 +56,7 @@
           38.5 <span class="text-accent text-body-12-regular pb-px">kWh</span>
         </span>
       </div>
-      <div class="flex flex-col bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-xl p-3">
+      <div class="flex flex-col bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-2xl p-3">
         <span class="text-accent text-body-12-regular tracking-wider font-bold mb-1">
           {{ 'lightsPage.cost'| translate }}
         </span>
@@ -66,7 +66,7 @@
       </div>
     </div>
     <div
-      class="flex-1 min-h-40 bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-xl p-3 flex flex-col relative">
+      class="flex-1 min-h-35 bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all rounded-2xl p-3 flex flex-col relative">
       <div class="absolute top-2 right-3 z-10">
         <div class="flex bg-background-secondary rounded-lg border border-divider/10 overflow-hidden">
           <button class="px-2.5 py-1 bg-accent/20 text-accent text-body-12-regular font-bold cursor-pointer">
