@@ -61,43 +61,43 @@
 
     <div class="flex flex-col gap-3">
       <h2 class="text-body-16-semibold text-text-primary">{{ 'home.settingsModal.themeColor' | translate }}</h2>
-      <div class="flex flex-row justify-center sm:justify-start flex-wrap gap-12 sm:gap-4.5">
+      <div class="flex flex-row justify-between sm:justify-start sm:gap-4.5 pr-2 sm:pr-0">
         <button style="background-color: var(--theme-accent-cyan)" (click)="accentColorService.setAccentColor('var(--theme-accent-cyan)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-cyan)'"
                 [class.ring-offset-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-cyan)'"
                 [class.ring-offset-background-secondary]="accentColorService.currentThemeColor() === 'var(--theme-accent-cyan)'"
                 [class.ring-accent]="accentColorService.currentThemeColor() === 'var(--theme-accent-cyan)'"
-                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent"></button>
+                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0"></button>
         <button style="background-color: var(--theme-accent-green)" (click)="accentColorService.setAccentColor('var(--theme-accent-green)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-green)'"
                 [class.ring-offset-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-green)'"
                 [class.ring-offset-background-secondary]="accentColorService.currentThemeColor() === 'var(--theme-accent-green)'"
                 [class.ring-accent]="accentColorService.currentThemeColor() === 'var(--theme-accent-green)'"
-                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent"></button>
+                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0"></button>
         <button style="background-color: var(--theme-accent-orange)" (click)="accentColorService.setAccentColor('var(--theme-accent-orange)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-orange)'"
                 [class.ring-offset-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-orange)'"
                 [class.ring-offset-background-secondary]="accentColorService.currentThemeColor() === 'var(--theme-accent-orange)'"
                 [class.ring-accent]="accentColorService.currentThemeColor() === 'var(--theme-accent-orange)'"
-                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent"></button>
+                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0"></button>
         <button style="background-color: var(--theme-accent-purple)" (click)="accentColorService.setAccentColor('var(--theme-accent-purple)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-purple)'"
                 [class.ring-offset-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-purple)'"
                 [class.ring-offset-background-secondary]="accentColorService.currentThemeColor() === 'var(--theme-accent-purple)'"
                 [class.ring-accent]="accentColorService.currentThemeColor() === 'var(--theme-accent-purple)'"
-                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent"></button>
+                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0"></button>
         <button style="background-color: var(--theme-accent-pink)" (click)="accentColorService.setAccentColor('var(--theme-accent-pink)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-pink)'"
                 [class.ring-offset-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-pink)'"
                 [class.ring-offset-background-secondary]="accentColorService.currentThemeColor() === 'var(--theme-accent-pink)'"
                 [class.ring-accent]="accentColorService.currentThemeColor() === 'var(--theme-accent-pink)'"
-                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent"></button>
+                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0"></button>
         <button style="background-color: var(--theme-accent-blue)" (click)="accentColorService.setAccentColor('var(--theme-accent-blue)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-blue)'"
                 [class.ring-offset-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-blue)'"
                 [class.ring-offset-background-secondary]="accentColorService.currentThemeColor() === 'var(--theme-accent-blue)'"
                 [class.ring-accent]="accentColorService.currentThemeColor() === 'var(--theme-accent-blue)'"
-                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent"></button>
+                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0"></button>
       </div>
     </div>
 
