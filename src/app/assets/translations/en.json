@@ -37,7 +37,9 @@
     "userNameMaxLength": "Username cannot exceed 30 characters",
     "userNamePattern": "Username can only contain letters and numbers",
     "passwordRequired": "Password is required",
-    "passwordMinLength": "Password must be at least 8 characters"
+    "passwordMinLength": "Password must be at least 8 characters",
+    "codeRequired": "Verification code is required",
+    "passwordsMismatch": "Passwords do not match"
   },
   "home": {
     "welcomeMessage": "Welcome",

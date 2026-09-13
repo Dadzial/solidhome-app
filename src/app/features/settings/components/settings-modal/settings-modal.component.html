@@ -22,10 +22,37 @@
             <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true" class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all" [class.rotate-90]="expandedSection() === 'username'"/>
           </button>
           @if (expandedSection() === 'username') {
-            <div class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
-              <input type="text" class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none border-divider focus:border-accent transition-colors" placeholder="{{ 'home.settingsModal.newUsername' | translate }}">
-              <button class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all">{{ 'home.settingsModal.save' | translate }}</button>
-            </div>
+            <form [formRoot]="usernameForm" (submit)="onSubmitUsername($event)" novalidate class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
+              <div class="relative">
+                <input
+                  type="text"
+                  [formField]="usernameForm.userName"
+                  placeholder="{{ 'home.settingsModal.newUsername' | translate }}"
+                  class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none transition-colors"
+                  [class.border-red-500]="showLocalErrors() && usernameForm.userName().invalid()"
+                  [class.border-divider]="!(showLocalErrors() && usernameForm.userName().invalid())"
+                />
+                @if (showLocalErrors() && usernameForm.userName().invalid()) {
+                  <div class="mt-1">
+                    @for (error of usernameForm.userName().errors(); track error.kind) {
+                      <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+                    }
+                  </div>
+                }
+              </div>
+              <button
+                type="submit"
+                [disabled]="isLoading()"
+                class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {{ 'home.settingsModal.save' | translate }}
+              </button>
+              @if (serverError() && expandedSection() === 'username') {
+                <p class="text-center text-text-error text-body-10-medium">
+                  {{ serverError() }}
+                </p>
+              }
+            </form>
           }
         </div>
 
@@ -35,10 +62,37 @@
             <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true" class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all" [class.rotate-90]="expandedSection() === 'email'"/>
           </button>
           @if (expandedSection() === 'email') {
-            <div class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
-              <input type="email" class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none border-divider focus:border-accent transition-colors" placeholder="{{ 'home.settingsModal.newEmail' | translate }}">
-              <button class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all">{{ 'home.settingsModal.save' | translate }}</button>
-            </div>
+            <form [formRoot]="emailForm" (submit)="onSubmitEmail($event)" novalidate class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
+              <div class="relative">
+                <input
+                  type="email"
+                  [formField]="emailForm.email"
+                  placeholder="{{ 'home.settingsModal.newEmail' | translate }}"
+                  class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none transition-colors"
+                  [class.border-red-500]="showLocalErrors() && emailForm.email().invalid()"
+                  [class.border-divider]="!(showLocalErrors() && emailForm.email().invalid())"
+                />
+                @if (showLocalErrors() && emailForm.email().invalid()) {
+                  <div class="mt-1">
+                    @for (error of emailForm.email().errors(); track error.kind) {
+                      <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+                    }
+                  </div>
+                }
+              </div>
+              <button
+                type="submit"
+                [disabled]="isLoading()"
+                class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {{ 'home.settingsModal.save' | translate }}
+              </button>
+              @if (serverError() && expandedSection() === 'email') {
+                <p class="text-center text-text-error text-body-10-medium">
+                  {{ serverError() }}
+                </p>
+              }
+            </form>
           }
         </div>
 
@@ -48,12 +102,71 @@
             <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true" class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all" [class.rotate-90]="expandedSection() === 'password'"/>
           </button>
           @if (expandedSection() === 'password') {
-            <div class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
-              <input type="password" class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none border-divider focus:border-accent transition-colors" placeholder="{{ 'home.settingsModal.currentPassword' | translate }}">
-              <input type="password" class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none border-divider focus:border-accent transition-colors" placeholder="{{ 'home.settingsModal.newPassword' | translate }}">
-              <input type="password" class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none border-divider focus:border-accent transition-colors" placeholder="{{ 'home.settingsModal.confirmPassword' | translate }}">
-              <button class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all">{{ 'home.settingsModal.save' | translate }}</button>
-            </div>
+            <form [formRoot]="passwordForm" (submit)="onSubmitPassword($event)" novalidate class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
+              <div class="relative">
+                <input
+                  type="password"
+                  [formField]="passwordForm.currentPassword"
+                  placeholder="{{ 'home.settingsModal.currentPassword' | translate }}"
+                  class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none transition-colors"
+                  [class.border-red-500]="showLocalErrors() && passwordForm.currentPassword().invalid()"
+                  [class.border-divider]="!(showLocalErrors() && passwordForm.currentPassword().invalid())"
+                />
+                @if (showLocalErrors() && passwordForm.currentPassword().invalid()) {
+                  <div class="mt-1">
+                    @for (error of passwordForm.currentPassword().errors(); track error.kind) {
+                      <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="relative">
+                <input
+                  type="password"
+                  [formField]="passwordForm.newPassword"
+                  placeholder="{{ 'home.settingsModal.newPassword' | translate }}"
+                  class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none transition-colors"
+                  [class.border-red-500]="showLocalErrors() && passwordForm.newPassword().invalid()"
+                  [class.border-divider]="!(showLocalErrors() && passwordForm.newPassword().invalid())"
+                />
+                @if (showLocalErrors() && passwordForm.newPassword().invalid()) {
+                  <div class="mt-1">
+                    @for (error of passwordForm.newPassword().errors(); track error.kind) {
+                      <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="relative">
+                <input
+                  type="password"
+                  [formField]="passwordForm.confirmPassword"
+                  placeholder="{{ 'home.settingsModal.confirmPassword' | translate }}"
+                  class="w-full px-3 py-2 border rounded-lg text-body-14-medium text-text-primary bg-background-secondary focus:outline-none transition-colors"
+                  [class.border-red-500]="showLocalErrors() && passwordForm.confirmPassword().invalid()"
+                  [class.border-divider]="!(showLocalErrors() && passwordForm.confirmPassword().invalid())"
+                />
+                @if (showLocalErrors() && passwordForm.confirmPassword().invalid()) {
+                  <div class="mt-1">
+                    @for (error of passwordForm.confirmPassword().errors(); track error.kind) {
+                      <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+                    }
+                  </div>
+                }
+              </div>
+              <button
+                type="submit"
+                [disabled]="isLoading()"
+                class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {{ 'home.settingsModal.save' | translate }}
+              </button>
+              @if (serverError() && expandedSection() === 'password') {
+                <p class="text-center text-text-error text-body-10-medium">
+                  {{ serverError() }}
+                </p>
+              }
+            </form>
           }
         </div>
       </div>
