@@ -12,7 +12,7 @@
   --color-divider: var(--divider);
   --color-text-error: var(--text-error);
 
-  --breakpoint-lg: 86.0625rem; /* Dla ipada pro */
+  --breakpoint-lg: 64.75rem; /* 1036px */
 }
 
 :root {
