@@ -12,7 +12,7 @@
     </div>
 
     <div class="flex items-center gap-3 max-md:gap-2">
-      <span class="text-body-14-medium text-text-primary/70 select-none @max-md:hidden">
+      <span class="text-body-14-medium text-text-primary/70 select-none pt-0.5 @max-md:hidden">
         {{ (allLightsOn() ? 'home.lightsWidget.turnOffAll' : 'home.lightsWidget.turnOnAll') | translate }}
       </span>
       <button (click)="toggleAllLights()"
@@ -51,12 +51,12 @@
     <div class="flex flex-row items-center justify-between mb-3 max-md:mb-2">
       <div class="flex items-center gap-2">
         <svg-icon src="assets/icons/history_of_use.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
-        <div class="text-text-primary text-body-18-bold max-md:text-body-16-semibold pt-1">{{ 'home.lightsWidget.history' | translate }}</div>
+        <div class="text-text-primary text-body-18-bold max-md:text-body-16-semibold pt-0.5">{{ 'home.lightsWidget.history' | translate }}</div>
       </div>
       <button (click)="clearHistory()"
               [disabled]="history().length === 0"
               class="flex items-center gap-2 max-md:gap-1 text-text-primary/70 hover:text-accent transition-colors group cursor-pointer disabled:opacity-40 disabled:pointer-events-none p-1">
-        <span class="text-body-16-medium @max-md:hidden pt-0.5">{{ 'home.lightsWidget.resetHistory' | translate }}</span>
+        <span class="text-body-16-medium @max-md:hidden ">{{ 'home.lightsWidget.resetHistory' | translate }}</span>
         <svg-icon src="assets/icons/restart.svg" [applyClass]="true" class="w-6 h-6 max-md:w-5 max-md:h-5 group-hover:-rotate-180 transition-transform duration-500"></svg-icon>
       </button>
     </div>
