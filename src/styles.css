@@ -56,6 +56,22 @@
   background: var(--accent-color);
 }
 
+.rounded-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.rounded-scrollbar::-webkit-scrollbar-track {
+  background: var(--background-primary);
+  border-radius: 9999px;
+}
+.rounded-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 9999px;
+}
+.rounded-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
 input {
   line-height: normal;
 }
