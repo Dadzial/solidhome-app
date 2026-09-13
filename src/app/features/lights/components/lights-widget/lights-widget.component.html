@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <div class="flex-3 w-full relative rounded-2xl overflow-hidden">
+  <div class="flex-3 w-full relative rounded-2xl overflow-hidden min-h-50 sm:min-h-125 lg:min-h-0">
     <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" class="w-full h-full absolute inset-0">
       <image href="assets/pictures/home_preview.png" width="1920" height="1080" />
 
@@ -57,7 +57,7 @@
               [disabled]="history().length === 0"
               class="flex items-center gap-2 max-md:gap-1 text-text-primary/70 hover:text-accent transition-colors group cursor-pointer disabled:opacity-40 disabled:pointer-events-none p-1">
         <span class="text-body-16-medium @max-md:hidden ">{{ 'home.lightsWidget.resetHistory' | translate }}</span>
-        <svg-icon src="assets/icons/restart.svg" [applyClass]="true" class="w-6 h-6 max-md:w-5 max-md:h-5 group-hover:-rotate-180 transition-transform duration-500"></svg-icon>
+        <svg-icon src="assets/icons/restart.svg" [applyClass]="true" class="w-6 h-6 pb-0.5 group-hover:-rotate-180 transition-transform duration-500"></svg-icon>
       </button>
     </div>
 
