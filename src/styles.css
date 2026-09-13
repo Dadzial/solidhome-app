@@ -144,6 +144,13 @@ input {
   line-height: 1.2;
 }
 
+@utility text-body-12-medium {
+  font-family: var(--font-app), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
 @utility text-body-11-bold {
   font-family: var(--font-app), sans-serif;
   font-size: 0.6875rem;
