@@ -1,6 +1,6 @@
 <div class="flex bg-background-secondary shadow-2xl rounded-md h-10 overflow-hidden">
   <button
-    class="w-10 h-full rounded-l-md flex items-center justify-center cursor-pointer text-body-15-bold"
+    class="w-10 h-full rounded-l-md flex items-center justify-center cursor-pointer text-body-15-bold leading-none pt-0.5"
     [class.transition-all]="isLoaded()"
     [class.duration-300]="isLoaded()"
     [class.bg-accent]="translationsService.currentLang() === 'pl'"
@@ -11,7 +11,7 @@
     PL
   </button>
   <button
-    class="w-10 h-full rounded-r-md flex items-center justify-center cursor-pointer text-body-15-bold"
+    class="w-10 h-full rounded-r-md flex items-center justify-center cursor-pointer text-body-15-bold leading-none pt-0.5"
     [class.transition-all]="isLoaded()"
     [class.duration-300]="isLoaded()"
     [class.bg-accent]="translationsService.currentLang() === 'en'"
