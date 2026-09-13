@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { catchError, throwError, Observable } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
+import {ApiError} from '@core/models/api-error.model';
 
 interface UpdateUserRequest {
   email?: string;
@@ -13,12 +14,6 @@ interface UpdateUserRequest {
 interface UpdateUserResponse {
   _id: string;
   userName: string;
-}
-
-interface ApiError {
-  error?: string;
-  message?: string;
-  details?: string | string[];
 }
 
 @Injectable({

@@ -9,15 +9,10 @@ import {
 } from '@angular/forms/signals';
 import {TranslateModule} from '@ngx-translate/core';
 import {VerifyEmailService} from '@features/auth/services/verify/verify-email.service';
+import {ApiError} from '@core/models/api-error.model';
 
 interface VerifyEmailCredentials {
   email: string;
-}
-
-interface ApiError {
-  error: string;
-  details?: string[];
-  value?: string;
 }
 
 @Component({

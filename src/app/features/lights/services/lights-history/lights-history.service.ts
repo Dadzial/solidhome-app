@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { catchError, throwError, Observable } from 'rxjs';
+import {ApiError} from '@core/models/api-error.model';
 
 export interface LightHistoryItem{
   _id: string;
@@ -18,12 +19,6 @@ export interface LightHistoryItem{
 export interface ResetHistoryResponse {
   message: string;
   deletedCount?: number;
-}
-
-interface ApiError {
-  error?: string;
-  message?: string;
-  details?: string | string[];
 }
 
 @Injectable({

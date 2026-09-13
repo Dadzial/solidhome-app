@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { catchError, throwError } from 'rxjs';
+import {ApiError} from '@core/models/api-error.model';
 
 interface ConfirmPasswordRequest {
   code: string;
@@ -10,12 +11,6 @@ interface ConfirmPasswordRequest {
 
 interface ConfirmPasswordResponse {
   message: string;
-}
-
-interface ApiError {
-  error: string;
-  details?: string[];
-  value?: string;
 }
 
 @Injectable({

@@ -13,17 +13,12 @@ import {
   submit,
 } from '@angular/forms/signals';
 import { RegisterService } from '@features/auth/services/register/register.service';
+import {ApiError} from '@core/models/api-error.model';
 
 interface RegisterCredentials {
   email: string;
   userName: string;
   password: string;
-}
-
-interface ApiError {
-  error: string;
-  details?: string[];
-  value?: string;
 }
 
 @Component({

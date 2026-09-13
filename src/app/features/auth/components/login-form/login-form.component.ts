@@ -11,17 +11,12 @@ import {
 import {Router} from '@angular/router';
 import { LoginService } from '@features/auth/services/login/login.service';
 import { LoadingService } from '@core/services/loading/loading.service';
+import {ApiError} from '@core/models/api-error.model';
 
 interface LoginCredentials {
   userName: string;
   password: string;
   rememberMe: boolean;
-}
-
-interface ApiError {
-  error: string;
-  details?: string[];
-  value?: string;
 }
 
 @Component({

@@ -2,6 +2,7 @@ import { Injectable , inject } from '@angular/core';
 import {environment} from "@environments/environment";
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
+import { ApiError } from '@core/models/api-error.model';
 
 interface RegisterRequest {
   email: string;
@@ -13,12 +14,6 @@ interface RegisterResponse {
   _id: string;
   email: string;
   userName: string;
-}
-
-interface ApiError {
-  error: string;
-  details?: string[];
-  value?: string;
 }
 
 @Injectable({

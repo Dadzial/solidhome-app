@@ -2,18 +2,13 @@ import { Injectable , inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { catchError, throwError, Observable } from 'rxjs';
+import { ApiError } from '@core/models/api-error.model';
 
 interface LightItem {
   _id?: string;
   name: string;
   state: 0 | 1;
   updatedAt?: string;
-}
-
-interface ApiError {
-  error?: string;
-  message?: string;
-  details?: string | string[];
 }
 
 @Injectable({

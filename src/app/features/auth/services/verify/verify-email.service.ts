@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { catchError, throwError } from 'rxjs';
+import {ApiError} from '@core/models/api-error.model';
 
 interface VerifyEmailRequest {
   email: string;
@@ -9,12 +10,6 @@ interface VerifyEmailRequest {
 
 interface VerifyEmailResponse {
   message: string;
-}
-
-interface ApiError {
-  error: string;
-  details?: string[];
-  value?: string;
 }
 
 @Injectable({

@@ -3,6 +3,7 @@ import { HttpClient , HttpErrorResponse } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '@environments/environment';
 import { catchError , throwError} from 'rxjs';
+import { ApiError } from '@core/models/api-error.model';
 
 interface LoginRequest {
   userName: string;
@@ -12,12 +13,6 @@ interface LoginRequest {
 
 interface LoginResponse {
   token: string;
-}
-
-interface ApiError {
-  error: string;
-  details?: string[];
-  value?: string;
 }
 
 @Injectable({

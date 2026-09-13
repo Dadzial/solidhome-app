@@ -9,16 +9,11 @@ import {
 } from '@angular/forms/signals';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmPasswordService } from '@features/auth/services/confirm/confirm-password.service';
+import { ApiError } from '@core/models/api-error.model';
 
 interface RestoreCredentials {
   code: string;
   password: string;
-}
-
-interface ApiError {
-  error: string;
-  details?: string[];
-  value?: string;
 }
 
 @Component({
