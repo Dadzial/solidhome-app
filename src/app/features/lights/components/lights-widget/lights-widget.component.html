@@ -12,14 +12,16 @@
     </div>
 
     <div class="flex items-center gap-3 max-md:gap-2">
-      <span class="text-body-14-medium text-text-primary/70 select-none pt-1 @max-md:hidden">
-        {{ (allLightsOn() ? 'home.lightsWidget.turnOffAll' : 'home.lightsWidget.turnOnAll') | translate }}
-      </span>
+      <div class="h-6 flex items-center">
+    <span class="text-body-14-medium text-text-primary/70 select-none leading-none @max-md:hidden">
+      {{ (allLightsOn() ? 'home.lightsWidget.turnOffAll' : 'home.lightsWidget.turnOnAll') | translate }}
+    </span>
+      </div>
       <button (click)="toggleAllLights()"
-              class="w-12 h-6 rounded-full transition-colors relative cursor-pointer shadow-inner border border-divider shrink-0"
+              class="w-12 h-6 rounded-full transition-colors relative cursor-pointer shadow-inner border border-divider shrink-0 flex items-center px-1"
               [ngClass]="allLightsOn() ? 'bg-accent border-accent' : 'bg-background-primary'">
-        <div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white transition-transform duration-300 shadow-sm"
-             [ngClass]="allLightsOn() ? 'translate-x-6.5' : 'translate-x-1'"></div>
+        <div class="w-4 h-4 rounded-full bg-white transition-transform duration-300 shadow-sm"
+             [ngClass]="allLightsOn() ? 'translate-x-5.5' : 'translate-x-0'"></div>
       </button>
     </div>
   </div>
