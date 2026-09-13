@@ -1,19 +1,8 @@
-import { inject , Injectable , signal,} from '@angular/core';
-import { HttpClient , HttpErrorResponse } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '@environments/environment';
-import { catchError , throwError} from 'rxjs';
-import { ApiError } from '@core/models/api-error.model';
-
-interface LoginRequest {
-  userName: string;
-  password: string;
-  rememberMe?: boolean;
-}
-
-interface LoginResponse {
-  token: string;
-}
+import { LoginRequest, LoginResponse } from '@features/auth/models/auth.models';
 
 @Injectable({
   providedIn: 'root',
@@ -28,9 +17,7 @@ export class LoginService {
   }
 
   public login(data: LoginRequest) {
-    return this.http
-      .post<LoginResponse>(`${this.apiUrl}/auth`, data)
-      .pipe(catchError(this.handleError));
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth`, data);
   }
 
   public initUserFromToken(): void {
@@ -45,18 +32,5 @@ export class LoginService {
     } else {
       this.userName.set('');
     }
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    if (error.status === 400) {
-      return throwError(() => error.error as ApiError);
-    }
-    if (error.status === 401) {
-      return throwError(() => ({ error: 'Invalid username or password' }));
-    }
-    if (error.status === 429) {
-      return throwError(() => ({ error: 'Too many requests, try again later' }));
-    }
-    return throwError(() => ({ error: 'Server error, try again later' }));
   }
 }

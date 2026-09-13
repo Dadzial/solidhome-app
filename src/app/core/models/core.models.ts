@@ -5,3 +5,6 @@ export interface ApiError {
   value?: string;
 }
 
+export interface LogoutResponse {
+  message: string;
+}

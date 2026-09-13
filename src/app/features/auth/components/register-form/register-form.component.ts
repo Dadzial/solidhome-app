@@ -13,13 +13,8 @@ import {
   submit,
 } from '@angular/forms/signals';
 import { RegisterService } from '@features/auth/services/register/register.service';
-import {ApiError} from '@core/models/api-error.model';
-
-interface RegisterCredentials {
-  email: string;
-  userName: string;
-  password: string;
-}
+import { RegisterRequest } from '@features/auth/models/auth.models';
+import { ApiError } from '@core/models/core.models';
 
 @Component({
   selector: 'app-register-form',
@@ -36,7 +31,7 @@ export class RegisterFormComponent {
   public serverError = signal<string | null>(null);
   public showLocalErrors = signal(false);
 
-  public registerModel = signal<RegisterCredentials>({
+  public registerModel = signal<RegisterRequest>({
     email: '',
     userName: '',
     password: '',

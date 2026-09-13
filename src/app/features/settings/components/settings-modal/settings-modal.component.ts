@@ -5,7 +5,7 @@ import { ClickOutsideDirective } from '@shared/directives/click-outside/click-ou
 import { AccentColorService } from '@core/services/accent-color/accent-color.service';
 import { UserSettingsService } from '@features/settings/services/user-settings/user-settings.service';
 import { LoginService } from '@features/auth/services/login/login.service';
-import { ApiError } from '@core/models/api-error.model';
+import { ApiError } from '@core/models/core.models';
 import {
   email,
   form,

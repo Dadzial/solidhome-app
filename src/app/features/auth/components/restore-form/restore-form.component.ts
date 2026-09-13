@@ -9,12 +9,8 @@ import {
 } from '@angular/forms/signals';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmPasswordService } from '@features/auth/services/confirm/confirm-password.service';
-import { ApiError } from '@core/models/api-error.model';
-
-interface RestoreCredentials {
-  code: string;
-  password: string;
-}
+import { ConfirmPasswordRequest } from '@features/auth/models/auth.models';
+import { ApiError } from '@core/models/core.models';
 
 @Component({
   selector: 'app-restore-form',
@@ -31,7 +27,7 @@ export class RestoreFormComponent {
   public serverError = signal<string | null>(null);
   public showLocalErrors = signal(false);
 
-  public restoreModel = signal<RestoreCredentials>({
+  public restoreModel = signal<ConfirmPasswordRequest>({
     code: '',
     password: '',
   });

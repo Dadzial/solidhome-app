@@ -8,12 +8,9 @@ import {
   submit,
 } from '@angular/forms/signals';
 import {TranslateModule} from '@ngx-translate/core';
-import {VerifyEmailService} from '@features/auth/services/verify/verify-email.service';
-import {ApiError} from '@core/models/api-error.model';
-
-interface VerifyEmailCredentials {
-  email: string;
-}
+import { VerifyEmailService } from '@features/auth/services/verify/verify-email.service';
+import { VerifyEmailRequest } from '@features/auth/models/auth.models';
+import { ApiError } from '@core/models/core.models';
 
 @Component({
   selector: 'app-verify-form',
@@ -31,7 +28,7 @@ export class VerifyFormComponent {
   public serverError = signal<string | null>(null);
   public showLocalErrors = signal(false);
 
-  public verifyEmailModel = signal<VerifyEmailCredentials>({
+  public verifyEmailModel = signal<VerifyEmailRequest>({
     email: '',
   });
 

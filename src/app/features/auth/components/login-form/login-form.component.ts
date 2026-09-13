@@ -11,13 +11,8 @@ import {
 import {Router} from '@angular/router';
 import { LoginService } from '@features/auth/services/login/login.service';
 import { LoadingService } from '@core/services/loading/loading.service';
-import {ApiError} from '@core/models/api-error.model';
-
-interface LoginCredentials {
-  userName: string;
-  password: string;
-  rememberMe: boolean;
-}
+import { LoginRequest } from '@features/auth/models/auth.models';
+import { ApiError } from '@core/models/core.models';
 
 @Component({
   selector: 'app-login-form',
@@ -37,7 +32,7 @@ export class LoginFormComponent {
   public serverError = signal<string | null>(null);
   public showLocalErrors = signal(false);
 
-  public loginModel = signal<LoginCredentials>({
+  public loginModel = signal<LoginRequest>({
     userName: '',
     password: '',
     rememberMe: false,

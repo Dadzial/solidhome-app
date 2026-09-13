@@ -5,21 +5,7 @@ import { NgClass } from '@angular/common';
 import { LightsControlService } from '@features/lights/services/lights-control/lights-control.service';
 import { LightsHistoryService } from '@features/lights/services/lights-history/lights-history.service';
 import { Subject, takeUntil, forkJoin } from 'rxjs';
-
-interface Light {
-  id: string;
-  x: number;
-  y: number;
-  on: boolean;
-}
-
-interface LightHistory {
-  id: string;
-  name: string;
-  action: 'ON' | 'OFF';
-  time: string;
-  user: string;
-}
+import { Light, LightHistory } from '@features/lights/models/lights.models';
 
 const ROOMS_NAMES_TRANSLATIONS: Record<string, string> = {
   living_room: 'home.lightsWidget.rooms.livingRoom',

@@ -6,13 +6,14 @@ import { provideTranslateService} from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
 import { authInterceptor } from '@core/interceptors/auth/auth-interceptor';
+import {errorInterceptor} from '@core/interceptors/error/error-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([authInterceptor])
+      withInterceptors([authInterceptor,errorInterceptor])
     ),
     provideAngularSvgIcon(),
     provideTranslateService({
