@@ -38,6 +38,9 @@
     "userNamePattern": "Nazwa użytkownika może zawierać tylko litery i cyfry",
     "passwordRequired": "Hasło jest wymagane",
     "passwordMinLength": "Hasło musi mieć minimum 8 znaków",
+    "currentPasswordRequired": "Obecne hasło jest wymagane",
+    "newPasswordRequired": "Nowe hasło jest wymagane",
+    "confirmPasswordRequired": "Potwierdzenie hasła jest wymagane",
     "codeRequired": "Kod weryfikacyjny jest wymagany",
     "passwordsMismatch": "Hasła nie są identyczne"
   },

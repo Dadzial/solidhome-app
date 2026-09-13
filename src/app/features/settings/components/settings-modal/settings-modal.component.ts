@@ -127,10 +127,10 @@ export class SettingsModalComponent {
   protected passwordForm = form(
     this.passwordModel,
     (s) => {
-      required(s.currentPassword, { message: 'authPagesErrors.passwordRequired' });
-      required(s.newPassword, { message: 'authPagesErrors.passwordRequired' });
+      required(s.currentPassword, { message: 'authPagesErrors.currentPasswordRequired' });
+      required(s.newPassword, { message: 'authPagesErrors.newPasswordRequired' });
       minLength(s.newPassword, 8, { message: 'authPagesErrors.passwordMinLength' });
-      required(s.confirmPassword, { message: 'authPagesErrors.passwordRequired' });
+      required(s.confirmPassword, { message: 'authPagesErrors.confirmPasswordRequired' });
     },
     {
       submission: {

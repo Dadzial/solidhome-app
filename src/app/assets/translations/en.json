@@ -38,6 +38,9 @@
     "userNamePattern": "Username can only contain letters and numbers",
     "passwordRequired": "Password is required",
     "passwordMinLength": "Password must be at least 8 characters",
+    "currentPasswordRequired": "Current password is required",
+    "newPasswordRequired": "New password is required",
+    "confirmPasswordRequired": "Password confirmation is required",
     "codeRequired": "Verification code is required",
     "passwordsMismatch": "Passwords do not match"
   },
