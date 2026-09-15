@@ -5,10 +5,10 @@ import { ApiError } from '@core/models/core.models';
  * Interceptor HTTP przechwytujący błędy odpowiedzi serwera i normalizujący je do formatu `ApiError`.
  *
  * ### Zasady działania:
- * - **Status 400 / 409:** Zwraca obiekt błędu z backendu lub wiadomość błędu.
- * - **Status 401:** Normalizuje błąd nieautoryzowanego dostępu lub niepoprawnych danych logowania.
- * - **Status 429:** Zwraca komunikat o zbyt dużej liczbie zapytań (rate limit).
- * - **Pozostałe błędy (np. 500):** Zwraca ogólny komunikat błędu serwera.
+ * - **Status 400 / 409: ** Zwraca obiekt błędu z backendu lub wiadomość błędu.
+ * - **Status 401: ** Normalizuje błąd nieautoryzowanego dostępu lub niepoprawnych danych logowania.
+ * - **Status 429: ** Zwraca komunikat o zbyt dużej liczbie zapytań (rate limit).
+ * - **Pozostałe błędy (np. 500): ** Zwraca ogólny komunikat o błędzie serwera.
  *
  * @param req Wychodzące żądanie HTTP.
  * @param next Następny handler w łańcuchu przetwarzania HTTP.
