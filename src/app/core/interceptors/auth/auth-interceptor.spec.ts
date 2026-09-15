@@ -1,11 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpClient, HttpInterceptorFn, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { authInterceptor } from './auth-interceptor';
 
 describe('authInterceptor', () => {
   let httpClient: HttpClient;
   let httpMock: HttpTestingController;
+
+  const interceptor: HttpInterceptorFn = (req, next) =>
+    TestBed.runInInjectionContext(() => authInterceptor(req, next));
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -26,6 +29,10 @@ describe('authInterceptor', () => {
     httpMock.verify();
     localStorage.clear();
     sessionStorage.clear();
+  });
+
+  it('should be created', () => {
+    expect(interceptor).toBeTruthy();
   });
 
   describe('when user has NO token', () => {

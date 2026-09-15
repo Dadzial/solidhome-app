@@ -47,10 +47,7 @@ describe('loginGuard', () => {
     });
 
     it('should redirect to "/" when accessing a protected route', () => {
-      const result = executeGuard(
-        createMockRoute(),
-        createMockState('/dashboard'),
-      );
+      const result = executeGuard(createMockRoute(), createMockState('/dashboard'));
 
       expect(routerMock.createUrlTree).toHaveBeenCalledWith(['/']);
       expect(result).toEqual(routerMock.createUrlTree.mock.results[0].value);
@@ -77,10 +74,7 @@ describe('loginGuard', () => {
     it('should allow access to protected route when authenticated', () => {
       localStorage.setItem('token', 'fake-jwt-token');
 
-      const result = executeGuard(
-        createMockRoute(),
-        createMockState('/dashboard'),
-      );
+      const result = executeGuard(createMockRoute(), createMockState('/dashboard'));
 
       expect(result).toBe(true);
       expect(routerMock.createUrlTree).not.toHaveBeenCalled();
