@@ -1,5 +1,4 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-
 /**
  * Interceptor HTTP dołączający token JWT do nagłówków wychodzących żądań.
  *
