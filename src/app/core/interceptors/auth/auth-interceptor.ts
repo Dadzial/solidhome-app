@@ -3,6 +3,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 /**
  * Interceptor HTTP dołączający token JWT do nagłówków wychodzących żądań.
  *
+ * ### Zasady działania:
  * Pobiera token z `localStorage` lub `sessionStorage`.
  * Jeśli token istnieje, klonuje żądanie i dodaje nagłówek `Authorization: Bearer <token>`.
  *
