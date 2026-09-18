@@ -6,7 +6,11 @@ import { LightsControlService } from '@features/lights/services/lights-control/l
 import { LightsHistoryService } from '@features/lights/services/lights-history/lights-history.service';
 import { Subject, takeUntil, forkJoin } from 'rxjs';
 import { Light, LightHistory } from '@features/lights/models/lights.models';
-
+/**
+ * Słownik mapujący identyfikatory lamp (klucze API) na klucze i18n tłumaczeń nazw pomieszczeń.
+ *
+ * Używany podczas mapowania danych historii z API na model widoku `LightHistory`.
+ */
 const ROOMS_NAMES_TRANSLATIONS: Record<string, string> = {
   living_room: 'home.lightsWidget.rooms.livingRoom',
   kitchen: 'home.lightsWidget.rooms.kitchen',
@@ -15,7 +19,19 @@ const ROOMS_NAMES_TRANSLATIONS: Record<string, string> = {
   hallway: 'home.lightsWidget.rooms.hallway',
   garage: 'home.lightsWidget.rooms.garage',
 };
-
+/**
+ * Komponent widgetu sterowania oświetleniem domowym.
+ *
+ * Wyświetla interaktywną mapę SVG z rozmieszczonymi lampami oraz listę historii
+ * ostatnich zdarzeń włączeń i wyłączeń. Umożliwia sterowanie pojedynczymi lampami
+ * lub wszystkimi naraz.
+ *
+ * ### Zasady działania:
+ * - Przy inicjalizacji (`ngOnInit`) pobiera aktualny stan lamp i historię zdarzeń z API.
+ * - Optymistycznie aktualizuje stan lamp w UI przed potwierdzeniem przez API — w razie błędu cofa zmianę i ustawia `hasError`.
+ * - Przy przełączeniu wszystkich lamp używa `forkJoin` do równoległego wysyłania żądań do API.
+ * - Przy zniszczeniu komponentu (`ngOnDestroy`) zamyka wszystkie subskrypcje przez `Subject<void>`.
+ */
 @Component({
   selector: 'app-lights-widget',
   imports: [TranslateModule, SvgIconComponent, NgClass],
@@ -24,12 +40,22 @@ const ROOMS_NAMES_TRANSLATIONS: Record<string, string> = {
   styles: ``,
 })
 export class LightsWidgetComponent implements OnInit, OnDestroy {
+  /** Serwis obsługujący pobieranie i aktualizację stanu lamp. */
   private lightsControlService = inject(LightsControlService);
+  /** Serwis obsługujący pobieranie i resetowanie historii zmian świateł. */
   private lightsHistoryService = inject(LightsHistoryService);
+  /** Subject używany do zamknięcia wszystkich subskrypcji przy zniszczeniu komponentu. */
   private destroy$ = new Subject<void>();
-
+  /**
+   * Klucz i18n tytułu widgetu wyświetlanego w nagłówku.
+   * @default 'home.lightsWidget.title'
+   */
   public titleKey = input<string>('home.lightsWidget.title');
-
+  /**
+   * Sygnał przechowujący listę lamp z ich pozycjami na mapie SVG i aktualnym stanem.
+   * Domyślne pozycje odpowiadają rozkładowi pomieszczeń na obrazie `home_preview.png`.
+   * @type {signal}
+   */
   public readonly lights = signal<Light[]>([
     { id: 'living_room', y: 500, x: 1248, on: false },
     { id: 'kitchen', y: 780, x: 1110, on: false },
@@ -38,15 +64,32 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
     { id: 'hallway', y: 590, x: 890, on: false },
     { id: 'garage', y: 450, x: 655, on: false },
   ]);
-
+  /**
+   * Sygnał przechowujący przetworzone wpisy historii zmian świateł do wyświetlenia w widoku.
+   * @type {signal}
+   */
   public readonly history = signal<LightHistory[]>([]);
+  /**
+   * Sygnał informujący o błędzie komunikacji z API (np. nieudane pobranie lub aktualizacja stanu lamp).
+   * @type {signal}
+   */
   public hasError = signal<boolean>(false);
-
+  /**
+   * Sygnał obliczeniowy zwracający `true`, gdy wszystkie lampy są włączone.
+   * Używany do sterowania stanem globalnego przełącznika i jego etykietą.
+   * @type {computed}
+   */
   public allLightsOn = computed(() => {
     const currentLights = this.lights();
     return currentLights.length > 0 && currentLights.every((l) => l.on);
   });
-
+  /**
+   * Inicjalizuje komponent — pobiera aktualny stan lamp i historię zdarzeń z API.
+   *
+   * W przypadku błędu pobrania stanu lamp ustawia sygnał `hasError` na `true`.
+   *
+   * @returns {void}
+   */
   public ngOnInit() {
     this.lightsControlService
       .getStatus()
@@ -68,7 +111,15 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
       });
     this.loadHistory();
   }
-
+  /**
+   * Pobiera historię zmian świateł z API (ostatnie 20 wpisów) i mapuje ją na model widoku `LightHistory`.
+   *
+   * Nazwy pomieszczeń są tłumaczone za pomocą słownika `ROOMS_NAMES_TRANSLATIONS`.
+   * Czas zdarzenia jest formatowany do formatu `HH:MM`.
+   * Gdy użytkownik jest nieznany, wyświetlana jest wartość domyślna `'System'`.
+   *
+   * @returns {void}
+   */
   public loadHistory(): void {
     this.lightsHistoryService
       .getHistory(20)
@@ -92,7 +143,11 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
         },
       });
   }
-
+  /**
+   * Usuwa całą historię zmian świateł przez API i czyści lokalny sygnał `history`.
+   *
+   * @returns {void}
+   */
   public clearHistory(): void {
     this.lightsHistoryService
       .resetHistory()
@@ -106,7 +161,16 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
         },
       });
   }
-
+  /**
+   * Przełącza stan pojedynczej lampy (optimistic update).
+   *
+   * Natychmiast aktualizuje sygnał `lights` w UI, następnie wysyła żądanie do API.
+   * W razie błędu cofa zmianę stanu do poprzedniej wartości i ustawia `hasError`.
+   * Po sukcesie odświeża historię.
+   *
+   * @param {string} id Identyfikator lampy do przełączenia (np. `'living_room'`).
+   * @returns {void}
+   */
   public toggleLight(id: string): void {
     this.lights.update((lights) => lights.map((l) => (l.id === id ? { ...l, on: !l.on } : l)));
     const newState = this.lights().find((l) => l.id === id)?.on ?? false;
@@ -128,14 +192,21 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
         },
       });
   }
-
+  /**
+   * Przełącza stan wszystkich lamp jednocześnie (optimistic update z `forkJoin`).
+   *
+   * Docelowy stan jest odwrotnością aktualnego stanu `allLightsOn`.
+   * Natychmiast aktualizuje wszystkie lampy w UI, następnie wysyła równoległe żądania do API przez `forkJoin`.
+   * W razie błędu cofa wszystkie lampy do poprzednich stanów i ustawia `hasError`.
+   * Po sukcesie odświeża historię.
+   *
+   * @returns {void}
+   */
   public toggleAllLights(): void {
     const targetState = !this.allLightsOn();
     const originalLights = this.lights();
 
-    this.lights.update((lights) =>
-      lights.map((l) => ({ ...l, on: targetState })),
-    );
+    this.lights.update((lights) => lights.map((l) => ({ ...l, on: targetState })));
 
     const requests = originalLights.map((l) =>
       this.lightsControlService.updateStatus(l.id, targetState),
@@ -155,8 +226,12 @@ export class LightsWidgetComponent implements OnInit, OnDestroy {
         },
       });
   }
-
-  public ngOnDestroy() {
+  /**
+   * Zamyka wszystkie aktywne subskrypcje RxJS przez emisję i zakończenie strumienia `destroy$`.
+   *
+   * @returns {void}
+   */
+  public ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
