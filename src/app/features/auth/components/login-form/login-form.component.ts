@@ -13,7 +13,6 @@ import { LoginService } from '@features/auth/services/login/login.service';
 import { LoadingService } from '@core/services/loading/loading.service';
 import { LoginRequest } from '@features/auth/models/auth.models';
 import { ApiError } from '@core/models/core.models';
-
 /**
  * Komponent reprezentujący formularz logowania użytkownika.
  *
