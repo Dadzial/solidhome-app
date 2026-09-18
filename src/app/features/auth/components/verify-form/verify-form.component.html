@@ -1,6 +1,7 @@
 <div class="w-full h-full flex items-center justify-center">
   <div class="w-full p-10 pt-0 bg-background-secondary rounded-xl shadow-md overflow-hidden">
     <div class="flex bg-background-primary -mx-10 mb-10 border-b border-divider">
+      <!-- Logowanie -->
       <button
         (click)="switchToLogin.emit()"
         class="flex-1 py-5 text-body-18-bold transition-all duration-300 cursor-pointer text-text-primary bg-accent"
@@ -9,11 +10,20 @@
       </button>
       <div class="w-px bg-divider"></div>
     </div>
-    <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.passwordRecovery' | translate }}</h2>
-    <p class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.passwordRecoveryDescription' | translate }}</p>
+    <!-- Powitanie do wysyłania kodu -->
+    <h2
+      class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.passwordRecovery' | translate }}
+    </h2>
+    <p
+      class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.passwordRecoveryDescription' | translate }}
+    </p>
+    <!-- Formularz wysłania kodu -->
     <form [formRoot]="verifyEmailForm" (submit)="onSubmit($event)" novalidate class="space-y-8 px-2">
+      <!-- E-mail -->
       <div class="relative">
-        <label for="email" class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterEmail' | translate }}</label>
+        <label for="email"
+               class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterEmail' | translate }}
+        </label>
         <div class="relative flex items-center">
           <svg-icon
             src="assets/icons/email.svg"
@@ -30,21 +40,25 @@
             [class.border-text-primary]="!(showLocalErrors() && verifyEmailForm.email().invalid())"
           />
         </div>
+        <!-- Wyświetlenie błędów walidacji maila -->
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && verifyEmailForm.email().invalid()) {
             @for (error of verifyEmailForm.email().errors(); track error.kind) {
-              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+              <p
+                class="text-text-error text-body-10-medium">{{ error.message | translate }}
+              </p>
             }
           }
         </div>
       </div>
+      <!-- Przycisk wysyłania maila i wyświetlanie błędu serwera -->
       <div class="flex flex-col items-center">
         <div class="flex justify-center w-full">
           <button
             type="submit"
             [disabled]="isLoading()"
             class="w-2/3 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold
-                   transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer
+                   transition-all duration-300 hover:brightness-110 shadow-lg
                    disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             @if (isLoading()) {
@@ -53,7 +67,7 @@
             {{ 'authPages.sendResetLink' | translate }}
           </button>
         </div>
-
+        <!-- Wyświetlanie błędu serwera -->
         <div class="relative w-full h-0">
           @if (serverError()) {
             <p class="absolute top-2 left-0 w-full text-center text-text-error text-body-10-medium">
