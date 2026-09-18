@@ -37,40 +37,43 @@ export class RegisterFormComponent {
     password: '',
   });
 
-  protected registerForm = form(this.registerModel, (s) => {
+  protected registerForm = form(
+    this.registerModel,
+    (s) => {
+      required(s.email, { message: 'authPagesErrors.emailRequired' });
+      email(s.email, { message: 'authPagesErrors.emailInvalid' });
 
-    required(s.email, { message: 'authPagesErrors.emailRequired' });
-    email(s.email, { message: 'authPagesErrors.emailInvalid' });
+      required(s.userName, { message: 'authPagesErrors.userNameRequired' });
+      minLength(s.userName, 3, { message: 'authPagesErrors.userNameMinLength' });
+      maxLength(s.userName, 30, { message: 'authPagesErrors.userNameMaxLength' });
+      pattern(s.userName, /^[a-zA-Z0-9]+$/, { message: 'authPagesErrors.userNamePattern' });
 
-    required(s.userName, { message: 'authPagesErrors.userNameRequired' });
-    minLength(s.userName, 3, { message: 'authPagesErrors.userNameMinLength' });
-    maxLength(s.userName, 30, { message: 'authPagesErrors.userNameMaxLength' });
-    pattern(s.userName, /^[a-zA-Z0-9]+$/, { message: 'authPagesErrors.userNamePattern' });
-
-    required(s.password, { message: 'authPagesErrors.passwordRequired' });
-    minLength(s.password, 8, { message: 'authPagesErrors.passwordMinLength' });
-  }, {
-    submission: {
-      action: async () => {
-        this.isLoading.set(true);
-        this.serverError.set(null);
-        try {
-          await new Promise<void>((resolve, reject) => {
-            this.registerService.register(this.registerModel()).subscribe({
-              next: () => resolve(),
-              error: (err: ApiError) => reject(err),
+      required(s.password, { message: 'authPagesErrors.passwordRequired' });
+      minLength(s.password, 8, { message: 'authPagesErrors.passwordMinLength' });
+    },
+    {
+      submission: {
+        action: async () => {
+          this.isLoading.set(true);
+          this.serverError.set(null);
+          try {
+            await new Promise<void>((resolve, reject) => {
+              this.registerService.register(this.registerModel()).subscribe({
+                next: () => resolve(),
+                error: (err: ApiError) => reject(err),
+              });
             });
-          });
-          this.switchToLogin.emit();
-        } catch (err) {
-          const apiError = err as ApiError;
-          this.triggerTemporaryErrors(apiError.details?.[0] ?? apiError.error);
-        } finally {
-          this.isLoading.set(false);
-        }
-      }
-    }
-  });
+            this.switchToLogin.emit();
+          } catch (err) {
+            const apiError = err as ApiError;
+            this.triggerTemporaryErrors(apiError.details?.[0] ?? apiError.error);
+          } finally {
+            this.isLoading.set(false);
+          }
+        },
+      },
+    },
+  );
 
   public onSubmit(event: Event): void {
     event.preventDefault();
@@ -82,7 +85,6 @@ export class RegisterFormComponent {
   }
 
   private triggerTemporaryErrors(backendError: string | null = null): void {
-
     this.showLocalErrors.set(true);
     if (backendError) this.serverError.set(backendError);
 

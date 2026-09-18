@@ -1,5 +1,6 @@
 <div class="w-full h-full flex items-center justify-center">
   <div class="w-full p-10 pt-0 bg-background-secondary rounded-xl shadow-md overflow-hidden">
+    <!-- Logowanie Rejestracja -->
     <div class="flex bg-background-primary -mx-10 mb-10 border-b border-divider">
       <button
         class="flex-1 py-5 text-body-18-bold transition-all duration-300 cursor-pointer text-text-primary bg-accent"
@@ -14,12 +15,20 @@
         {{ 'authPages.signUp' | translate }}
       </button>
     </div>
-
-    <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.welcomeBack' | translate }}</h2>
-    <p class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.welcomeBackDescription' | translate }}</p>
+    <!-- Powitanie Nagłówek -->
+    <h2
+      class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.welcomeBack' | translate }}
+    </h2>
+    <p
+      class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.welcomeBackDescription' | translate }}
+    </p>
+    <!-- Formularz Logowania -->
     <form [formRoot]="loginForm" (submit)="onSubmit($event)" novalidate class="space-y-6 px-2">
+      <!-- Nazwa użytkownika -->
       <div class="relative">
-        <label class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterUsername' | translate }}</label>
+        <label
+          class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterUsername' | translate }}
+        </label>
         <div class="relative flex items-center">
           <svg-icon
             src="assets/icons/user.svg"
@@ -35,42 +44,54 @@
             [class.border-text-primary]="!(showLocalErrors() && loginForm.userName().invalid())"
           />
         </div>
+        <!-- Wyświetlenie błędów walidacji pola nazwy użytkownika -->
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && loginForm.userName().invalid()) {
             @for (error of loginForm.userName().errors(); track error.kind) {
-              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+              <p
+                class="text-text-error text-body-10-medium">{{ error.message | translate }}
+              </p>
             }
           }
         </div>
       </div>
-      <div class="relative">
+      <!-- Hasło + Pole zapamiętaj mnie -->
+      <div>
         <div class="flex justify-between items-center mb-2">
-          <label class="text-body-16-medium text-text-primary">{{ 'authPages.enterPassword' | translate }}</label>
-          <a (click)="switchToVerify.emit()" class="text-body-14-medium text-accent hover:underline cursor-pointer">{{ 'authPages.forgotPassword' | translate }}</a>
+          <label
+            class="text-body-16-medium text-text-primary">{{ 'authPages.enterPassword' | translate }}
+          </label>
+          <a (click)="switchToVerify.emit()"
+             class="text-body-14-medium text-accent hover:underline cursor-pointer">{{ 'authPages.forgotPassword' | translate }}
+          </a>
         </div>
-        <div class="relative flex items-center">
-          <svg-icon
-            src="assets/icons/lock.svg"
-            [applyClass]="true"
-            class="absolute left-2.5 w-6 h-6 text-text-primary"
-          />
-          <input
-            type="password"
-            [formField]="loginForm.password"
-            placeholder="{{ 'authPages.passwordPlaceholder' | translate }}"
-            class="w-full pl-12 py-4 border rounded-lg text-body-16-medium text-text-primary opacity-60 focus:outline-none"
-            [class.border-red-500]="showLocalErrors() && loginForm.password().invalid()"
-            [class.border-text-primary]="!(showLocalErrors() && loginForm.password().invalid())"
-          />
-        </div>
-        <div class="absolute top-[calc(100%+4px)] left-0">
-          @if (showLocalErrors() && loginForm.password().invalid()) {
-            @for (error of loginForm.password().errors(); track error.kind) {
-              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+        <div class="relative">
+          <div class="relative flex items-center">
+            <svg-icon
+              src="assets/icons/lock.svg"
+              [applyClass]="true"
+              class="absolute left-2.5 w-6 h-6 text-text-primary"
+            />
+            <input
+              type="password"
+              [formField]="loginForm.password"
+              placeholder="{{ 'authPages.passwordPlaceholder' | translate }}"
+              class="w-full pl-12 py-4 border rounded-lg text-body-16-medium text-text-primary opacity-60 focus:outline-none"
+              [class.border-red-500]="showLocalErrors() && loginForm.password().invalid()"
+              [class.border-text-primary]="!(showLocalErrors() && loginForm.password().invalid())"
+            />
+          </div>
+          <!-- Wyświetlenie błędów walidacji pola hasła -->
+          <div class="absolute top-[calc(100%+4px)] left-0">
+            @if (showLocalErrors() && loginForm.password().invalid()) {
+              @for (error of loginForm.password().errors(); track error.kind) {
+                <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+              }
             }
-          }
+          </div>
         </div>
-        <div class="mt-4 flex items-center">
+        <!-- Pole zapamiętaj mnie -->
+        <div class="mt-5 flex items-center">
           <div
             (click)="toggleRememberMe()"
             class="mr-3 cursor-pointer w-6 h-6 flex items-center justify-center"
@@ -85,22 +106,25 @@
               <div class="w-6 h-6 rounded border border-accent opacity-60"></div>
             }
           </div>
-          <label (click)="toggleRememberMe()" class="text-body-14-medium text-accent cursor-pointer select-none">{{ 'authPages.rememberMe' | translate }}</label>
+          <label (click)="toggleRememberMe()"
+                 class="text-body-14-medium text-accent cursor-pointer select-none pt-0.5">{{ 'authPages.rememberMe' | translate }}
+          </label>
         </div>
       </div>
+      <!-- Przycisk logowania i wyświetlanie błędu serwera -->
       <div class="flex flex-col items-center">
         <div class="flex justify-center w-full">
           <button
             type="submit"
             [disabled]="isLoading()"
             class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold
-               transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer
+               transition-all duration-300 hover:brightness-110 shadow-lg
                disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {{ 'authPages.loginButton' | translate }}
           </button>
         </div>
-
+        <!-- Wyświetlanie błędu serwera -->
         <div class="relative w-full h-0">
           @if (serverError()) {
             <p class="absolute top-2 left-0 w-full text-center text-text-error text-body-10-medium">
