@@ -1,5 +1,6 @@
 <div class="w-full h-full flex items-center justify-center">
   <div class="w-full p-10 pt-0 bg-background-secondary rounded-xl shadow-md overflow-hidden">
+    <!-- Logowanie Rejestracja -->
     <div class="flex bg-background-primary -mx-10 mb-10 border-b border-divider">
       <button
         (click)="switchToLogin.emit()"
@@ -14,13 +15,16 @@
         {{ 'authPages.signUp' | translate }}
       </button>
     </div>
+    <!-- Powitanie do rejestracji -->
     <h2
       class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.createAccount' | translate }}
     </h2>
     <p
       class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.createAccountDescription' | translate }}
     </p>
+    <!-- Formularz Rejestracji -->
     <form [formRoot]="registerForm" (submit)="onSubmit($event)" novalidate class="space-y-8 px-2">
+      <!-- Nazwa użytkownika -->
       <div class="relative">
         <label class="block text-body-16-medium mb-2 text-text-primary">
           {{ 'authPages.enterUsername' | translate }}
@@ -37,6 +41,7 @@
             [class.border-text-primary]="!(showLocalErrors() && registerForm.userName().invalid())"
           />
         </div>
+        <!-- Wyświetlenie błędów walidacji pola nazwy użytkownika -->
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && registerForm.userName().invalid()) {
             @for (error of registerForm.userName().errors(); track error.kind) {
@@ -47,7 +52,7 @@
           }
         </div>
       </div>
-
+      <!-- Email -->
       <div class="relative">
         <label class="block text-body-16-medium mb-2 text-text-primary">
           {{ 'authPages.enterEmail' | translate }}
@@ -64,6 +69,7 @@
             [class.border-text-primary]="!(showLocalErrors() && registerForm.email().invalid())"
           />
         </div>
+        <!-- Wyświetlenie błędów walidacji pola e-maila -->
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && registerForm.email().invalid()) {
             @for (error of registerForm.email().errors(); track error.kind) {
@@ -74,7 +80,7 @@
           }
         </div>
       </div>
-
+      <!-- Hasło -->
       <div class="relative">
         <label class="block text-body-16-medium mb-2 text-text-primary">
           {{ 'authPages.enterPassword' | translate }}
@@ -91,6 +97,7 @@
             [class.border-text-primary]="!(showLocalErrors() && registerForm.password().invalid())"
           />
         </div>
+        <!-- Wyświetlenie błędów walidacji pola hasła -->
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && registerForm.password().invalid()) {
             @for (error of registerForm.password().errors(); track error.kind) {
@@ -101,7 +108,7 @@
           }
         </div>
       </div>
-
+      <!-- Przycisk rejestracji i wyświetlanie błędu serwera -->
       <div class="flex flex-col items-center">
         <div class="flex justify-center w-full">
           <button
@@ -117,6 +124,7 @@
             {{ 'authPages.register' | translate }}
           </button>
         </div>
+        <!-- Wyświetlanie błędu serwera -->
         <div class="relative w-full h-0">
           @if (serverError()) {
             <p class="absolute top-2 left-0 w-full text-center text-text-error text-body-10-medium">
