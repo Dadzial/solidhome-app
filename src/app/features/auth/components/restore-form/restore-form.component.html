@@ -1,5 +1,6 @@
 <div class="w-full h-full flex items-center justify-center">
   <div class="w-full p-10 pt-0 bg-background-secondary rounded-xl shadow-md overflow-hidden">
+    <!-- Logowanie -->
     <div class="flex bg-background-primary -mx-10 mb-10 border-b border-divider">
       <button
         (click)="switchToLogin.emit()"
@@ -9,11 +10,20 @@
       </button>
       <div class="w-px bg-divider"></div>
     </div>
-    <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.resetPassword' | translate }}</h2>
-    <p class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.resetPasswordDescription' | translate }}</p>
+    <!-- Powitanie do zmiany hasła -->
+    <h2
+      class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.resetPassword' | translate }}
+    </h2>
+    <p
+      class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.resetPasswordDescription' | translate }}
+    </p>
+    <!-- Formularz zmiany hasła -->
     <form [formRoot]="restoreForm" (submit)="onSubmit($event)" novalidate class="space-y-6 px-2">
+      <!-- Kod Weryfikacji -->
       <div class="relative">
-        <label for="code" class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterVerificationCode' | translate }}</label>
+        <label for="code"
+               class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterVerificationCode' | translate }}
+        </label>
         <div class="relative flex items-center">
           <svg-icon
             src="assets/icons/save_code.svg"
@@ -30,17 +40,22 @@
             [class.border-text-primary]="!(showLocalErrors() && restoreForm.code().invalid())"
           />
         </div>
+        <!-- Wyświetlenie błędów walidacji kodu -->
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && restoreForm.code().invalid()) {
             @for (error of restoreForm.code().errors(); track error.kind) {
-              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+              <p
+                class="text-text-error text-body-10-medium">{{ error.message | translate }}
+              </p>
             }
           }
         </div>
       </div>
-
+      <!-- Hasło -->
       <div class="relative">
-        <label for="password" class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterPassword' | translate }}</label>
+        <label for="password"
+               class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterPassword' | translate }}
+        </label>
         <div class="relative flex items-center">
           <svg-icon
             src="assets/icons/lock.svg"
@@ -57,22 +72,25 @@
             [class.border-text-primary]="!(showLocalErrors() && restoreForm.password().invalid())"
           />
         </div>
+        <!-- Wyświetlenie błędów walidacji hasła -->
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && restoreForm.password().invalid()) {
             @for (error of restoreForm.password().errors(); track error.kind) {
-              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+              <p
+                class="text-text-error text-body-10-medium">{{ error.message | translate }}
+              </p>
             }
           }
         </div>
       </div>
-
+      <!-- Przycisk podświetlenia i wyświetlanie błędu serwera -->
       <div class="flex flex-col items-center">
         <div class="flex justify-center w-full">
           <button
             type="submit"
             [disabled]="isLoading()"
             class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold
-                   transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer
+                   transition-all duration-300 hover:brightness-110 shadow-lg
                    disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             @if (isLoading()) {
@@ -81,7 +99,7 @@
             {{ 'authPages.confirmPassword' | translate }}
           </button>
         </div>
-
+        <!-- Wyświetlanie błędu serwera -->
         <div class="relative w-full h-0">
           @if (serverError()) {
             <p class="absolute top-2 left-0 w-full text-center text-text-error text-body-10-medium">
