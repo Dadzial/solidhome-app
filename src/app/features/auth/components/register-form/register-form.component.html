@@ -14,10 +14,11 @@
         {{ 'authPages.signUp' | translate }}
       </button>
     </div>
-
-    <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.createAccount' | translate }}</h2>
-    <p class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.createAccountDescription' | translate }}</p>
-
+    <h2
+      class="text-body-24-semibold text-text-primary mb-2 text-start px-2">{{ 'authPages.createAccount' | translate }}</h2>
+    <p
+      class="text-body-14-medium text-text-primary mb-8 text-start px-2">{{ 'authPages.createAccountDescription' | translate }}
+    </p>
     <form [formRoot]="registerForm" (submit)="onSubmit($event)" novalidate class="space-y-8 px-2">
       <div class="relative">
         <label class="block text-body-16-medium mb-2 text-text-primary">
@@ -25,7 +26,7 @@
         </label>
         <div class="relative flex items-center">
           <svg-icon src="assets/icons/user.svg" [applyClass]="true"
-                    class="absolute left-2.5 w-6 h-6 text-text-primary"/>
+                    class="absolute left-2.5 w-6 h-6 text-text-primary" />
           <input
             type="text"
             [formField]="registerForm.userName"
@@ -38,7 +39,9 @@
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && registerForm.userName().invalid()) {
             @for (error of registerForm.userName().errors(); track error.kind) {
-              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+              <p
+                class="text-text-error text-body-10-medium">{{ error.message | translate }}
+              </p>
             }
           }
         </div>
@@ -50,7 +53,7 @@
         </label>
         <div class="relative flex items-center">
           <svg-icon src="assets/icons/email.svg" [applyClass]="true"
-                    class="absolute left-2.5 w-6 h-6 text-text-primary"/>
+                    class="absolute left-2.5 w-6 h-6 text-text-primary" />
           <input
             type="email"
             [formField]="registerForm.email"
@@ -63,7 +66,9 @@
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && registerForm.email().invalid()) {
             @for (error of registerForm.email().errors(); track error.kind) {
-              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+              <p
+                class="text-text-error text-body-10-medium">{{ error.message | translate }}
+              </p>
             }
           }
         </div>
@@ -75,7 +80,7 @@
         </label>
         <div class="relative flex items-center">
           <svg-icon src="assets/icons/lock.svg" [applyClass]="true"
-                    class="absolute left-2.5 w-6 h-6 text-text-primary"/>
+                    class="absolute left-2.5 w-6 h-6 text-text-primary" />
           <input
             type="password"
             [formField]="registerForm.password"
@@ -88,7 +93,9 @@
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && registerForm.password().invalid()) {
             @for (error of registerForm.password().errors(); track error.kind) {
-              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+              <p
+                class="text-text-error text-body-10-medium">{{ error.message | translate }}
+              </p>
             }
           }
         </div>
@@ -100,7 +107,7 @@
             type="submit"
             [disabled]="isLoading()"
             class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold
-               transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer
+               transition-all duration-300 hover:brightness-110 shadow-lg
                disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             @if (isLoading()) {
