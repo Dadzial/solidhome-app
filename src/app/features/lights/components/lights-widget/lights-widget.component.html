@@ -1,5 +1,6 @@
 <div
   class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
+  <!-- Nakładka błędu — wyświetlana gdy nie udało się pobrać danych o lampach -->
   @if (hasError()) {
     <div
       class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background-secondary/40 backdrop-blur-md rounded-3xl p-4 text-center">
@@ -8,6 +9,7 @@
           [innerHTML]="'home.lightsWidget.lightsError' | translate"></h2>
     </div>
   }
+  <!-- Nagłówek widgetu — tytuł i globalny przełącznik wszystkich świateł -->
   <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
     <div class="flex items-center gap-2">
       <svg-icon src="assets/icons/light_bulb.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
@@ -16,6 +18,7 @@
       </h2>
     </div>
 
+    <!-- Przełącznik Włącz / Wyłącz wszystkie światła -->
     <div class="flex items-center gap-3 max-md:gap-2">
       <span class="text-body-14-medium text-text-primary/70 select-none @max-md:hidden">
         {{ (allLightsOn() ? 'home.lightsWidget.turnOffAll' : 'home.lightsWidget.turnOnAll') | translate }}
@@ -29,10 +32,12 @@
     </div>
   </div>
 
+  <!-- Podgląd planu pomieszczeń — przyciski świateł nałożone na zdjęcie przez SVG foreignObject -->
   <div class="flex-3 w-full relative overflow-hidden min-h-50 sm:min-h-125 lg:min-h-0">
     <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" class="w-full h-full absolute inset-0">
       <image href="assets/pictures/home_preview.png" width="1920" height="1080" />
 
+      <!-- Iteracja po lampach — każda lampa renderowana jako interaktywny przycisk w SVG -->
       @for (light of lights(); track light.id) {
         <foreignObject
           [attr.x]="light.x - 60"
@@ -41,6 +46,7 @@
           height="120"
           class="overflow-visible">
           <div class="w-full h-full flex items-center justify-center">
+            <!-- Przycisk lampy — kolor i cień zmieniają się w zależności od stanu włączenia -->
             <button (click)="toggleLight(light.id)"
                     class="p-5 rounded-full backdrop-blur-md transition-all duration-300 border border-white/20 hover:scale-110 active:scale-95"
                     [ngClass]="{'bg-accent shadow-[0_0_25px_rgba(255,255,255,0.7)]': light.on, 'bg-white/30 shadow-lg': !light.on}">
@@ -52,8 +58,11 @@
       }
     </svg>
   </div>
+  <!-- Separator -->
   <div class="bg-accent -mx-4 max-md:-mx-4 h-1 opacity-10 mt-4 max-md:mt-3"></div>
+  <!-- Sekcja historii zmian świateł -->
   <div class="flex-1 max-md:flex-none w-full pt-3 flex flex-col">
+    <!-- Nagłówek historii i przycisk resetowania historii -->
     <div class="flex flex-row items-center justify-between mb-3 max-md:mb-2">
       <div class="flex items-center gap-2">
         <svg-icon src="assets/icons/history_of_use.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
@@ -61,6 +70,7 @@
           class="text-text-primary text-body-18-bold max-md:text-body-16-semibold">{{ 'home.lightsWidget.history' | translate }}
         </div>
       </div>
+      <!-- Przycisk czyszczenia historii — wyłączony gdy lista jest pusta -->
       <button (click)="clearHistory()"
               [disabled]="history().length === 0"
               class="flex items-center gap-2 max-md:gap-1 text-text-primary/70 hover:text-accent transition-colors group cursor-pointer disabled:opacity-40 disabled:pointer-events-none p-1">
@@ -70,25 +80,31 @@
       </button>
     </div>
 
+    <!-- Lista wpisów historii — przewijalna, z obsługą pustego stanu -->
     <div
       class="flex flex-col gap-2 overflow-y-auto pr-2 max-md:pr-1 min-h-35 max-h-35 max-md:min-h-38 max-md:max-h-38 rounded-scrollbar">
       @for (item of history(); track item.id) {
+        <!-- Pojedynczy wpis historii — ikona, nazwa lampy, akcja i czas zdarzenia -->
         <div
           class="flex items-center justify-between p-3 max-md:p-4 rounded-xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
           <div class="flex items-center gap-4 max-md:gap-3">
+            <!-- Ikona akcji — kolor akcentowy dla włączenia, neutralny dla wyłączenia -->
             <div class="w-10 h-10 rounded-full flex shrink-0 items-center justify-center transition-colors"
                  [ngClass]="item.action === 'ON' ? 'bg-accent/20 text-accent' : 'bg-text-primary/10 text-text-primary/50'">
               <svg-icon src="assets/icons/light_bulb.svg" [applyClass]="true" class="w-5 h-5"></svg-icon>
             </div>
             <div class="flex flex-col">
+              <!-- Nazwa lampy -->
               <span
                 class="text-body-16-semibold max-md:text-body-14-medium text-text-primary">{{ item.name | translate }}</span>
+              <!-- Akcja wykonana przez użytkownika — imię użytkownika wyróżnione kolorem -->
               <span class="text-body-14-medium max-md:text-body-12-regular text-text-primary/60">
                 {{ (item.action === 'ON' ? 'home.lightsWidget.turnOnBy' : 'home.lightsWidget.turnOffBy') | translate }}
                 <span [ngClass]="item.action === 'ON' ? 'text-accent font-bold' : 'font-bold'">{{ item.user }}</span>
               </span>
             </div>
           </div>
+          <!-- Znacznik czasu zdarzenia -->
           <span class="text-body-12-regular pt-0.5 max-md:text-body-10-medium text-text-primary/50 text-right shrink-0">
             {{ (item.action === 'ON' ? 'home.lightsWidget.turnedOnAt' : 'home.lightsWidget.turnedOffAt') | translate }}
             <br class="hidden max-md:block" />
@@ -96,6 +112,7 @@
           </span>
         </div>
       } @empty {
+        <!-- Stan pusty — wyświetlany gdy historia jest pusta -->
         <div class="flex flex-col items-center justify-center h-full min-h-35 text-center text-text-primary/40 py-4">
           <span class="text-body-16-medium">{{ 'home.lightsWidget.noHistory' | translate }}</span>
         </div>
