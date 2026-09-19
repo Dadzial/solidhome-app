@@ -9,8 +9,8 @@ import { of } from 'rxjs';
 
 describe('GatesPageComponent', () => {
   let component: GatesPageComponent;
-  let httpMock: HttpTestingController;
   let fixture: ComponentFixture<GatesPageComponent>;
+  let httpMock: HttpTestingController;
 
   const mockMatchMedia = (matches: boolean) => {
     Object.defineProperty(window, 'matchMedia', {
