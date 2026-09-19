@@ -1,11 +1,12 @@
+<!-- Kontener modalu — animacja wejścia/wyjścia przez opacity/scale, zamknięcie po kliknięciu poza modal -->
 <div (appClickOutside)="isOpen() ? closeSettings.emit() : null"
      class="fixed top-12 sm:top-14 right-0 sm:right-3 left-0 sm:left-auto w-full sm:w-80 bg-background-secondary rounded-b-lg sm:rounded-lg shadow-xl sm:shadow-sm z-100 flex flex-col origin-top-right transition-all duration-200 ease-out opacity-0 scale-95 -translate-y-2 pointer-events-none md:border md:border-accent"
      [class.opacity-0]="!isOpen()"
      [class.scale-95]="!isOpen()"
      [class.-translate-y-2]="!isOpen()"
      [class.pointer-events-none]="!isOpen()">
-
   <div class="pl-5 py-5 pr-3 flex flex-col w-full">
+    <!-- Nagłówek modalu — tytuł i przycisk zamknięcia -->
     <div class="flex items-center justify-between pb-4">
       <h2 class="text-body-18-bold text-text-primary">{{ 'home.navbar.settings' | translate }}</h2>
       <button (click)="closeSettings.emit()"
@@ -13,24 +14,28 @@
         <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-6 h-6 cursor-pointer" />
       </button>
     </div>
-
+    <!-- Sekcja Konto — rozwijane formularze zmiany danych użytkownika -->
     <div class="flex flex-col gap-2 mb-3">
       <h2 class="text-body-16-semibold text-text-primary">{{ 'home.settingsModal.account' | translate }}</h2>
       <div class="flex flex-col gap-1">
+        <!-- Sekcja zmiany nazwy użytkownika -->
         <div class="flex flex-col">
           <button (click)="toggleSection('username')"
                   class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group cursor-pointer">
             <span
               class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changeUsername' | translate }}
             </span>
+            <!-- Strzałka obraca się o 90° gdy sekcja jest rozwinięta -->
             <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true"
                       class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all"
                       [class.rotate-90]="expandedSection() === 'username'" />
           </button>
+          <!-- Formularz zmiany nazwy użytkownika — widoczny tylko gdy sekcja jest aktywna -->
           @if (expandedSection() === 'username') {
             <form [formRoot]="usernameForm" (submit)="onSubmitUsername($event)" novalidate
                   class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
               <div class="relative">
+                <!-- Pole nazwy użytkownika — czerwona ramka przy błędzie walidacji -->
                 <input
                   type="text"
                   [formField]="usernameForm.userName"
@@ -39,6 +44,7 @@
                   [class.border-red-500]="showLocalErrors() && usernameForm.userName().invalid()"
                   [class.border-divider]="!(showLocalErrors() && usernameForm.userName().invalid())"
                 />
+                <!-- Wyświetlenie błędów walidacji pola nazwy użytkownika -->
                 @if (showLocalErrors() && usernameForm.userName().invalid()) {
                   <div class="mt-1">
                     @for (error of usernameForm.userName().errors(); track error.kind) {
@@ -54,6 +60,7 @@
               >
                 {{ 'home.settingsModal.save' | translate }}
               </button>
+              <!-- Wyświetlanie błędu serwera dla sekcji username -->
               @if (serverError() && expandedSection() === 'username') {
                 <p class="text-center text-text-error text-body-10-medium">
                   {{ serverError() }}
@@ -62,21 +69,24 @@
             </form>
           }
         </div>
-
+        <!-- Sekcja zmiany adresu e-mail -->
         <div class="flex flex-col">
           <button (click)="toggleSection('email')"
                   class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group cursor-pointer">
             <span
               class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changeEmail' | translate }}
             </span>
+            <!-- Strzałka obraca się o 90° gdy sekcja jest rozwinięta -->
             <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true"
                       class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all"
                       [class.rotate-90]="expandedSection() === 'email'" />
           </button>
+          <!-- Formularz zmiany e-mail — widoczny tylko gdy sekcja jest aktywna -->
           @if (expandedSection() === 'email') {
             <form [formRoot]="emailForm" (submit)="onSubmitEmail($event)" novalidate
                   class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
               <div class="relative">
+                <!-- Pole e-mail — walidacja formatu RFC, czerwona ramka przy błędzie -->
                 <input
                   type="email"
                   [formField]="emailForm.email"
@@ -85,6 +95,7 @@
                   [class.border-red-500]="showLocalErrors() && emailForm.email().invalid()"
                   [class.border-divider]="!(showLocalErrors() && emailForm.email().invalid())"
                 />
+                <!-- Wyświetlenie błędów walidacji pola e-mail -->
                 @if (showLocalErrors() && emailForm.email().invalid()) {
                   <div class="mt-1">
                     @for (error of emailForm.email().errors(); track error.kind) {
@@ -100,6 +111,7 @@
               >
                 {{ 'home.settingsModal.save' | translate }}
               </button>
+              <!-- Wyświetlanie błędu serwera dla sekcji email -->
               @if (serverError() && expandedSection() === 'email') {
                 <p class="text-center text-text-error text-body-10-medium">
                   {{ serverError() }}
@@ -108,20 +120,23 @@
             </form>
           }
         </div>
-
+        <!-- Sekcja zmiany hasła -->
         <div class="flex flex-col">
           <button (click)="toggleSection('password')"
                   class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group cursor-pointer">
             <span
               class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changePassword' | translate }}
             </span>
+            <!-- Strzałka obraca się o 90° gdy sekcja jest rozwinięta -->
             <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true"
                       class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all"
                       [class.rotate-90]="expandedSection() === 'password'" />
           </button>
+          <!-- Formularz zmiany hasła — widoczny tylko gdy sekcja jest aktywna -->
           @if (expandedSection() === 'password') {
             <form [formRoot]="passwordForm" (submit)="onSubmitPassword($event)" novalidate
                   class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
+              <!-- Pole aktualnego hasła — wymagane do weryfikacji tożsamości -->
               <div class="relative">
                 <input
                   type="password"
@@ -131,6 +146,7 @@
                   [class.border-red-500]="showLocalErrors() && passwordForm.currentPassword().invalid()"
                   [class.border-divider]="!(showLocalErrors() && passwordForm.currentPassword().invalid())"
                 />
+                <!-- Wyświetlenie błędów walidacji pola aktualnego hasła -->
                 @if (showLocalErrors() && passwordForm.currentPassword().invalid()) {
                   <div class="mt-1">
                     @for (error of passwordForm.currentPassword().errors(); track error.kind) {
@@ -139,6 +155,7 @@
                   </div>
                 }
               </div>
+              <!-- Pole nowego hasła — min. 8 znaków -->
               <div class="relative">
                 <input
                   type="password"
@@ -148,6 +165,7 @@
                   [class.border-red-500]="showLocalErrors() && passwordForm.newPassword().invalid()"
                   [class.border-divider]="!(showLocalErrors() && passwordForm.newPassword().invalid())"
                 />
+                <!-- Wyświetlenie błędów walidacji pola nowego hasła -->
                 @if (showLocalErrors() && passwordForm.newPassword().invalid()) {
                   <div class="mt-1">
                     @for (error of passwordForm.newPassword().errors(); track error.kind) {
@@ -158,6 +176,7 @@
                   </div>
                 }
               </div>
+              <!-- Pole potwierdzenia nowego hasła — musi być identyczne z polem nowego hasła -->
               <div class="relative">
                 <input
                   type="password"
@@ -167,6 +186,7 @@
                   [class.border-red-500]="showLocalErrors() && passwordForm.confirmPassword().invalid()"
                   [class.border-divider]="!(showLocalErrors() && passwordForm.confirmPassword().invalid())"
                 />
+                <!-- Wyświetlenie błędów walidacji pola potwierdzenia hasła -->
                 @if (showLocalErrors() && passwordForm.confirmPassword().invalid()) {
                   <div class="mt-1">
                     @for (error of passwordForm.confirmPassword().errors(); track error.kind) {
@@ -184,6 +204,7 @@
               >
                 {{ 'home.settingsModal.save' | translate }}
               </button>
+              <!-- Wyświetlanie błędu serwera dla sekcji password (np. niezgodność haseł) -->
               @if (serverError() && expandedSection() === 'password') {
                 <p class="text-center text-text-error text-body-10-medium">
                   {{ serverError() }}
@@ -195,8 +216,10 @@
       </div>
     </div>
 
+    <!-- Sekcja wyboru koloru akcentu — 6 predefiniowanych kolorów motywu -->
     <div class="flex flex-col gap-3">
       <h2 class="text-body-16-semibold text-text-primary">{{ 'home.settingsModal.themeColor' | translate }}</h2>
+      <!-- Przyciski kolorów — aktywny kolor oznaczony jest pierścieniem (ring) -->
       <div class="flex flex-row justify-between sm:justify-start sm:gap-4.5 pr-2 sm:pr-0">
         <button style="background-color: var(--theme-accent-cyan)"
                 (click)="accentColorService.setAccentColor('var(--theme-accent-cyan)')"
@@ -249,10 +272,12 @@
       </div>
     </div>
 
+    <!-- Sekcja jednostek — wybór jednostek wyświetlania danych środowiskowych -->
     <div class="flex flex-col  gap-3 pt-4 mt-2">
       <h2
         class="text-body-16-semibold text-text-primary">{{ 'home.settingsModal.units' | translate }}
       </h2>
+      <!-- Jednostki temperatury: °C / °F -->
       <div class="flex items-center justify-between">
         <span
           class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.temperature' | translate }}
@@ -267,7 +292,7 @@
           </button>
         </div>
       </div>
-
+      <!-- Jednostki ciśnienia: hPa / mmHg -->
       <div class="flex items-center justify-between">
         <span
           class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.pressure' | translate }}
@@ -282,7 +307,7 @@
           </button>
         </div>
       </div>
-
+      <!-- Jednostki wilgotności: % / g/m³ -->
       <div class="flex items-center justify-between">
         <span class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.humidity' | translate }}</span>
         <div class="flex items-center p-1">
@@ -295,7 +320,7 @@
           </button>
         </div>
       </div>
-
+      <!-- Jednostki stężenia gazu: ppm / mg/m³ -->
       <div class="flex items-center justify-between">
         <span
           class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.gasConcentration' | translate }}
@@ -311,7 +336,7 @@
           </button>
         </div>
       </div>
-
+      <!-- Format czasu: 24h / 12h -->
       <div class="flex items-center justify-between">
         <span
           class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.timeFormat' | translate }}
