@@ -15,6 +15,9 @@ import {LightsEnergyComponent} from '@features/lights/components/lights-enegry/l
  *
  * ### Zasady działania:
  * - Renderuje `LightsWidgetComponent` z kluczem tytułu `'lightsPage.steering'` (dedykowany tytuł dla tej strony).
+ * - Renderuje 'LightsScheduleComponent'
+ * - Renderuje 'LightsScenesComponent'
+ * - Renderuje 'LightsEnergyComponent'
  * - Strona korzysta z layoutu pełnoekranowego z zablokowanym przewijaniem na desktop (`lg:h-screen lg:overflow-hidden`).
  */
 @Component({
