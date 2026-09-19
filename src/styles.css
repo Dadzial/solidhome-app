@@ -1,6 +1,8 @@
+/* Import czcionki i Tailwind CSS */
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* Konfiguracja motywu Tailwind CSS */
 @theme {
   --font-app: "Sora", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
@@ -15,6 +17,7 @@
   --breakpoint-lg: 64.75rem; /* 1036px */
 }
 
+/* Zmienne CSS — motyw jasny */
 :root {
   --background-primary: #efeeee;
   --background-secondary: #FFFFFF;
@@ -32,6 +35,7 @@
   --text-error : #F44336;
 }
 
+/* Zmienne CSS — motyw ciemny */
 .dark {
   --background-primary: #262525;
   --background-secondary: #1A1818;
@@ -42,6 +46,7 @@
   --text-error : #F44336;
 }
 
+/* Globalny pasek przewijania */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -56,6 +61,7 @@
   background: var(--accent-color);
 }
 
+/* Zaokrąglony pasek przewijania */
 .rounded-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -72,10 +78,12 @@
   background: var(--accent-color);
 }
 
+/* Globalne style elementów formularzy */
 input {
   line-height: normal;
 }
 
+/* Pomocnicze klasy typograficzne (@utility text-*) */
 @utility text-headline-h1-36-bold {
   font-family: var(--font-app), sans-serif;
   font-size: 2.25rem;
@@ -188,6 +196,7 @@ input {
   line-height: 1.2;
 }
 
+/* Maska dynamicznego logo aplikacji */
 @utility logo-mask {
   background-color: var(--accent-color);
   -webkit-mask-image: url('./app/assets/pictures/home.png');
