@@ -1,5 +1,7 @@
+<!-- Router -->
 <router-outlet></router-outlet>
 
+<!-- Nakładka ładowania — widoczna gdy loadingService.isLoading() === true -->
 @if (loadingService.isLoading()) {
   <app-spinner-loader></app-spinner-loader>
 }
