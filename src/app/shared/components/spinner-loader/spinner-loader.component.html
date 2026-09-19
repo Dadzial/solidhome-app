@@ -1,9 +1,14 @@
+<!-- Pełnoekranowy kontener ładowania z rozmyciem tła -->
 <div class="fixed inset-0 w-screen h-screen flex flex-col items-center justify-center bg-background-primary/80 backdrop-blur-md z-100">
+  <!-- Kontener animowanego pierścienia i loga -->
   <div class="relative flex items-center justify-center w-32 h-32">
+    <!-- Obracający się pierścień ze spinnerem -->
     <div class="absolute inset-0 rounded-full border-4 border-background-secondary border-t-accent animate-spin"></div>
+    <!-- Pulsująca maska logo -->
     <div class="w-16 h-16 animate-pulse z-10 drop-shadow-lg logo-mask"></div>
   </div>
 
+  <!-- Tytuł aplikacji z tłumaczeniem i efektem pulsowania -->
   <h1 class="text-headline-h1-36-bold mt-6 text-text-primary animate-pulse drop-shadow-md"
       [innerHTML]="'authPages.solidHome' | translate">
   </h1>

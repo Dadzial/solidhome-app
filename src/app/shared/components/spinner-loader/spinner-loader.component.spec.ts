@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideTranslateService } from '@ngx-translate/core';
 import { SpinnerLoaderComponent } from './spinner-loader.component';
 
 describe('SpinnerLoaderComponent', () => {
@@ -9,11 +9,12 @@ describe('SpinnerLoaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SpinnerLoaderComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SpinnerLoaderComponent);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {
