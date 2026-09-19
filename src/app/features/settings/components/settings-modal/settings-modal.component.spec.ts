@@ -40,6 +40,7 @@ describe('SettingsModalComponent', () => {
     loginService = TestBed.inject(LoginService);
     accentColorService = TestBed.inject(AccentColorService);
 
+    fixture.componentRef.setInput('isOpen', true);
     fixture.detectChanges();
   });
 
@@ -69,6 +70,134 @@ describe('SettingsModalComponent', () => {
         newPassword: '',
         confirmPassword: '',
       });
+    });
+  });
+
+  describe('template rendering & sections', () => {
+    it('should trigger click outside when isOpen is false and not emit', () => {
+      const emitSpy = vi.spyOn(component.closeSettings, 'emit');
+      fixture.componentRef.setInput('isOpen', false);
+      fixture.detectChanges();
+
+      const modalEl = fixture.nativeElement.firstElementChild as HTMLElement;
+      modalEl.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+      expect(emitSpy).not.toHaveBeenCalled();
+    });
+
+    it('should trigger click outside when isOpen is true and emit closeSettings', () => {
+      const emitSpy = vi.spyOn(component.closeSettings, 'emit');
+      fixture.componentRef.setInput('isOpen', true);
+      fixture.detectChanges();
+
+      document.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(emitSpy).toHaveBeenCalled();
+    });
+
+    it('should render username form when section is expanded and submit it from template', async () => {
+      component.toggleSection('username');
+      fixture.detectChanges();
+
+      const formEl = fixture.nativeElement.querySelector('form');
+      expect(formEl).toBeTruthy();
+
+      const mockResponse = { _id: 'abc', userName: 'newuser' };
+      vi.spyOn(userSettingsService, 'updateUser').mockReturnValue(of(mockResponse));
+      component.usernameModel.set({ userName: 'newuser' });
+      fixture.detectChanges();
+
+      const submitBtn = formEl.querySelector('button[type="submit"]') as HTMLButtonElement;
+      submitBtn.click();
+      await Promise.resolve();
+
+      expect(component.usernameModel()).toEqual({ userName: '' });
+    });
+
+    it('should display local errors and server error in username template', () => {
+      component.toggleSection('username');
+      component.showLocalErrors.set(true);
+      component.serverError.set('Username error message');
+      fixture.detectChanges();
+
+      const errorMsg = fixture.nativeElement.querySelector('form p.text-text-error');
+      expect(errorMsg).toBeTruthy();
+    });
+
+    it('should render email form when section is expanded and submit it from template', async () => {
+      component.toggleSection('email');
+      fixture.detectChanges();
+
+      const formEl = fixture.nativeElement.querySelector('form');
+      expect(formEl).toBeTruthy();
+
+      const mockResponse = { _id: 'abc', userName: 'testuser' };
+      vi.spyOn(userSettingsService, 'updateUser').mockReturnValue(of(mockResponse));
+      component.emailModel.set({ email: 'new@email.com' });
+      fixture.detectChanges();
+
+      const submitBtn = formEl.querySelector('button[type="submit"]') as HTMLButtonElement;
+      submitBtn.click();
+      await Promise.resolve();
+
+      expect(component.emailModel()).toEqual({ email: '' });
+    });
+
+    it('should display local errors and server error in email template', () => {
+      component.toggleSection('email');
+      component.showLocalErrors.set(true);
+      component.serverError.set('Email error message');
+      fixture.detectChanges();
+
+      const errorMsg = fixture.nativeElement.querySelector('form p.text-text-error');
+      expect(errorMsg).toBeTruthy();
+    });
+
+    it('should render password form when section is expanded and submit it from template', async () => {
+      component.toggleSection('password');
+      fixture.detectChanges();
+
+      const formEl = fixture.nativeElement.querySelector('form');
+      expect(formEl).toBeTruthy();
+
+      const mockResponse = { _id: 'abc', userName: 'testuser' };
+      vi.spyOn(userSettingsService, 'updateUser').mockReturnValue(of(mockResponse));
+      component.passwordModel.set({
+        currentPassword: 'OldPassword1',
+        newPassword: 'NewPassword1',
+        confirmPassword: 'NewPassword1',
+      });
+      fixture.detectChanges();
+
+      const submitBtn = formEl.querySelector('button[type="submit"]') as HTMLButtonElement;
+      submitBtn.click();
+      await Promise.resolve();
+
+      expect(component.passwordModel()).toEqual({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
+    });
+
+    it('should display local errors and server error in password template', () => {
+      component.toggleSection('password');
+      component.showLocalErrors.set(true);
+      component.serverError.set('Password error message');
+      fixture.detectChanges();
+
+      const errorMsg = fixture.nativeElement.querySelector('form p.text-text-error');
+      expect(errorMsg).toBeTruthy();
+    });
+
+    it('should render color buttons and allow selecting colors', () => {
+      fixture.detectChanges();
+
+      const colorButtons = fixture.nativeElement.querySelectorAll('button[style*="background-color"]');
+      expect(colorButtons.length).toBe(6);
+
+      const colorSpy = vi.spyOn(accentColorService, 'setAccentColor');
+      (colorButtons[0] as HTMLButtonElement).click();
+      expect(colorSpy).toHaveBeenCalled();
     });
   });
 

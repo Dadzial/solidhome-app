@@ -65,6 +65,16 @@ describe('RegisterFormComponent', () => {
     });
   });
 
+  describe('template loading spinner', () => {
+    it('should render loading spinner when isLoading is true', () => {
+      component.isLoading.set(true);
+      fixture.detectChanges();
+
+      const spinner = fixture.nativeElement.querySelector('.animate-spin');
+      expect(spinner).toBeTruthy();
+    });
+  });
+
   describe('form submission and validation', () => {
     it('should show local errors when submitting invalid form', () => {
       vi.useFakeTimers();

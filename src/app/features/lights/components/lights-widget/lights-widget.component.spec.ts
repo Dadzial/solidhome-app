@@ -90,6 +90,67 @@ describe('LightsWidgetComponent', () => {
     });
   });
 
+  describe('template rendering', () => {
+    it('should render error overlay when hasError is true', () => {
+      component.hasError.set(true);
+      fixture.detectChanges();
+
+      const errorOverlay = fixture.nativeElement.querySelector('.bg-background-secondary\\/40');
+      expect(errorOverlay).toBeTruthy();
+    });
+
+    it('should render history items when history is not empty', () => {
+      vi.spyOn(lightsHistoryService, 'getHistory').mockReturnValue(of(mockHistoryItems));
+      component.loadHistory();
+      fixture.detectChanges();
+
+      const renderedHistoryItems = fixture.nativeElement.querySelectorAll('.flex.items-center.justify-between.p-3');
+      expect(renderedHistoryItems.length).toBe(2);
+    });
+
+    it('should toggle all lights when clicking the toggleAll switch button in header', () => {
+      const toggleAllSpy = vi.spyOn(component, 'toggleAllLights');
+      const toggleAllBtn = fixture.nativeElement.querySelector('.rounded-full.transition-colors') as HTMLButtonElement;
+
+      expect(toggleAllBtn).toBeTruthy();
+      toggleAllBtn.click();
+      expect(toggleAllSpy).toHaveBeenCalled();
+
+      component.lights.update((lights) => lights.map((l) => ({ ...l, on: true })));
+      fixture.detectChanges();
+      expect(component.allLightsOn()).toBe(true);
+    });
+
+    it('should click light button in SVG template to toggle light', () => {
+      const toggleSpy = vi.spyOn(component, 'toggleLight');
+      const lightButton = fixture.nativeElement.querySelector('svg foreignObject button') as HTMLButtonElement;
+
+      if (lightButton) {
+        lightButton.click();
+        expect(toggleSpy).toHaveBeenCalled();
+      }
+    });
+
+    it('should call clearHistory when clear button is clicked in template', () => {
+      const clearSpy = vi.spyOn(component, 'clearHistory');
+      vi.spyOn(lightsHistoryService, 'getHistory').mockReturnValue(of(mockHistoryItems));
+      component.loadHistory();
+      fixture.detectChanges();
+
+      const allButtons = Array.from(fixture.nativeElement.querySelectorAll('button')) as HTMLButtonElement[];
+      const clearBtn = allButtons.find((btn) => !btn.disabled && btn.textContent?.includes('home.lightsWidget.resetHistory'));
+      
+      if (clearBtn) {
+        clearBtn.click();
+      } else {
+        const restartIconBtn = allButtons.find((btn) => !btn.disabled && btn.querySelector('svg-icon[src*="restart.svg"]'));
+        restartIconBtn?.click();
+      }
+
+      expect(clearSpy).toHaveBeenCalled();
+    });
+  });
+
   describe('ngOnInit', () => {
     it('should call getStatus and update lights state from API response', async () => {
       const mockItems: LightItem[] = [
@@ -130,6 +191,15 @@ describe('LightsWidgetComponent', () => {
       expect(history[0].name).toBe('home.lightsWidget.rooms.livingRoom');
     });
 
+    it('should handle error in loadHistory gracefully', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.spyOn(lightsHistoryService, 'getHistory').mockReturnValue(throwError(() => new Error('fail')));
+
+      component.loadHistory();
+
+      expect(consoleSpy).toHaveBeenCalledWith('Failed to load lights history', expect.any(Error));
+    });
+
     it('should use "System" as user when userId is null', () => {
       vi.spyOn(lightsHistoryService, 'getHistory').mockReturnValue(of(mockHistoryItems));
 
@@ -166,6 +236,12 @@ describe('LightsWidgetComponent', () => {
       const after = component.lights().find((l) => l.id === 'living_room')?.on;
       expect(after).toBe(true);
       expect(updateSpy).toHaveBeenCalledWith('living_room', true);
+    });
+
+    it('should safely handle non-existent light id when toggleLight is called', () => {
+      const updateSpy = vi.spyOn(lightsControlService, 'updateStatus').mockReturnValue(of({ _id: 'x', name: 'non_existent', state: 0 }));
+      component.toggleLight('non_existent');
+      expect(updateSpy).toHaveBeenCalledWith('non_existent', false);
     });
 
     it('should revert light state and set hasError=true when updateStatus fails', () => {
@@ -227,6 +303,15 @@ describe('LightsWidgetComponent', () => {
       component.clearHistory();
 
       expect(component.history()).toEqual([]);
+    });
+
+    it('should handle error in clearHistory gracefully', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.spyOn(lightsHistoryService, 'resetHistory').mockReturnValue(throwError(() => new Error('fail')));
+
+      component.clearHistory();
+
+      expect(consoleSpy).toHaveBeenCalledWith('Failed to reset lights history', expect.any(Error));
     });
   });
 

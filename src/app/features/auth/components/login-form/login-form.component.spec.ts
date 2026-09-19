@@ -83,14 +83,27 @@ describe('LoginFormComponent', () => {
   });
 
   describe('toggleRememberMe', () => {
-    it('should toggle rememberMe flag', () => {
+    it('should toggle rememberMe flag and update checkbox in template', () => {
       expect(component.loginModel().rememberMe).toBe(false);
+      fixture.detectChanges();
 
-      component.toggleRememberMe();
+      const checkboxContainer = fixture.nativeElement.querySelector('.mt-5.flex.items-center div') as HTMLElement;
+      checkboxContainer.click();
+      fixture.detectChanges();
+
       expect(component.loginModel().rememberMe).toBe(true);
+      expect(fixture.nativeElement.querySelector('svg-icon[src="assets/icons/checkbox.svg"]')).toBeTruthy();
 
-      component.toggleRememberMe();
+      checkboxContainer.click();
+      fixture.detectChanges();
       expect(component.loginModel().rememberMe).toBe(false);
+    });
+
+    it('should toggle rememberMe flag when clicking label in template', () => {
+      const label = fixture.nativeElement.querySelector('.mt-5.flex.items-center label') as HTMLElement;
+      label.click();
+      fixture.detectChanges();
+      expect(component.loginModel().rememberMe).toBe(true);
     });
   });
 

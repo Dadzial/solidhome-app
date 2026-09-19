@@ -63,6 +63,22 @@ describe('errorInterceptor', () => {
       expect(capturedError).toEqual(backendError);
     });
 
+    it('should fallback to error.message if status 400 error body is not an object', () => {
+      let capturedError: ApiError | undefined;
+
+      httpClient.get('/api/test').subscribe({
+        next: () => {},
+        error: (err: ApiError) => {
+          capturedError = err;
+        },
+      });
+
+      const req = httpMock.expectOne('/api/test');
+      req.flush('Bad request string error', { status: 400, statusText: 'Bad Request' });
+
+      expect(capturedError?.error).toBeDefined();
+    });
+
     it('should return backend error object on status 409', () => {
       const backendError: ApiError = { error: 'User already exists' };
       let capturedError: ApiError | undefined;

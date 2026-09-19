@@ -72,6 +72,22 @@ describe('App', () => {
     expect((component as any).title()).toBe('SolidHomeApp');
   });
 
+  it('should render spinner loader when loadingService.isLoading is true', () => {
+    component.loadingService.isLoading.set(true);
+    fixture.detectChanges();
+
+    const spinnerEl = fixture.nativeElement.querySelector('app-spinner-loader');
+    expect(spinnerEl).toBeTruthy();
+  });
+
+  it('should not render spinner loader when loadingService.isLoading is false', () => {
+    component.loadingService.isLoading.set(false);
+    fixture.detectChanges();
+
+    const spinnerEl = fixture.nativeElement.querySelector('app-spinner-loader');
+    expect(spinnerEl).toBeNull();
+  });
+
   it('onStorageChange should navigate to / when token is removed', () => {
     const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
 
