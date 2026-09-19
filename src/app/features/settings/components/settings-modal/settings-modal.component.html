@@ -8,8 +8,9 @@
   <div class="pl-5 py-5 pr-3 flex flex-col w-full">
     <div class="flex items-center justify-between pb-4">
       <h2 class="text-body-18-bold text-text-primary">{{ 'home.navbar.settings' | translate }}</h2>
-      <button (click)="closeSettings.emit()" class="text-text-primary hover:text-accent transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-background-tertiary">
-        <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-6 h-6 cursor-pointer"/>
+      <button (click)="closeSettings.emit()"
+              class="text-text-primary hover:text-accent transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-background-tertiary">
+        <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-6 h-6 cursor-pointer" />
       </button>
     </div>
 
@@ -17,12 +18,18 @@
       <h2 class="text-body-16-semibold text-text-primary">{{ 'home.settingsModal.account' | translate }}</h2>
       <div class="flex flex-col gap-1">
         <div class="flex flex-col">
-          <button (click)="toggleSection('username')" class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group cursor-pointer">
-            <span class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changeUsername' | translate }}</span>
-            <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true" class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all" [class.rotate-90]="expandedSection() === 'username'"/>
+          <button (click)="toggleSection('username')"
+                  class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group cursor-pointer">
+            <span
+              class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changeUsername' | translate }}
+            </span>
+            <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true"
+                      class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all"
+                      [class.rotate-90]="expandedSection() === 'username'" />
           </button>
           @if (expandedSection() === 'username') {
-            <form [formRoot]="usernameForm" (submit)="onSubmitUsername($event)" novalidate class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
+            <form [formRoot]="usernameForm" (submit)="onSubmitUsername($event)" novalidate
+                  class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
               <div class="relative">
                 <input
                   type="text"
@@ -43,7 +50,7 @@
               <button
                 type="submit"
                 [disabled]="isLoading()"
-                class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {{ 'home.settingsModal.save' | translate }}
               </button>
@@ -57,12 +64,18 @@
         </div>
 
         <div class="flex flex-col">
-          <button (click)="toggleSection('email')" class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group cursor-pointer">
-            <span class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changeEmail' | translate }}</span>
-            <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true" class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all" [class.rotate-90]="expandedSection() === 'email'"/>
+          <button (click)="toggleSection('email')"
+                  class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group cursor-pointer">
+            <span
+              class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changeEmail' | translate }}
+            </span>
+            <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true"
+                      class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all"
+                      [class.rotate-90]="expandedSection() === 'email'" />
           </button>
           @if (expandedSection() === 'email') {
-            <form [formRoot]="emailForm" (submit)="onSubmitEmail($event)" novalidate class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
+            <form [formRoot]="emailForm" (submit)="onSubmitEmail($event)" novalidate
+                  class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
               <div class="relative">
                 <input
                   type="email"
@@ -83,7 +96,7 @@
               <button
                 type="submit"
                 [disabled]="isLoading()"
-                class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {{ 'home.settingsModal.save' | translate }}
               </button>
@@ -97,12 +110,18 @@
         </div>
 
         <div class="flex flex-col">
-          <button (click)="toggleSection('password')" class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group cursor-pointer">
-            <span class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changePassword' | translate }}</span>
-            <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true" class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all" [class.rotate-90]="expandedSection() === 'password'"/>
+          <button (click)="toggleSection('password')"
+                  class="flex items-center justify-between -mx-2 px-2 py-2 hover:bg-background-tertiary rounded-lg transition-colors group cursor-pointer">
+            <span
+              class="text-body-14-medium text-text-primary group-hover:text-accent transition-colors">{{ 'home.settingsModal.changePassword' | translate }}
+            </span>
+            <svg-icon src="assets/icons/right_arrow.svg" [applyClass]="true"
+                      class="w-6 h-6 text-text-primary opacity-60 group-hover:text-accent group-hover:opacity-100 transition-all"
+                      [class.rotate-90]="expandedSection() === 'password'" />
           </button>
           @if (expandedSection() === 'password') {
-            <form [formRoot]="passwordForm" (submit)="onSubmitPassword($event)" novalidate class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
+            <form [formRoot]="passwordForm" (submit)="onSubmitPassword($event)" novalidate
+                  class="flex flex-col gap-2 p-3 -mx-2 bg-background-tertiary rounded-lg mt-1 mb-2">
               <div class="relative">
                 <input
                   type="password"
@@ -132,7 +151,9 @@
                 @if (showLocalErrors() && passwordForm.newPassword().invalid()) {
                   <div class="mt-1">
                     @for (error of passwordForm.newPassword().errors(); track error.kind) {
-                      <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+                      <p
+                        class="text-text-error text-body-10-medium">{{ error.message | translate }}
+                      </p>
                     }
                   </div>
                 }
@@ -149,7 +170,9 @@
                 @if (showLocalErrors() && passwordForm.confirmPassword().invalid()) {
                   <div class="mt-1">
                     @for (error of passwordForm.confirmPassword().errors(); track error.kind) {
-                      <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
+                      <p
+                        class="text-text-error text-body-10-medium">{{ error.message | translate }}
+                      </p>
                     }
                   </div>
                 }
@@ -157,7 +180,7 @@
               <button
                 type="submit"
                 [disabled]="isLoading()"
-                class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                class="w-full bg-accent text-text-primary py-2 rounded-lg text-body-14-medium hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {{ 'home.settingsModal.save' | translate }}
               </button>
@@ -175,85 +198,132 @@
     <div class="flex flex-col gap-3">
       <h2 class="text-body-16-semibold text-text-primary">{{ 'home.settingsModal.themeColor' | translate }}</h2>
       <div class="flex flex-row justify-between sm:justify-start sm:gap-4.5 pr-2 sm:pr-0">
-        <button style="background-color: var(--theme-accent-cyan)" (click)="accentColorService.setAccentColor('var(--theme-accent-cyan)')"
+        <button style="background-color: var(--theme-accent-cyan)"
+                (click)="accentColorService.setAccentColor('var(--theme-accent-cyan)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-cyan)'"
                 [class.ring-offset-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-cyan)'"
                 [class.ring-offset-background-secondary]="accentColorService.currentThemeColor() === 'var(--theme-accent-cyan)'"
                 [class.ring-accent]="accentColorService.currentThemeColor() === 'var(--theme-accent-cyan)'"
-                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0"></button>
-        <button style="background-color: var(--theme-accent-green)" (click)="accentColorService.setAccentColor('var(--theme-accent-green)')"
+                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0">
+        </button>
+        <button style="background-color: var(--theme-accent-green)"
+                (click)="accentColorService.setAccentColor('var(--theme-accent-green)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-green)'"
                 [class.ring-offset-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-green)'"
                 [class.ring-offset-background-secondary]="accentColorService.currentThemeColor() === 'var(--theme-accent-green)'"
                 [class.ring-accent]="accentColorService.currentThemeColor() === 'var(--theme-accent-green)'"
-                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0"></button>
-        <button style="background-color: var(--theme-accent-orange)" (click)="accentColorService.setAccentColor('var(--theme-accent-orange)')"
+                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0">
+        </button>
+        <button style="background-color: var(--theme-accent-orange)"
+                (click)="accentColorService.setAccentColor('var(--theme-accent-orange)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-orange)'"
                 [class.ring-offset-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-orange)'"
                 [class.ring-offset-background-secondary]="accentColorService.currentThemeColor() === 'var(--theme-accent-orange)'"
                 [class.ring-accent]="accentColorService.currentThemeColor() === 'var(--theme-accent-orange)'"
-                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0"></button>
-        <button style="background-color: var(--theme-accent-purple)" (click)="accentColorService.setAccentColor('var(--theme-accent-purple)')"
+                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0">
+        </button>
+        <button style="background-color: var(--theme-accent-purple)"
+                (click)="accentColorService.setAccentColor('var(--theme-accent-purple)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-purple)'"
                 [class.ring-offset-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-purple)'"
                 [class.ring-offset-background-secondary]="accentColorService.currentThemeColor() === 'var(--theme-accent-purple)'"
                 [class.ring-accent]="accentColorService.currentThemeColor() === 'var(--theme-accent-purple)'"
-                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0"></button>
-        <button style="background-color: var(--theme-accent-pink)" (click)="accentColorService.setAccentColor('var(--theme-accent-pink)')"
+                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0">
+        </button>
+        <button style="background-color: var(--theme-accent-pink)"
+                (click)="accentColorService.setAccentColor('var(--theme-accent-pink)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-pink)'"
                 [class.ring-offset-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-pink)'"
                 [class.ring-offset-background-secondary]="accentColorService.currentThemeColor() === 'var(--theme-accent-pink)'"
                 [class.ring-accent]="accentColorService.currentThemeColor() === 'var(--theme-accent-pink)'"
-                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0"></button>
-        <button style="background-color: var(--theme-accent-blue)" (click)="accentColorService.setAccentColor('var(--theme-accent-blue)')"
+                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0">
+        </button>
+        <button style="background-color: var(--theme-accent-blue)"
+                (click)="accentColorService.setAccentColor('var(--theme-accent-blue)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-blue)'"
                 [class.ring-offset-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-blue)'"
                 [class.ring-offset-background-secondary]="accentColorService.currentThemeColor() === 'var(--theme-accent-blue)'"
                 [class.ring-accent]="accentColorService.currentThemeColor() === 'var(--theme-accent-blue)'"
-                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0"></button>
+                class="w-8 h-8 rounded-full transition-transform hover:scale-110 active:scale-95 hover:ring-2 hover:ring-offset-2 hover:ring-offset-background-secondary hover:ring-accent cursor-pointer shrink-0">
+        </button>
       </div>
     </div>
 
     <div class="flex flex-col  gap-3 pt-4 mt-2">
-      <h2 class="text-body-16-semibold text-text-primary">{{ 'home.settingsModal.units' | translate }}</h2>
-
+      <h2
+        class="text-body-16-semibold text-text-primary">{{ 'home.settingsModal.units' | translate }}
+      </h2>
       <div class="flex items-center justify-between">
-        <span class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.temperature' | translate }}</span>
+        <span
+          class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.temperature' | translate }}
+        </span>
         <div class="flex items-center p-1">
-          <button class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">°C</button>
-          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">°F</button>
+          <button
+            class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">°C
+          </button>
+          <button
+            class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">
+            °F
+          </button>
         </div>
       </div>
 
       <div class="flex items-center justify-between">
-        <span class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.pressure' | translate }}</span>
+        <span
+          class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.pressure' | translate }}
+        </span>
         <div class="flex items-center p-1">
-          <button class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">hPa</button>
-          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">mmHg</button>
+          <button
+            class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">hPa
+          </button>
+          <button
+            class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">
+            mmHg
+          </button>
         </div>
       </div>
 
       <div class="flex items-center justify-between">
         <span class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.humidity' | translate }}</span>
         <div class="flex items-center p-1">
-          <button class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">%</button>
-          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">g/m³</button>
+          <button
+            class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">%
+          </button>
+          <button
+            class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">
+            g/m³
+          </button>
         </div>
       </div>
 
       <div class="flex items-center justify-between">
-        <span class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.gasConcentration' | translate }}</span>
+        <span
+          class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.gasConcentration' | translate }}
+        </span>
         <div class="flex items-center p-1">
-          <button class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">ppm</button>
-          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">mg/m³</button>
+          <button
+            class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">
+            ppm
+          </button>
+          <button
+            class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">
+            mg/m³
+          </button>
         </div>
       </div>
 
       <div class="flex items-center justify-between">
-        <span class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.timeFormat' | translate }}</span>
+        <span
+          class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.timeFormat' | translate }}
+        </span>
         <div class="flex items-center p-1">
-          <button class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">24h</button>
-          <button class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">12h</button>
+          <button
+            class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">24h
+          </button>
+          <button
+            class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">
+            12h
+          </button>
         </div>
       </div>
     </div>
