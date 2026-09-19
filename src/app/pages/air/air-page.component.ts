@@ -8,7 +8,12 @@ import { TranslateModule } from '@ngx-translate/core';
  */
 @Component({
   selector: 'app-air',
-  imports: [NavbarComponent, LangButtonComponent, ThemeButtonComponent, TranslateModule],
+  imports: [
+    NavbarComponent,
+    LangButtonComponent,
+    ThemeButtonComponent,
+    TranslateModule
+  ],
   standalone: true,
   templateUrl: './air-page.component.html',
   styles: ``,
