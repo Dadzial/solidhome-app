@@ -1,7 +1,9 @@
+<!-- Przycisk przełączania motywu -->
 <button
   class="cursor-pointer bg-background-secondary shadow-2xl rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-105"
   (click)="themeService.toggleTheme()"
 >
+  <!-- Dynamiczna ikona słońca dla trybu jasnego lub księżyca dla trybu ciemnego -->
   <svg-icon
     [src]="themeService.theme() === 'light' ? 'assets/icons/sun.svg' : 'assets/icons/moon.svg'"
     [applyClass]="true"
