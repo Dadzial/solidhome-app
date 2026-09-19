@@ -1,4 +1,5 @@
 import { Component, output, input, inject, signal } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { ClickOutsideDirective } from '@shared/directives/click-outside/click-outside.directive';
@@ -58,18 +59,10 @@ export class SettingsModalComponent {
           this.isLoading.set(true);
           this.serverError.set(null);
           try {
-            await new Promise<void>((resolve, reject) => {
-              this.userSettingsService
-                .updateUser({ userName: this.usernameModel().userName })
-                .subscribe({
-                  next: (res) => {
-                    this.loginService.userName.set(res.userName);
-                    this.usernameModel.set({ userName: '' });
-                    resolve();
-                  },
-                  error: (err: ApiError) => reject(err),
-                });
-            });
+            const newUserName = this.usernameModel().userName;
+            await firstValueFrom(this.userSettingsService.updateUser({ userName: newUserName }));
+            this.loginService.userName.set(newUserName);
+            this.usernameModel.set({ userName: '' });
           } catch (err) {
             const apiError = err as ApiError;
             this.triggerTemporaryErrors(apiError.details?.[0] ?? apiError.error);
@@ -94,15 +87,10 @@ export class SettingsModalComponent {
           this.isLoading.set(true);
           this.serverError.set(null);
           try {
-            await new Promise<void>((resolve, reject) => {
-              this.userSettingsService.updateUser({ email: this.emailModel().email }).subscribe({
-                next: () => {
-                  this.emailModel.set({ email: '' });
-                  resolve();
-                },
-                error: (err: ApiError) => reject(err),
-              });
-            });
+            await firstValueFrom(
+              this.userSettingsService.updateUser({ email: this.emailModel().email }),
+            );
+            this.emailModel.set({ email: '' });
           } catch (err) {
             const apiError = err as ApiError;
             this.triggerTemporaryErrors(apiError.details?.[0] ?? apiError.error);
@@ -138,20 +126,13 @@ export class SettingsModalComponent {
           this.isLoading.set(true);
           this.serverError.set(null);
           try {
-            await new Promise<void>((resolve, reject) => {
-              this.userSettingsService
-                .updateUser({ currentPassword, password: newPassword })
-                .subscribe({
-                  next: () => {
-                    this.passwordModel.set({
-                      currentPassword: '',
-                      newPassword: '',
-                      confirmPassword: '',
-                    });
-                    resolve();
-                  },
-                  error: (err: ApiError) => reject(err),
-                });
+            await firstValueFrom(
+              this.userSettingsService.updateUser({ currentPassword, password: newPassword }),
+            );
+            this.passwordModel.set({
+              currentPassword: '',
+              newPassword: '',
+              confirmPassword: '',
             });
           } catch (err) {
             const apiError = err as ApiError;
