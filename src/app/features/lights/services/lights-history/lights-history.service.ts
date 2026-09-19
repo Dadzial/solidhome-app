@@ -15,9 +15,9 @@ import { LightHistoryItem, ResetHistoryResponse } from '@features/lights/models/
   providedIn: 'root',
 })
 export class LightsHistoryService {
-  /** Klient HTTP do wykonywania żądań do API. */
+  /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
   private http = inject(HttpClient);
-  /** Adres bazowy endpointów świateł. */
+  /** Adres endpoint API odpowiedzialnego za operacje związane z oświetleniem*/
   private readonly apiUrl = `${environment.apiUrl}/lights`;
   /**
    * Pobiera historię zmian stanu świateł z API.

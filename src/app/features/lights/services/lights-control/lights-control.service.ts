@@ -15,9 +15,9 @@ import { LightItem } from '@features/lights/models/lights.models';
   providedIn: 'root',
 })
 export class LightsControlService {
-  /** Klient HTTP do wykonywania żądań do API. */
+  /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
   private http = inject(HttpClient);
-  /** Adres bazowy endpointów świateł. */
+  /** Adres endpoint API odpowiedzialnego za operacje związane z oświetleniem*/
   private readonly apiUrl = `${environment.apiUrl}/lights`;
   /**
    * Pobiera aktualny stan wszystkich lamp z API.
