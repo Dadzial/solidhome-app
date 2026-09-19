@@ -1,9 +1,11 @@
 <div class="w-full min-h-screen flex flex-col bg-background-primary p-6">
   <div class="flex flex-col justify-center gap-6 lg:gap-0 lg:grid lg:grid-cols-2 flex-1 overflow-hidden">
 
+    <!-- Lewa kolumna — logo, tytuł aplikacji i opis (widoczny tylko na desktop) -->
     <div class="flex flex-col justify-center items-center px-12 xl:px-24">
       <div class="w-full max-w-xl">
 
+        <!-- Logo i nazwa aplikacji -->
         <div class="flex flex-col lg:flex-row items-center text-center lg:text-left gap-2">
           <div class="w-20 h-20 flex items-center justify-center">
             <div class="w-16 h-16 logo-mask"></div>
@@ -13,6 +15,7 @@
           </h1>
         </div>
 
+        <!-- Podtytuł i opis aplikacji -->
         <h2 class="hidden lg:block text-headline-h1-36-bold text-text-primary mb-8 leading-tight whitespace-pre-line"
             [innerHTML]="'authPages.subTitle' | translate">
         </h2>
@@ -22,24 +25,29 @@
       </div>
     </div>
 
+    <!-- Prawa kolumna — aktywny formularz autoryzacji, zmieniany przez sygnał authMode() -->
     <div class="flex flex-col items-center justify-center">
+      <!-- Formularz logowania -->
       @if (authMode() === 'login') {
         <app-login-form
           class="w-full max-w-xl"
           (switchToSignup)="authMode.set('signUp')"
           (switchToVerify)="authMode.set('verify')"
         />
+      <!-- Formularz rejestracji -->
       } @else if (authMode() === 'signUp') {
         <app-register-form
           class="w-full max-w-xl"
           (switchToLogin)="authMode.set('login')"
         />
+      <!-- Formularz wysyłania kodu weryfikacyjnego -->
       } @else if (authMode() === 'verify') {
         <app-verify-form
           class="w-full max-w-xl"
           (switchToLogin)="authMode.set('login')"
           (switchToNewPassword)="authMode.set('restore')"
         />
+      <!-- Formularz ustawiania nowego hasła -->
       } @else if (authMode() === 'restore') {
         <app-restore-form
           class="w-full max-w-xl"
@@ -49,6 +57,7 @@
     </div>
   </div>
 
+  <!-- Stopka -->
   <footer class="flex items-center justify-between pt-4">
     <app-lang-button />
     <app-theme-button />
