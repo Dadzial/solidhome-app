@@ -1,13 +1,53 @@
 <div
   class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
-  <!-- Nagłówek Energy — tytuł -->
-  <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
-    <div class="flex items-center gap-2">
-      <svg-icon src="assets/icons/light_energy.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
-      <h2
-        class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
-        {{ 'lightsPage.energy' | translate }}
-      </h2>
+
+  <!-- Nagłówek -->
+  <div class="flex flex-col mb-4 max-md:mb-3 gap-3">
+    <div class="flex flex-row items-center justify-between">
+      <div class="flex items-center gap-2">
+        <svg-icon src="assets/icons/light_energy.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
+        <h2 class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
+          {{ 'lightsPage.energy' | translate }}
+        </h2>
+      </div>
+    </div>
+
+    <!-- Wiersz z niestandardowymi dropdownami (wersja statyczna / layout) -->
+    <div class="flex items-center gap-2 flex-wrap relative">
+
+      <!-- DROPDOWN 1: Okres czasu -->
+      <div class="relative flex-1 min-w-32.5">
+        <div class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer">
+          <span>Dzisiaj</span>
+          <svg class="w-4 h-4 text-text-primary/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+
+        <!-- Symulacja otwartej listy z idealnie zaokrąglonymi opcjami -->
+        <div class="absolute top-full left-0 right-0 mt-2 bg-background-primary rounded-2xl shadow-xl p-1.5 z-50 flex flex-col gap-1">
+          <div class="w-full text-left px-3 py-2 rounded-xl text-body-14-medium text-accent bg-accent/10 cursor-pointer">
+            Dzisiaj
+          </div>
+          <div class="w-full text-left px-3 py-2 rounded-xl text-body-14-medium text-text-primary hover:bg-accent/10 hover:text-accent transition-colors cursor-pointer">
+            Ten tydzień
+          </div>
+          <div class="w-full text-left px-3 py-2 rounded-xl text-body-14-medium text-text-primary hover:bg-accent/10 hover:text-accent transition-colors cursor-pointer">
+            Ten miesiąc
+          </div>
+        </div>
+      </div>
+
+      <!-- DROPDOWN 2: Pomieszczenie -->
+      <div class="relative flex-1 min-w-32.5">
+        <div class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl  cursor-pointer">
+          <span>Cały dom</span>
+          <svg class="w-4 h-4 text-text-primary/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
