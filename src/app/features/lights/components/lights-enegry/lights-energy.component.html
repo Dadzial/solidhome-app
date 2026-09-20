@@ -1,4 +1,13 @@
 <div
   class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
-
+  <!-- Nagłówek Energy — tytuł -->
+  <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
+    <div class="flex items-center gap-2">
+      <svg-icon src="assets/icons/light_energy.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
+      <h2
+        class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
+        {{ 'lightsPage.energy' | translate }}
+      </h2>
+    </div>
+  </div>
 </div>
