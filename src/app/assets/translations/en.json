@@ -106,7 +106,9 @@
     "time": "Time",
     "energy": "Energy",
     "cost": "Cost",
-    "add": "Add"
+    "add": "Add",
+    "addRule": "Add rule",
+    "addScene": "Add scene"
   },
   "gatesAndDoorsPage": {
     "title": "Gates and Doors"
