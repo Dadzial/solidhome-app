@@ -1,6 +1,6 @@
 <div
   class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
-  <!-- Nagłówek -->
+  <!-- Nagłówek Energy — tytuł -->
   <div class="flex flex-col mb-4 max-md:mb-3 gap-3">
     <div class="flex flex-row items-center justify-between">
       <div class="flex items-center gap-2">
@@ -10,30 +10,39 @@
         </h2>
       </div>
     </div>
-    <!-- Wiersz z niestandardowymi dropdownami (wersja statyczna / layout) -->
+    <!-- Wiersz dla opcji Dropdown -->
     <div class="flex items-center gap-2 flex-wrap relative">
-      <!-- DROPDOWN 1: Okres czasu -->
+      <!-- Dropdown Okres czasu -->
       <div class="relative flex-1 min-w-32.5">
-        <div class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer">
-          <span>Dzisiaj</span>
-          <svg-icon src="assets/icons/down_arrow.svg" [applyClass]="true" class="w-4 h-4 text-text-primary"></svg-icon>
-        </div>
-        <!-- Symulacja otwartej listy z idealnie zaokrąglonymi opcjami -->
-        <div class="absolute top-full left-0 right-0 mt-2 bg-background-primary rounded-2xl shadow-xl p-1.5 z-50 flex flex-col gap-1">
-          <div class="w-full text-left px-3 py-2 rounded-xl text-body-14-medium text-accent cursor-pointer">
-            Dzisiaj
+        <button
+          type="button"
+          (click)="toggleTimeframeDropdown()"
+          class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer leading-1">
+          <span>{{ 'lightsPage.' + selectedTimeframe() | translate }}</span>
+          <svg-icon
+            src="assets/icons/down_arrow.svg"
+            [applyClass]="true"
+            [class]="isTimeframeOpen() ? 'w-4 h-4 text-text-primary transition-transform duration-200 rotate-90' : 'w-4 h-4 text-text-primary transition-transform duration-200'">
+          </svg-icon>
+        </button>
+        @if (isTimeframeOpen()) {
+          <div
+            class="absolute top-full left-0 right-0 mt-2 bg-background-primary rounded-2xl shadow-xl p-1.5 z-50 flex flex-col gap-1">
+            @for (option of timeframeOptions; track option.value) {
+              <button
+                type="button"
+                (click)="selectTimeframe(option.value)"
+                [class]="selectedTimeframe() === option.value ? 'w-full text-left px-3 py-2 rounded-xl text-body-14-medium text-accent transition-colors cursor-pointer' : 'w-full text-left px-3 py-2 rounded-xl text-body-14-medium text-text-primary hover:text-accent transition-colors cursor-pointer'">
+                {{ option.labelKey | translate }}
+              </button>
+            }
           </div>
-          <div class="w-full text-left px-3 py-2 rounded-xl text-body-14-medium text-text-primary  hover:text-accent transition-colors cursor-pointer">
-            Ten tydzień
-          </div>
-          <div class="w-full text-left px-3 py-2 rounded-xl text-body-14-medium text-text-primary hover:text-accent transition-colors cursor-pointer">
-            Ten miesiąc
-          </div>
-        </div>
+        }
       </div>
-      <!-- DROPDOWN 2: Pomieszczenie -->
+      <!-- Dropdown Pomieszczenie -->
       <div class="relative flex-1 min-w-32.5">
-        <div class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer">
+        <div
+          class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer leading-1">
           <span>Cały dom</span>
           <svg-icon src="assets/icons/down_arrow.svg" [applyClass]="true" class="w-4 h-4 text-text-primary"></svg-icon>
         </div>

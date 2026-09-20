@@ -108,7 +108,10 @@
     "cost": "Cost",
     "add": "Add",
     "addRule": "Add rule",
-    "addScene": "Add scene"
+    "addScene": "Add scene",
+    "today": "Today",
+    "week": "Week",
+    "month": "Month",
   },
   "gatesAndDoorsPage": {
     "title": "Gates and Doors"

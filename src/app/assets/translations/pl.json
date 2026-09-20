@@ -108,7 +108,10 @@
     "cost": "Koszt",
     "add" : "Dodaj",
     "addRule": "Dodaj regułę",
-    "addScene": "Dodaj scenę"
+    "addScene": "Dodaj scenę",
+    "today": "Dzisiaj",
+    "week": "Tydzień",
+    "month": "Miesiąc"
   },
   "gatesAndDoorsPage": {
     "title": "Bramy i drzwi"
