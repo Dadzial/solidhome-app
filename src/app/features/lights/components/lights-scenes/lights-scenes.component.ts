@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component , signal } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -8,4 +8,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './lights-scenes.component.html',
   styles: ``,
 })
-export class LightsScenesComponent {}
+export class LightsScenesComponent {
+  public enableAddScene = signal(false);
+
+  public toggleAddScene(): void {
+    this.enableAddScene.update((value) => !value);
+  }
+}

@@ -10,8 +10,16 @@
       </h2>
     </div>
     <!-- Przycisk dodawania sceny -->
-    <button class="bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all active:scale-95 cursor-pointer">
+    <button
+      (click)="toggleAddScene()"
+      class="bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all active:scale-95 cursor-pointer">
       {{ 'lightsPage.add' | translate }}
     </button>
+    <!-- Przestrzeń dodania sceny aktywowana przez signal 'enableAddScene' -->
+    @if (enableAddScene()) {
+      <div class="absolute inset-0 flex flex-col z-50 bg-background-secondary/40 backdrop-blur-sm rounded-3xl p-4">
+
+      </div>
+    }
   </div>
 </div>

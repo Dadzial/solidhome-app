@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component , signal } from '@angular/core';
 import { TranslateModule} from '@ngx-translate/core';
 import {SvgIconComponent} from 'angular-svg-icon';
 
@@ -11,4 +11,10 @@ import {SvgIconComponent} from 'angular-svg-icon';
   templateUrl: './lights-schedule.component.html',
   styles: ``,
 })
-export class LightsScheduleComponent {}
+export class LightsScheduleComponent {
+  public enableAddSchedule = signal(false);
+
+  public toggleAddSchedule() : void {
+    this.enableAddSchedule.update((value) => !value);
+  }
+}
