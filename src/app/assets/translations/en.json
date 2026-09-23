@@ -111,7 +111,8 @@
     "addScene": "Add scene",
     "today": "Today",
     "week": "Week",
-    "month": "Month"
+    "month": "Month",
+    "entireHouse": "Entire House"
   },
   "gatesAndDoorsPage": {
     "title": "Gates and Doors"

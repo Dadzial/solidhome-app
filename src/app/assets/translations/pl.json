@@ -106,12 +106,13 @@
     "time": "Czas",
     "energy": "Energia",
     "cost": "Koszt",
-    "add" : "Dodaj",
+    "add": "Dodaj",
     "addRule": "Dodaj regułę",
     "addScene": "Dodaj scenę",
     "today": "Dzisiaj",
     "week": "Tydzień",
-    "month": "Miesiąc"
+    "month": "Miesiąc",
+    "entireHouse": "Cały dom"
   },
   "gatesAndDoorsPage": {
     "title": "Bramy i drzwi"

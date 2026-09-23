@@ -10,43 +10,74 @@
         </h2>
       </div>
     </div>
+
     <!-- Wiersz dla opcji Dropdown -->
     <div class="flex items-center gap-2 flex-wrap relative">
-      <!-- Dropdown Okres czasu -->
+
+      <!-- Dropdown: Okres czasu -->
       <div class="relative flex-1 min-w-32.5">
         <button
           type="button"
-          (click)="toggleTimeframeDropdown()"
-          class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer leading-1">
-          <span>{{ 'lightsPage.' + selectedTimeframe() | translate }}</span>
+          (click)="toggleDropdown('timeframe')"
+          class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer">
+          <span>{{ selectedTimeframeLabel() | translate }}</span>
           <svg-icon
             src="assets/icons/down_arrow.svg"
             [applyClass]="true"
-            [class]="isTimeframeOpen() ? 'w-4 h-4 text-text-primary transition-transform duration-200 rotate-90' : 'w-4 h-4 text-text-primary transition-transform duration-200'">
+            class="w-4 h-4 text-text-primary transition-transform duration-200"
+            [class.rotate-90]="activeDropdown() === 'timeframe'">
           </svg-icon>
         </button>
-        @if (isTimeframeOpen()) {
-          <div
-            class="absolute top-full left-0 right-0 mt-2 bg-background-primary rounded-2xl shadow-xl p-1.5 z-50 flex flex-col gap-1">
+
+        @if (activeDropdown() === 'timeframe') {
+          <div class="absolute top-full left-0 right-0 mt-2 bg-background-primary rounded-2xl shadow-xl p-1.5 z-50 flex flex-col gap-1">
             @for (option of timeframeOptions; track option.value) {
               <button
                 type="button"
                 (click)="selectTimeframe(option.value)"
-                [class]="selectedTimeframe() === option.value ? 'w-full text-left px-3 py-2 rounded-xl text-body-14-medium text-accent transition-colors cursor-pointer' : 'w-full text-left px-3 py-2 rounded-xl text-body-14-medium text-text-primary hover:text-accent transition-colors cursor-pointer'">
+                class="w-full text-left px-3 py-2 rounded-xl text-body-14-medium transition-colors cursor-pointer"
+                [class.text-accent]="selectedTimeframe() === option.value"
+                [class.text-text-primary]="selectedTimeframe() !== option.value"
+                [class.hover:text-accent]="selectedTimeframe() !== option.value">
                 {{ option.labelKey | translate }}
               </button>
             }
           </div>
         }
       </div>
-      <!-- Dropdown Pomieszczenie -->
+
+      <!-- Dropdown: Pomieszczenie -->
       <div class="relative flex-1 min-w-32.5">
-        <div
-          class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer leading-1">
-          <span>Cały dom</span>
-          <svg-icon src="assets/icons/down_arrow.svg" [applyClass]="true" class="w-4 h-4 text-text-primary"></svg-icon>
-        </div>
+        <button
+          type="button"
+          (click)="toggleDropdown('room')"
+          class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer">
+          <span>{{ selectedRoomLabel() | translate }}</span>
+          <svg-icon
+            src="assets/icons/down_arrow.svg"
+            [applyClass]="true"
+            class="w-4 h-4 text-text-primary transition-transform duration-200"
+            [class.rotate-90]="activeDropdown() === 'room'">
+          </svg-icon>
+        </button>
+
+        @if (activeDropdown() === 'room') {
+          <div class="absolute top-full left-0 right-0 mt-2 bg-background-primary rounded-2xl shadow-xl p-1.5 z-50 flex flex-col gap-1">
+            @for (option of roomOptions; track option.value) {
+              <button
+                type="button"
+                (click)="selectRoom(option.value)"
+                class="w-full text-left px-3 py-2 rounded-xl text-body-14-medium transition-colors cursor-pointer"
+                [class.text-accent]="selectedRoom() === option.value"
+                [class.text-text-primary]="selectedRoom() !== option.value"
+                [class.hover:text-accent]="selectedRoom() !== option.value">
+                {{ option.labelKey | translate }}
+              </button>
+            }
+          </div>
+        }
       </div>
+
     </div>
   </div>
 </div>

@@ -12,7 +12,7 @@ import {
  *
  * Używany podczas mapowania danych historii z API na model widoku `LightHistory`.
  */
-const ROOMS_NAMES_TRANSLATIONS: Record<string, string> = {
+export const ROOMS_NAMES_TRANSLATIONS: Record<string, string> = {
   living_room: 'home.lightsWidget.rooms.livingRoom',
   kitchen: 'home.lightsWidget.rooms.kitchen',
   boiler_room: 'home.lightsWidget.rooms.boilerRoom',
