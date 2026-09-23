@@ -24,9 +24,12 @@
         {{ (allLightsOn() ? 'home.lightsWidget.turnOffAll' : 'home.lightsWidget.turnOnAll') | translate }}
       </span>
       <button (click)="toggleAllLights()"
-              class="w-12 h-6 rounded-full transition-colors relative cursor-pointer shadow-inner border border-divider shrink-0 flex items-center px-1"
+              class="w-12 h-6 rounded-full relative cursor-pointer shadow-inner border border-divider shrink-0 flex items-center px-1"
+              [class.transition-colors]="isLoaded()"
               [ngClass]="allLightsOn() ? 'bg-accent border-accent' : 'bg-background-primary'">
-        <div class="w-4 h-4 rounded-full bg-white transition-transform duration-300 shadow-sm"
+        <div class="w-4 h-4 rounded-full bg-white shadow-sm"
+             [class.transition-transform]="isLoaded()"
+             [class.duration-300]="isLoaded()"
              [ngClass]="allLightsOn() ? 'translate-x-5.5' : 'translate-x-0'"></div>
       </button>
     </div>
