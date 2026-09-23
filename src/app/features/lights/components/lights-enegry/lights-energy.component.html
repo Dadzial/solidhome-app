@@ -1,7 +1,7 @@
 <div
   class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
   <!-- Nagłówek Energy — tytuł -->
-  <div class="flex flex-col mb-4 max-md:mb-3 gap-3">
+  <div class="flex flex-col mb-2 max-md:mb-3 gap-3">
     <div class="flex flex-row items-center justify-between">
       <div class="flex items-center gap-2">
         <svg-icon src="assets/icons/light_energy.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
@@ -30,7 +30,8 @@
         </button>
 
         @if (activeDropdown() === 'timeframe') {
-          <div class="absolute top-full left-0 right-0 mt-2 bg-background-primary rounded-2xl shadow-xl p-1.5 z-50 flex flex-col gap-1">
+          <div
+            class="absolute top-full left-0 right-0 mt-2 bg-background-primary rounded-2xl shadow-xl p-1.5 z-50 flex flex-col gap-1">
             @for (option of timeframeOptions; track option.value) {
               <button
                 type="button"
@@ -62,7 +63,8 @@
         </button>
 
         @if (activeDropdown() === 'room') {
-          <div class="absolute top-full left-0 right-0 mt-2 bg-background-primary rounded-2xl shadow-xl p-1.5 z-50 flex flex-col gap-1">
+          <div
+            class="absolute top-full left-0 right-0 mt-2 bg-background-primary rounded-2xl shadow-xl p-1.5 z-50 flex flex-col">
             @for (option of roomOptions; track option.value) {
               <button
                 type="button"
@@ -79,8 +81,24 @@
       </div>
     </div>
     <!-- Wiersz dla wykresu -->
-    <div class="flex-1 mt-4 max-md:mt-3">
-
+    <div class="flex-1 mt-2 bg-background-primary rounded-2xl flex flex-col">
+      <apx-chart
+        [series]="chartOptions.series!"
+        [chart]="chartOptions.chart!"
+        [xaxis]="chartOptions.xaxis!"
+        [yaxis]="chartOptions.yaxis!"
+        [grid]="chartOptions.grid!"
+        [stroke]="chartOptions.stroke!"
+        [dataLabels]="chartOptions.dataLabels!"
+        [colors]="chartOptions.colors!"
+        [tooltip]="chartOptions.tooltip!">
+      </apx-chart>
+    </div>
+    <!-- Wiersz dla podsumowania największego zużycia -->
+    <div class="flex flex-col mt-2">
+      <div class="flex items-center justify-between">
+        <span class="text-text-primary text-body-18-bold">{{ 'lightsPage.greatestConsumption' | translate }}</span>
+      </div>
     </div>
   </div>
 </div>

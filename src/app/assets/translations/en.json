@@ -112,7 +112,8 @@
     "today": "Today",
     "week": "Week",
     "month": "Month",
-    "entireHouse": "Entire House"
+    "entireHouse": "Entire House",
+    "greatestConsumption": "Greatest consumption"
   },
   "gatesAndDoorsPage": {
     "title": "Gates and Doors"

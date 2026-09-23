@@ -1,13 +1,14 @@
 import { Component, signal, computed } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { ChartComponent, ApexOptions } from 'ng-apexcharts';
 import { ROOMS_NAMES_TRANSLATIONS } from '@features/lights/services/lights-history/lights-history.service';
 
 type TimeframeOption = 'today' | 'week' | 'month';
 
 @Component({
   selector: 'app-lights-energy',
-  imports: [SvgIconComponent, TranslateModule],
+  imports: [SvgIconComponent, TranslateModule, ChartComponent],
   standalone: true,
   templateUrl: './lights-energy.component.html',
   styles: ``,
@@ -30,6 +31,63 @@ export class LightsEnergyComponent {
       labelKey,
     })),
   ];
+
+  // Wykres zużycia energii do testu styli (przykładowe dane)
+  public readonly chartOptions: ApexOptions = {
+    series: [
+      {
+        name: 'Zużycie energii (kWh)',
+        data: [31, 40, 28, 51, 42, 109, 100],
+      },
+    ],
+    chart: {
+      type: 'area',
+      height: '100%',
+      toolbar: { show: false },
+      fontFamily: 'inherit',
+    },
+    dataLabels: { enabled: false },
+    stroke: { curve: 'smooth', width: 2 },
+
+    grid: {
+      borderColor: 'color-mix(in srgb, var(--text-primary) 20%, transparent)',
+      xaxis: {
+        lines: {
+          show: false,
+        },
+      },
+      yaxis: {
+        lines: {
+          show: true,
+        },
+      },
+    },
+
+    xaxis: {
+      categories: ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Ndz'],
+      labels: {
+        style: {
+          colors: 'var(--text-primary)',
+          fontSize: '12px',
+          fontFamily: 'inherit',
+        },
+      },
+    },
+    yaxis: {
+      labels: {
+        style: {
+          colors: 'var(--text-primary)',
+          fontSize: '12px',
+          fontFamily: 'inherit',
+        },
+      },
+    },
+
+    colors: ['#3b82f6'],
+    tooltip: {
+      theme: 'dark',
+    },
+  };
 
   public selectedTimeframeLabel = computed(() => {
     const found = this.timeframeOptions.find((t) => t.value === this.selectedTimeframe());

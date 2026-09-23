@@ -112,7 +112,8 @@
     "today": "Dzisiaj",
     "week": "Tydzień",
     "month": "Miesiąc",
-    "entireHouse": "Cały dom"
+    "entireHouse": "Cały dom",
+    "greatestConsumption": "Największe zużycie"
   },
   "gatesAndDoorsPage": {
     "title": "Bramy i drzwi"
