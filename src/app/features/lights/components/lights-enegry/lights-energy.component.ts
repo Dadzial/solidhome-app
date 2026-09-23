@@ -3,7 +3,7 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROOMS_NAMES_TRANSLATIONS } from '@features/lights/services/lights-history/lights-history.service';
 
-export type TimeframeOption = 'today' | 'week' | 'month';
+type TimeframeOption = 'today' | 'week' | 'month';
 
 @Component({
   selector: 'app-lights-energy',
