@@ -1,10 +1,12 @@
 import { Injectable ,inject, signal} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+
 /**
  * Dostępne tryby jezykowe aplikacji.
  * @type Language
  */
 type Language = 'en' | 'pl';
+
 /**
  * Serwis odpowiedzialny za zarządzanie jezykiem polskim lub angielskim w aplikacji.
  *
@@ -19,11 +21,13 @@ type Language = 'en' | 'pl';
 export class TranslationsService {
   /** Inject TranslateService do wykonywania tłumaczeń w aplikacji.*/
   private translate = inject(TranslateService);
+
   /**
    * Reaktywny sygnał przechowujący aktualnie aktywny język aplikacji.
    * @type signal
    */
-  currentLang = signal<Language>(this.getSavedLang());
+  public currentLang = signal<Language>(this.getSavedLang());
+
   /**
    * Inicjalizuje serwis dodaje jezyki ustawia domyślny i wywołuje aktualny
    */
@@ -32,6 +36,7 @@ export class TranslationsService {
     this.translate.setDefaultLang('pl');
     this.translate.use(this.currentLang());
   }
+
   /**
    * Zmienia bieżący język aplikacji.
    *
@@ -39,12 +44,14 @@ export class TranslationsService {
    * oraz zapisuje nowy wybór w `localStorage` pod kluczem `'lang'`.
    *
    * @param lang Kod nowego języka do ustawienia (`'en'` lub `'pl'`).
+   * @returns {void}
    */
-  setLanguage(lang: Language) {
+  public setLanguage(lang: Language) : void {
     this.currentLang.set(lang);
     this.translate.use(lang);
     localStorage.setItem('lang', lang);
   }
+
   /**
    * Pobiera zapisany język z `localStorage`.
    *

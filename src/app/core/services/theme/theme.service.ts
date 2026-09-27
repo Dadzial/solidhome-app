@@ -1,9 +1,11 @@
 import { Injectable, signal, effect, Signal } from '@angular/core';
+
 /**
  * Dostępne tryby motywów w aplikacji.
  * @type Theme
  */
 type Theme = 'light' | 'dark';
+
 /**
  * Serwis odpowiedzialny za zarządzanie motywem kolorystycznym (jasny/ciemny) w aplikacji.
  *
@@ -19,11 +21,13 @@ type Theme = 'light' | 'dark';
 export class ThemeService {
   /** Klucz używany do zapisu wybranego motywu w `localStorage`. */
   private readonly localStoreTheme = 'app-theme';
+
   /**
    * Reaktywny sygnał przechowujący aktualnie aktywny motyw aplikacji.
    * @type {Signal<Theme>}
    */
-  readonly theme = signal<Theme>(this.getSavedTheme());
+  readonly theme = signal<Theme>(this.getSavedTheme())
+
   /**
    * Inicjalizuje serwis i rejestruje reaktywny efekt (`effect`), który przy każdej zmianie
    * sygnału `theme` aktualizuje `localStorage` oraz dodaje/usuwa klasę `.dark` na elemencie `<html>`.
@@ -40,6 +44,7 @@ export class ThemeService {
       }
     });
   }
+
   /**
    * Pobiera zapisany motyw z `localStorage` lub wykrywa preferencje systemowe użytkownika.
    *
@@ -52,6 +57,7 @@ export class ThemeService {
 
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
+
   /**
    * Przełącza aktualny motyw pomiędzy jasnym (`'light'`) a ciemnym (`'dark'`).
    *

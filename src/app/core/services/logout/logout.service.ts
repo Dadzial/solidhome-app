@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { LogoutResponse } from '@core/models/core.models';
 import { Observable } from 'rxjs';
+
 /**
  * Serwis odpowiedzialny za zakończenie sesji użytkownika w aplikacji poprzez wywołanie odpowiedniego endpointu API.
  *
@@ -16,8 +17,10 @@ import { Observable } from 'rxjs';
 export class LogoutService {
   /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
   private http = inject(HttpClient);
+
   /** Adres endpoint API odpowiedzialnego za operacje związane z użytkownikiem. */
   private readonly apiUrl = `${environment.apiUrl}/user`;
+
   /**
    * Wysyła żądanie HTTP DELETE do endpointu API w celu wylogowania użytkownika.
    *
