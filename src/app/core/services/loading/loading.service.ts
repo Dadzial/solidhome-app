@@ -1,4 +1,5 @@
 import { Injectable , signal } from '@angular/core';
+
 /**
  * Serwis odpowiedzialny za wywołanie loading screen w aplikacji.
  *
@@ -15,6 +16,7 @@ export class LoadingService {
    * @type signal
    */
   public isLoading = signal<boolean>(false);
+
   /**
    * Ustawia sygnał isLoading na true, przez co ekran ładowania będzie widoczny w aplikacji.
    * @returns void
@@ -22,6 +24,7 @@ export class LoadingService {
   public showLoadingWindow(): void {
     this.isLoading.set(true);
   }
+
   /**
    * Ustawia sygnał isLoading na false, przez co ekran ładowania nie będzie widoczny w aplikacji.
    * @returns void
