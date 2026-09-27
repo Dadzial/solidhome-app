@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { RegisterRequest, RegisterResponse } from '@features/auth/models/auth.models';
 import { Observable } from 'rxjs';
+
 /**
  * Serwis odpowiedzialny za rejestrację nowego użytkownika w systemie.
  *
@@ -16,8 +17,10 @@ import { Observable } from 'rxjs';
 export class RegisterService {
   /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
   private http = inject(HttpClient);
+
   /** Adres endpoint API odpowiedzialnego za operacje związane z użytkownikiem. */
   private readonly apiUrl = `${environment.apiUrl}/user`;
+
   /**
    * Wysyła żądanie HTTP POST do endpointu API w celu rejestracji nowego użytkownika.
    *
