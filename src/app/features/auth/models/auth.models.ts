@@ -11,6 +11,7 @@ export interface LoginRequest {
   password: string;
   rememberMe?: boolean;
 }
+
 /**
  * Odpowiedź serwera po pomyślnym uwierzytelnieniu użytkownika.
  *
@@ -20,6 +21,7 @@ export interface LoginRequest {
 export interface LoginResponse {
   token: string;
 }
+
 /**
  * Dane rejestracji nowego użytkownika wysyłane do endpointu tworzenia konta.
  *
@@ -33,6 +35,7 @@ export interface RegisterRequest {
   userName: string;
   password: string;
 }
+
 /**
  * Odpowiedź serwera po pomyślnym zarejestrowaniu nowego użytkownika.
  *
@@ -46,6 +49,7 @@ export interface RegisterResponse {
   email: string;
   userName: string;
 }
+
 /**
  * Dane żądania weryfikacji adresu e-mail do wysłania kodu resetującego hasło.
  *
@@ -55,6 +59,7 @@ export interface RegisterResponse {
 export interface VerifyEmailRequest {
   email: string;
 }
+
 /**
  * Odpowiedź serwera po wysłaniu żądania weryfikacji e-mail.
  *
@@ -64,6 +69,7 @@ export interface VerifyEmailRequest {
 export interface VerifyEmailResponse {
   message: string;
 }
+
 /**
  * Dane wymagane do potwierdzenia resetu hasła użytkownika.
  *
@@ -75,6 +81,7 @@ export interface ConfirmPasswordRequest {
   code: string;
   password: string;
 }
+
 /**
  * Odpowiedź serwera po pomyślnym potwierdzeniu resetu hasła.
  *
