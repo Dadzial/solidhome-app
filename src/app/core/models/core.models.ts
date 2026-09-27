@@ -13,6 +13,7 @@ export interface ApiError {
   details?: string | string[];
   value?: string;
 }
+
 /**
  * Model odpowiedzi serwera po pomyślnym żądaniu wylogowania użytkownika.
  *

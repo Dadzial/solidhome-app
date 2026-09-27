@@ -1,5 +1,6 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
+
 /**
  * Guard kontrolujący dostęp do tras na podstawie stanu uwierzytelnienia użytkownika.
  *
