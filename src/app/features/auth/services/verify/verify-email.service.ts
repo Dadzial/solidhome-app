@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { VerifyEmailRequest, VerifyEmailResponse } from '@features/auth/models/auth.models';
 import { Observable } from 'rxjs';
+
 /**
  * Serwis odpowiedzialny za wysłanie żądania weryfikacji adresu e-mail użytkownika (odzyskiwanie hasła).
  *
@@ -17,8 +18,10 @@ import { Observable } from 'rxjs';
 export class VerifyEmailService {
   /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
   private http = inject(HttpClient);
+
   /** Adres endpoint API odpowiedzialnego za operacje związane z użytkownikiem. */
   private readonly apiUrl = `${environment.apiUrl}/user`;
+
   /**
    * Wysyła żądanie HTTP POST do endpointu API w celu wygenerowania i przesłania kodu weryfikacyjnego na e-mail.
    *
