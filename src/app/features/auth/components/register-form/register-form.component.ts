@@ -38,23 +38,28 @@ import { ApiError } from '@core/models/core.models';
 export class RegisterFormComponent {
   /** Serwis obsługujący operację rejestracji nowego konta użytkownika. */
   private registerService = inject(RegisterService);
+
   /** Zdarzenie wywoływane po pomyślnej rejestracji — przełącza widok na formularz logowania. */
   public switchToLogin = output<void>();
+
   /**
    * Sygnał informujący o trwającym procesie wysyłania formularza i rejestracji.
    * @type {signal}
    */
   public isLoading = signal(false);
+
   /**
    * Sygnał przechowujący komunikat o błędzie zwrócony z serwera (lub `null` przy braku błędu).
    * @type {signal}
    */
   public serverError = signal<string | null>(null);
+
   /**
    * Sygnał sterujący widocznością błędów walidacji (lokalnych i serwerowych) w szablonie.
    * @type {signal}
    */
   public showLocalErrors = signal(false);
+
   /**
    * Model danych formularza rejestracji (adres e-mail, nazwa użytkownika, hasło).
    * @type {signal}
@@ -104,6 +109,7 @@ export class RegisterFormComponent {
       },
     },
   );
+
   /**
    * Obsługuje zdarzenie zatwierdzenia formularza (submit).
    *
@@ -121,6 +127,7 @@ export class RegisterFormComponent {
       this.triggerTemporaryErrors();
     }
   }
+
   /**
    * Aktywuje wyświetlanie błędów walidacji lub błędu serwera na określony czas (3 sekundy),
    * po czym resetuje stan błędów i czyści kontrolki formularza.
