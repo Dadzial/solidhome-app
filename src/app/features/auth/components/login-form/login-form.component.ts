@@ -13,6 +13,7 @@ import { LoginService } from '@features/auth/services/login/login.service';
 import { LoadingService } from '@core/services/loading/loading.service';
 import { LoginRequest } from '@features/auth/models/auth.models';
 import { ApiError } from '@core/models/core.models';
+
 /**
  * Komponent reprezentujący formularz logowania użytkownika.
  *
@@ -36,24 +37,31 @@ import { ApiError } from '@core/models/core.models';
 export class LoginFormComponent {
   /** Serwis zarządzający globalnym oknem ładowania aplikacji. */
   private loadingService = inject(LoadingService);
+
   /** Serwis obsługujący operacje logowania i dekodowania tokenu użytkownika. */
   private loginService = inject(LoginService);
+
   /** Serwis routingu do przekierowań między widokami. */
   private router = inject(Router);
+
   /** Zdarzenie wywoływane w celu przełączenia widoku na formularz rejestracji. */
   public switchToSignup = output<void>();
+
   /** Zdarzenie wywoływane w celu przełączenia widoku na formularz odzyskiwania hasła. */
   public switchToVerify = output<void>();
+
   /**
    * Sygnał informujący o trwającym procesie wysyłania formularza i logowania.
    * @type {signal}
    */
   public isLoading = signal(false);
+
   /**
    * Sygnał przechowujący komunikat o błędzie zwrócony z serwera (lub `null` przy braku błędu).
    * @type {signal}
    */
   public serverError = signal<string | null>(null);
+
   /**
    * Sygnał sterujący widocznością błędów walidacji (lokalnych i serwerowych) w szablonie.
    * @type {signal}
@@ -116,6 +124,7 @@ export class LoginFormComponent {
       },
     },
   );
+
   /**
    * Przełącza stan opcji "Zapamiętaj mnie" (Remember Me) w modelu formularza.
    *
@@ -124,6 +133,7 @@ export class LoginFormComponent {
   public toggleRememberMe(): void {
     this.loginModel.update((m) => ({ ...m, rememberMe: !m.rememberMe }));
   }
+
   /**
    * Obsługuje zdarzenie zatwierdzenia formularza (submit).
    *
@@ -141,6 +151,7 @@ export class LoginFormComponent {
       this.triggerTemporaryErrors();
     }
   }
+
   /**
    * Aktywuje wyświetlanie błędów walidacji lub błędu serwera na określony czas (3 sekundy),
    * po czym resetuje stan błędów i czyści kontrolki formularza.
