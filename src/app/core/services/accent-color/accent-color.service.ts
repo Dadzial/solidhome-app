@@ -12,6 +12,9 @@ import { DOCUMENT } from '@angular/common';
   providedIn: 'root',
 })
 export class AccentColorService {
+  /**
+   * Referencja do obiektu `document` przeglądarki, używana do manipulacji stylami globalnymi.
+   */
   private document = inject(DOCUMENT);
   /**
    * Reaktywny sygnał przechowujący aktualnie aktywną zmienną CSS koloru akcentu.
