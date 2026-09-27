@@ -1,5 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+
 /**
  * Serwis odpowiedzialny za zarządzanie dynamicznym kolorem akcentu w aplikacji.
  *
@@ -16,6 +17,7 @@ export class AccentColorService {
    * Referencja do obiektu `document` przeglądarki, używana do manipulacji stylami globalnymi.
    */
   private document = inject(DOCUMENT);
+
   /**
    * Reaktywny sygnał przechowujący aktualnie aktywną zmienną CSS koloru akcentu.
    * @type signal
@@ -31,6 +33,7 @@ export class AccentColorService {
   constructor() {
     this.initTheme();
   }
+
   /**
    * Ustawia nowy kolor akcentu w aplikacji.
    *
@@ -46,6 +49,7 @@ export class AccentColorService {
     this.currentThemeColor.set(colorVar);
     localStorage.setItem(this.storageKey, colorVar);
   }
+
   /**
    * Odczytuje zapisany kolor z pamięci podręcznej przeglądarki i aplikuje go przy starcie aplikacji.
    *
