@@ -13,6 +13,7 @@ export interface Light {
   y: number;
   on: boolean;
 }
+
 /**
  * Model danych lampy zwracany bezpośrednio przez API backendu.
  *
@@ -28,6 +29,7 @@ export interface LightItem {
   state: 0 | 1;
   updatedAt?: string;
 }
+
 /**
  * Model pojedynczego wpisu historii zmian stanu lampy zwracany przez API.
  *
@@ -49,6 +51,7 @@ export interface LightHistoryItem {
     email: string;
   } | null;
 }
+
 /**
  * Odpowiedź serwera po pomyślnym wyczyszczeniu historii zmian świateł.
  *
@@ -60,6 +63,7 @@ export interface ResetHistoryResponse {
   message: string;
   deletedCount?: number;
 }
+
 /**
  * Model wpisu historii po przetworzeniu przez serwis — gotowy do wyświetlenia w szablonie.
  *

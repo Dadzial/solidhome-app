@@ -6,6 +6,7 @@ import { LoginFormComponent } from '@features/auth/components/login-form/login-f
 import { RegisterFormComponent } from '@features/auth/components/register-form/register-form.component';
 import { VerifyFormComponent } from '@features/auth/components/verify-form/verify-form.component';
 import { RestoreFormComponent } from '@features/auth/components/restore-form/restore-form.component';
+
 /**
  * Komponent strony autoryzacji — główny kontener dla wszystkich formularzy uwierzytelniania.
  *

@@ -1,5 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { TranslationsService } from '@core/services/translations/translations.service';
+
 /**
  * Komponent przycisku wyboru języka aplikacji (PL / EN).
  *
@@ -20,11 +21,13 @@ import { TranslationsService } from '@core/services/translations/translations.se
 export class LangButtonComponent implements OnInit {
   /** Serwis zarządzający językiem i tłumaczeniami w aplikacji. */
   public translationsService = inject(TranslationsService);
+
   /**
    * Sygnał informujący o załadowaniu komponentu (steruje animacją transition).
    * @type {signal}
    */
   public isLoaded = signal(false);
+
   /**
    * Inicjalizuje komponent i aktywuje flagę `isLoaded` po krótkim opóźnieniu.
    *

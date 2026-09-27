@@ -7,6 +7,7 @@ import {
   LightHistoryItem,
   ResetHistoryResponse,
 } from '@features/lights/models/lights.models';
+
 /**
  * Słownik mapujący identyfikatory lamp (klucze API) na klucze i18n tłumaczeń nazw pomieszczeń.
  *
@@ -20,6 +21,7 @@ export const ROOMS_NAMES_TRANSLATIONS: Record<string, string> = {
   hallway: 'home.lightsWidget.rooms.hallway',
   garage: 'home.lightsWidget.rooms.garage',
 };
+
 /**
  * Serwis odpowiedzialny za pobieranie, przetwarzanie i resetowanie historii zmian stanu świateł.
  *
@@ -37,8 +39,10 @@ export const ROOMS_NAMES_TRANSLATIONS: Record<string, string> = {
 export class LightsHistoryService {
   /** Inject httpClient do wykonywania żądań HTTP w Angularze. */
   private http = inject(HttpClient);
+
   /** Adres endpoint API odpowiedzialnego za operacje związane z oświetleniem. */
   private readonly apiUrl = `${environment.apiUrl}/lights`;
+
   /**
    * Sygnał przechowujący przetworzone wpisy historii zmian świateł do wyświetlenia w widoku.
    * @type {signal}
@@ -75,6 +79,7 @@ export class LightsHistoryService {
       },
     });
   }
+
   /**
    * Usuwa całą historię zmian świateł przez API i czyści lokalny sygnał `history`.
    *
@@ -90,6 +95,7 @@ export class LightsHistoryService {
       },
     });
   }
+
   /**
    * Pobiera surową historię zmian stanu świateł z API jako Observable.
    *
@@ -100,6 +106,7 @@ export class LightsHistoryService {
     const options = limit ? { params: { limit: limit.toString() } } : {};
     return this.http.get<LightHistoryItem[]>(`${this.apiUrl}/history`, options);
   }
+
   /**
    * Wysyła żądanie HTTP DELETE do API w celu usunięcia całej historii zmian świateł.
    *

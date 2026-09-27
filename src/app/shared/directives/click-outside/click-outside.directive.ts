@@ -1,4 +1,5 @@
 import { Directive, ElementRef, HostListener, inject, output } from '@angular/core';
+
 /**
  * Dyrektywa wykrywająca kliknięcia poza elementem, do którego została przypisana.
  *
@@ -16,8 +17,10 @@ import { Directive, ElementRef, HostListener, inject, output } from '@angular/co
 export class ClickOutsideDirective {
   /** Referencja do elementu DOM, na którym umieszczono dyrektywę. */
   private elementRef = inject(ElementRef);
+
   /** Zdarzenie emitowane w momencie kliknięcia poza obszarem elementu. */
   public appClickOutside = output<void>();
+
   /**
    * Obsługuje globalne zdarzenie kliknięcia dokumentu.
    *

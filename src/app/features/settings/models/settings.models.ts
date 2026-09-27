@@ -15,6 +15,7 @@ export interface UpdateUserRequest {
   currentPassword?: string;
   password?: string;
 }
+
 /**
  * Odpowiedź serwera po pomyślnej aktualizacji danych użytkownika.
  *

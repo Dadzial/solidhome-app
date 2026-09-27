@@ -5,6 +5,7 @@ import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { LogoutService } from '@core/services/logout/logout.service';
 import { ClickOutsideDirective } from '@shared/directives/click-outside/click-outside.directive';
 import { SettingsModalComponent } from '@features/settings/components/settings-modal/settings-modal.component';
+
 /**
  * Komponent głównego paska nawigacyjnego (Navbar) aplikacji.
  *
@@ -35,18 +36,22 @@ import { SettingsModalComponent } from '@features/settings/components/settings-m
 export class NavbarComponent {
   /** Serwis obsługujący operację wylogowania użytkownika. */
   private logoutService = inject(LogoutService);
+
   /** Router Angulara do przekierowywania po wylogowaniu. */
   private router = inject(Router);
+
   /**
    * Sygnał określający stan otwarcia menu mobilnego.
    * @type {signal}
    */
   public isMobileMenuOpen = signal(false);
+
   /**
    * Sygnał określający stan otwarcia modalu ustawień.
    * @type {signal}
    */
   public isSettingsOpen = signal(false);
+
   /**
    * Przełącza stan widoczności menu mobilnego.
    * W przypadku otwarcia zamyka modal ustawień.
@@ -59,6 +64,7 @@ export class NavbarComponent {
       this.isSettingsOpen.set(false);
     }
   }
+
   /**
    * Przełącza stan widoczności modalu ustawień.
    * W przypadku otwarcia zamyka menu mobilne.
@@ -71,6 +77,7 @@ export class NavbarComponent {
       this.isMobileMenuOpen.set(false);
     }
   }
+
   /**
    * Inicjuje proces wylogowania użytkownika z systemu przez API.
    * Niezależnie od wyniku zapytania czyści pamięć podręczną i przekierowuje do strony logowania.
@@ -86,6 +93,7 @@ export class NavbarComponent {
       },
     });
   }
+
   /**
    * Czyści tokeny autoryzacyjne i przekierowuje użytkownika do widoku autoryzacji (`/`).
    *

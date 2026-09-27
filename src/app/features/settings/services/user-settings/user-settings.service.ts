@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { UpdateUserRequest, UpdateUserResponse } from '@features/settings/models/settings.models';
 import { Observable } from 'rxjs';
+
 /**
  * Serwis odpowiedzialny za aktualizację danych użytkownika w systemie.
  *
@@ -17,8 +18,10 @@ import { Observable } from 'rxjs';
 export class UserSettingsService {
   /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
   private http = inject(HttpClient);
+
   /** Adres endpoint API odpowiedzialnego za operacje związane z użytkownikiem. */
   private readonly apiUrl = `${environment.apiUrl}/user`;
+
   /**
    *  Wysyła żądanie HTTP POST do endpointu API w celu aktualizacji danych użytkownika.
    *

@@ -7,6 +7,7 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
 import { authInterceptor } from '@core/interceptors/auth/auth-interceptor';
 import { errorInterceptor } from '@core/interceptors/error/error-interceptor';
+
 /**
  * Główna konfiguracja providers dla aplikacji.
  *

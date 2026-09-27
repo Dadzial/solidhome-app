@@ -4,6 +4,7 @@ import { environment } from '@environments/environment';
 import { Observable, forkJoin } from 'rxjs';
 import { Light, LightItem } from '@features/lights/models/lights.models';
 import { LightsHistoryService } from '../lights-history/lights-history.service';
+
 /**
  * Domyślne rozmieszczenie lamp na rzucie SVG (home_preview.png)
  * @type {Light[]}
@@ -16,6 +17,7 @@ const INITIAL_LIGHTS: Light[] = [
   { id: 'hallway', y: 590, x: 890, on: false },
   { id: 'garage', y: 450, x: 655, on: false },
 ];
+
 /**
  * Serwis odpowiedzialny za pobieranie i aktualizację stanu świateł w aplikacji.
  *
@@ -35,8 +37,10 @@ const INITIAL_LIGHTS: Light[] = [
 export class LightsControlService {
   /** Inject httpClient do wykonywania żądań HTTP w Angularze. */
   private http = inject(HttpClient);
+
   /** Inject LightsHistoryService do automatycznego odświeżania historii po akcjach użytkownika. */
   private lightsHistoryService = inject(LightsHistoryService);
+
   /** Adres endpoint API odpowiedzialnego za operacje związane z oświetleniem. */
   private readonly apiUrl = `${environment.apiUrl}/lights`;
 
@@ -51,6 +55,7 @@ export class LightsControlService {
    * @type {signal}
    */
   public readonly hasError = signal<boolean>(false);
+
   /**
    * Sygnał obliczeniowy zwracający `true`, gdy wszystkie lampy są włączone.
    * @type {computed}
@@ -59,6 +64,7 @@ export class LightsControlService {
     const currentLights = this.lights();
     return currentLights.length > 0 && currentLights.every((l) => l.on);
   });
+
   /**
    * Pobiera aktualny stan wszystkich lamp z API i aktualizuje sygnał `lights`.
    *
@@ -81,6 +87,7 @@ export class LightsControlService {
       },
     });
   }
+
   /**
    * Przełącza stan pojedynczej lampy z optymistyczną aktualizacją UI i rollbackiem w razie błędu.
    *
@@ -105,6 +112,7 @@ export class LightsControlService {
       },
     });
   }
+
   /**
    * Przełącza stan wszystkich lamp jednocześnie za pomocą `forkJoin` z obsługą rollbacku.
    *
@@ -130,6 +138,7 @@ export class LightsControlService {
       },
     });
   }
+
   /**
    * Pobiera aktualny stan wszystkich lamp z API jako Observable.
    *
@@ -138,6 +147,7 @@ export class LightsControlService {
   public getStatus(): Observable<LightItem[]> {
     return this.http.get<LightItem[]>(`${this.apiUrl}/status/app`);
   }
+
   /**
    * Wysyła żądanie HTTP POST do API w celu aktualizacji stanu wybranej lampy.
    *

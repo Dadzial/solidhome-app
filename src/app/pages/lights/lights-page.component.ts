@@ -7,6 +7,7 @@ import { LightsWidgetComponent } from '@features/lights/components/lights-widget
 import {LightsScheduleComponent} from '@features/lights/components/lights-schedule/lights-schedule.component';
 import {LightsScenesComponent} from '@features/lights/components/lights-scenes/lights-scenes.component';
 import {LightsEnergyComponent} from '@features/lights/components/lights-enegry/lights-energy.component';
+
 /**
  * Komponent strony sterowania oświetleniem domowym.
  *

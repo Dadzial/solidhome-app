@@ -18,6 +18,7 @@ import {
   required,
   submit,
 } from '@angular/forms/signals';
+
 /**
  * Komponent reprezentujący modal ustawień użytkownika.
  *
@@ -41,39 +42,49 @@ import {
 export class SettingsModalComponent {
   /** Serwis zarządzający kolorem akcentu aplikacji — dostępny publiczne dla szablonu. */
   public accentColorService = inject(AccentColorService);
+
   /** Serwis obsługujący aktualizację danych profilu użytkownika. */
   private userSettingsService = inject(UserSettingsService);
+
   /** Serwis logowania — używany do aktualizacji sygnału `userName` po zmianie nazwy użytkownika. */
   private loginService = inject(LoginService);
+
   /**
    * Wejściowy sygnał sterujący widocznością modalu ustawień.
    */
   public isOpen = input(false);
+
   /** Zdarzenie wywoływane w celu zamknięcia modalu ustawień. */
   public closeSettings = output<void>();
+
   /** Zdarzenie wywoływane po wybraniu nowego koloru akcentu. */
   public selectedColor = output();
+
   /**
    * Sygnał informujący o trwającym procesie zapisu danych do API.
    * @type {signal}
    */
   public isLoading = signal(false);
+
   /**
    * Sygnał przechowujący komunikat o błędzie zwrócony z serwera (lub `null` przy braku błędu).
    * @type {signal}
    */
   public serverError = signal<string | null>(null);
+
   /**
    * Sygnał sterujący widocznością błędów walidacji (lokalnych i serwerowych) w szablonie.
    * @type {signal}
    */
   public showLocalErrors = signal(false);
+
   /**
    * Sygnał przechowujący identyfikator aktualnie rozwiniętej sekcji formularza
    * (`'username'`, `'email'`, `'password'`) lub `null` gdy żadna nie jest aktywna.
    * @type {signal}
    */
   public expandedSection = signal<'username' | 'email' | 'password' | null>(null);
+
   /**
    * Przełącza widoczność wybranej sekcji formularza.
    * Jeśli sekcja jest już otwarta, zamyka ją (toggle).
@@ -84,6 +95,7 @@ export class SettingsModalComponent {
   public toggleSection(section: 'username' | 'email' | 'password'): void {
     this.expandedSection.update((current) => (current === section ? null : section));
   }
+
   /**
    * Model danych formularza zmiany nazwy użytkownika.
    * @type {signal}
@@ -120,6 +132,7 @@ export class SettingsModalComponent {
       },
     },
   );
+
   /**
    * Model danych formularza zmiany adresu e-mail.
    * @type {signal}
@@ -154,6 +167,7 @@ export class SettingsModalComponent {
       },
     },
   );
+
   /**
    * Model danych formularza zmiany hasła (aktualne hasło, nowe hasło, potwierdzenie nowego hasła).
    * @type {signal}
@@ -204,6 +218,7 @@ export class SettingsModalComponent {
       },
     },
   );
+
   /**
    * Obsługuje zdarzenie zatwierdzenia formularza zmiany nazwy użytkownika.
    *
@@ -217,6 +232,7 @@ export class SettingsModalComponent {
       this.triggerTemporaryErrors();
     }
   }
+
   /**
    * Obsługuje zdarzenie zatwierdzenia formularza zmiany adresu e-mail.
    *
@@ -230,6 +246,7 @@ export class SettingsModalComponent {
       this.triggerTemporaryErrors();
     }
   }
+
   /**
    * Obsługuje zdarzenie zatwierdzenia formularza zmiany hasła.
    *
@@ -243,6 +260,7 @@ export class SettingsModalComponent {
       this.triggerTemporaryErrors();
     }
   }
+
   /**
    * Aktywuje wyświetlanie błędów walidacji lub błędu serwera na określony czas (3 sekundy),
    * po czym resetuje stan błędów i czyści wszystkie kontrolki formularzy.

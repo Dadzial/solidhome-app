@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { loginGuard } from '@core/guards/login/login-guard';
+
 /**
  * Główna konfiguracja tras (routingu) aplikacji SolidHome.
  *

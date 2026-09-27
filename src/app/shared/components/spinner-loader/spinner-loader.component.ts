@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+
 /**
  * Komponent pełnoekranowego ładowania.
  *
