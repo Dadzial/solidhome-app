@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { environment } from '@environments/environment';
 import { LoginRequest, LoginResponse } from '@features/auth/models/auth.models';
 import { Observable } from 'rxjs';
+
 /**
  * Serwis odpowiedzialny za uwierzytelnianie użytkownika oraz zarządzanie jego tożsamością na podstawie tokenu JWT.
  *
@@ -19,18 +20,22 @@ import { Observable } from 'rxjs';
 export class LoginService {
   /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
   private http = inject(HttpClient);
+
   /** Adres endpoint API odpowiedzialnego za operacje związane z użytkownikiem. */
   private readonly apiUrl = `${environment.apiUrl}/user`;
+
   /**
    * Reaktywny sygnał przechowujący nazwę aktualnie zalogowanego użytkownika.
    * Pusta wartość (`''`) oznacza brak aktywnej sesji.
    * @type {signal}
    */
   public readonly userName = signal<string>('');
+
   /** Konstruktor inicjalizujący metode initUserFromToken() */
   constructor() {
     this.initUserFromToken();
   }
+
   /**
    * Wysyła żądanie HTTP POST do endpointu API w celu uwierzytelnienia użytkownika.
    *
@@ -40,6 +45,7 @@ export class LoginService {
   public login(data: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/auth`, data);
   }
+
   /**
    * Odczytuje token JWT z `localStorage` lub `sessionStorage`, dekoduje go
    * i aktualizuje sygnał `userName` na podstawie zawartości tokenu.
