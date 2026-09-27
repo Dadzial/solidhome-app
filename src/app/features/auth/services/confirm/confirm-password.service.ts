@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { ConfirmPasswordRequest, ConfirmPasswordResponse } from '@features/auth/models/auth.models';
 import { Observable } from 'rxjs';
+
 /**
  * Serwis odpowiedzialny za potwierdzenie resetu hasła użytkownika przy użyciu jednorazowego kodu weryfikacyjnego.
  *
@@ -16,8 +17,10 @@ import { Observable } from 'rxjs';
 export class ConfirmPasswordService {
   /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
   private http = inject(HttpClient);
+
   /** Adres endpoint API odpowiedzialnego za operacje związane z użytkownikiem. */
   private readonly apiUrl = `${environment.apiUrl}/user`;
+
   /**
    * Wysyła żądanie HTTP POST do endpointu API w celu potwierdzenia resetu hasła.
    *
