@@ -1,7 +1,7 @@
 <div
-  class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
-  <!-- Nagłówek Scenes — tytuł -->
-  <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
+  class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden">
+  <!-- Nagłówek Scenes — tytuł i przycisk dodawania sceny -->
+  <div class="flex flex-row items-center justify-between mb-3 shrink-0">
     <div class="flex items-center gap-2">
       <svg-icon src="assets/icons/light_scenes.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
       <h2
@@ -12,25 +12,124 @@
     <!-- Przycisk dodawania sceny -->
     <button
       (click)="toggleAddScene()"
-      class="bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all active:scale-95 cursor-pointer">
-      {{ 'lightsPage.add' | translate }}
+      class="bg-accent h-8 px-3 rounded-lg text-body-14-medium text-text-primary transition-all hover:brightness-110 active:scale-95 cursor-pointer flex items-center gap-1.5">
+      <span>+</span>
+      <span>{{ 'lightsPage.add' | translate }}</span>
     </button>
-    <!-- Przestrzeń dodania sceny aktywowana przez signal 'enableAddScene' -->
-    @if (enableAddScene()) {
-      <div
-        class="absolute inset-0 flex flex-col z-50 bg-background-secondary rounded-3xl p-4 shadow-lg animate-fade-in">
-        <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
-          <h2 class="text-text-primary text-body-24-bold text-shadow-2xs">
-            {{ 'lightsPage.addScene' | translate }}
-          </h2>
-          <!-- Przycisk zamknięcia formularza -->
-          <button
-            (click)="toggleAddScene()"
-            class="w-8 h-8 flex items-center justify-center rounded-full text-text-primary/50 hover:text-accent hover:bg-background-tertiary transition-colors cursor-pointer">
-            <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-9 h-9"></svg-icon>
-          </button>
+  </div>
+  <!-- Siatka / Lista scen -->
+  <div class="flex-1 min-h-0 overflow-y-auto rounded-scrollbar pr-1 grid grid-cols-2 gap-2.5">
+    <!-- Scena 1: Kino domowe (Aktywna) -->
+    <div class="flex flex-col justify-between p-3 rounded-2xl bg-background-primary border-2 border-accent hover:brightness-95 dark:hover:brightness-110 transition-all cursor-pointer group">
+      <div class="flex items-center justify-between">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-accent text-text-primary shadow-[0_0_15px_rgba(var(--color-accent),0.4)]">
+          <svg-icon src="assets/icons/film.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5 text-text-primary"></svg-icon>
         </div>
       </div>
-    }
+      <div class="flex flex-col mt-2">
+        <span class="text-body-16-semibold text-text-primary group-hover:text-accent transition-colors">Kino domowe</span>
+        <span class="text-body-12-regular text-text-primary/60 mt-0.5">Salon (1 lampa)</span>
+      </div>
+    </div>
+    <!-- Scena 2: Relaks -->
+    <div class="flex flex-col justify-between p-3 rounded-2xl bg-background-primary border-2 border-transparent hover:border-accent/40 hover:brightness-95 dark:hover:brightness-110 transition-all cursor-pointer group">
+      <div class="flex items-center justify-between">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-accent/20 text-accent">
+          <svg-icon src="assets/icons/heart.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5 text-accent"></svg-icon>
+        </div>
+      </div>
+      <div class="flex flex-col mt-2">
+        <span class="text-body-16-semibold text-text-primary group-hover:text-accent transition-colors">Relaks</span>
+        <span class="text-body-12-regular text-text-primary/60 mt-0.5">Ciepłe światło (3)</span>
+      </div>
+    </div>
+    <!-- Scena 3: Praca -->
+    <div class="flex flex-col justify-between p-3 rounded-2xl bg-background-primary border-2 border-transparent hover:border-accent/40 hover:brightness-95 dark:hover:brightness-110 transition-all cursor-pointer group">
+      <div class="flex items-center justify-between">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-accent/20 text-accent">
+          <svg-icon src="assets/icons/work.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5 text-accent"></svg-icon>
+        </div>
+      </div>
+      <div class="flex flex-col mt-2">
+        <span class="text-body-16-semibold text-text-primary group-hover:text-accent transition-colors">Praca</span>
+        <span class="text-body-12-regular text-text-primary/60 mt-0.5">Kuchnia + Salon</span>
+      </div>
+    </div>
+    <!-- Scena 4: Dobranoc -->
+    <div class="flex flex-col justify-between p-3 rounded-2xl bg-background-primary border-2 border-transparent hover:border-accent/40 hover:brightness-95 dark:hover:brightness-110 transition-all cursor-pointer group">
+      <div class="flex items-center justify-between">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-accent/20 text-accent">
+          <svg-icon src="assets/icons/moon.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5 text-accent"></svg-icon>
+        </div>
+      </div>
+      <div class="flex flex-col mt-2">
+        <span class="text-body-16-semibold text-text-primary group-hover:text-accent transition-colors">Dobranoc</span>
+        <span class="text-body-12-regular text-text-primary/60 mt-0.5">Wszystkie wyłącz</span>
+      </div>
+    </div>
   </div>
+  <!-- Modal formularza dodawania sceny aktywowany przez 'enableAddScene' -->
+  @if (enableAddScene()) {
+    <div class="absolute inset-0 flex flex-col z-50 bg-background-secondary rounded-3xl p-4 shadow-2xl animate-fade-in">
+      <!-- Nagłówek formularza -->
+      <div class="flex flex-row items-center justify-between mb-3 shrink-0">
+        <h2 class="text-text-primary text-body-24-bold text-shadow-2xs">
+          {{ 'lightsPage.addScene' | translate }}
+        </h2>
+        <button
+          (click)="toggleAddScene()"
+          class="w-8 h-8 flex items-center justify-center rounded-full text-text-primary/50 hover:text-accent hover:bg-background-tertiary transition-colors cursor-pointer">
+          <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-9 h-9"></svg-icon>
+        </button>
+      </div>
+      <!-- Formularz tworzenia sceny -->
+      <div class="flex-1 min-h-0 overflow-y-auto rounded-scrollbar pr-1 flex flex-col gap-3">
+        <!-- Nazwa sceny -->
+        <div class="flex flex-col gap-1">
+          <label class="text-body-12-medium text-text-primary/70">Nazwa sceny</label>
+          <input
+            type="text"
+            placeholder="np. Impreza"
+            class="w-full bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2 rounded-xl outline-none border border-transparent transition-colors" />
+        </div>
+        <!-- Wybór ikony -->
+        <div class="flex flex-col gap-1">
+          <label class="text-body-12-medium text-text-primary/70">Ikona</label>
+          <div class="flex items-center gap-2">
+            <button class="w-10 h-10 rounded-xl bg-accent text-shadow-text-primary flex items-center justify-center cursor-pointer">
+              <svg-icon src="assets/icons/film.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5"></svg-icon>
+            </button>
+            <button class="w-10 h-10 rounded-xl bg-background-primary text-text-primary/60 hover:text-accent flex items-center justify-center cursor-pointer transition-colors">
+              <svg-icon src="assets/icons/heart.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5"></svg-icon>
+            </button>
+            <button class="w-10 h-10 rounded-xl bg-background-primary text-text-primary/60 hover:text-accent flex items-center justify-center cursor-pointer transition-colors">
+              <svg-icon src="assets/icons/work.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5"></svg-icon>
+            </button>
+            <button class="w-10 h-10 rounded-xl bg-background-primary text-text-primary/60 hover:text-accent flex items-center justify-center cursor-pointer transition-colors">
+              <svg-icon src="assets/icons/moon.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5"></svg-icon>
+            </button>
+            <button class="w-10 h-10 rounded-xl bg-background-primary text-text-primary/60 hover:text-accent flex items-center justify-center cursor-pointer transition-colors">
+              <svg-icon src="assets/icons/sun.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5"></svg-icon>
+            </button>
+          </div>
+        </div>
+        <!-- Opis sceny -->
+        <div class="flex flex-col gap-1">
+          <label class="text-body-12-medium text-text-primary/70">Krótki opis</label>
+          <input
+            type="text"
+            placeholder="np. Kolorowe podświetlenie w salonie"
+            class="w-full bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2 rounded-xl outline-none border border-transparent transition-colors" />
+        </div>
+      </div>
+      <!-- Przycisk zapisu -->
+      <div class="pt-3 shrink-0">
+        <button
+          (click)="toggleAddScene()"
+          class="w-full bg-accent text-text-primary text-body-14-medium py-2.5 rounded-xl transition-all hover:brightness-110 active:scale-98 cursor-pointer">
+          Zapisz
+        </button>
+      </div>
+    </div>
+  }
 </div>

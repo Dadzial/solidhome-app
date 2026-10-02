@@ -106,7 +106,11 @@ export class LightsEnergyComponent {
         },
       },
     },
-    colors: ['#3b82f6'],
+    colors: ['var(--color-accent, #00C7CE)'],
+    fill: {
+      type: 'solid',
+      opacity: 0.1,
+    },
     tooltip: {
       theme: 'dark',
     },

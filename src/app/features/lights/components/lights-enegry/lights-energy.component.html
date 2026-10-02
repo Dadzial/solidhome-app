@@ -90,6 +90,7 @@
         [yaxis]="chartOptions().yaxis!"
         [grid]="chartOptions().grid!"
         [stroke]="chartOptions().stroke!"
+        [fill]="chartOptions().fill!"
         [dataLabels]="chartOptions().dataLabels!"
         [colors]="chartOptions().colors!"
         [tooltip]="chartOptions().tooltip!">
@@ -105,7 +106,7 @@
         <div class="flex flex-col gap-1">
           <div class="flex items-center justify-between text-body-12-medium text-text-primary">
             <span>{{ 'home.lightsWidget.rooms.livingRoom' | translate }}</span>
-            <span class="text-accent">45%</span>
+            <span class="text-text-primary">45%</span>
           </div>
           <div class="w-full h-2 bg-background-primary rounded-full overflow-hidden">
             <div class="h-full bg-accent rounded-full transition-all duration-300" style="width: 45%"></div>
@@ -116,7 +117,7 @@
         <div class="flex flex-col gap-1">
           <div class="flex items-center justify-between text-body-12-medium text-text-primary">
             <span>{{ 'home.lightsWidget.rooms.kitchen' | translate }}</span>
-            <span class="text-accent">30%</span>
+            <span class="text-text-primary">30%</span>
           </div>
           <div class="w-full h-2 bg-background-primary rounded-full overflow-hidden">
             <div class="h-full bg-accent rounded-full transition-all duration-300" style="width: 30%"></div>
@@ -127,7 +128,7 @@
         <div class="flex flex-col gap-1">
           <div class="flex items-center justify-between text-body-12-medium text-text-primary">
             <span>{{ 'home.lightsWidget.rooms.garage' | translate }}</span>
-            <span class="text-accent">15%</span>
+            <span class="text-text-primary">15%</span>
           </div>
           <div class="w-full h-2 bg-background-primary rounded-full overflow-hidden">
             <div class="h-full bg-accent rounded-full transition-all duration-300" style="width: 15%"></div>
