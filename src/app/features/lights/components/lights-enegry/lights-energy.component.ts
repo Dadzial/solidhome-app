@@ -1,10 +1,16 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { TranslationsService } from '@core/services/translations/translations.service';
 import { ChartComponent, ApexOptions } from 'ng-apexcharts';
 import { ROOMS_NAMES_TRANSLATIONS } from '@features/lights/services/lights-history/lights-history.service';
 
 type TimeframeOption = 'today' | 'week' | 'month';
+
+const WEEKDAYS = {
+  pl: ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb', 'Nd'],
+  en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+} as const;
 
 @Component({
   selector: 'app-lights-energy',
@@ -14,6 +20,7 @@ type TimeframeOption = 'today' | 'week' | 'month';
   styles: ``,
 })
 export class LightsEnergyComponent {
+  private translationsService = inject(TranslationsService);
   public activeDropdown = signal<'timeframe' | 'room' | null>(null);
   public selectedTimeframe = signal<TimeframeOption>('today');
   public selectedRoom = signal<string>('entireHouse');
@@ -32,8 +39,13 @@ export class LightsEnergyComponent {
     })),
   ];
 
+  private translatedCategories = computed(() => {
+    const lang = this.translationsService.currentLang();
+    return [...WEEKDAYS[lang]];
+  });
+
   // Wykres zużycia energii do testu styli (przykładowe dane)
-  public readonly chartOptions: ApexOptions = {
+  public readonly chartOptions = computed<ApexOptions>(() => ({
     series: [
       {
         name: 'Zużycie energii (kWh)',
@@ -45,6 +57,9 @@ export class LightsEnergyComponent {
       height: '100%',
       toolbar: { show: false },
       fontFamily: 'inherit',
+      animations:{
+        enabled: false,
+      }
     },
     dataLabels: { enabled: false },
     stroke: { curve: 'smooth', width: 2 },
@@ -64,7 +79,7 @@ export class LightsEnergyComponent {
     },
 
     xaxis: {
-      categories: ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Ndz'],
+      categories: this.translatedCategories(),
       labels: {
         style: {
           colors: 'var(--text-primary)',
@@ -87,7 +102,7 @@ export class LightsEnergyComponent {
     tooltip: {
       theme: 'dark',
     },
-  };
+  }));
 
   public selectedTimeframeLabel = computed(() => {
     const found = this.timeframeOptions.find((t) => t.value === this.selectedTimeframe());
