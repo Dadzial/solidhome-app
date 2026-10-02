@@ -57,15 +57,18 @@ export class LightsEnergyComponent {
       height: '100%',
       toolbar: { show: false },
       fontFamily: 'inherit',
-      animations:{
+      animations: {
         enabled: false,
-      }
+      },
     },
     dataLabels: { enabled: false },
     stroke: { curve: 'smooth', width: 2 },
-
     grid: {
       borderColor: 'color-mix(in srgb, var(--text-primary) 20%, transparent)',
+      padding: {
+        left: 20,
+        right: 20,
+      },
       xaxis: {
         lines: {
           show: false,
@@ -77,10 +80,14 @@ export class LightsEnergyComponent {
         },
       },
     },
-
     xaxis: {
       categories: this.translatedCategories(),
+      tickPlacement: 'on',
       labels: {
+        rotate: 0,
+        rotateAlways: false,
+        hideOverlappingLabels: false,
+        trim: false,
         style: {
           colors: 'var(--text-primary)',
           fontSize: '12px',
@@ -90,6 +97,8 @@ export class LightsEnergyComponent {
     },
     yaxis: {
       labels: {
+        minWidth: 40,
+        maxWidth: 40,
         style: {
           colors: 'var(--text-primary)',
           fontSize: '12px',
@@ -97,7 +106,6 @@ export class LightsEnergyComponent {
         },
       },
     },
-
     colors: ['#3b82f6'],
     tooltip: {
       theme: 'dark',
