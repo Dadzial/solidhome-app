@@ -96,8 +96,42 @@
     </div>
     <!-- Wiersz dla podsumowania największego zużycia -->
     <div class="flex flex-col mt-2">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between mb-2">
         <span class="text-text-primary text-body-18-bold">{{ 'lightsPage.greatestConsumption' | translate }}</span>
+      </div>
+      <div class="flex flex-col gap-2.5">
+        <!-- Salon -->
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center justify-between text-body-12-medium text-text-primary">
+            <span>{{ 'home.lightsWidget.rooms.livingRoom' | translate }}</span>
+            <span class="text-accent">45%</span>
+          </div>
+          <div class="w-full h-2 bg-background-primary rounded-full overflow-hidden">
+            <div class="h-full bg-accent rounded-full transition-all duration-300" style="width: 45%"></div>
+          </div>
+        </div>
+
+        <!-- Kuchnia -->
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center justify-between text-body-12-medium text-text-primary">
+            <span>{{ 'home.lightsWidget.rooms.kitchen' | translate }}</span>
+            <span class="text-accent">30%</span>
+          </div>
+          <div class="w-full h-2 bg-background-primary rounded-full overflow-hidden">
+            <div class="h-full bg-accent rounded-full transition-all duration-300" style="width: 30%"></div>
+          </div>
+        </div>
+
+        <!-- Garaż -->
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center justify-between text-body-12-medium text-text-primary">
+            <span>{{ 'home.lightsWidget.rooms.garage' | translate }}</span>
+            <span class="text-accent">15%</span>
+          </div>
+          <div class="w-full h-2 bg-background-primary rounded-full overflow-hidden">
+            <div class="h-full bg-accent rounded-full transition-all duration-300" style="width: 15%"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
