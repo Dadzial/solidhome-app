@@ -1,7 +1,7 @@
 <div
-  class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden">
+  class="@container w-full h-full p-4 max-md:p-3.5 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden">
   <!-- Nagłówek Scenes — tytuł i przycisk dodawania sceny -->
-  <div class="flex flex-row items-center justify-between mb-3 shrink-0">
+  <div class="flex flex-row items-center justify-between mb-3 max-md:mb-2.5 shrink-0">
     <div class="flex items-center gap-2">
       <svg-icon src="assets/icons/light_scenes.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
       <h2
@@ -18,53 +18,53 @@
     </button>
   </div>
   <!-- Siatka / Lista scen -->
-  <div class="flex-1 min-h-0 overflow-y-auto rounded-scrollbar pr-1 grid grid-cols-2 gap-2.5">
+  <div class="flex-1 min-h-0 overflow-y-auto rounded-scrollbar pr-1 grid grid-cols-2 gap-2.5 max-md:gap-2">
     <!-- Scena 1: Kino domowe (Aktywna) -->
-    <div class="flex flex-col justify-between p-3 rounded-2xl bg-background-primary border-2 border-accent hover:brightness-95 dark:hover:brightness-110 transition-all cursor-pointer group">
+    <div class="flex flex-col justify-between p-3 max-md:p-2.5 rounded-2xl bg-background-primary border-2 border-accent hover:brightness-95 dark:hover:brightness-110 transition-all cursor-pointer group">
       <div class="flex items-center justify-between">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-accent text-text-primary shadow-[0_0_15px_rgba(var(--color-accent),0.4)]">
-          <svg-icon src="assets/icons/film.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5 text-text-primary"></svg-icon>
+        <div class="w-10 h-10 max-md:w-8.5 max-md:h-8.5 rounded-full flex items-center justify-center bg-accent text-text-primary shadow-[0_0_15px_rgba(var(--color-accent),0.4)]">
+          <svg-icon src="assets/icons/film.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5 max-md:w-4 max-md:h-4 text-text-primary"></svg-icon>
         </div>
       </div>
-      <div class="flex flex-col mt-2">
-        <span class="text-body-16-semibold text-text-primary group-hover:text-accent transition-colors">Kino domowe</span>
-        <span class="text-body-12-regular text-text-primary/60 mt-0.5">Salon (1 lampa)</span>
+      <div class="flex flex-col mt-2 max-md:mt-1">
+        <span class="text-body-16-semibold max-md:text-body-13-semibold text-text-primary group-hover:text-accent transition-colors truncate">Kino domowe</span>
+        <span class="text-body-12-regular max-md:text-body-10-regular text-text-primary/60 mt-0.5 max-md:mt-0 truncate">Salon (1 lampa)</span>
       </div>
     </div>
     <!-- Scena 2: Relaks -->
-    <div class="flex flex-col justify-between p-3 rounded-2xl bg-background-primary border-2 border-transparent hover:border-accent/40 hover:brightness-95 dark:hover:brightness-110 transition-all cursor-pointer group">
+    <div class="flex flex-col justify-between p-3 max-md:p-2.5 rounded-2xl bg-background-primary border-2 border-transparent hover:border-accent/40 hover:brightness-95 dark:hover:brightness-110 transition-all cursor-pointer group">
       <div class="flex items-center justify-between">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-accent/20 text-accent">
-          <svg-icon src="assets/icons/heart.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5 text-accent"></svg-icon>
+        <div class="w-10 h-10 max-md:w-8.5 max-md:h-8.5 rounded-full flex items-center justify-center bg-accent/20 text-accent">
+          <svg-icon src="assets/icons/heart.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5 max-md:w-4 max-md:h-4 text-accent"></svg-icon>
         </div>
       </div>
-      <div class="flex flex-col mt-2">
-        <span class="text-body-16-semibold text-text-primary group-hover:text-accent transition-colors">Relaks</span>
-        <span class="text-body-12-regular text-text-primary/60 mt-0.5">Ciepłe światło (3)</span>
+      <div class="flex flex-col mt-2 max-md:mt-1">
+        <span class="text-body-16-semibold max-md:text-body-13-semibold text-text-primary group-hover:text-accent transition-colors truncate">Relaks</span>
+        <span class="text-body-12-regular max-md:text-body-10-regular text-text-primary/60 mt-0.5 max-md:mt-0 truncate">Ciepłe światło (3)</span>
       </div>
     </div>
     <!-- Scena 3: Praca -->
-    <div class="flex flex-col justify-between p-3 rounded-2xl bg-background-primary border-2 border-transparent hover:border-accent/40 hover:brightness-95 dark:hover:brightness-110 transition-all cursor-pointer group">
+    <div class="flex flex-col justify-between p-3 max-md:p-2.5 rounded-2xl bg-background-primary border-2 border-transparent hover:border-accent/40 hover:brightness-95 dark:hover:brightness-110 transition-all cursor-pointer group">
       <div class="flex items-center justify-between">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-accent/20 text-accent">
-          <svg-icon src="assets/icons/work.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5 text-accent"></svg-icon>
+        <div class="w-10 h-10 max-md:w-8.5 max-md:h-8.5 rounded-full flex items-center justify-center bg-accent/20 text-accent">
+          <svg-icon src="assets/icons/work.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5 max-md:w-4 max-md:h-4 text-accent"></svg-icon>
         </div>
       </div>
-      <div class="flex flex-col mt-2">
-        <span class="text-body-16-semibold text-text-primary group-hover:text-accent transition-colors">Praca</span>
-        <span class="text-body-12-regular text-text-primary/60 mt-0.5">Kuchnia + Salon</span>
+      <div class="flex flex-col mt-2 max-md:mt-1">
+        <span class="text-body-16-semibold max-md:text-body-13-semibold text-text-primary group-hover:text-accent transition-colors truncate">Praca</span>
+        <span class="text-body-12-regular max-md:text-body-10-regular text-text-primary/60 mt-0.5 max-md:mt-0 truncate">Kuchnia + Salon</span>
       </div>
     </div>
     <!-- Scena 4: Dobranoc -->
-    <div class="flex flex-col justify-between p-3 rounded-2xl bg-background-primary border-2 border-transparent hover:border-accent/40 hover:brightness-95 dark:hover:brightness-110 transition-all cursor-pointer group">
+    <div class="flex flex-col justify-between p-3 max-md:p-2.5 rounded-2xl bg-background-primary border-2 border-transparent hover:border-accent/40 hover:brightness-95 dark:hover:brightness-110 transition-all cursor-pointer group">
       <div class="flex items-center justify-between">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-accent/20 text-accent">
-          <svg-icon src="assets/icons/moon.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5 text-accent"></svg-icon>
+        <div class="w-10 h-10 max-md:w-8.5 max-md:h-8.5 rounded-full flex items-center justify-center bg-accent/20 text-accent">
+          <svg-icon src="assets/icons/moon.svg" [applyClass]="true" class="flex items-center justify-center w-5 h-5 max-md:w-4 max-md:h-4 text-accent"></svg-icon>
         </div>
       </div>
-      <div class="flex flex-col mt-2">
-        <span class="text-body-16-semibold text-text-primary group-hover:text-accent transition-colors">Dobranoc</span>
-        <span class="text-body-12-regular text-text-primary/60 mt-0.5">Wszystkie wyłącz</span>
+      <div class="flex flex-col mt-2 max-md:mt-1">
+        <span class="text-body-16-semibold max-md:text-body-13-semibold text-text-primary group-hover:text-accent transition-colors truncate">Dobranoc</span>
+        <span class="text-body-12-regular max-md:text-body-10-regular text-text-primary/60 mt-0.5 max-md:mt-0 truncate">Wszystkie wyłącz</span>
       </div>
     </div>
   </div>

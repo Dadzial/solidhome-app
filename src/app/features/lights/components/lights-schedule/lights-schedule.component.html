@@ -1,7 +1,7 @@
 <div
-  class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden">
+  class="@container w-full h-full p-4 max-md:p-3.5 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden">
   <!-- Nagłówek Schedule — tytuł i przycisk dodawania reguły -->
-  <div class="flex flex-row items-center justify-between mb-3 shrink-0">
+  <div class="flex flex-row items-center justify-between mb-3 max-md:mb-2.5 shrink-0">
     <div class="flex items-center gap-2">
       <svg-icon src="assets/icons/light_schedule.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
       <h2
@@ -18,15 +18,15 @@
     </button>
   </div>
   <!-- Lista reguł harmonogramu -->
-  <div class="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col gap-2.5">
+  <div class="flex-1 min-h-0 overflow-y-auto rounded-scrollbar pr-1 flex flex-col gap-2.5 max-md:gap-2">
     <!-- Reguła 1: Wyłączanie na noc -->
     <div
-      class="flex items-center justify-between p-3 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
+      class="flex items-center justify-between p-3 max-md:p-2.5 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
       <div class="flex items-center gap-3 min-w-0">
         <!-- Informacje o regule -->
         <div class="flex flex-col min-w-0">
           <div class="flex items-center gap-2">
-            <span class="text-body-16-semibold text-text-primary truncate">Wyłączanie na noc</span>
+            <span class="text-body-16-semibold max-md:text-body-14-semibold text-text-primary truncate">Wyłączanie na noc</span>
             <div class="bg-background-secondary h-4 px-1.5 rounded-md shrink-0 inline-flex items-center justify-center">
               <span class="text-xs font-normal text-text-primary/70 leading-none">23:00</span>
             </div>
@@ -49,12 +49,12 @@
     </div>
     <!-- Reguła 2: Poranny start -->
     <div
-      class="flex items-center justify-between p-3 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
+      class="flex items-center justify-between p-3 max-md:p-2.5 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
       <div class="flex items-center gap-3 min-w-0">
         <!-- Informacje o regule -->
         <div class="flex flex-col min-w-0">
           <div class="flex items-center gap-2">
-            <span class="text-body-16-semibold text-text-primary truncate">Poranny start</span>
+            <span class="text-body-16-semibold max-md:text-body-14-semibold text-text-primary truncate">Poranny start</span>
             <div class="bg-background-secondary h-4 px-1.5 rounded-md shrink-0 inline-flex items-center justify-center">
               <span class="text-xs font-normal text-text-primary/70 leading-none">6:45</span>
             </div>
@@ -77,12 +77,12 @@
     </div>
     <!-- Reguła 3: Wieczorny relaks -->
     <div
-      class="flex items-center justify-between p-3 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
+      class="flex items-center justify-between p-3 max-md:p-2.5 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
       <div class="flex items-center gap-3 min-w-0">
         <!-- Informacje o regule -->
         <div class="flex flex-col min-w-0">
           <div class="flex items-center gap-2">
-            <span class="text-body-16-semibold text-text-primary truncate">Wieczorny relaks</span>
+            <span class="text-body-16-semibold max-md:text-body-14-semibold text-text-primary truncate">Wieczorny relaks</span>
             <div class="bg-background-secondary h-4 px-1.5 rounded-md shrink-0 inline-flex items-center justify-center">
               <span class="text-xs font-normal text-text-primary/70 leading-none">19:45</span>
             </div>
