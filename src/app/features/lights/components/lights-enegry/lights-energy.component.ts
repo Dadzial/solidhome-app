@@ -12,6 +12,13 @@ const WEEKDAYS = {
   en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 } as const;
 
+const TODAY_HOURS = ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '23:59'];
+
+const MONTH_WEEKS = {
+  pl: ['Tydz 1', 'Tydz 2', 'Tydz 3', 'Tydz 4'],
+  en: ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4'],
+} as const;
+
 @Component({
   selector: 'app-lights-energy',
   imports: [SvgIconComponent, TranslateModule, ChartComponent],
@@ -39,9 +46,21 @@ export class LightsEnergyComponent {
     })),
   ];
 
-  private translatedCategories = computed(() => {
+  private translatedCategories = computed<string[]>(() => {
     const lang = this.translationsService.currentLang();
-    return [...WEEKDAYS[lang]];
+    const timeframe = this.selectedTimeframe();
+    if (timeframe === 'today') return [...TODAY_HOURS];
+    if (timeframe === 'month') return [...MONTH_WEEKS[lang]];
+    if (timeframe === 'week')  return [...WEEKDAYS[lang]];
+    return [];
+  });
+
+  private chartData = computed(() => {
+    const timeframe = this.selectedTimeframe();
+    if (timeframe === 'today') return [2, 1, 4, 8, 14, 25, 12];
+    if (timeframe === 'month') return [185, 210, 195, 230];
+    if (timeframe === 'week') return [31, 40, 28, 51, 42, 109, 100];
+    return [];
   });
 
   // Wykres zużycia energii do testu styli (przykładowe dane)
@@ -49,7 +68,7 @@ export class LightsEnergyComponent {
     series: [
       {
         name: 'Zużycie energii (kWh)',
-        data: [31, 40, 28, 51, 42, 109, 100],
+        data: this.chartData(),
       },
     ],
     chart: {
