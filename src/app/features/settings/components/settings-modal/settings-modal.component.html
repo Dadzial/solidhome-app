@@ -1,6 +1,6 @@
 <!-- Kontener modalu — animacja wejścia/wyjścia przez opacity/scale, zamknięcie po kliknięciu poza modal -->
 <div (appClickOutside)="isOpen() ? closeSettings.emit() : null"
-     class="fixed top-12 sm:top-14 right-0 sm:right-3 left-0 sm:left-auto w-full sm:w-80 bg-background-secondary rounded-b-lg sm:rounded-lg shadow-xl sm:shadow-sm z-100 flex flex-col origin-top-right transition-all duration-200 ease-out opacity-0 scale-95 -translate-y-2 pointer-events-none md:border md:border-accent"
+     class="fixed top-12 lg:top-14 right-0 lg:right-3 left-0 lg:left-auto w-full lg:w-80 bg-background-secondary rounded-b-lg lg:rounded-lg shadow-xl lg:shadow-sm z-100 flex flex-col origin-top-right transition-all duration-200 ease-out opacity-0 scale-95 -translate-y-2 pointer-events-none lg:border lg:border-accent"
      [class.opacity-0]="!isOpen()"
      [class.scale-95]="!isOpen()"
      [class.-translate-y-2]="!isOpen()"
@@ -220,7 +220,7 @@
     <div class="flex flex-col gap-3">
       <h2 class="text-body-16-semibold text-text-primary">{{ 'home.settingsModal.themeColor' | translate }}</h2>
       <!-- Przyciski kolorów — aktywny kolor oznaczony jest pierścieniem (ring) -->
-      <div class="flex flex-row justify-between sm:justify-start sm:gap-4.5 pr-2 sm:pr-0">
+      <div class="flex flex-row justify-between lg:justify-start lg:gap-4.5 pr-2 lg:pr-0">
         <button style="background-color: var(--theme-accent-cyan)"
                 (click)="accentColorService.setAccentColor('var(--theme-accent-cyan)')"
                 [class.ring-2]="accentColorService.currentThemeColor() === 'var(--theme-accent-cyan)'"
