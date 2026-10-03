@@ -20,7 +20,7 @@
           type="button"
           (click)="toggleDropdown('timeframe')"
           class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer">
-          <span>{{ selectedTimeframeLabel() | translate }}</span>
+          <span class="pt-0.5">{{ selectedTimeframeLabel() | translate }}</span>
           <svg-icon
             src="assets/icons/down_arrow.svg"
             [applyClass]="true"
@@ -53,7 +53,7 @@
           type="button"
           (click)="toggleDropdown('room')"
           class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer">
-          <span>{{ selectedRoomLabel() | translate }}</span>
+          <span class="pt-0.5">{{ selectedRoomLabel() | translate }}</span>
           <svg-icon
             src="assets/icons/down_arrow.svg"
             [applyClass]="true"
