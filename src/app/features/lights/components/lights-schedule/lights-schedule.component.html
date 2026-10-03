@@ -1,7 +1,7 @@
 <div
-  class="@container w-full h-full p-4 max-md:p-3.5 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden">
-  <!-- Nagłówek Schedule — tytuł i przycisk dodawania reguły -->
-  <div class="flex flex-row items-center justify-between mb-3 max-md:mb-2.5 shrink-0">
+  class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
+  <!-- Nagłówek Schedule — tytuł -->
+  <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
     <div class="flex items-center gap-2">
       <svg-icon src="assets/icons/light_schedule.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
       <h2
@@ -12,191 +12,24 @@
     <!-- Przycisk dodawania reguły -->
     <button
       (click)="toggleAddSchedule()"
-      class="bg-accent h-8 px-3 rounded-lg text-body-14-medium text-text-primary transition-all hover:brightness-110 active:scale-95 cursor-pointer flex items-center gap-1.5">
-      <span>+</span>
-      <span>{{ 'lightsPage.add' | translate }}</span>
+      class="bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all active:scale-95 cursor-pointer">
+      {{ 'lightsPage.add' | translate }}
     </button>
+    <!-- Przestrzeń dodania reguły aktywowana przez signal 'enableAddSchedule' -->
+    @if (enableAddSchedule()) {
+      <div class="absolute inset-0 flex flex-col z-50 bg-background-secondary rounded-3xl p-4 shadow-lg animate-fade-in">
+        <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
+          <h2 class="text-text-primary text-body-24-bold text-shadow-2xs">
+            {{ 'lightsPage.addRule' | translate }}
+          </h2>
+          <!-- Przycisk zamknięcia formularza -->
+          <button
+            (click)="toggleAddSchedule()"
+            class="w-8 h-8 flex items-center justify-center rounded-full text-text-primary/50 hover:text-accent hover:bg-background-tertiary transition-colors cursor-pointer">
+            <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-9 h-9"></svg-icon>
+          </button>
+        </div>
+      </div>
+    }
   </div>
-  <!-- Lista reguł harmonogramu -->
-  <div class="flex-1 min-h-0 overflow-y-auto rounded-scrollbar pr-1 flex flex-col gap-2.5 max-md:gap-2">
-    <!-- Reguła 1: Wyłączanie na noc -->
-    <div
-      class="flex items-center justify-between p-3 max-md:p-2.5 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
-      <div class="flex items-center gap-3 min-w-0">
-        <!-- Informacje o regule -->
-        <div class="flex flex-col min-w-0">
-          <div class="flex items-center gap-2">
-            <span class="text-body-16-semibold max-md:text-body-14-semibold text-text-primary truncate">Wyłączanie na noc</span>
-            <div class="bg-background-secondary h-4 px-1.5 rounded-md shrink-0 inline-flex items-center justify-center">
-              <span class="text-xs font-normal text-text-primary/70 leading-none">23:00</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-2 text-body-12-regular text-text-primary/60 mt-0.5">
-            <span class="text-accent">Pn - Nd</span>
-            <span>•</span>
-            <span class="truncate">Salon, Kuchnia</span>
-          </div>
-        </div>
-      </div>
-      <!-- Przełącznik aktywności reguły -->
-      <div class="flex items-center gap-2 shrink-0 ml-2">
-        <button
-          class="w-10 h-5 rounded-full relative cursor-pointer shadow-inner border border-accent bg-accent shrink-0 flex items-center px-0.5 transition-colors duration-300">
-          <div
-            class="w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-300 translate-x-5"></div>
-        </button>
-      </div>
-    </div>
-    <!-- Reguła 2: Poranny start -->
-    <div
-      class="flex items-center justify-between p-3 max-md:p-2.5 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
-      <div class="flex items-center gap-3 min-w-0">
-        <!-- Informacje o regule -->
-        <div class="flex flex-col min-w-0">
-          <div class="flex items-center gap-2">
-            <span class="text-body-16-semibold max-md:text-body-14-semibold text-text-primary truncate">Poranny start</span>
-            <div class="bg-background-secondary h-4 px-1.5 rounded-md shrink-0 inline-flex items-center justify-center">
-              <span class="text-xs font-normal text-text-primary/70 leading-none">6:45</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-2 text-body-12-regular text-text-primary/60 mt-0.5">
-            <span class="text-accent">Pn - Pt</span>
-            <span>•</span>
-            <span class="truncate">Kuchnia, Korytarz</span>
-          </div>
-        </div>
-      </div>
-      <!-- Przełącznik aktywności reguły -->
-      <div class="flex items-center gap-2 shrink-0 ml-2">
-        <button
-          class="w-10 h-5 rounded-full relative cursor-pointer shadow-inner border border-accent bg-accent shrink-0 flex items-center px-0.5 transition-colors duration-300">
-          <div
-            class="w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-300 translate-x-5"></div>
-        </button>
-      </div>
-    </div>
-    <!-- Reguła 3: Wieczorny relaks -->
-    <div
-      class="flex items-center justify-between p-3 max-md:p-2.5 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
-      <div class="flex items-center gap-3 min-w-0">
-        <!-- Informacje o regule -->
-        <div class="flex flex-col min-w-0">
-          <div class="flex items-center gap-2">
-            <span class="text-body-16-semibold max-md:text-body-14-semibold text-text-primary truncate">Wieczorny relaks</span>
-            <div class="bg-background-secondary h-4 px-1.5 rounded-md shrink-0 inline-flex items-center justify-center">
-              <span class="text-xs font-normal text-text-primary/70 leading-none">19:45</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-2 text-body-12-regular text-text-primary/60 mt-0.5">
-            <span class="text-text-primary/60">Sb, Nd</span>
-            <span>•</span>
-            <span class="truncate">Salon</span>
-          </div>
-        </div>
-      </div>
-      <!-- Przełącznik aktywności reguły (nieaktywny) -->
-      <div class="flex items-center gap-2 shrink-0 ml-2">
-        <button
-          class="w-10 h-5 rounded-full relative cursor-pointer shadow-inner border border-divider bg-background-primary shrink-0 flex items-center px-0.5 transition-colors duration-300">
-          <div
-            class="w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-300 translate-x-0"></div>
-        </button>
-      </div>
-    </div>
-  </div>
-  <!-- Modal formularza dodawania reguły aktywowany przez 'enableAddSchedule' -->
-  @if (enableAddSchedule()) {
-    <div class="absolute inset-0 flex flex-col z-50 bg-background-secondary rounded-3xl p-4 shadow-2xl animate-fade-in">
-      <!-- Nagłówek formularza -->
-      <div class="flex flex-row items-center justify-between mb-3 shrink-0">
-        <h2 class="text-text-primary text-body-24-bold text-shadow-2xs">
-          {{ 'lightsPage.addRule' | translate }}
-        </h2>
-        <button
-          (click)="toggleAddSchedule()"
-          class="w-8 h-8 flex items-center justify-center rounded-full text-text-primary/50 hover:text-accent hover:bg-background-tertiary transition-colors cursor-pointer">
-          <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-9 h-9"></svg-icon>
-        </button>
-      </div>
-      <!-- Formularz tworzenia reguły -->
-      <div class="flex-1 min-h-0 overflow-y-auto rounded-scrollbar pr-1 flex flex-col gap-3">
-        <!-- Nazwa reguły -->
-        <div class="flex flex-col gap-1">
-          <label class="text-body-12-medium text-text-primary/70">Nazwa reguły</label>
-          <input
-            type="text"
-            placeholder="np. Wyłączenie na noc"
-            class="w-full h-10 bg-background-primary text-text-primary text-body-14-medium px-3.5 rounded-xl outline-none border border-transparent transition-colors" />
-        </div>
-        <!-- Godzina i akcja -->
-        <div class="grid grid-cols-2 gap-2">
-          <div class="flex flex-col gap-1">
-            <label class="text-body-12-medium text-text-primary/70">{{ 'lightsPage.time' | translate }}</label>
-            <div class="relative w-full h-10">
-              <input
-                type="time"
-                value="22:00"
-                (click)="$any($event.target).showPicker?.()"
-                class="w-full h-full bg-background-primary text-text-primary text-body-14-medium px-3.5 rounded-xl outline-none border border-transparent transition-colors cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer" />
-              <div
-                class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none flex items-center justify-center">
-                <svg-icon src="assets/icons/time_select.svg" [applyClass]="true"
-                          class="flex items-center justify-center w-5 h-5 text-text-primary"></svg-icon>
-              </div>
-            </div>
-          </div>
-          <div class="flex flex-col gap-1">
-            <label class="text-body-12-medium text-text-primary/70">Akcja</label>
-            <div class="h-10 flex bg-background-primary rounded-xl overflow-hidden">
-              <button
-                class="flex-1 h-full flex items-center justify-center text-body-14-medium bg-accent text-text-primary cursor-pointer transition-all">
-                Włącz
-              </button>
-              <button
-                class="flex-1 h-full flex items-center justify-center text-body-14-medium text-text-primary/60 hover:text-text-primary cursor-pointer transition-all">
-                Wyłącz
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- Dni tygodnia -->
-        <div class="flex flex-col gap-1">
-          <label class="text-body-12-medium text-text-primary/70">Powtarzaj w dni</label>
-          <div class="flex items-center justify-between gap-2">
-            <button class="flex-1 py-1.5 rounded-lg text-body-12-medium bg-accent text-text-primary cursor-pointer">
-              Pn
-            </button>
-            <button class="flex-1 py-1.5 rounded-lg text-body-12-medium bg-accent text-text-primary cursor-pointer">
-              Wt
-            </button>
-            <button class="flex-1 py-1.5 rounded-lg text-body-12-medium bg-accent text-text-primary cursor-pointer">
-              Śr
-            </button>
-            <button class="flex-1 py-1.5 rounded-lg text-body-12-medium bg-accent text-text-primary cursor-pointer">
-              Cz
-            </button>
-            <button class="flex-1 py-1.5 rounded-lg text-body-12-medium bg-accent text-text-primary cursor-pointer">
-              Pt
-            </button>
-            <button
-              class="flex-1 py-1.5 rounded-lg text-body-12-medium bg-background-primary text-text-primary/60 cursor-pointer">
-              Sb
-            </button>
-            <button
-              class="flex-1 py-1.5 rounded-lg text-body-12-medium bg-background-primary text-text-primary/60 cursor-pointer">
-              Nd
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- Przycisk zapisu -->
-      <div class="pt-3 shrink-0">
-        <button
-          (click)="toggleAddSchedule()"
-          class="w-full bg-accent text-text-primary text-body-14-medium py-2.5 rounded-xl transition-all hover:brightness-110 active:scale-98 cursor-pointer">
-          Zapisz
-        </button>
-      </div>
-    </div>
-  }
 </div>
