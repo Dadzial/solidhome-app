@@ -2,7 +2,7 @@ import { Component, signal, computed, inject, OnInit, DestroyRef } from '@angula
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslationsService } from '@core/services/translations/translations.service';
-import { ChartComponent, ApexOptions } from 'ng-apexcharts';
+import { ChartComponent, ApexOptions, ApexXAxis } from 'ng-apexcharts';
 import { ROOMS_NAMES_TRANSLATIONS } from '@features/lights/services/lights-history/lights-history.service';
 import { LightsEnergyService } from '@features/lights/services/lights-energy/lights-energy.service';
 
@@ -13,7 +13,6 @@ const WEEKDAYS = {
   en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 } as const;
 
-const TODAY_HOURS = ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '23:59'];
 
 const MONTH_WEEKS = {
   pl: ['Tydz 1', 'Tydz 2', 'Tydz 3', 'Tydz 4'],
@@ -60,97 +59,195 @@ export class LightsEnergyComponent implements OnInit {
 
   public topRooms = computed(() => this.lightsEnergyService.energy().topRooms.slice(0, 3));
 
-  private translatedCategories = computed<string[]>(() => {
-    this.lightsEnergyService.energy();
-    const lang = this.translationsService.currentLang();
+  public readonly chartOptions = computed<ApexOptions>(() => {
     const timeframe = this.selectedTimeframe();
+    const lang = this.translationsService.currentLang();
+    const rawData = this.lightsEnergyService.energy().chartData;
+    const now = new Date();
+
+    let seriesData: any[] = [];
+    let xaxisConfig: ApexXAxis;
+
     if (timeframe === 'today') {
-      const categories = [...TODAY_HOURS];
-      const now = new Date();
-      const activeIdx = Math.min(Math.floor(now.getHours() / 4), categories.length - 1);
-      categories[activeIdx] = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      return categories;
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const currentBucket = Math.min(Math.floor(now.getHours() / 4), 6);
+      const points: { x: number; y: number }[] = [];
+
+      for (let i = 0; i < currentBucket; i++) {
+        const val = rawData[i];
+        if (val !== null && val !== undefined) {
+          points.push({ x: i * 240, y: val });
+        }
+      }
+
+      if (currentBucket === 0 && currentMinutes > 0 && points.length === 0) {
+        points.push({ x: 0, y: 0 });
+      }
+
+      const currentVal = rawData[currentBucket];
+      if (currentVal !== null && currentVal !== undefined) {
+        points.push({ x: currentMinutes, y: currentVal });
+      }
+
+      seriesData = points;
+
+      xaxisConfig = {
+        type: 'numeric',
+        min: 0,
+        max: 1440,
+        tickAmount: 6,
+        tickPlacement: 'on',
+        labels: {
+          rotate: 0,
+          rotateAlways: false,
+          hideOverlappingLabels: false,
+          trim: false,
+          formatter: (val: string | number) => {
+            const num = Number(val);
+            const h = Math.floor(num / 60);
+            const m = Math.round(num % 60);
+            return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+          },
+          style: {
+            colors: 'var(--text-primary)',
+            fontSize: '12px',
+            fontFamily: 'inherit',
+          },
+        },
+      };
+    } else if (timeframe === 'week') {
+      const currentBucket = (now.getDay() + 6) % 7;
+      const points: (number | null)[] = [];
+      for (let i = 0; i < 7; i++) {
+        if (i <= currentBucket && rawData[i] !== null && rawData[i] !== undefined) {
+          points.push(rawData[i]);
+        } else {
+          points.push(null);
+        }
+      }
+      seriesData = points;
+
+      xaxisConfig = {
+        type: 'category',
+        categories: [...WEEKDAYS[lang]],
+        tickPlacement: 'on',
+        labels: {
+          rotate: 0,
+          rotateAlways: false,
+          hideOverlappingLabels: false,
+          trim: false,
+          style: {
+            colors: 'var(--text-primary)',
+            fontSize: '12px',
+            fontFamily: 'inherit',
+          },
+        },
+      };
+    } else {
+      const currentBucket = Math.min(Math.floor((now.getDate() - 1) / 7), 3);
+      const points: (number | null)[] = [];
+      for (let i = 0; i < 4; i++) {
+        if (i <= currentBucket && rawData[i] !== null && rawData[i] !== undefined) {
+          points.push(rawData[i]);
+        } else {
+          points.push(null);
+        }
+      }
+      seriesData = points;
+
+      xaxisConfig = {
+        type: 'category',
+        categories: [...MONTH_WEEKS[lang]],
+        tickPlacement: 'on',
+        labels: {
+          rotate: 0,
+          rotateAlways: false,
+          hideOverlappingLabels: false,
+          trim: false,
+          style: {
+            colors: 'var(--text-primary)',
+            fontSize: '12px',
+            fontFamily: 'inherit',
+          },
+        },
+      };
     }
-    if (timeframe === 'month') return [...MONTH_WEEKS[lang]];
-    if (timeframe === 'week') return [...WEEKDAYS[lang]];
-    return [];
-  });
 
-  private chartData = computed(() => this.lightsEnergyService.energy().chartData);
-
-  public readonly chartOptions = computed<ApexOptions>(() => ({
-    series: [
-      {
-        name: 'Zużycie energii (kWh)',
-        data: this.chartData(),
-      },
-    ],
-    chart: {
-      type: 'area',
-      height: '100%',
-      toolbar: { show: false },
-      fontFamily: 'inherit',
-      animations: {
-        enabled: true,
-      },
-    },
-    dataLabels: { enabled: false },
-    stroke: { curve: 'smooth', width: 2 },
-    grid: {
-      borderColor: 'color-mix(in srgb, var(--text-primary) 20%, transparent)',
-      padding: {
-        left: 20,
-        right: 20,
-      },
-      xaxis: {
-        lines: {
-          show: false,
+    return {
+      series: [
+        {
+          name: 'Zużycie energii (kWh)',
+          data: seriesData,
+        },
+      ],
+      chart: {
+        type: 'area',
+        height: '100%',
+        toolbar: { show: false },
+        fontFamily: 'inherit',
+        animations: {
+          enabled: true,
         },
       },
+      dataLabels: { enabled: false },
+      stroke: { curve: 'smooth', width: 2 },
+      grid: {
+        borderColor: 'color-mix(in srgb, var(--text-primary) 20%, transparent)',
+        padding: {
+          left: 20,
+          right: 20,
+        },
+        xaxis: {
+          lines: {
+            show: false,
+          },
+        },
+        yaxis: {
+          lines: {
+            show: true,
+          },
+        },
+      },
+      xaxis: xaxisConfig,
       yaxis: {
-        lines: {
-          show: true,
+        min: 0,
+        max: 0.06,
+        tickAmount: 3,
+        labels: {
+          minWidth: 40,
+          maxWidth: 40,
+          formatter: (val: number) => val.toFixed(2),
+          style: {
+            colors: 'var(--text-primary)',
+            fontSize: '12px',
+            fontFamily: 'inherit',
+          },
         },
       },
-    },
-    xaxis: {
-      categories: this.translatedCategories(),
-      tickPlacement: 'on',
-      labels: {
-        rotate: 0,
-        rotateAlways: false,
-        hideOverlappingLabels: false,
-        trim: false,
-        style: {
-          colors: 'var(--text-primary)',
-          fontSize: '12px',
-          fontFamily: 'inherit',
+      colors: ['var(--color-accent, #00C7CE)'],
+      fill: {
+        type: 'solid',
+        opacity: 0.1,
+      },
+      tooltip: {
+        theme: 'dark',
+        x: {
+          formatter: (val: number) => {
+            if (timeframe === 'today') {
+              const num = Number(val);
+              const h = Math.floor(num / 60);
+              const m = Math.round(num % 60);
+              return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+            }
+            return String(val);
+          },
+        },
+        y: {
+          formatter: (val: number) => (val !== null && val !== undefined ? `${val.toFixed(2)} kWh` : ''),
         },
       },
-    },
-    yaxis: {
-      min: 0,
-      max: 0.06,
-      labels: {
-        minWidth: 40,
-        maxWidth: 40,
-        formatter: (val: number) => val.toFixed(2),
-        style: {
-          colors: 'var(--text-primary)',
-          fontSize: '12px',
-          fontFamily: 'inherit',
-        },
-      },
-    },
-    colors: ['var(--color-accent, #00C7CE)'],
-    fill: {
-      type: 'solid',
-      opacity: 0.1,
-    },
-    tooltip: {
-      theme: 'dark',
-    },
-  }));
+    };
+  });
 
   public ngOnInit(): void {
     this.loadEnergy();

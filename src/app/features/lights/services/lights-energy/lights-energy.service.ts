@@ -84,6 +84,8 @@ export class LightsEnergyService {
     timeframe: 'today' | 'week' | 'month' = 'today',
     name: string = 'entireHouse',
   ): void {
+    this.lastTimeframe = timeframe;
+    this.lastName = name;
     this.getEnergy(timeframe, name).subscribe({
       next: (data) => {
         this.energy.set(data);
