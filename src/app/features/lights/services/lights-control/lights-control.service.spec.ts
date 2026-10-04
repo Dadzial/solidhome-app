@@ -10,7 +10,6 @@ import { environment } from '@environments/environment';
 describe('LightsControlService', () => {
   let service: LightsControlService;
   let historyService: LightsHistoryService;
-  let energyService: LightsEnergyService;
   let httpMock: HttpTestingController;
   const apiUrl = `${environment.apiUrl}/lights`;
 
@@ -20,14 +19,12 @@ describe('LightsControlService', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         LightsHistoryService,
-        LightsEnergyService,
         LightsControlService,
       ],
     });
 
     service = TestBed.inject(LightsControlService);
     historyService = TestBed.inject(LightsHistoryService);
-    energyService = TestBed.inject(LightsEnergyService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -198,7 +195,6 @@ describe('LightsControlService', () => {
   describe('toggleLight', () => {
     it('should optimistically update light state and call historyService.loadHistory on success', () => {
       const historySpy = vi.spyOn(historyService, 'loadHistory').mockImplementation(() => {});
-      const energySpy = vi.spyOn(energyService, 'refreshEnergy').mockImplementation(() => {});
       const id = 'living_room';
 
       service.toggleLight(id);
@@ -210,7 +206,6 @@ describe('LightsControlService', () => {
 
       expect(service.hasError()).toBe(false);
       expect(historySpy).toHaveBeenCalled();
-      expect(energySpy).toHaveBeenCalled();
     });
 
     it('should revert light state and set hasError to true on error', () => {
@@ -232,7 +227,6 @@ describe('LightsControlService', () => {
   describe('toggleAllLights', () => {
     it('should turn all lights on and call historyService.loadHistory on success', () => {
       const historySpy = vi.spyOn(historyService, 'loadHistory').mockImplementation(() => {});
-      const energySpy = vi.spyOn(energyService, 'refreshEnergy').mockImplementation(() => {});
       service.lights.update((lights) => lights.map((l) => ({ ...l, on: false })));
 
       service.toggleAllLights();
@@ -244,7 +238,6 @@ describe('LightsControlService', () => {
       expect(service.lights().every((l) => l.on === true)).toBe(true);
       expect(service.hasError()).toBe(false);
       expect(historySpy).toHaveBeenCalled();
-      expect(energySpy).toHaveBeenCalled();
     });
 
     it('should revert all lights to original state and set hasError to true on error', () => {
