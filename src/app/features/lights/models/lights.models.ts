@@ -84,3 +84,28 @@ export interface LightHistory {
   time: string;
   user: string;
 }
+
+/**
+ * Model danych statystyk zużycia energii oświetlenia zwracany bezpośrednio przez API backendu.
+ *
+ * @interface LightEnergyItem
+ * @property _id Opcjonalny unikalny identyfikator dokumentu w bazie danych MongoDB.
+ * @property name Nazwa analizowanego obszaru lub pokoju (np. 'entireHouse', 'living_room').
+ * @property timeframe Wybrany zakres czasu analizy ('today' | 'week' | 'month').
+ * @property totalKwh Całkowite zużycie energii w wybranym okresie (w kWh).
+ * @property chartData Tablica punktów zużycia energii dla wykresu liniowego/obszarowego.
+ * @property topRooms Lista pomieszczeń wraz z procentowym udziałem w całkowitym zużyciu.
+ */
+export interface LightEnergyItem {
+  _id?: string;
+  name: string;
+  timeframe: 'today' | 'week' | 'month';
+  totalKwh: number;
+  chartData: number[];
+  topRooms: {
+    _id?: string;
+    name: string;
+    percentage: number;
+  }[];
+}
+
