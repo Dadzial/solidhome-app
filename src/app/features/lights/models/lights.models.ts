@@ -101,7 +101,7 @@ export interface LightEnergyItem {
   name: string;
   timeframe: 'today' | 'week' | 'month';
   totalKwh: number;
-  chartData: number[];
+  chartData: (number | null)[];
   topRooms: {
     _id?: string;
     name: string;

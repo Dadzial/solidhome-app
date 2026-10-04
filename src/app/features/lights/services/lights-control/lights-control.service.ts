@@ -4,7 +4,7 @@ import { environment } from '@environments/environment';
 import { Observable, forkJoin } from 'rxjs';
 import { Light, LightItem } from '@features/lights/models/lights.models';
 import { LightsHistoryService } from '../lights-history/lights-history.service';
-
+import { LightsEnergyService } from '../lights-energy/lights-energy.service';
 /**
  * Domyślne rozmieszczenie lamp na rzucie SVG (home_preview.png)
  * @type {Light[]}
@@ -40,6 +40,9 @@ export class LightsControlService {
 
   /** Inject LightsHistoryService do automatycznego odświeżania historii po akcjach użytkownika. */
   private lightsHistoryService = inject(LightsHistoryService);
+
+  /** Inject LightsEnergyService do pobierania statystyk zużycia energii. */
+  private lightsEnergyService = inject(LightsEnergyService);
 
   /** Adres endpoint API odpowiedzialnego za operacje związane z oświetleniem. */
   private readonly apiUrl = `${environment.apiUrl}/lights`;
@@ -102,6 +105,7 @@ export class LightsControlService {
       next: () => {
         this.hasError.set(false);
         this.lightsHistoryService.loadHistory();
+        this.lightsEnergyService.refreshEnergy();
       },
       error: (err) => {
         console.error('Failed to update light status', err);
@@ -130,6 +134,7 @@ export class LightsControlService {
       next: () => {
         this.hasError.set(false);
         this.lightsHistoryService.loadHistory();
+        this.lightsEnergyService.refreshEnergy();
       },
       error: (err) => {
         console.error('Failed to update lights status', err);

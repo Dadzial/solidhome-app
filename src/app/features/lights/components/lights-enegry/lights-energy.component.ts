@@ -1,9 +1,10 @@
-import { Component, signal, computed, inject } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, DestroyRef } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslationsService } from '@core/services/translations/translations.service';
 import { ChartComponent, ApexOptions } from 'ng-apexcharts';
 import { ROOMS_NAMES_TRANSLATIONS } from '@features/lights/services/lights-history/lights-history.service';
+import { LightsEnergyService } from '@features/lights/services/lights-energy/lights-energy.service';
 
 type TimeframeOption = 'today' | 'week' | 'month';
 
@@ -26,8 +27,11 @@ const MONTH_WEEKS = {
   templateUrl: './lights-energy.component.html',
   styles: ``,
 })
-export class LightsEnergyComponent {
+export class LightsEnergyComponent implements OnInit {
   private translationsService = inject(TranslationsService);
+  public lightsEnergyService = inject(LightsEnergyService);
+  private destroyRef = inject(DestroyRef);
+
   public activeDropdown = signal<'timeframe' | 'room' | null>(null);
   public selectedTimeframe = signal<TimeframeOption>('today');
   public selectedRoom = signal<string>('entireHouse');
@@ -46,24 +50,34 @@ export class LightsEnergyComponent {
     })),
   ];
 
+  public selectedTimeframeLabel = computed(() => {
+    return this.timeframeOptions.find((t) => t.value === this.selectedTimeframe())?.labelKey ?? 'lightsPage.today';
+  });
+
+  public selectedRoomLabel = computed(() => {
+    return this.roomOptions.find((r) => r.value === this.selectedRoom())?.labelKey ?? 'lightsPage.entireHouse';
+  });
+
+  public topRooms = computed(() => this.lightsEnergyService.energy().topRooms.slice(0, 3));
+
   private translatedCategories = computed<string[]>(() => {
+    this.lightsEnergyService.energy();
     const lang = this.translationsService.currentLang();
     const timeframe = this.selectedTimeframe();
-    if (timeframe === 'today') return [...TODAY_HOURS];
+    if (timeframe === 'today') {
+      const categories = [...TODAY_HOURS];
+      const now = new Date();
+      const activeIdx = Math.min(Math.floor(now.getHours() / 4), categories.length - 1);
+      categories[activeIdx] = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return categories;
+    }
     if (timeframe === 'month') return [...MONTH_WEEKS[lang]];
-    if (timeframe === 'week')  return [...WEEKDAYS[lang]];
+    if (timeframe === 'week') return [...WEEKDAYS[lang]];
     return [];
   });
 
-  private chartData = computed(() => {
-    const timeframe = this.selectedTimeframe();
-    if (timeframe === 'today') return [2, 1, 4, 8, 14, 25, 12];
-    if (timeframe === 'month') return [185, 210, 195, 230];
-    if (timeframe === 'week') return [31, 40, 28, 51, 42, 109, 100];
-    return [];
-  });
+  private chartData = computed(() => this.lightsEnergyService.energy().chartData);
 
-  // Wykres zużycia energii do testu styli (przykładowe dane)
   public readonly chartOptions = computed<ApexOptions>(() => ({
     series: [
       {
@@ -77,7 +91,7 @@ export class LightsEnergyComponent {
       toolbar: { show: false },
       fontFamily: 'inherit',
       animations: {
-        enabled: false,
+        enabled: true,
       },
     },
     dataLabels: { enabled: false },
@@ -115,9 +129,12 @@ export class LightsEnergyComponent {
       },
     },
     yaxis: {
+      min: 0,
+      max: 0.06,
       labels: {
         minWidth: 40,
         maxWidth: 40,
+        formatter: (val: number) => val.toFixed(2),
         style: {
           colors: 'var(--text-primary)',
           fontSize: '12px',
@@ -135,15 +152,17 @@ export class LightsEnergyComponent {
     },
   }));
 
-  public selectedTimeframeLabel = computed(() => {
-    const found = this.timeframeOptions.find((t) => t.value === this.selectedTimeframe());
-    return found?.labelKey ?? 'lightsPage.today';
-  });
+  public ngOnInit(): void {
+    this.loadEnergy();
 
-  public selectedRoomLabel = computed(() => {
-    const found = this.roomOptions.find((r) => r.value === this.selectedRoom());
-    return found?.labelKey ?? 'lightsPage.entireHouse';
-  });
+    const interval = setInterval(() => {
+      this.loadEnergy();
+    }, 10000);
+
+    this.destroyRef.onDestroy(() => {
+      clearInterval(interval);
+    });
+  }
 
   public toggleDropdown(type: 'timeframe' | 'room'): void {
     this.activeDropdown.update((current) => (current === type ? null : type));
@@ -152,10 +171,20 @@ export class LightsEnergyComponent {
   public selectTimeframe(timeframe: TimeframeOption): void {
     this.selectedTimeframe.set(timeframe);
     this.activeDropdown.set(null);
+    this.loadEnergy();
   }
 
   public selectRoom(roomValue: string): void {
     this.selectedRoom.set(roomValue);
     this.activeDropdown.set(null);
+    this.loadEnergy();
+  }
+
+  public getRoomLabel(roomName: string): string {
+    return ROOMS_NAMES_TRANSLATIONS[roomName] ?? roomName;
+  }
+
+  private loadEnergy(): void {
+    this.lightsEnergyService.loadEnergy(this.selectedTimeframe(), this.selectedRoom());
   }
 }
