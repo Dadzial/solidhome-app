@@ -10,6 +10,7 @@ import { environment } from '@environments/environment';
 describe('LightsControlService', () => {
   let service: LightsControlService;
   let historyService: LightsHistoryService;
+  let energyService: LightsEnergyService;
   let httpMock: HttpTestingController;
   const apiUrl = `${environment.apiUrl}/lights`;
 
@@ -19,13 +20,17 @@ describe('LightsControlService', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         LightsHistoryService,
+        LightsEnergyService,
         LightsControlService,
       ],
     });
 
     service = TestBed.inject(LightsControlService);
     historyService = TestBed.inject(LightsHistoryService);
+    energyService = TestBed.inject(LightsEnergyService);
     httpMock = TestBed.inject(HttpTestingController);
+
+    vi.spyOn(energyService, 'loadEnergyStats').mockImplementation(() => {});
   });
 
   afterEach(() => {
