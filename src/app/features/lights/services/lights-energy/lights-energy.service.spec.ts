@@ -70,6 +70,10 @@ describe('LightsEnergyService', () => {
     it('should initialize currentRoom signal with "entireHouse"', () => {
       expect(service.currentRoom()).toBe('entireHouse');
     });
+
+    it('should initialize hasError signal with false', () => {
+      expect(service.hasError()).toBe(false);
+    });
   });
 
   describe('getEnergyStats', () => {
@@ -127,6 +131,7 @@ describe('LightsEnergyService', () => {
 
   describe('loadEnergyStats', () => {
     it('should update energyData signal and toggle isLoading on success', () => {
+      service.hasError.set(true);
       service.loadEnergyStats('today', 'entireHouse');
 
       expect(service.isLoading()).toBe(true);
@@ -138,6 +143,7 @@ describe('LightsEnergyService', () => {
       req.flush(mockEnergyData);
 
       expect(service.isLoading()).toBe(false);
+      expect(service.hasError()).toBe(false);
       expect(service.energyData()).toEqual(mockEnergyData);
     });
 
@@ -166,7 +172,7 @@ describe('LightsEnergyService', () => {
       req.flush({ ...mockEnergyData, timeframe: 'week', name: 'boiler_room' });
     });
 
-    it('should set isLoading to false and keep energyData unchanged on error', () => {
+    it('should set isLoading to false, hasError to true and keep energyData unchanged on error', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       service.loadEnergyStats('today', 'living_room');
@@ -176,6 +182,7 @@ describe('LightsEnergyService', () => {
       req.flush({ error: 'Failed' }, { status: 500, statusText: 'Internal Server Error' });
 
       expect(service.isLoading()).toBe(false);
+      expect(service.hasError()).toBe(true);
       expect(service.energyData()).toBeNull();
       expect(consoleSpy).toHaveBeenCalledWith(
         '[LightsEnergyService] Failed to load energy stats',

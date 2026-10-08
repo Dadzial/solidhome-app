@@ -114,7 +114,8 @@
     "week": "Week",
     "month": "Month",
     "entireHouse": "Entire House",
-    "greatestConsumption": "Greatest consumption"
+    "greatestConsumption": "Greatest consumption",
+    "energyError": "Energy statistics is not available check DevTools."
   },
   "gatesAndDoorsPage": {
     "title": "Gates and Doors"

@@ -1,5 +1,14 @@
 <div
   class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
+  <!-- Nakładka błędu — wyświetlana gdy nie udało się pobrać danych energii -->
+  @if (hasError()) {
+    <div
+      class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background-secondary/40 backdrop-blur-md rounded-3xl p-4 text-center">
+      <svg-icon src="assets/icons/error.svg" [applyClass]="true" class="w-12 h-12 text-text-error mb-2"></svg-icon>
+      <h2 class="text-text-primary text-body-18-semibold text-shadow-sm"
+          [innerHTML]="'lightsPage.energyError' | translate"></h2>
+    </div>
+  }
   <!-- Nagłówek Energy — tytuł -->
   <div class="flex-1 min-h-0 flex flex-col mb-2 max-md:mb-3 gap-3">
     <div class="flex flex-row items-center justify-between">

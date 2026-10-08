@@ -105,6 +105,14 @@ describe('LightsEnergyComponent', () => {
   });
 
   describe('computed signals and data mapping', () => {
+    it('should reflect hasError signal from lightsEnergyService', () => {
+      lightsEnergyService.hasError.set(false);
+      expect(component.hasError()).toBe(false);
+
+      lightsEnergyService.hasError.set(true);
+      expect(component.hasError()).toBe(true);
+    });
+
     it('should compute totalKwh correctly when energyData is present and when null', () => {
       lightsEnergyService.energyData.set(null);
       expect(component.totalKwh()).toBe(0);
@@ -140,12 +148,11 @@ describe('LightsEnergyComponent', () => {
     });
 
     it('should translate categories correctly for today, week and month', () => {
-      // today: uses API categories
+
       lightsEnergyService.currentTimeframe.set('today');
       lightsEnergyService.energyData.set(mockEnergyData);
       expect(component.translatedCategories()).toEqual(['18:00', '18:01', '18:02']);
 
-      // week: uses localized weekdays based on chartData length
       lightsEnergyService.currentTimeframe.set('week');
       lightsEnergyService.energyData.set({
         ...mockEnergyData,

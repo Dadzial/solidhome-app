@@ -39,6 +39,12 @@ export class LightsEnergyService {
   public readonly currentRoom = signal<string>('entireHouse');
 
   /**
+   * Sygnał informujący o błędzie komunikacji z API (np. nieudane pobranie lub aktualizacja stanu lamp).
+   * @type {signal}
+   */
+  public readonly hasError = signal<boolean>(false);
+
+  /**
    * Pobiera statystyki zużycia energii z API i aktualizuje sygnał `energyData`.
    * Jeśli parametry nie zostaną przekazane, używa bieżących zapamiętanych filtrów.
    *
@@ -56,10 +62,12 @@ export class LightsEnergyService {
     this.getEnergyStats(tf, r).subscribe({
       next: (data) => {
         this.energyData.set(data);
+        this.hasError.set(false);
         this.isLoading.set(false);
       },
       error: (err) => {
         console.error('[LightsEnergyService] Failed to load energy stats', err);
+        this.hasError.set(true);
         this.isLoading.set(false);
       },
     });
@@ -76,9 +84,7 @@ export class LightsEnergyService {
     timeframe: EnergyTimeframe = 'today',
     room: string = 'entireHouse',
   ): Observable<LightEnergyData> {
-    const params = new HttpParams()
-      .set('timeframe', timeframe)
-      .set('room', room);
+    const params = new HttpParams().set('timeframe', timeframe).set('room', room);
 
     return this.http.get<LightEnergyData>(`${this.apiUrl}/energy`, { params });
   }

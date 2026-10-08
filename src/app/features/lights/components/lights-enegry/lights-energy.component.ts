@@ -63,6 +63,9 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
   /** Serwis zarządzający pobieraniem danych statystyk energii świateł. */
   private lightsEnergyService = inject(LightsEnergyService);
 
+  /** Sygnał informujący o błędzie komunikacji z API. */
+  public readonly hasError = this.lightsEnergyService.hasError;
+
   /** Uchwyt interwału cyklicznego odświeżania danych wykresu. */
   private refreshInterval: ReturnType<typeof setInterval> | null = null;
 
@@ -206,11 +209,18 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
   public readonly yaxisConfig = computed<ApexYAxis>(() => {
     const timeframe = this.selectedTimeframe();
     const isRoom = this.selectedRoom() !== 'entireHouse';
-    const max = timeframe === 'today'
-      ? (isRoom ? 0.08 : 0.25)
-      : timeframe === 'week'
-      ? (isRoom ? 1.0 : 3.0)
-      : (isRoom ? 3.0 : 10.0);
+    const max =
+      timeframe === 'today'
+        ? isRoom
+          ? 0.08
+          : 0.25
+        : timeframe === 'week'
+          ? isRoom
+            ? 1.0
+            : 3.0
+          : isRoom
+            ? 3.0
+            : 10.0;
     const tickAmount = timeframe === 'today' ? (isRoom ? 4 : 5) : 6;
 
     return {
