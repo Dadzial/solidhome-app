@@ -84,3 +84,63 @@ export interface LightHistory {
   time: string;
   user: string;
 }
+
+/**
+ * Opcje okresu czasu dla statystyk energii.
+ */
+export type EnergyTimeframe = 'today' | 'week' | 'month';
+
+/**
+ * Model pojedynczego pomieszczenia w sekcji największego zużycia energii (TOP 3).
+ *
+ * @interface TopRoomEnergy
+ * @property name Identyfikator pomieszczenia (np. 'living_room').
+ * @property kwh Zużycie energii w kilowatogodzinach (kWh).
+ * @property percentage Wyliczony udział procentowy w zużyciu energii całego domu.
+ */
+export interface TopRoomEnergy {
+  name: string;
+  kwh: number;
+  percentage: number;
+}
+
+/**
+ * Model danych statystyk energii zwracanych przez API backendu.
+ *
+ * @interface LightEnergyData
+ * @property name Nazwa wybranego obszaru ('entireHouse' lub nazwa konkretnego pokoju).
+ * @property timeframe Wybrany przedział czasu ('today', 'week', 'month').
+ * @property totalKwh Łączne zużycie energii w wybranym okresie (kWh).
+ * @property chartData Punkty wartości zużycia dla wykresu ApexCharts.
+ * @property topRooms Lista 3 pomieszczeń o największym zużyciu energii z procentami.
+ * @property lightsKwh Mapa zużycia dla każdego poszczególnego punktu świetlnego.
+ * @property totalHouseKwh Sumaryczne zużycie wszystkich obecnych świateł w domu.
+ */
+export interface LightEnergyData {
+  name: string;
+  timeframe: EnergyTimeframe;
+  totalKwh: number;
+  chartData: number[];
+  categories?: string[];
+  topRooms: TopRoomEnergy[];
+  lightsKwh: Record<string, number>;
+  totalHouseKwh: number;
+}
+
+/**
+ * Model widoku reprezentujący pojedynczy element w rankingu TOP pomieszczeń
+ * wzbogacony o klucz tłumaczenia i18n dla szablonu HTML.
+ *
+ * @interface DisplayTopRoom
+ * @property name Identyfikator pomieszczenia (np. 'living_room').
+ * @property percentage Wyliczony udział procentowy w zużyciu energii.
+ * @property kwh Zużycie energii w kilowatogodzinach (kWh).
+ * @property translationKey Klucz translacji i18n dla nazwy pokoju.
+ */
+export interface DisplayTopRoom {
+  name: string;
+  percentage: number;
+  kwh: number;
+  translationKey: string;
+}
+
