@@ -26,10 +26,6 @@ const WEEKDAYS = {
   en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 } as const;
 
-/**
- * Domyślny szkielet etykiet godzinowych dla widoku dziennego.
- */
-const TODAY_HOURS = ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '23:59'];
 
 /**
  * Etykiety tygodni miesiąca w zależności od wybranego języka interfejsu.
@@ -139,21 +135,21 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
 
   /**
    * Sygnał obliczeniowy wyliczający etykiety osi X (kategorie) z uwzględnieniem danych API i i18n.
+   * Dla widoku dziennego wykorzystuje kategorie czasowe z API (bufor minutowy).
+   * Dla widoku tygodniowego i miesięcznego stosuje zlokalizowane skróty dni i tygodni.
    * @type {computed}
    */
   public translatedCategories = computed<string[]>(() => {
-    const data = this.energyData();
-    if (data?.categories && data.categories.length > 0) {
-      return data.categories;
-    }
-    const lang = this.translationsService.currentLang();
     const timeframe = this.selectedTimeframe();
     const dataLen = this.chartData().length;
 
-    let fullList: readonly string[] = [];
-    if (timeframe === 'today') fullList = TODAY_HOURS;
-    else if (timeframe === 'month') fullList = MONTH_WEEKS[lang];
-    else if (timeframe === 'week') fullList = WEEKDAYS[lang];
+    if (timeframe === 'today') {
+      const data = this.energyData();
+      return data?.categories ?? [];
+    }
+
+    const lang = this.translationsService.currentLang();
+    const fullList: readonly string[] = timeframe === 'month' ? MONTH_WEEKS[lang] : WEEKDAYS[lang];
 
     return dataLen > 0 ? fullList.slice(0, dataLen) : [...fullList];
   });
@@ -177,24 +173,31 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
   };
 
   /**
-   * Statyczna konfiguracja osi poziomej X (kategorie zoptymalizowane z odstępem i fontem 11px).
+   * Sygnał obliczeniowy osi poziomej X.
+   * Reaguje na zmianę języka i aktualizuje etykiety oraz wymusza pełne odświeżenie wykresu w ng-apexcharts.
+   * @type {computed}
    */
-  public readonly xaxisConfig: ApexXAxis = {
-    type: 'category',
-    tickPlacement: 'on',
-    tickAmount: 5,
-    labels: {
-      rotate: 0,
-      rotateAlways: false,
-      hideOverlappingLabels: true,
-      trim: false,
-      style: {
-        colors: 'var(--text-primary)',
-        fontSize: '11px',
-        fontFamily: 'inherit',
+  public readonly xaxisConfig = computed<ApexXAxis>(() => {
+    // Odczytujemy język, aby zmiana języka tworzyła nową referencję obiektu xaxis
+    this.translationsService.currentLang();
+
+    return {
+      type: 'category',
+      tickPlacement: 'on',
+      tickAmount: 5,
+      labels: {
+        rotate: 0,
+        rotateAlways: false,
+        hideOverlappingLabels: true,
+        trim: false,
+        style: {
+          colors: 'var(--text-primary)',
+          fontSize: '11px',
+          fontFamily: 'inherit',
+        },
       },
-    },
-  };
+    };
+  });
 
   /**
    * Sygnał obliczeniowy osi pionowej Y dostosowujący zakres (max) do wybranego przedziału i pokoju.
@@ -268,13 +271,21 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
   /** Kolorystyka serii wykresu oparta na zmiennej CSS akcentu aplikacji. */
   public readonly colorsConfig: string[] = ['var(--color-accent, #00C7CE)'];
 
-  /** Konfiguracja tooltipa z formatowaniem wartości kWh. */
-  public readonly tooltipConfig: ApexTooltip = {
-    theme: 'dark',
-    y: {
-      formatter: (val: number) => (typeof val === 'number' ? `${val.toFixed(2)} kWh` : ''),
-    },
-  };
+  /**
+   * Sygnał obliczeniowy konfiguracji tooltipa z formatowaniem wartości kWh.
+   * Tworzy nową referencję przy zmianie języka, co wymusza natychmiastowe przerysowanie tooltipa w ApexCharts.
+   * @type {computed}
+   */
+  public readonly tooltipConfig = computed<ApexTooltip>(() => {
+    this.translationsService.currentLang();
+
+    return {
+      theme: 'dark',
+      y: {
+        formatter: (val: number) => (typeof val === 'number' ? `${val.toFixed(2)} kWh` : ''),
+      },
+    };
+  });
 
   /**
    * Sygnał obliczeniowy serii danych wykresu mapujący punkty { x, y } z wartościami i etykietami.
@@ -289,9 +300,11 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
       y: val,
     }));
 
+    const seriesName = this.translationsService.instant('lightsPage.energyConsumptionKwh');
+
     return [
       {
-        name: 'Zużycie energii (kWh)',
+        name: seriesName,
         data: points,
       },
     ];

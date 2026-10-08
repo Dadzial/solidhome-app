@@ -86,14 +86,14 @@
         class="w-full h-full block"
         [series]="chartSeries()"
         [chart]="chartConfig"
-        [xaxis]="xaxisConfig"
+        [xaxis]="xaxisConfig()"
         [yaxis]="yaxisConfig()"
         [grid]="gridConfig"
         [stroke]="strokeConfig"
         [fill]="fillConfig"
         [dataLabels]="dataLabelsConfig"
         [colors]="colorsConfig"
-        [tooltip]="tooltipConfig">
+        [tooltip]="tooltipConfig()">
       </apx-chart>
     </div>
     <!-- Wiersz dla podsumowania największego zużycia -->

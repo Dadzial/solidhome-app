@@ -65,4 +65,14 @@ export class TranslationsService {
     if (saved === 'pl' || saved === 'en') return saved;
     return 'en';
   }
+
+  /**
+   * Zwraca natychmiastowy tłumaczony tekst dla podanego klucza.
+   *
+   * @param key Klucz do przetłumaczenia.
+   * @returns {string} Przetłumaczony tekst.
+   */
+  public instant(key: string): string {
+    return this.translate.instant(key);
+  }
 }

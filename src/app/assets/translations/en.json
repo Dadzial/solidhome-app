@@ -102,6 +102,7 @@
     "rules": "Rules",
     "scenes": "Scenes",
     "energyConsumption": "Energy",
+    "energyConsumptionKwh": "Energy consumption (kWh)",
     "bestEnergyUsage": "Best energy usage",
     "time": "Time",
     "energy": "Energy",

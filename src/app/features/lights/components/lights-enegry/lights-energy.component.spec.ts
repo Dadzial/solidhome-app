@@ -8,6 +8,8 @@ import { LightsEnergyComponent } from './lights-energy.component';
 import { LightsEnergyService } from '@features/lights/services/lights-energy/lights-energy.service';
 import { LightEnergyData } from '@features/lights/models/lights.models';
 
+import { TranslationsService } from '@core/services/translations/translations.service';
+
 const mockEnergyData: LightEnergyData = {
   name: 'entireHouse',
   timeframe: 'today',
@@ -31,6 +33,7 @@ describe('LightsEnergyComponent', () => {
   let component: LightsEnergyComponent;
   let fixture: ComponentFixture<LightsEnergyComponent>;
   let lightsEnergyService: LightsEnergyService;
+  let translationsService: TranslationsService;
 
   beforeEach(async () => {
     vi.useFakeTimers();
@@ -50,6 +53,14 @@ describe('LightsEnergyComponent', () => {
     }).compileComponents();
 
     lightsEnergyService = TestBed.inject(LightsEnergyService);
+    translationsService = TestBed.inject(TranslationsService);
+
+    vi.spyOn(translationsService, 'instant').mockImplementation((key: string) => {
+      if (key === 'lightsPage.energyConsumptionKwh') {
+        return 'Zużycie energii (kWh)';
+      }
+      return key;
+    });
 
     vi.spyOn(lightsEnergyService, 'loadEnergyStats').mockImplementation(() => {});
 
@@ -126,6 +137,37 @@ describe('LightsEnergyComponent', () => {
         { x: '18:01', y: 0.05 },
         { x: '18:02', y: 0.06 },
       ]);
+    });
+
+    it('should translate categories correctly for today, week and month', () => {
+      // today: uses API categories
+      lightsEnergyService.currentTimeframe.set('today');
+      lightsEnergyService.energyData.set(mockEnergyData);
+      expect(component.translatedCategories()).toEqual(['18:00', '18:01', '18:02']);
+
+      // week: uses localized weekdays based on chartData length
+      lightsEnergyService.currentTimeframe.set('week');
+      lightsEnergyService.energyData.set({
+        ...mockEnergyData,
+        chartData: [0.1, 0.2, 0.3],
+      });
+      translationsService.currentLang.set('pl');
+      expect(component.translatedCategories()).toEqual(['Pn', 'Wt', 'Śr']);
+
+      translationsService.currentLang.set('en');
+      expect(component.translatedCategories()).toEqual(['Mon', 'Tue', 'Wed']);
+
+      // month: uses localized week labels
+      lightsEnergyService.currentTimeframe.set('month');
+      lightsEnergyService.energyData.set({
+        ...mockEnergyData,
+        chartData: [1.2, 1.5],
+      });
+      translationsService.currentLang.set('pl');
+      expect(component.translatedCategories()).toEqual(['Tydz 1', 'Tydz 2']);
+
+      translationsService.currentLang.set('en');
+      expect(component.translatedCategories()).toEqual(['Wk 1', 'Wk 2']);
     });
 
     it('should return correct label keys for selectedTimeframeLabel', () => {

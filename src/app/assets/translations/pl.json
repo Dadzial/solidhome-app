@@ -102,6 +102,7 @@
     "rules": "Reguły",
     "scenes": "Zachowania",
     "energyConsumption": "Zużycie energii",
+    "energyConsumptionKwh": "Zużycie energii (kWh)",
     "bestEnergyUsage": "Największe zużycie",
     "time": "Czas",
     "energy": "Energia",
