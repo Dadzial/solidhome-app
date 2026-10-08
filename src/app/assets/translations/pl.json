@@ -109,6 +109,8 @@
     "cost": "Koszt",
     "add": "Dodaj",
     "addRule": "Dodaj regułę",
+    "ruleName": "Nazwa reguły",
+    "ruleNamePlaceholder": "np. Powrót z pracy",
     "addScene": "Dodaj scenę",
     "today": "Dzisiaj",
     "week": "Tydzień",

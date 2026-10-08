@@ -1,36 +1,42 @@
 <div
-  class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
-  <!-- Nagłówek Scenes — tytuł -->
-  <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
-    <div class="flex items-center gap-2">
-      <svg-icon src="assets/icons/light_scenes.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
-      <h2
-        class="text-text-primary pt-0.5 text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
-        {{ 'lightsPage.scenes' | translate }}
-      </h2>
-    </div>
-    <!-- Przycisk dodawania sceny -->
-    <button
-      (click)="toggleAddScene()"
-      class="bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all active:scale-95 cursor-pointer">
-      {{ 'lightsPage.add' | translate }}
-    </button>
+  class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden transition-all">
+  @if (enableAddScene()) {
     <!-- Przestrzeń dodania sceny aktywowana przez signal 'enableAddScene' -->
-    @if (enableAddScene()) {
-      <div
-        class="absolute inset-0 flex flex-col z-50 bg-background-secondary rounded-3xl p-4 shadow-lg animate-fade-in">
-        <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
-          <h2 class="text-text-primary text-body-24-bold text-shadow-2xs">
-            {{ 'lightsPage.addScene' | translate }}
-          </h2>
-          <!-- Przycisk zamknięcia formularza -->
-          <button
-            (click)="toggleAddScene()"
-            class="w-8 h-8 flex items-center justify-center rounded-full text-text-primary/50 hover:text-accent hover:bg-background-tertiary transition-colors cursor-pointer">
-            <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-9 h-9"></svg-icon>
-          </button>
-        </div>
+    <div class="flex flex-col h-full min-h-0 animate-fade-in">
+      <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3 shrink-0">
+        <h2 class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
+          {{ 'lightsPage.addScene' | translate }}
+        </h2>
+        <!-- Przycisk zamknięcia formularza -->
+        <button
+          (click)="toggleAddScene()"
+          class="w-8 h-8 flex items-center justify-center rounded-full text-text-primary/50 hover:text-accent hover:bg-background-tertiary transition-colors cursor-pointer">
+          <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-9 h-9"></svg-icon>
+        </button>
       </div>
-    }
-  </div>
+
+      <!-- Kontener na elementy formularza dodawania sceny -->
+      <div class="flex-1 min-h-0 overflow-y-auto rounded-scrollbar pr-1 flex flex-col gap-3">
+        <!-- Tutaj w przyszłości elementy formularza nowej sceny -->
+      </div>
+    </div>
+  } @else {
+    <!-- Nagłówek Scenes — tytuł i przycisk dodawania -->
+    <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
+      <div class="flex items-center gap-2">
+        <svg-icon src="assets/icons/light_scenes.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
+        <h2
+          class="text-text-primary pt-0.5 text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
+          {{ 'lightsPage.scenes' | translate }}
+        </h2>
+      </div>
+      <!-- Przycisk dodawania sceny -->
+      <button
+        (click)="toggleAddScene()"
+        class="bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all active:scale-95 cursor-pointer">
+        {{ 'lightsPage.add' | translate }}
+      </button>
+    </div>
+    <!-- Tutaj w przyszłości lista istniejących scen -->
+  }
 </div>
