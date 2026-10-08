@@ -4,6 +4,7 @@ import { environment } from '@environments/environment';
 import { Observable, forkJoin } from 'rxjs';
 import { Light, LightItem } from '@features/lights/models/lights.models';
 import { LightsHistoryService } from '../lights-history/lights-history.service';
+import { LightsEnergyService } from '../lights-energy/lights-energy.service';
 
 /**
  * Domyślne rozmieszczenie lamp na rzucie SVG (home_preview.png)
@@ -40,6 +41,9 @@ export class LightsControlService {
 
   /** Inject LightsHistoryService do automatycznego odświeżania historii po akcjach użytkownika. */
   private lightsHistoryService = inject(LightsHistoryService);
+
+  /** Inject LightsEnergyService do automatycznego odświeżania zużycia energii po zmianie stanu świateł. */
+  private lightsEnergyService = inject(LightsEnergyService);
 
   /** Adres endpoint API odpowiedzialnego za operacje związane z oświetleniem. */
   private readonly apiUrl = `${environment.apiUrl}/lights`;
@@ -91,7 +95,8 @@ export class LightsControlService {
   /**
    * Przełącza stan pojedynczej lampy z optymistyczną aktualizacją UI i rollbackiem w razie błędu.
    *
-   * @param {string} id Identyfikator (nazwa) lampy do przełączenia (np. `'living_room'`).
+   * @param {string} id Identyfikator (nazwa) lampy do przełączenia (np. `'living_room'`)
+   * oraz zapisu stanu energii.
    * @returns {void}
    */
   public toggleLight(id: string): void {
@@ -102,6 +107,7 @@ export class LightsControlService {
       next: () => {
         this.hasError.set(false);
         this.lightsHistoryService.loadHistory();
+        this.lightsEnergyService.loadEnergyStats();
       },
       error: (err) => {
         console.error('Failed to update light status', err);
@@ -114,7 +120,7 @@ export class LightsControlService {
   }
 
   /**
-   * Przełącza stan wszystkich lamp jednocześnie za pomocą `forkJoin` z obsługą rollbacku.
+   * Przełącza stan wszystkich lamp jednocześnie za pomocą `forkJoin` oraz zapisuje stan energii z obsługą rollbacku.
    *
    * @returns {void}
    */
@@ -130,6 +136,7 @@ export class LightsControlService {
       next: () => {
         this.hasError.set(false);
         this.lightsHistoryService.loadHistory();
+        this.lightsEnergyService.loadEnergyStats();
       },
       error: (err) => {
         console.error('Failed to update lights status', err);
