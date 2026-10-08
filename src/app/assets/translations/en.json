@@ -111,6 +111,7 @@
     "addRule": "Add rule",
     "ruleName": "Rule name",
     "ruleNamePlaceholder": "e.g. Coming back from work",
+    "ruleActiveDays": "Active days",
     "addScene": "Add scene",
     "today": "Today",
     "week": "Week",
