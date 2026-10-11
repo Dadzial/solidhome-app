@@ -14,6 +14,24 @@ export class LightsScheduleComponent {
 
   public enableAddSchedule = signal(false);
   public selectedDays = signal<number[]>([]);
+  public start = signal(18);
+  public end = signal(23);
+
+  public format(val: number): string {
+    const h = Math.floor(val).toString().padStart(2, '0');
+    const m = Math.round((val % 1) * 60)
+      .toString()
+      .padStart(2, '0');
+    return `${h}:${m}`;
+  }
+
+  public duration = computed(() => {
+    const d =
+      this.end() >= this.start() ? this.end() - this.start() : 24 - this.start() + this.end();
+    const h = Math.floor(d);
+    const m = Math.round((d % 1) * 60);
+    return m ? `${h}h ${m}m` : `${h}h`;
+  });
 
   public readonly weekDayKeys = [
     'weekdays.mon',
