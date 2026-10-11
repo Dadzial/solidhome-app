@@ -113,6 +113,7 @@
     "ruleNamePlaceholder": "e.g. Coming back from work",
     "ruleActiveDays": "Active days",
     "ruleActiveDuration": "Active duration",
+    "ruleActiveRooms": "Active rooms",
     "to": "to",
     "save": "Save",
     "addScene": "Add scene",
