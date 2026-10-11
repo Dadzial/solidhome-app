@@ -64,17 +64,17 @@ src/
 
 ### Prerequisites
 - Node.js (version `>= 20.x`)
-- npm (version `>= 10.x`)
+- pnpm (version `>= 10.x`)
 
 ### Installation
 ```bash
-npm install
+pnpm install
 ```
 
 ### Development Server
 ```bash
-npm start
-# or: ng serve
+pnpm start
+# or: pnpm ng serve
 ```
 Navigate to `http://localhost:4200/` in your browser. The application will automatically reload if you change any source files.
 
@@ -86,10 +86,10 @@ The project includes a comprehensive unit test suite powered by **Vitest**:
 
 ```bash
 # Run all unit tests
-npm test
+pnpm test
 
 # Run tests once with code coverage report
-npx ng test --no-watch --coverage
+pnpm ng test --no-watch --coverage
 ```
 
 ---
@@ -97,6 +97,6 @@ npx ng test --no-watch --coverage
 ## Production Build
 
 ```bash
-npm run build
+pnpm build
 ```
 The build artifacts will be stored in the `dist/solid-home-app/browser/` directory, optimized for performance and production deployment.
