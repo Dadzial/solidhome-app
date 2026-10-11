@@ -112,6 +112,8 @@
     "ruleName": "Rule name",
     "ruleNamePlaceholder": "e.g. Coming back from work",
     "ruleActiveDays": "Active days",
+    "ruleActiveDuration": "Active duration",
+    "save": "Save",
     "addScene": "Add scene",
     "today": "Today",
     "week": "Week",

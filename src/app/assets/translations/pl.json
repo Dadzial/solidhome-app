@@ -112,6 +112,8 @@
     "ruleName": "Nazwa reguły",
     "ruleNamePlaceholder": "np. Powrót z pracy",
     "ruleActiveDays": "Aktywne dni",
+    "ruleActiveDuration": "Czas trwania",
+    "save": "Zapisz",
     "addScene": "Dodaj scenę",
     "today": "Dzisiaj",
     "week": "Tydzień",
