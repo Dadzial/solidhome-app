@@ -121,7 +121,8 @@
     "month": "Miesiąc",
     "entireHouse": "Cały dom",
     "greatestConsumption": "Największe zużycie",
-    "energyError": "Błąd ładowania statystyk energii <br/> Sprawdź narzędzia developerskie."
+    "energyError": "Błąd ładowania statystyk energii <br/> Sprawdź narzędzia developerskie.",
+    "rulesError": "Błąd ładowania reguł <br/> Sprawdź narzędzia developerskie."
   },
   "gatesAndDoorsPage": {
     "title": "Bramy i drzwi"

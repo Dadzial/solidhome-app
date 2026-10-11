@@ -121,7 +121,8 @@
     "month": "Month",
     "entireHouse": "Entire House",
     "greatestConsumption": "Greatest consumption",
-    "energyError": "Energy statistics is not available check DevTools."
+    "energyError": "Energy statistics is not available check DevTools.",
+    "rulesError": "Failed to load rules Check developer tools."
   },
   "gatesAndDoorsPage": {
     "title": "Gates and Doors"

@@ -1,5 +1,6 @@
 import { Component, signal, computed, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import {LightsControlService} from '@features/lights/services/lights-control/lights-control.service';
 import { TranslationsService } from '@core/services/translations/translations.service';
 import { SvgIconComponent } from 'angular-svg-icon';
 
@@ -11,7 +12,9 @@ import { SvgIconComponent } from 'angular-svg-icon';
 })
 export class LightsScheduleComponent {
   private translate = inject(TranslationsService);
+  public lightsControlService = inject(LightsControlService);
 
+  public readonly hasError = this.lightsControlService.hasError;
   public enableAddSchedule = signal(false);
   public selectedDays = signal<number[]>([]);
   public start = signal(18);
