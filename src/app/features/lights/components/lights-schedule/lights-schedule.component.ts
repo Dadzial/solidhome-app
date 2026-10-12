@@ -2,6 +2,7 @@ import { Component, signal, computed, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import {LightsControlService} from '@features/lights/services/lights-control/lights-control.service';
 import { TranslationsService } from '@core/services/translations/translations.service';
+import { ROOMS_NAMES_TRANSLATIONS } from '@features/lights/services/lights-history/lights-history.service';
 import { SvgIconComponent } from 'angular-svg-icon';
 
 @Component({
@@ -17,6 +18,7 @@ export class LightsScheduleComponent {
   public readonly hasError = this.lightsControlService.hasError;
   public enableAddSchedule = signal(false);
   public selectedDays = signal<number[]>([]);
+  public selectedRooms = signal<string[]>(['entireHouse']);
   public start = signal(18);
   public end = signal(23);
 
@@ -46,10 +48,13 @@ export class LightsScheduleComponent {
     'weekdays.sun',
   ] as const;
 
-  public weekdays = computed(() => {
-    this.translate.currentLang();
-    return this.weekDayKeys.map((key) => this.translate.instant(key));
-  });
+  public readonly roomOptions = [
+    { value: 'entireHouse', labelKey: 'lightsPage.entireHouse' },
+    ...Object.entries(ROOMS_NAMES_TRANSLATIONS).map(([value, labelKey]) => ({
+      value,
+      labelKey,
+    })),
+  ];
 
   public toggleAddSchedule(): void {
     this.enableAddSchedule.update((value) => !value);
@@ -63,5 +68,23 @@ export class LightsScheduleComponent {
 
   public isDaySelected(index: number): boolean {
     return this.selectedDays().includes(index);
+  }
+
+  public toggleRoom(roomValue: string): void {
+    if (roomValue === 'entireHouse') {
+      this.selectedRooms.set(['entireHouse']);
+      return;
+    }
+
+    this.selectedRooms.update((rooms) => {
+      const filtered = rooms.filter((r) => r !== 'entireHouse');
+      return filtered.includes(roomValue)
+        ? filtered.filter((r) => r !== roomValue)
+        : [...filtered, roomValue];
+    });
+  }
+
+  public isRoomSelected(roomValue: string): boolean {
+    return this.selectedRooms().includes(roomValue);
   }
 }

@@ -25,7 +25,7 @@
       </div>
 
       <!-- Kontener na elementy formularza dodawania reguły -->
-      <div class="flex-1 min-h-0 flex flex-col gap-3 pr-1 lg:overflow-y-auto lg:rounded-scrollbar">
+      <div class="flex-1 min-h-0 flex flex-col gap-3 pr-1 lg:overflow-y-auto rounded-scrollbar">
         <!-- Pole tekstowe do wprowadzania nazwy reguły -->
         <div class="flex flex-col gap-1.5">
           <label class="text-text-primary text-body-16-medium">
@@ -134,9 +134,21 @@
           <label class="text-text-primary text-body-14-medium">
             {{ 'lightsPage.ruleActiveRooms' | translate }}
           </label>
-          <!-- Wybór pokoi -->
-          <div class="flex items-center justify-between">
-
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 w-full">
+            @for (option of roomOptions; track option.value) {
+              <button
+                type="button"
+                (click)="toggleRoom(option.value)"
+                class="w-full py-1.5 px-2 flex items-center justify-center rounded-xl text-body-12-medium transition-all cursor-pointer select-none truncate"
+                [class.bg-accent]="isRoomSelected(option.value)"
+                [class.text-white]="isRoomSelected(option.value)"
+                [class.bg-background-primary]="!isRoomSelected(option.value)"
+                [class.text-text-primary]="!isRoomSelected(option.value)"
+                [class.opacity-60]="!isRoomSelected(option.value)"
+                [class.hover:opacity-100]="!isRoomSelected(option.value)">
+                {{ option.labelKey | translate }}
+              </button>
+            }
           </div>
         </div>
         <!-- Przycisk zapisu reguły -->
