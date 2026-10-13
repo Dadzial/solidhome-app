@@ -144,3 +144,84 @@ export interface DisplayTopRoom {
   translationKey: string;
 }
 
+/**
+ * Model pojedynczej reguły harmonogramu oświetlenia zwracany bezpośrednio przez API backendu.
+ *
+ * @interface LightScheduleRuleItem
+ * @property _id Unikalny identyfikator reguły w bazie danych MongoDB.
+ * @property name Czytelna nazwa reguły (np. "Wieczorne oświetlenie").
+ * @property days Tablica dni tygodnia (0-6), w których reguła obowiązuje.
+ * @property startTime Godzina rozpoczęcia w formacie "HH:MM".
+ * @property endTime Godzina zakończenia w formacie "HH:MM".
+ * @property rooms Lista identyfikatorów pomieszczeń objętych regułą.
+ * @property active Flaga określająca, czy reguła jest obecnie aktywna.
+ * @property userId Opcjonalny identyfikator użytkownika, który utworzył regułę.
+ * @property createdAt Opcjonalna data utworzenia wpisu (format ISO 8601).
+ * @property updatedAt Opcjonalna data ostatniej modyfikacji (format ISO 8601).
+ */
+export interface LightScheduleRuleItem {
+  _id: string;
+  name: string;
+  days: number[];
+  startTime: string;
+  endTime: string;
+  rooms: string[];
+  active: boolean;
+  userId?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+/**
+ * Model reguły harmonogramu oświetlenia po przetworzeniu przez serwis — gotowy do wyświetlenia w widoku.
+ *
+ * @interface LightScheduleRule
+ * @property id Unikalny identyfikator reguły (odpowiada `_id` z API).
+ * @property name Czytelna nazwa reguły harmonogramu.
+ * @property days Dni tygodnia, w których reguła jest uruchamiana.
+ * @property startTime Czas startu w formacie "HH:MM".
+ * @property endTime Czas zakończenia w formacie "HH:MM".
+ * @property rooms Wybrane pokoje objęte regułą.
+ * @property active Status aktywności reguły.
+ * @property createdAt Opcjonalna data utworzenia reguły.
+ */
+export interface LightScheduleRule {
+  id: string;
+  name: string;
+  days: number[];
+  startTime: string;
+  endTime: string;
+  rooms: string[];
+  active: boolean;
+  createdAt?: string;
+}
+
+/**
+ * Dane wejściowe przesyłane do API podczas tworzenia nowej reguły harmonogramu.
+ *
+ * @interface CreateScheduleRulePayload
+ * @property name Nazwa reguły harmonogramu.
+ * @property days Tablica wybranych dni tygodnia.
+ * @property startTime Czas rozpoczęcia ("HH:MM").
+ * @property endTime Czas zakończenia ("HH:MM").
+ * @property rooms Lista pomieszczeń przypisanych do reguły.
+ */
+export interface CreateScheduleRulePayload {
+  name: string;
+  days: number[];
+  startTime: string;
+  endTime: string;
+  rooms: string[];
+}
+
+/**
+ * Odpowiedź serwera po pomyślnym usunięciu reguły harmonogramu.
+ *
+ * @interface DeleteScheduleRuleResponse
+ * @property message Komunikat potwierdzający usunięcie reguły.
+ * @property deletedCount Opcjonalna liczba usuniętych dokumentów.
+ */
+export interface DeleteScheduleRuleResponse {
+  message: string;
+  deletedCount?: number;
+}
