@@ -55,6 +55,7 @@ describe('LightsPageComponent', () => {
     fixture.detectChanges();
     httpMock.expectOne(`${environment.apiUrl}/lights/status/app`).flush([]);
     httpMock.expectOne(`${environment.apiUrl}/lights/history?limit=20`).flush([]);
+    httpMock.expectOne(`${environment.apiUrl}/lights/rules`).flush([]);
     httpMock.expectOne(`${environment.apiUrl}/lights/energy?timeframe=today&room=entireHouse`).flush({
       name: 'entireHouse',
       timeframe: 'today',
