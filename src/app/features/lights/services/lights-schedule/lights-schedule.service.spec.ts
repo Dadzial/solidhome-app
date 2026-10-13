@@ -59,6 +59,23 @@ describe('LightsScheduleService', () => {
     it('should initialize hasError with false', () => {
       expect(service.hasError()).toBe(false);
     });
+
+    it('should compute empty as true when schedule is empty and false when schedule has items', () => {
+      expect(service.empty()).toBe(true);
+
+      service.schedule.set([
+        {
+          id: 'r1',
+          name: 'Test',
+          days: [1],
+          startTime: '10:00',
+          endTime: '12:00',
+          rooms: ['entireHouse'],
+          active: true,
+        },
+      ]);
+      expect(service.empty()).toBe(false);
+    });
   });
 
   describe('loadRules', () => {
@@ -146,7 +163,6 @@ describe('LightsScheduleService', () => {
 
   describe('toggleRuleActive', () => {
     beforeEach(() => {
-      // Seed schedule signal with an initial rule
       service.schedule.set([
         {
           id: 'r1',
@@ -224,7 +240,6 @@ describe('LightsScheduleService', () => {
     it('should optimistically remove rule and send DELETE request', () => {
       service.deleteRule('r1');
 
-      // Optimistic delete
       expect(service.schedule()).toEqual([]);
 
       const req = httpMock.expectOne(`${apiUrl}/rules/r1`);

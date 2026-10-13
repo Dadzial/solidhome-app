@@ -123,7 +123,8 @@
     "entireHouse": "Entire House",
     "greatestConsumption": "Greatest consumption",
     "energyError": "Energy statistics is not available check DevTools.",
-    "rulesError": "Failed to load rules Check developer tools."
+    "rulesError": "Failed to load rules Check developer tools.",
+    "noRules": "No defined rules"
   },
   "gatesAndDoorsPage": {
     "title": "Gates and Doors"

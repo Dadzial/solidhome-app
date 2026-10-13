@@ -59,6 +59,24 @@ describe('LightsScheduleComponent', () => {
     it('should delegate hasError signal', () => {
       expect(component.hasError).toBe(lightsScheduleService.hasError);
     });
+
+    it('should delegate empty signal and evaluate emptiness correctly', () => {
+      expect(component.empty).toBe(lightsScheduleService.empty);
+      expect(component.empty()).toBe(true);
+
+      lightsScheduleService.schedule.set([
+        {
+          id: 'r1',
+          name: 'Test',
+          days: [1],
+          startTime: '10:00',
+          endTime: '12:00',
+          rooms: ['entireHouse'],
+          active: true,
+        },
+      ]);
+      expect(component.empty()).toBe(false);
+    });
   });
 
   describe('format and duration', () => {
@@ -222,7 +240,6 @@ describe('LightsScheduleComponent', () => {
 
       component.saveRule();
 
-      // Form should remain open on error
       expect(component.enableAddSchedule()).toBe(true);
     });
   });
@@ -256,6 +273,11 @@ describe('LightsScheduleComponent', () => {
 
       const input = fixture.nativeElement.querySelector('input[type="text"]');
       expect(input).toBeTruthy();
+    });
+
+    it('should expose roomTranslations matching ROOMS_NAMES_TRANSLATIONS', () => {
+      expect(component.roomTranslations['living_room']).toBe('home.lightsWidget.rooms.livingRoom');
+      expect(component.roomTranslations['boiler_room']).toBe('home.lightsWidget.rooms.boilerRoom');
     });
   });
 });

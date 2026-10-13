@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { Observable, tap } from 'rxjs';
@@ -13,7 +13,7 @@ import {
  * Serwis odpowiedzialny za zarządzanie regułami harmonogramu oświetlenia w systemie SolidHome.
  *
  * Utrzymuje reaktywny sygnał `schedule` z listą zdefiniowanych reguł oświetlenia,
- * flagę ładowania `isLoading` oraz flagę błędów `hasError`.
+ * flagę ładowania `isLoading`, flagę błędów `hasError` stan pustej listy `empty`.
  *
  * ### Zasady działania:
  * - `loadRules()` pobiera listę reguł z API, mapuje na model widoku `LightScheduleRule` i aktualizuje sygnał `schedule`.
@@ -37,6 +37,12 @@ export class LightsScheduleService {
    * @type {signal}
    */
   public readonly schedule = signal<LightScheduleRule[]>([]);
+
+  /**
+   * Sygnał obliczeniowy informujący, czy lista reguł harmonogramu jest pusta.
+   * @type {computed<boolean>}
+   */
+  public readonly empty = computed(() => this.schedule().length === 0);
 
   /**
    * Sygnał informujący o trwaniu operacji ładowania danych z API.
