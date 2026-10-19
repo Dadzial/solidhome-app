@@ -54,4 +54,34 @@ describe('LightsScenesComponent', () => {
     component.toggleAddScene();
     expect(component.enableAddScene()).toBe(false);
   });
+
+  it('should default selectedRooms to entireHouse', () => {
+    expect(component.selectedRooms()).toEqual(['entireHouse']);
+    expect(component.isRoomSelected('entireHouse')).toBe(true);
+    expect(component.isRoomSelected('living_room')).toBe(false);
+  });
+
+  it('should select specific room and deselect entireHouse when toggleRoom is called', () => {
+    component.toggleRoom('living_room');
+    expect(component.selectedRooms()).toEqual(['living_room']);
+    expect(component.isRoomSelected('entireHouse')).toBe(false);
+    expect(component.isRoomSelected('living_room')).toBe(true);
+  });
+
+  it('should toggle multiple rooms and reset to entireHouse if all are deselected', () => {
+    component.toggleRoom('living_room');
+    component.toggleRoom('kitchen');
+    expect(component.selectedRooms()).toEqual(['living_room', 'kitchen']);
+
+    component.toggleRoom('living_room');
+    component.toggleRoom('kitchen');
+    expect(component.selectedRooms()).toEqual(['entireHouse']);
+  });
+
+  it('should reset selectedRooms to entireHouse when entireHouse is toggled', () => {
+    component.toggleRoom('living_room');
+    component.toggleRoom('kitchen');
+    component.toggleRoom('entireHouse');
+    expect(component.selectedRooms()).toEqual(['entireHouse']);
+  });
 });

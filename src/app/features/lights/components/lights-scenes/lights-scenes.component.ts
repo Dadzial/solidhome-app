@@ -1,6 +1,7 @@
-import { Component , signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ROOMS_NAMES_TRANSLATIONS } from '@features/lights/services/lights-history/lights-history.service';
 
 @Component({
   selector: 'app-lights-scenes',
@@ -29,6 +30,21 @@ export class LightsScenesComponent {
   public selectedIcon = signal<string>(this.sceneIcons[0]);
 
   /**
+   * Sygnał przechowujący listę wybranych pokoi dla sceny (domyślnie salon).
+   */
+  public selectedRooms = signal<string[]>(['living_room']);
+
+  /**
+   * Dostępne opcje wyboru pomieszczenia (poszczególne pokoje) z kluczami translacji i18n.
+   */
+  public readonly roomOptions = Object.entries(ROOMS_NAMES_TRANSLATIONS).map(
+    ([value, labelKey]) => ({
+      value,
+      labelKey,
+    }),
+  );
+
+  /**
    * Przełącza widoczność formularza dodawania nowej sceny.
    */
   public toggleAddScene(): void {
@@ -42,5 +58,28 @@ export class LightsScenesComponent {
    */
   public selectIcon(icon: string): void {
     this.selectedIcon.set(icon);
+  }
+
+  /**
+   * Przełącza wybór pomieszczenia w scenie (multiselect).
+   *
+   * @param {string} roomValue Identyfikator wybranego pokoju (np. 'living_room').
+   */
+  public toggleRoom(roomValue: string): void {
+    this.selectedRooms.update((rooms) =>
+      rooms.includes(roomValue)
+        ? rooms.filter((r) => r !== roomValue)
+        : [...rooms, roomValue],
+    );
+  }
+
+  /**
+   * Sprawdza, czy dane pomieszczenie jest zaznaczone w filtrze sceny.
+   *
+   * @param {string} roomValue Identyfikator pokoju.
+   * @returns {boolean} `true`, jeśli pokój jest zaznaczony.
+   */
+  public isRoomSelected(roomValue: string): boolean {
+    return this.selectedRooms().includes(roomValue);
   }
 }
