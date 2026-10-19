@@ -15,9 +15,46 @@
         </button>
       </div>
 
-      <!-- Kontener na elementy formularza dodawania sceny -->
-      <div class="flex-1 min-h-0 overflow-y-auto rounded-scrollbar pr-1 flex flex-col gap-3">
-        <!-- Tutaj w przyszłości elementy formularza nowej sceny -->
+      <!-- Kontener na elementy formularza dodawania sceny-->
+      <div class="flex-1 min-h-0 flex flex-col gap-3 pr-1 overflow-y-auto rounded-scrollbar">
+        <!-- Pole tekstowe do wprowadzania nazwy sceny -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-text-primary text-body-16-medium">
+            {{ 'lightsPage.sceneName' | translate }}
+          </label>
+          <input
+            type="text"
+            placeholder="{{ 'lightsPage.sceneNamePlaceholder' | translate }}"
+            class="w-full px-4.5 py-2 bg-background-primary text-text-primary text-body-14-medium rounded-2xl focus:outline-none transition-all"
+          />
+        </div>
+        <!-- Ikona reprezentująca scenę -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-text-primary text-body-16-medium">
+            {{ 'lightsPage.sceneIcon' | translate }}
+          </label>
+          <div class="flex flex-wrap gap-2 w-full">
+            @for (icon of sceneIcons; track icon) {
+              <button
+                type="button"
+                (click)="selectIcon(icon)"
+                class="w-9 h-9 p-0 flex items-center justify-center rounded-2xl transition-all cursor-pointer select-none text-text-primary"
+                [class.bg-accent]="selectedIcon() === icon"
+                [class.text-white]="selectedIcon() === icon"
+                [class.shadow-sm]="selectedIcon() === icon"
+                [class.bg-background-primary]="selectedIcon() !== icon"
+                [class.text-text-primary70]="selectedIcon() !== icon"
+                [class.hover:bg-background-tertiary]="selectedIcon() !== icon"
+                [class.hover:text-text-primary]="selectedIcon() !== icon"><svg-icon [src]="icon" [applyClass]="true" class="w-5 h-5 flex items-center justify-center"></svg-icon></button>
+            }
+          </div>
+        </div>
+        <!-- Przycisk zapisu sceny -->
+        <button
+          type="button"
+          class="mt-auto bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all cursor-pointer shrink-0">
+          {{ 'lightsPage.save' | translate }}
+        </button>
       </div>
     </div>
   } @else {
