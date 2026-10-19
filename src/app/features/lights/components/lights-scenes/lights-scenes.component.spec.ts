@@ -55,33 +55,25 @@ describe('LightsScenesComponent', () => {
     expect(component.enableAddScene()).toBe(false);
   });
 
-  it('should default selectedRooms to entireHouse', () => {
-    expect(component.selectedRooms()).toEqual(['entireHouse']);
-    expect(component.isRoomSelected('entireHouse')).toBe(true);
-    expect(component.isRoomSelected('living_room')).toBe(false);
-  });
-
-  it('should select specific room and deselect entireHouse when toggleRoom is called', () => {
-    component.toggleRoom('living_room');
+  it('should default selectedRooms to living_room', () => {
     expect(component.selectedRooms()).toEqual(['living_room']);
-    expect(component.isRoomSelected('entireHouse')).toBe(false);
     expect(component.isRoomSelected('living_room')).toBe(true);
+    expect(component.isRoomSelected('kitchen')).toBe(false);
   });
 
-  it('should toggle multiple rooms and reset to entireHouse if all are deselected', () => {
+  it('should toggle rooms in multiselect fashion', () => {
     component.toggleRoom('living_room');
-    component.toggleRoom('kitchen');
-    expect(component.selectedRooms()).toEqual(['living_room', 'kitchen']);
+    expect(component.selectedRooms()).toEqual([]);
+    expect(component.isRoomSelected('living_room')).toBe(false);
 
-    component.toggleRoom('living_room');
     component.toggleRoom('kitchen');
-    expect(component.selectedRooms()).toEqual(['entireHouse']);
+    component.toggleRoom('bathroom');
+    expect(component.selectedRooms()).toEqual(['kitchen', 'bathroom']);
+    expect(component.isRoomSelected('kitchen')).toBe(true);
+    expect(component.isRoomSelected('bathroom')).toBe(true);
   });
 
-  it('should reset selectedRooms to entireHouse when entireHouse is toggled', () => {
-    component.toggleRoom('living_room');
-    component.toggleRoom('kitchen');
-    component.toggleRoom('entireHouse');
-    expect(component.selectedRooms()).toEqual(['entireHouse']);
+  it('should not contain entireHouse in roomOptions', () => {
+    expect(component.roomOptions.some((opt) => opt.value === 'entireHouse')).toBe(false);
   });
 });
