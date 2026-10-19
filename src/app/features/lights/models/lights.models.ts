@@ -225,3 +225,22 @@ export interface DeleteScheduleRuleResponse {
   message: string;
   deletedCount?: number;
 }
+
+/**
+ * Model pojedynczej sceny oświetleniowej.
+ *
+ * @interface LightScene
+ * @property id Unikalny identyfikator sceny.
+ * @property name Nazwa sceny (np. 'Wieczór filmowy').
+ * @property icon Ścieżka do pliku SVG z ikoną sceny.
+ * @property rooms Wybrane pomieszczenia objęte tą sceną.
+ * @property active Flaga określająca, czy scena jest obecnie aktywna.
+ */
+export interface LightScene {
+  id: string;
+  name: string;
+  icon: string;
+  rooms: string[];
+  active?: boolean;
+}
+
