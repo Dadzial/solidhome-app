@@ -127,7 +127,8 @@
     "greatestConsumption": "Największe zużycie",
     "energyError": "Błąd ładowania statystyk energii <br/> Sprawdź narzędzia developerskie.",
     "rulesError": "Błąd ładowania reguł <br/> Sprawdź narzędzia developerskie.",
-    "noRules": "Brak zdefiniowanych reguł"
+    "noRules": "Brak zdefiniowanych reguł",
+    "noScenes": "Brak zdefiniowanych scen"
   },
   "gatesAndDoorsPage": {
     "title": "Bramy i drzwi"

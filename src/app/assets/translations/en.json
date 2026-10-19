@@ -127,7 +127,8 @@
     "greatestConsumption": "Greatest consumption",
     "energyError": "Energy statistics is not available check DevTools.",
     "rulesError": "Failed to load rules Check developer tools.",
-    "noRules": "No defined rules"
+    "noRules": "No defined rules",
+    "noScenes": "No defined scenes"
   },
   "gatesAndDoorsPage": {
     "title": "Gates and Doors"
