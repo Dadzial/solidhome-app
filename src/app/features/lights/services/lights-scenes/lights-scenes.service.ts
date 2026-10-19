@@ -89,11 +89,23 @@ export class LightsScenesService {
 
   /**
    * Usuwa scenę o podanym identyfikatorze z listy oraz z localStorage.
+   * Jeśli usuwana scena była aktywna, wyłącza światła w przypisanych do niej pomieszczeniach.
    *
    * @param {string} id Identyfikator usuwanej sceny.
    * @returns {void}
    */
   public deleteScene(id: string): void {
+    const targetScene = this.scenes().find((s) => s.id === id);
+    if (targetScene && targetScene.active) {
+      const currentLights = this.lightsControlService.lights();
+      for (const roomId of targetScene.rooms) {
+        const lamp = currentLights.find((l) => l.id === roomId);
+        if (lamp && lamp.on) {
+          this.lightsControlService.toggleLight(roomId);
+        }
+      }
+    }
+
     this.scenes.update((current) => {
       const updated = current.filter((s) => s.id !== id);
       this.saveToStorage(updated);

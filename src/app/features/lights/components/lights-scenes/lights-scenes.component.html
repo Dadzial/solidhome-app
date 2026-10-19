@@ -126,14 +126,13 @@
               <!-- Górny wiersz: ikona sceny + przycisk usuwania -->
               <div class="flex items-center justify-between">
                 <div
-                  class="w-9 h-9 rounded-xl flex items-center justify-center transition-colors"
+                  class="w-9 h-9 p-0 -ml-0.5 rounded-2xl flex items-center justify-center shrink-0 transition-colors"
                   [class.bg-accent]="scene.active"
                   [class.text-white]="scene.active"
                   [class.bg-background-secondary]="!scene.active"
                   [class.text-accent]="!scene.active">
-                  <svg-icon [src]="scene.icon" [applyClass]="true" class="w-5 h-5"></svg-icon>
+                  <svg-icon [src]="scene.icon" [applyClass]="true" class="w-5 h-5 flex items-center justify-center"></svg-icon>
                 </div>
-
                 <div class="flex items-center gap-1.5">
                   @if (scene.active) {
                     <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
@@ -149,10 +148,10 @@
 
               <!-- Dolny wiersz: nazwa sceny + wybrane pokoje -->
               <div class="flex flex-col min-w-0 mt-1">
-                <span class="text-body-14-semibold text-text-primary truncate" [title]="scene.name">
+                <span class="text-body-16-semibold text-text-primary truncate" [title]="scene.name">
                   {{ scene.name }}
                 </span>
-                <span class="text-body-12-regular text-text-primary/60 truncate mt-0.5">
+                <span class="text-body-14-medium text-text-primary/60 truncate mt-0.5">
                   @for (room of scene.rooms; track room; let last = $last) {
                     {{ (roomTranslations[room] ?? room) | translate }}{{ last ? '' : ', ' }}
                   }

@@ -101,6 +101,30 @@ describe('LightsScenesService', () => {
       const inStorage = JSON.parse(localStorage.getItem('solid_home_light_scenes') || '[]');
       expect(inStorage.some((s: { id: string }) => s.id === sceneToDelete.id)).toBe(false);
     });
+
+    it('should turn off active lights in scene rooms when deleting an active scene', () => {
+      service.addScene({
+        name: 'Aktywna do usuniecia',
+        icon: 'assets/icons/film.svg',
+        rooms: ['living_room', 'kitchen'],
+      });
+      const scene = service.scenes()[0];
+
+      service.activateScene(scene.id);
+      expect(service.scenes().find((s) => s.id === scene.id)?.active).toBe(true);
+
+      mockLightsControlService.lights.set([
+        { id: 'living_room', x: 0, y: 0, on: true },
+        { id: 'kitchen', x: 0, y: 0, on: true },
+      ]);
+      mockLightsControlService.toggleLight.mockClear();
+
+      service.deleteScene(scene.id);
+
+      expect(mockLightsControlService.toggleLight).toHaveBeenCalledWith('living_room');
+      expect(mockLightsControlService.toggleLight).toHaveBeenCalledWith('kitchen');
+      expect(service.scenes().some((s) => s.id === scene.id)).toBe(false);
+    });
   });
 
   describe('activateScene (toggle)', () => {
