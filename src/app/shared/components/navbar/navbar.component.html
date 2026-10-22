@@ -21,15 +21,15 @@
        class="h-full flex items-center text-text-primary text-body-16-semibold px-2 hover:text-accent">
       {{ 'home.navbar.lights' | translate }}
     </a>
-    <!-- Link do sterowania bramami -->
-    <a routerLink="/gates" routerLinkActive="!text-accent border-b-3 border-accent"
-       class="h-full flex items-center text-text-primary text-body-16-semibold px-2 hover:text-accent">
-      {{ 'home.navbar.gatesAndDoors' | translate }}
-    </a>
     <!-- Link do jakości powietrza -->
     <a routerLink="/air" routerLinkActive="!text-accent border-b-3 border-accent"
        class="h-full flex items-center text-text-primary text-body-16-semibold px-2 hover:text-accent">
       {{ 'home.navbar.air' | translate }}
+    </a>
+    <!-- Link do sterowania bramami -->
+    <a routerLink="/gates" routerLinkActive="!text-accent border-b-3 border-accent"
+       class="h-full flex items-center text-text-primary text-body-16-semibold px-2 hover:text-accent">
+      {{ 'home.navbar.gatesAndDoors' | translate }}
     </a>
     <!-- Link do systemu bezpieczeństwa -->
     <a routerLink="/security" routerLinkActive="!text-accent border-b-3 border-accent"
@@ -70,13 +70,13 @@
      class="px-4 py-6 text-text-primary text-body-18-bold hover:text-accent" (click)="toggleMobileMenu()">
     {{ 'home.navbar.lights' | translate }}
   </a>
-  <a routerLink="/gates" routerLinkActive="!text-accent bg-background-tertiary"
-     class="px-4 py-6 text-text-primary text-body-18-bold hover:text-accent" (click)="toggleMobileMenu()">
-    {{ 'home.navbar.gatesAndDoors' | translate }}
-  </a>
   <a routerLink="/air" routerLinkActive="!text-accent bg-background-tertiary"
      class="px-4 py-6 text-text-primary text-body-18-bold hover:text-accent" (click)="toggleMobileMenu()">
     {{ 'home.navbar.air' | translate }}
+  </a>
+  <a routerLink="/gates" routerLinkActive="!text-accent bg-background-tertiary"
+     class="px-4 py-6 text-text-primary text-body-18-bold hover:text-accent" (click)="toggleMobileMenu()">
+    {{ 'home.navbar.gatesAndDoors' | translate }}
   </a>
   <a routerLink="/security" routerLinkActive="!text-accent bg-background-tertiary"
      class="px-4 py-6 text-text-primary text-body-18-bold hover:text-accent" (click)="toggleMobileMenu()">
