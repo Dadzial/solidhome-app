@@ -7,6 +7,14 @@
       <h2 class="text-text-primary text-headline-h1-36-bold text-shadow-2xs">{{ 'airPage.title' | translate }}</h2>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-0">
+      @if (workInProgress()) {
+        <div
+          class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
+          <svg-icon src="assets/icons/work_in_progress.svg" [applyClass]="true" class="w-20 h-20 text-text-primary opacity-35 mb-3"></svg-icon>
+          <h2 class="text-text-primary/30 text-body-24-semibold text-shadow-sm"
+              [innerHTML]="'workInProgress' | translate"></h2>
+        </div>
+      }
     </div>
   </div>
   <!-- Stopka -->
