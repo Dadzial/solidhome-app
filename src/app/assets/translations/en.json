@@ -147,5 +147,6 @@
     "fri": "Fri",
     "sat": "Sat",
     "sun": "Sun"
-  }
+  },
+  "workInProgress": "Work in progress"
 }

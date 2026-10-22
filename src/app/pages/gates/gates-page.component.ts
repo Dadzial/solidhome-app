@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { ThemeButtonComponent } from '@shared/components/theme-button/theme-button.component';
 import { LangButtonComponent } from '@shared/components/lang-button/lang-button.component';
+import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
 
 /**
@@ -9,9 +10,22 @@ import { TranslateModule } from '@ngx-translate/core';
  */
 @Component({
   selector: 'app-gates',
-  imports: [NavbarComponent, LangButtonComponent, ThemeButtonComponent, TranslateModule],
+  imports: [
+    SvgIconComponent,
+    NavbarComponent,
+    LangButtonComponent,
+    ThemeButtonComponent,
+    TranslateModule,
+  ],
   standalone: true,
   templateUrl: './gates-page.component.html',
   styles: ``,
 })
-export class GatesPageComponent {}
+export class GatesPageComponent {
+  /**
+   * Sygnał tymczasowy sterujący pokazaniem komunikatu o tym ze strona jest w budowie
+   *
+   * @type {signal}
+   */
+  public readonly workInProgress = signal<boolean>(true);
+}

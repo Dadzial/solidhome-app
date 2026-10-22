@@ -147,5 +147,6 @@
     "fri": "Pt",
     "sat": "Sb",
     "sun": "Nd"
-  }
+  },
+  "workInProgress": "W trakcie realizacji"
 }
