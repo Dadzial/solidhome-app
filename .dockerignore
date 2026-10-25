@@ -1,0 +1,13 @@
+node_modules
+**/node_modules
+.git
+.gitignore
+.angular
+.idea
+.vscode
+dist
+**/dist
+coverage
+**/coverage
+*.log
+.DS_Store
