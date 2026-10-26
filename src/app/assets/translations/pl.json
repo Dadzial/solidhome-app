@@ -104,6 +104,8 @@
     "energyConsumption": "Zużycie energii",
     "energyConsumptionKwh": "Zużycie energii (kWh)",
     "bestEnergyUsage": "Największe zużycie",
+    "resetChart": "Zresetuj wykres",
+    "exportData": "Eksportuj dane",
     "time": "Czas",
     "energy": "Energia",
     "cost": "Koszt",
