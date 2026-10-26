@@ -88,4 +88,16 @@ export class LightsEnergyService {
 
     return this.http.get<LightEnergyData>(`${this.apiUrl}/energy`, { params });
   }
+
+  /**
+   * Resetuje statystyki zużycia energii z endpointu DELETE /api/lights/energy/reset
+   * i zwraca Observable
+   *
+   * @returns {Observable<{ message: string; deletedCount: number }>}
+   */
+  public resetEnergyStats(): Observable<{ message: string; deletedCount: number }> {
+    return this.http.delete<{ message: string; deletedCount: number }>(
+      `${this.apiUrl}/energy/reset`,
+    );
+  }
 }

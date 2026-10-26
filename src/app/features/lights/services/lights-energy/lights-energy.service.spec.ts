@@ -190,4 +190,38 @@ describe('LightsEnergyService', () => {
       );
     });
   });
+
+  describe('resetEnergyStats', () => {
+    it('should send a DELETE request to /api/lights/energy/reset and return response', () => {
+      let response: { message: string; deletedCount: number } | undefined;
+
+      service.resetEnergyStats().subscribe((res) => {
+        response = res;
+      });
+
+      const req = httpMock.expectOne(`${apiUrl}/energy/reset`);
+      expect(req.request.method).toBe('DELETE');
+
+      const mockResponse = { message: 'Energy stats reset successfully', deletedCount: 5 };
+      req.flush(mockResponse);
+
+      expect(response).toEqual(mockResponse);
+    });
+
+    it('should propagate error when resetEnergyStats request fails', () => {
+      let capturedError: unknown;
+
+      service.resetEnergyStats().subscribe({
+        next: () => {},
+        error: (err) => {
+          capturedError = err;
+        },
+      });
+
+      const req = httpMock.expectOne(`${apiUrl}/energy/reset`);
+      req.flush({ error: 'Reset Failed' }, { status: 500, statusText: 'Internal Server Error' });
+
+      expect(capturedError).toBeDefined();
+    });
+  });
 });

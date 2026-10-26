@@ -92,6 +92,7 @@
       <div class="relative flex-1 min-w-32.5">
         <button
           type="button"
+          (click)="clearData()"
           class="w-full flex items-center justify-center bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer transition-all duration-200 hover:text-accent hover:brightness-95 dark:hover:brightness-110 active:scale-[0.98]">
           <span class="pt-0.5">{{ 'lightsPage.resetChart' | translate }}</span>
         </button>

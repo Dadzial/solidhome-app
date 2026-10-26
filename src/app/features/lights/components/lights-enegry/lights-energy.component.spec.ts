@@ -3,7 +3,7 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SvgIconRegistryService } from 'angular-svg-icon';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { LightsEnergyComponent } from './lights-energy.component';
 import { LightsEnergyService } from '@features/lights/services/lights-energy/lights-energy.service';
 import { LightEnergyData } from '@features/lights/models/lights.models';
@@ -58,6 +58,9 @@ describe('LightsEnergyComponent', () => {
     vi.spyOn(translationsService, 'instant').mockImplementation((key: string) => {
       if (key === 'lightsPage.energyConsumptionKwh') {
         return 'Zużycie energii (kWh)';
+      }
+      if (key === 'lightsPage.time') {
+        return 'Czas';
       }
       return key;
     });
@@ -261,6 +264,80 @@ describe('LightsEnergyComponent', () => {
 
       expect(component.activeDropdown()).toBeNull();
       expect(lightsEnergyService.loadEnergyStats).toHaveBeenCalledWith('today', 'bathroom');
+    });
+  });
+
+  describe('clearData', () => {
+    it('should call resetEnergyStats and refresh energy stats on success', () => {
+      vi.spyOn(lightsEnergyService, 'resetEnergyStats').mockReturnValue(
+        of({ message: 'Energy data reset successfully', deletedCount: 5 })
+      );
+
+      lightsEnergyService.currentTimeframe.set('week');
+      lightsEnergyService.currentRoom.set('kitchen');
+      vi.mocked(lightsEnergyService.loadEnergyStats).mockClear();
+
+      component.clearData();
+
+      expect(lightsEnergyService.resetEnergyStats).toHaveBeenCalledTimes(1);
+      expect(lightsEnergyService.loadEnergyStats).toHaveBeenCalledWith('week', 'kitchen');
+    });
+
+    it('should handle error when resetEnergyStats fails', () => {
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const error = new Error('Reset failed');
+      vi.spyOn(lightsEnergyService, 'resetEnergyStats').mockReturnValue(throwError(() => error));
+      vi.mocked(lightsEnergyService.loadEnergyStats).mockClear();
+
+      component.clearData();
+
+      expect(lightsEnergyService.resetEnergyStats).toHaveBeenCalledTimes(1);
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Error:', error);
+      expect(lightsEnergyService.loadEnergyStats).not.toHaveBeenCalled();
+
+      consoleErrorSpy.mockRestore();
+    });
+  });
+
+  describe('exportData', () => {
+    it('should do nothing if chartData is empty', () => {
+      lightsEnergyService.energyData.set(null);
+      const createObjectURLSpy = vi.spyOn(URL, 'createObjectURL');
+
+      component.exportData();
+
+      expect(createObjectURLSpy).not.toHaveBeenCalled();
+    });
+
+    it('should generate CSV file and trigger download when chartData has data', () => {
+      lightsEnergyService.currentTimeframe.set('today');
+      lightsEnergyService.currentRoom.set('entireHouse');
+      lightsEnergyService.energyData.set(mockEnergyData);
+
+      const mockUrl = 'blob:http://localhost/test-blob';
+      const createObjectURLSpy = vi.spyOn(URL, 'createObjectURL').mockReturnValue(mockUrl);
+      const revokeObjectURLSpy = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+
+      let clickedHref = '';
+      let clickedDownload = '';
+      const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) {
+        clickedHref = this.href;
+        clickedDownload = this.download;
+      });
+
+      component.exportData();
+
+      expect(createObjectURLSpy).toHaveBeenCalledTimes(1);
+      const createdBlob = createObjectURLSpy.mock.calls[0][0] as Blob;
+      expect(createdBlob).toBeInstanceOf(Blob);
+      expect(createdBlob.type).toBe('text/csv;charset=utf-8;');
+
+      expect(clickSpy).toHaveBeenCalledTimes(1);
+      expect(clickedHref).toBe(mockUrl);
+      const today = new Date().toISOString().split('T')[0];
+      expect(clickedDownload).toBe(`solidhome-energia-today-entireHouse-${today}.csv`);
+
+      expect(revokeObjectURLSpy).toHaveBeenCalledWith(mockUrl);
     });
   });
 });

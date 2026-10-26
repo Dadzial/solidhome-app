@@ -398,14 +398,10 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
       `"${this.translationsService.instant('lightsPage.energyConsumptionKwh')}"`,
     ];
 
-    const rows = categories.map((label, index) => [
-      `"${label}"`, data[index] ?? 0
-    ]);
+    const rows = categories.map((label, index) => [`"${label}"`, data[index] ?? 0]);
 
-    const csvContent = '\uFEFF' + [
-      headers.join(','),
-      ...rows.map((row) => row.join(','))
-    ].join('\n');
+    const csvContent =
+      '\uFEFF' + [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -417,6 +413,20 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
     anchor.click();
 
     URL.revokeObjectURL(url);
+  }
+
+  /**
+   * Czyści dane wykresu i resetuje sygnały stanu komponentu.
+   *
+   * @returns {void}
+   */
+  public clearData(): void {
+    this.lightsEnergyService.resetEnergyStats().subscribe({
+      next: () => {
+        this.lightsEnergyService.loadEnergyStats(this.selectedTimeframe(), this.selectedRoom());
+      },
+      error: (err) => console.error('Error:', err),
+    });
   }
 
   /**
