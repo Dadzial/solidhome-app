@@ -23,15 +23,17 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
       let normalizedError: ApiError;
 
-      if (status === 400 || status === 409) {
+      if (status === 400) {
         normalizedError =
-          typeof body === 'object' && body !== null ? body : { error: message };
+          typeof body === 'object' && body !== null ? body : { error: 'serverErrors.default' };
       } else if (status === 401) {
-        normalizedError = { error: apiMessage || 'Invalid credentials or unauthorized' };
+        normalizedError = { error: 'serverErrors.unauthorized' };
+      } else if (status === 409) {
+        normalizedError = { error: 'serverErrors.conflict' };
       } else if (status === 429) {
-        normalizedError = { error: 'Too many requests, try again later' };
+        normalizedError = { error: 'serverErrors.tooManyRequests' };
       } else {
-        normalizedError = { error: apiMessage || 'Server error, try again later' };
+        normalizedError = { error: 'serverErrors.serverError' };
       }
 
       return throwError(() => normalizedError);

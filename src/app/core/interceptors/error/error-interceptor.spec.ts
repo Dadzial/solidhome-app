@@ -45,7 +45,7 @@ describe('errorInterceptor', () => {
     expect(responseData).toEqual(mockData);
   });
 
-  describe('when response status is 400 or 409', () => {
+  describe('when response status is 400', () => {
     it('should return backend error object on status 400', () => {
       const backendError: ApiError = { error: 'Validation failed', details: ['Invalid email'] };
       let capturedError: ApiError | undefined;
@@ -63,7 +63,7 @@ describe('errorInterceptor', () => {
       expect(capturedError).toEqual(backendError);
     });
 
-    it('should fallback to error.message if status 400 error body is not an object', () => {
+    it('should fallback to default error translation key if status 400 error body is not an object', () => {
       let capturedError: ApiError | undefined;
 
       httpClient.get('/api/test').subscribe({
@@ -76,11 +76,12 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.flush('Bad request string error', { status: 400, statusText: 'Bad Request' });
 
-      expect(capturedError?.error).toBeDefined();
+      expect(capturedError).toEqual({ error: 'serverErrors.default' });
     });
+  });
 
-    it('should return backend error object on status 409', () => {
-      const backendError: ApiError = { error: 'User already exists' };
+  describe('when response status is 409', () => {
+    it('should return conflict error translation key on status 409', () => {
       let capturedError: ApiError | undefined;
 
       httpClient.get('/api/test').subscribe({
@@ -91,14 +92,14 @@ describe('errorInterceptor', () => {
       });
 
       const req = httpMock.expectOne('/api/test');
-      req.flush(backendError, { status: 409, statusText: 'Conflict' });
+      req.flush({ error: 'User already exists' }, { status: 409, statusText: 'Conflict' });
 
-      expect(capturedError).toEqual(backendError);
+      expect(capturedError).toEqual({ error: 'serverErrors.conflict' });
     });
   });
 
   describe('when response status is 401', () => {
-    it('should return backend error message if provided', () => {
+    it('should return unauthorized translation key when backend error message is provided', () => {
       let capturedError: ApiError | undefined;
 
       httpClient.get('/api/test').subscribe({
@@ -111,10 +112,10 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.flush({ error: 'Token expired' }, { status: 401, statusText: 'Unauthorized' });
 
-      expect(capturedError).toEqual({ error: 'Token expired' });
+      expect(capturedError).toEqual({ error: 'serverErrors.unauthorized' });
     });
 
-    it('should return default unauthorized message if backend does not provide one', () => {
+    it('should return unauthorized translation key if backend does not provide one', () => {
       let capturedError: ApiError | undefined;
 
       httpClient.get('/api/test').subscribe({
@@ -127,12 +128,12 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.flush(null, { status: 401, statusText: 'Unauthorized' });
 
-      expect(capturedError).toEqual({ error: 'Invalid credentials or unauthorized' });
+      expect(capturedError).toEqual({ error: 'serverErrors.unauthorized' });
     });
   });
 
   describe('when response status is 429', () => {
-    it('should return rate limit message', () => {
+    it('should return rate limit message translation key', () => {
       let capturedError: ApiError | undefined;
 
       httpClient.get('/api/test').subscribe({
@@ -145,12 +146,12 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.flush(null, { status: 429, statusText: 'Too Many Requests' });
 
-      expect(capturedError).toEqual({ error: 'Too many requests, try again later' });
+      expect(capturedError).toEqual({ error: 'serverErrors.tooManyRequests' });
     });
   });
 
   describe('when response status is 500 or any other error', () => {
-    it('should return backend error if present', () => {
+    it('should return server error translation key when backend error is present', () => {
       let capturedError: ApiError | undefined;
 
       httpClient.get('/api/test').subscribe({
@@ -163,10 +164,10 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.flush({ error: 'Database connection failed' }, { status: 500, statusText: 'Internal Server Error' });
 
-      expect(capturedError).toEqual({ error: 'Database connection failed' });
+      expect(capturedError).toEqual({ error: 'serverErrors.serverError' });
     });
 
-    it('should return default server error message if no backend error is present', () => {
+    it('should return default server error translation key if no backend error is present', () => {
       let capturedError: ApiError | undefined;
 
       httpClient.get('/api/test').subscribe({
@@ -179,7 +180,7 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.flush(null, { status: 500, statusText: 'Internal Server Error' });
 
-      expect(capturedError).toEqual({ error: 'Server error, try again later' });
+      expect(capturedError).toEqual({ error: 'serverErrors.serverError' });
     });
   });
 });

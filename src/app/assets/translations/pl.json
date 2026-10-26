@@ -148,5 +148,12 @@
     "sat": "Sb",
     "sun": "Nd"
   },
-  "workInProgress": "W trakcie realizacji"
+  "workInProgress": "W trakcie realizacji",
+  "serverErrors": {
+    "unauthorized": "Nieprawidłowe dane logowania",
+    "tooManyRequests": "Zbyt wiele prób, spróbuj ponownie później",
+    "serverError": "Błąd serwera, spróbuj ponownie później",
+    "conflict": "Email lub nazwa użytkownika jest już zajęta",
+    "default": "Wystąpił błąd, spróbuj ponownie później"
+  }
 }

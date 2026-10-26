@@ -148,5 +148,12 @@
     "sat": "Sat",
     "sun": "Sun"
   },
-  "workInProgress": "Work in progress"
+  "workInProgress": "Work in progress",
+  "serverErrors": {
+    "unauthorized": "Invalid credentials",
+    "tooManyRequests": "Too many requests, try again later",
+    "serverError": "Server error, try again later",
+    "conflict": "Email or username is already taken",
+    "default": "An unexpected error occurred"
+  }
 }
