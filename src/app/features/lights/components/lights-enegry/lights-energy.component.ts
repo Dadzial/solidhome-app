@@ -181,7 +181,6 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
    * @type {computed}
    */
   public readonly xaxisConfig = computed<ApexXAxis>(() => {
-    // Odczytujemy język, aby zmiana języka tworzyła nową referencję obiektu xaxis
     this.translationsService.currentLang();
 
     return {
@@ -351,18 +350,6 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Czyści zasoby komponentu — zatrzymuje działający interwał cykliczny.
-   *
-   * @returns {void}
-   */
-  public ngOnDestroy(): void {
-    if (this.refreshInterval) {
-      clearInterval(this.refreshInterval);
-      this.refreshInterval = null;
-    }
-  }
-
-  /**
    * Przełącza widoczność menu rozwijanego (timeframe lub room).
    *
    * @param {'timeframe' | 'room'} type Typ menu do przełączenia.
@@ -392,5 +379,17 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
   public selectRoom(roomValue: string): void {
     this.activeDropdown.set(null);
     this.lightsEnergyService.loadEnergyStats(this.selectedTimeframe(), roomValue);
+  }
+
+  /**
+   * Czyści zasoby komponentu — zatrzymuje działający interwał cykliczny.
+   *
+   * @returns {void}
+   */
+  public ngOnDestroy(): void {
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+      this.refreshInterval = null;
+    }
   }
 }
