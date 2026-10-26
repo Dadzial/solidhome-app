@@ -26,7 +26,6 @@ const WEEKDAYS = {
   en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 } as const;
 
-
 /**
  * Etykiety tygodni miesiąca w zależności od wybranego języka interfejsu.
  */
@@ -379,6 +378,45 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
   public selectRoom(roomValue: string): void {
     this.activeDropdown.set(null);
     this.lightsEnergyService.loadEnergyStats(this.selectedTimeframe(), roomValue);
+  }
+
+  /**
+   * Eksportuje dane energii z całego dnia dla wybranego przedziału czasu i pomieszczenia.
+   *
+   * @returns {void}
+   */
+  public exportData(): void {
+    const categories = this.translatedCategories();
+    const data = this.chartData();
+    const timeframe = this.selectedTimeframe();
+    const room = this.selectedRoom();
+
+    if (!data || data.length === 0) return;
+
+    const headers = [
+      `"${this.translationsService.instant('lightsPage.time')}"`,
+      `"${this.translationsService.instant('lightsPage.energyConsumptionKwh')}"`,
+    ];
+
+    const rows = categories.map((label, index) => [
+      `"${label}"`, data[index] ?? 0
+    ]);
+
+    const csvContent = '\uFEFF' + [
+      headers.join(','),
+      ...rows.map((row) => row.join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+
+    const today = new Date().toISOString().split('T')[0];
+    anchor.href = url;
+    anchor.download = `solidhome-energia-${timeframe}-${room}-${today}.csv`;
+    anchor.click();
+
+    URL.revokeObjectURL(url);
   }
 
   /**
