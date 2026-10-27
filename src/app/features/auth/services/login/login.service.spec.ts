@@ -128,4 +128,79 @@ describe('LoginService', () => {
       expect(service.userName()).toBe('');
     });
   });
+
+  describe('token helpers', () => {
+    it('should return access token via getAccessToken from localStorage or sessionStorage', () => {
+      expect(service.getAccessToken()).toBeNull();
+
+      sessionStorage.setItem('token', 'sess-token');
+      expect(service.getAccessToken()).toBe('sess-token');
+
+      localStorage.setItem('token', 'local-token');
+      expect(service.getAccessToken()).toBe('local-token');
+    });
+
+    it('should return refresh token via getRefreshToken from localStorage or sessionStorage', () => {
+      expect(service.getRefreshToken()).toBeNull();
+
+      sessionStorage.setItem('refreshToken', 'sess-refresh');
+      expect(service.getRefreshToken()).toBe('sess-refresh');
+
+      localStorage.setItem('refreshToken', 'local-refresh');
+      expect(service.getRefreshToken()).toBe('local-refresh');
+    });
+
+    it('should save tokens to localStorage when localStorage has existing token', () => {
+      localStorage.setItem('token', 'old-token');
+
+      service.saveTokens('new-token', 'new-refresh');
+
+      expect(localStorage.getItem('token')).toBe('new-token');
+      expect(localStorage.getItem('refreshToken')).toBe('new-refresh');
+      expect(sessionStorage.getItem('token')).toBeNull();
+    });
+
+    it('should save tokens to sessionStorage by default when localStorage is empty', () => {
+      service.saveTokens('new-token', 'new-refresh');
+
+      expect(sessionStorage.getItem('token')).toBe('new-token');
+      expect(sessionStorage.getItem('refreshToken')).toBe('new-refresh');
+      expect(localStorage.getItem('token')).toBeNull();
+    });
+
+    it('should clear all tokens and reset userName signal on clearTokens', () => {
+      localStorage.setItem('token', 'tok1');
+      localStorage.setItem('refreshToken', 'ref1');
+      sessionStorage.setItem('token', 'tok2');
+      sessionStorage.setItem('refreshToken', 'ref2');
+      service.userName.set('testUser');
+
+      service.clearTokens();
+
+      expect(localStorage.getItem('token')).toBeNull();
+      expect(localStorage.getItem('refreshToken')).toBeNull();
+      expect(sessionStorage.getItem('token')).toBeNull();
+      expect(sessionStorage.getItem('refreshToken')).toBeNull();
+      expect(service.userName()).toBe('');
+    });
+  });
+
+  describe('refreshAccessToken', () => {
+    it('should send POST request to auth/refresh with stored refreshToken', () => {
+      localStorage.setItem('refreshToken', 'my-refresh-token');
+
+      let response: any;
+      service.refreshAccessToken().subscribe((res) => {
+        response = res;
+      });
+
+      const req = httpMock.expectOne(`${apiUrl}/auth/refresh`);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual({ refreshToken: 'my-refresh-token' });
+
+      req.flush({ token: 'new-access-token', refreshToken: 'new-refresh-token' });
+
+      expect(response).toEqual({ token: 'new-access-token', refreshToken: 'new-refresh-token' });
+    });
+  });
 });

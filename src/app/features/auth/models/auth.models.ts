@@ -16,10 +16,34 @@ export interface LoginRequest {
  * Odpowiedź serwera po pomyślnym uwierzytelnieniu użytkownika.
  *
  * @interface LoginResponse
- * @property token Token JWT używany do autoryzacji kolejnych żądań API.
+ * @property token Token JWT (Access Token) używany do autoryzacji kolejnych żądań API.
+ * @property refreshToken Opcjonalny token odświeżający (Refresh Token) używany do cichego przedłużania sesji.
  */
 export interface LoginResponse {
   token: string;
+  refreshToken?: string;
+}
+
+/**
+ * Dane wysyłane do endpointu w celu odświeżenia tokenu dostępowego sesji.
+ *
+ * @interface RefreshTokenRequest
+ * @property refreshToken Aktywny token odświeżający sesję użytkownika.
+ */
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
+/**
+ * Odpowiedź serwera po pomyślnym odświeżeniu sesji użytkownika.
+ *
+ * @interface RefreshTokenResponse
+ * @property token Świeży token dostępowy (Access Token) JWT.
+ * @property refreshToken Aktualny lub zrotowany token odświeżający (Refresh Token).
+ */
+export interface RefreshTokenResponse {
+  token: string;
+  refreshToken: string;
 }
 
 /**

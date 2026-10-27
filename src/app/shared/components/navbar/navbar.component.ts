@@ -102,7 +102,9 @@ export class NavbarComponent {
    */
   private handleSuccessfulLogout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     sessionStorage.removeItem('token');
+    sessionStorage.removeItem('refreshToken');
     this.router.navigate(['/']);
   }
 }

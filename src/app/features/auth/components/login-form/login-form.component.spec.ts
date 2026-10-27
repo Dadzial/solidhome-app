@@ -125,7 +125,7 @@ describe('LoginFormComponent', () => {
 
     it('should handle successful login with sessionStorage when rememberMe is false', async () => {
       vi.useFakeTimers();
-      const mockResponse = { token: 'jwt-session-token' };
+      const mockResponse = { token: 'jwt-session-token', refreshToken: 'jwt-session-refresh' };
       vi.spyOn(loginService, 'login').mockReturnValue(of(mockResponse));
       const initUserSpy = vi.spyOn(loginService, 'initUserFromToken');
       const showLoadingSpy = vi.spyOn(loadingService, 'showLoadingWindow');
@@ -144,7 +144,9 @@ describe('LoginFormComponent', () => {
       await Promise.resolve();
 
       expect(sessionStorage.getItem('token')).toBe('jwt-session-token');
+      expect(sessionStorage.getItem('refreshToken')).toBe('jwt-session-refresh');
       expect(localStorage.getItem('token')).toBeNull();
+      expect(localStorage.getItem('refreshToken')).toBeNull();
       expect(initUserSpy).toHaveBeenCalled();
       expect(showLoadingSpy).toHaveBeenCalled();
 
@@ -158,7 +160,7 @@ describe('LoginFormComponent', () => {
 
     it('should handle successful login with localStorage when rememberMe is true', async () => {
       vi.useFakeTimers();
-      const mockResponse = { token: 'jwt-local-token' };
+      const mockResponse = { token: 'jwt-local-token', refreshToken: 'jwt-local-refresh' };
       vi.spyOn(loginService, 'login').mockReturnValue(of(mockResponse));
       vi.spyOn(loginService, 'initUserFromToken');
       vi.spyOn(loadingService, 'showLoadingWindow');
@@ -176,7 +178,9 @@ describe('LoginFormComponent', () => {
       await Promise.resolve();
 
       expect(localStorage.getItem('token')).toBe('jwt-local-token');
+      expect(localStorage.getItem('refreshToken')).toBe('jwt-local-refresh');
       expect(sessionStorage.getItem('token')).toBeNull();
+      expect(sessionStorage.getItem('refreshToken')).toBeNull();
     });
 
     it('should handle login error from server and display temporary error', async () => {

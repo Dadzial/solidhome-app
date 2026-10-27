@@ -90,7 +90,9 @@ describe('NavbarComponent', () => {
   describe('logout', () => {
     it('should clear tokens and navigate to / on successful logout', () => {
       localStorage.setItem('token', 'fake_local_token');
+      localStorage.setItem('refreshToken', 'fake_local_refresh');
       sessionStorage.setItem('token', 'fake_session_token');
+      sessionStorage.setItem('refreshToken', 'fake_session_refresh');
 
       vi.spyOn(logoutService, 'logout').mockReturnValue(of({ message: 'Logged out successfully' }));
       const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
@@ -98,13 +100,17 @@ describe('NavbarComponent', () => {
       component.logout();
 
       expect(localStorage.getItem('token')).toBeNull();
+      expect(localStorage.getItem('refreshToken')).toBeNull();
       expect(sessionStorage.getItem('token')).toBeNull();
+      expect(sessionStorage.getItem('refreshToken')).toBeNull();
       expect(navigateSpy).toHaveBeenCalledWith(['/']);
     });
 
     it('should clear tokens and navigate to / even if logout service returns an error', () => {
       localStorage.setItem('token', 'fake_local_token');
+      localStorage.setItem('refreshToken', 'fake_local_refresh');
       sessionStorage.setItem('token', 'fake_session_token');
+      sessionStorage.setItem('refreshToken', 'fake_session_refresh');
 
       vi.spyOn(logoutService, 'logout').mockReturnValue(throwError(() => new Error('Server error')));
       const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
@@ -112,7 +118,9 @@ describe('NavbarComponent', () => {
       component.logout();
 
       expect(localStorage.getItem('token')).toBeNull();
+      expect(localStorage.getItem('refreshToken')).toBeNull();
       expect(sessionStorage.getItem('token')).toBeNull();
+      expect(sessionStorage.getItem('refreshToken')).toBeNull();
       expect(navigateSpy).toHaveBeenCalledWith(['/']);
     });
   });

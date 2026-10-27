@@ -98,8 +98,14 @@ export class LoginFormComponent {
                 next: (response) => {
                   if (credentials.rememberMe) {
                     localStorage.setItem('token', response.token);
+                    if (response.refreshToken) {
+                      localStorage.setItem('refreshToken', response.refreshToken);
+                    }
                   } else {
                     sessionStorage.setItem('token', response.token);
+                    if (response.refreshToken) {
+                      sessionStorage.setItem('refreshToken', response.refreshToken);
+                    }
                   }
                   this.loginService.initUserFromToken();
                   resolve();
