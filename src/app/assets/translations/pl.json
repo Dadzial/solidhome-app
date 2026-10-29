@@ -94,6 +94,9 @@
         "garage": "Garaż",
         "hallway": "Przedpokój"
       }
+    },
+    "airWidget": {
+      "airQuality": "Jakość powietrza"
     }
   },
   "lightsPage": {

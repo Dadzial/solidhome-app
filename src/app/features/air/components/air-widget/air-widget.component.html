@@ -1,3 +1,14 @@
 <div
   class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
+  <!-- Nagłówek Air — tytuł -->
+  <div class="flex-1 min-h-0 flex flex-col mb-2 max-md:mb-3 gap-3">
+    <div class="flex flex-row items-center justify-between">
+      <div class="flex items-center gap-2">
+        <svg-icon src="assets/icons/air.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
+        <h2 class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
+          {{ 'home.airWidget.airQuality' | translate }}
+        </h2>
+      </div>
+    </div>
+  </div>
 </div>

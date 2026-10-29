@@ -94,6 +94,9 @@
         "garage": "Garage",
         "hallway": "Hallway"
       }
+    },
+    "airWidget": {
+      "airQuality": "Air Quality"
     }
   },
   "lightsPage": {

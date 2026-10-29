@@ -5,6 +5,7 @@ import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { ThemeButtonComponent } from '@shared/components/theme-button/theme-button.component';
 import { LangButtonComponent } from '@shared/components/lang-button/lang-button.component';
 import { LightsWidgetComponent } from '@features/lights/components/lights-widget/lights-widget.component';
+import { AirWidgetComponent } from '@features/air/components/air-widget/air-widget.component';
 
 /**
  * Komponent strony głównej aplikacji po zalogowaniu.
@@ -26,6 +27,7 @@ import { LightsWidgetComponent } from '@features/lights/components/lights-widget
     LangButtonComponent,
     ThemeButtonComponent,
     LightsWidgetComponent,
+    AirWidgetComponent,
   ],
   standalone: true,
   templateUrl: './home-page.component.html',
