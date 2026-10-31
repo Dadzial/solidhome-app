@@ -9,6 +9,7 @@ import { LightsEnergyService } from '@features/lights/services/lights-energy/lig
 import { LightEnergyData } from '@features/lights/models/lights.models';
 
 import { TranslationsService } from '@core/services/translations/translations.service';
+import { TimeFormatService } from '@features/settings/services/time-format/time-format.service';
 
 const mockEnergyData: LightEnergyData = {
   name: 'entireHouse',
@@ -34,8 +35,10 @@ describe('LightsEnergyComponent', () => {
   let fixture: ComponentFixture<LightsEnergyComponent>;
   let lightsEnergyService: LightsEnergyService;
   let translationsService: TranslationsService;
+  let timeFormatService: TimeFormatService;
 
   beforeEach(async () => {
+    localStorage.clear();
     vi.useFakeTimers();
 
     const mockSvgRegistry: Partial<SvgIconRegistryService> = {
@@ -54,6 +57,7 @@ describe('LightsEnergyComponent', () => {
 
     lightsEnergyService = TestBed.inject(LightsEnergyService);
     translationsService = TestBed.inject(TranslationsService);
+    timeFormatService = TestBed.inject(TimeFormatService);
 
     vi.spyOn(translationsService, 'instant').mockImplementation((key: string) => {
       if (key === 'lightsPage.energyConsumptionKwh') {
@@ -73,6 +77,7 @@ describe('LightsEnergyComponent', () => {
   });
 
   afterEach(() => {
+    localStorage.clear();
     component.ngOnDestroy();
     vi.useRealTimers();
     vi.clearAllMocks();
@@ -178,6 +183,17 @@ describe('LightsEnergyComponent', () => {
 
       translationsService.currentLang.set('en');
       expect(component.translatedCategories()).toEqual(['Wk 1', 'Wk 2']);
+    });
+
+    it('should format today categories according to timeFormatService', () => {
+      lightsEnergyService.currentTimeframe.set('today');
+      lightsEnergyService.energyData.set(mockEnergyData);
+
+      timeFormatService.setTimeFormat('24h');
+      expect(component.translatedCategories()).toEqual(['18:00', '18:01', '18:02']);
+
+      timeFormatService.setTimeFormat('12h');
+      expect(component.translatedCategories()).toEqual(['6:00 PM', '6:01 PM', '6:02 PM']);
     });
 
     it('should return correct label keys for selectedTimeframeLabel', () => {

@@ -2,6 +2,7 @@ import { Component, signal, computed, inject, OnInit, OnDestroy } from '@angular
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslationsService } from '@core/services/translations/translations.service';
+import { TimeFormatService } from '@features/settings/services/time-format/time-format.service';
 import {
   ChartComponent,
   ApexAxisChartSeries,
@@ -58,6 +59,9 @@ const MONTH_WEEKS = {
 export class LightsEnergyComponent implements OnInit, OnDestroy {
   /** Serwis obsługujący aktualny język i translacje. */
   private translationsService = inject(TranslationsService);
+
+  /** Serwis obsługujący preferencje formatowania czasu. */
+  private timeFormatService = inject(TimeFormatService);
 
   /** Serwis zarządzający pobieraniem danych statystyk energii świateł. */
   private lightsEnergyService = inject(LightsEnergyService);
@@ -147,7 +151,8 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
 
     if (timeframe === 'today') {
       const data = this.energyData();
-      return data?.categories ?? [];
+      const rawCategories = data?.categories ?? [];
+      return rawCategories.map((time) => this.timeFormatService.formatTimeString(time));
     }
 
     const lang = this.translationsService.currentLang();
@@ -176,11 +181,12 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
 
   /**
    * Sygnał obliczeniowy osi poziomej X.
-   * Reaguje na zmianę języka i aktualizuje etykiety oraz wymusza pełne odświeżenie wykresu w ng-apexcharts.
+   * Reaguje na zmianę języka oraz formatu czasu i aktualizuje etykiety w ng-apexcharts.
    * @type {computed}
    */
   public readonly xaxisConfig = computed<ApexXAxis>(() => {
     this.translationsService.currentLang();
+    this.timeFormatService.timeFormat();
 
     return {
       type: 'category',

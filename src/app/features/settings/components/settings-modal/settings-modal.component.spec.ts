@@ -452,4 +452,25 @@ describe('SettingsModalComponent', () => {
       expect(accentColorService.currentThemeColor()).toBe('var(--theme-accent-purple)');
     });
   });
+
+  describe('timeFormatService', () => {
+    it('should switch time format to 12h and 24h when clicking format buttons', () => {
+      const setTimeFormatSpy = vi.spyOn(component.timeFormatService, 'setTimeFormat');
+
+      const buttons = fixture.nativeElement.querySelectorAll('button');
+      const btn12h = Array.from(buttons).find((b: unknown) => (b as HTMLElement).textContent?.trim() === '12h') as HTMLElement;
+      const btn24h = Array.from(buttons).find((b: unknown) => (b as HTMLElement).textContent?.trim() === '24h') as HTMLElement;
+
+      expect(btn12h).toBeTruthy();
+      expect(btn24h).toBeTruthy();
+
+      btn12h.click();
+      expect(setTimeFormatSpy).toHaveBeenCalledWith('12h');
+      expect(component.timeFormatService.timeFormat()).toBe('12h');
+
+      btn24h.click();
+      expect(setTimeFormatSpy).toHaveBeenCalledWith('24h');
+      expect(component.timeFormatService.timeFormat()).toBe('24h');
+    });
+  });
 });
