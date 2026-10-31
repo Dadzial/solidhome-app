@@ -9,8 +9,8 @@ import { of } from 'rxjs';
 
 describe('AirPageComponent', () => {
   let component: AirPageComponent;
-  let httpMock: HttpTestingController;
   let fixture: ComponentFixture<AirPageComponent>;
+  let httpMock: HttpTestingController;
 
   const mockMatchMedia = (matches: boolean) => {
     Object.defineProperty(window, 'matchMedia', {
@@ -50,13 +50,14 @@ describe('AirPageComponent', () => {
     httpMock = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(AirPageComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 
   afterEach(() => {
     httpMock.verify();
     vi.clearAllMocks();
-  })
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
