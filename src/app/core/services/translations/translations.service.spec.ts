@@ -35,29 +35,29 @@ describe('TranslationsService', () => {
   });
 
   describe('constructor', () => {
-    it('should configure TranslateService with default languages and fallback to "en"', () => {
+    it('should configure TranslateService with default languages and fallback to "pl"', () => {
       expect(translateServiceMock.addLangs).toHaveBeenCalledWith(['pl', 'en']);
       expect(translateServiceMock.setDefaultLang).toHaveBeenCalledWith('pl');
-      expect(translateServiceMock.use).toHaveBeenCalledWith('en');
-      expect(service.currentLang()).toBe('en');
+      expect(translateServiceMock.use).toHaveBeenCalledWith('pl');
+      expect(service.currentLang()).toBe('pl');
     });
   });
 
   describe('getSavedLang fallback', () => {
-    it('should return "en" when localStorage has invalid language code', () => {
+    it('should return "pl" when localStorage has invalid language code', () => {
       localStorage.setItem('lang', 'fr');
 
       const result = (service as unknown as { getSavedLang: () => string }).getSavedLang();
 
-      expect(result).toBe('en');
+      expect(result).toBe('pl');
     });
 
-    it('should return "pl" when saved in localStorage', () => {
-      localStorage.setItem('lang', 'pl');
+    it('should return "en" when saved in localStorage', () => {
+      localStorage.setItem('lang', 'en');
 
       const result = (service as unknown as { getSavedLang: () => string }).getSavedLang();
 
-      expect(result).toBe('pl');
+      expect(result).toBe('en');
     });
   });
 
