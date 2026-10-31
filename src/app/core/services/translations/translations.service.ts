@@ -63,7 +63,7 @@ export class TranslationsService {
   private getSavedLang(): Language {
     const saved = localStorage.getItem('lang') as Language;
     if (saved === 'pl' || saved === 'en') return saved;
-    return 'en';
+    return 'pl';
   }
 
   /**
