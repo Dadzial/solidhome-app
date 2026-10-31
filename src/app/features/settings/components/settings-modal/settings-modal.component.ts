@@ -5,6 +5,7 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { ClickOutsideDirective } from '@shared/directives/click-outside/click-outside.directive';
 import { AccentColorService } from '@core/services/accent-color/accent-color.service';
 import { UserSettingsService } from '@features/settings/services/user-settings/user-settings.service';
+import {TimeFormatService} from '@features/settings/services/time-format/time-format.service';
 import { LoginService } from '@features/auth/services/login/login.service';
 import { ApiError } from '@core/models/core.models';
 import {
@@ -45,6 +46,9 @@ export class SettingsModalComponent {
 
   /** Serwis obsługujący aktualizację danych profilu użytkownika. */
   private userSettingsService = inject(UserSettingsService);
+
+  /** Serwis obsługujący format czasu w aplikacji. */
+  public timeFormatService = inject(TimeFormatService);
 
   /** Serwis logowania — używany do aktualizacji sygnału `userName` po zmianie nazwy użytkownika. */
   private loginService = inject(LoginService);

@@ -338,15 +338,24 @@
       </div>
       <!-- Format czasu: 24h / 12h -->
       <div class="flex items-center justify-between">
-        <span
-          class="text-body-14-medium text-text-primary">{{ 'home.settingsModal.timeFormat' | translate }}
-        </span>
+      <span class="text-body-14-medium text-text-primary">
+        {{ 'home.settingsModal.timeFormat' | translate }}
+      </span>
         <div class="flex items-center p-1">
           <button
-            class="px-3 py-1 text-body-12-regular text-accent transition-all cursor-pointer">24h
+            (click)="timeFormatService.setTimeFormat('24h')"
+            [class.text-accent]="timeFormatService.timeFormat() === '24h'"
+            [class.text-text-primary]="timeFormatService.timeFormat() !== '24h'"
+            [class.opacity-75]="timeFormatService.timeFormat() !== '24h'"
+            class="px-3 py-1 text-body-12-regular transition-all cursor-pointer">
+            24h
           </button>
           <button
-            class="px-3 py-1 text-body-12-regular text-text-primary opacity-75 hover:opacity-100 transition-all cursor-pointer">
+            (click)="timeFormatService.setTimeFormat('12h')"
+            [class.text-accent]="timeFormatService.timeFormat() === '12h'"
+            [class.text-text-primary]="timeFormatService.timeFormat() !== '12h'"
+            [class.opacity-75]="timeFormatService.timeFormat() !== '12h'"
+            class="px-3 py-1 text-body-12-regular transition-all cursor-pointer">
             12h
           </button>
         </div>

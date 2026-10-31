@@ -22,6 +22,16 @@ export class TimeFormatService {
   public readonly timeFormat = signal<TimeFormat>(this.getSavedFormat());
 
   /**
+   * Ustawia nowy format czasu i zapisuje go w pamięci lokalnej przeglądarki (`localStorage`).
+   *
+   * @param {TimeFormat} format Nowy format czasu do ustawienia (`'12h'` lub `'24h'`).
+   */
+  public setTimeFormat(format: TimeFormat): void {
+    this.timeFormat.set(format);
+    localStorage.setItem(this.storageKey, format);
+  }
+
+  /**
    * Konwertuje ciąg godziny z formatu 24-godzinnego ("HH:mm") na format 12-godzinny ("h:mm AM/PM").
    *
    * ### Zasady działania:
