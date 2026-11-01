@@ -151,8 +151,7 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
 
     if (timeframe === 'today') {
       const data = this.energyData();
-      const rawCategories = data?.categories ?? [];
-      return rawCategories.map((time) => this.timeFormatService.formatTimeString(time));
+      return data?.categories ?? [];
     }
 
     const lang = this.translationsService.currentLang();
@@ -197,6 +196,11 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
         rotateAlways: false,
         hideOverlappingLabels: true,
         trim: false,
+        formatter: (val: string) => {
+          return this.selectedTimeframe() === 'today'
+            ? this.timeFormatService.formatTimeString(val)
+            : val;
+        },
         style: {
           colors: 'var(--text-primary)',
           fontSize: '11px',
@@ -251,7 +255,7 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
     borderColor: 'color-mix(in srgb, var(--text-primary) 20%, transparent)',
     padding: {
       left: 20,
-      right: 15,
+      right: 25,
     },
     xaxis: {
       lines: {
@@ -292,9 +296,17 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
    */
   public readonly tooltipConfig = computed<ApexTooltip>(() => {
     this.translationsService.currentLang();
+    this.timeFormatService.timeFormat();
 
     return {
       theme: 'dark',
+      x: {
+        formatter: (val: string | number) => {
+          return this.selectedTimeframe() === 'today'
+            ? this.timeFormatService.formatTimeString(String(val))
+            : String(val);
+        },
+      },
       y: {
         formatter: (val: number) => (typeof val === 'number' ? `${val.toFixed(2)} kWh` : ''),
       },
@@ -404,7 +416,10 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
       `"${this.translationsService.instant('lightsPage.energyConsumptionKwh')}"`,
     ];
 
-    const rows = categories.map((label, index) => [`"${label}"`, data[index] ?? 0]);
+    const rows = categories.map((label, index) => [
+      `"${timeframe === 'today' ? this.timeFormatService.formatTimeString(label) : label}"`,
+      data[index] ?? 0,
+    ]);
 
     const csvContent =
       '\uFEFF' + [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');

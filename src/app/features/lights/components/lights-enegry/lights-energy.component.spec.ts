@@ -185,15 +185,17 @@ describe('LightsEnergyComponent', () => {
       expect(component.translatedCategories()).toEqual(['Wk 1', 'Wk 2']);
     });
 
-    it('should format today categories according to timeFormatService', () => {
+    it('should format today labels in xaxisConfig according to timeFormatService', () => {
       lightsEnergyService.currentTimeframe.set('today');
       lightsEnergyService.energyData.set(mockEnergyData);
 
       timeFormatService.setTimeFormat('24h');
-      expect(component.translatedCategories()).toEqual(['18:00', '18:01', '18:02']);
+      const formatter24h = component.xaxisConfig().labels?.formatter;
+      expect(formatter24h?.('18:00')).toBe('18:00');
 
       timeFormatService.setTimeFormat('12h');
-      expect(component.translatedCategories()).toEqual(['6:00 PM', '6:01 PM', '6:02 PM']);
+      const formatter12h = component.xaxisConfig().labels?.formatter;
+      expect(formatter12h?.('18:00')).toBe('6:00 PM');
     });
 
     it('should return correct label keys for selectedTimeframeLabel', () => {
