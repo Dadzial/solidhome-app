@@ -1,8 +1,50 @@
-<div
-  class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative">
-  <!-- Nagłówek Air — tytuł -->
-  <div class="flex-1 min-h-0 flex flex-col mb-2 max-md:mb-3 gap-3">
-    <div class="flex flex-row items-center justify-between">
+@if (variant() === 'compact') {
+  <div
+    class="@container w-full h-full p-4 max-md:p-4 flex flex-col justify-between bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden">
+    <!-- Nagłówek widgetu — tytuł -->
+    <div class="flex flex-row items-center justify-between mb-3 max-md:mb-2 shrink-0">
+      <div class="flex items-center gap-2">
+        <svg-icon src="assets/icons/air.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
+        <h2 class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
+          {{ 'home.airWidget.airQuality' | translate }}
+        </h2>
+      </div>
+    </div>
+    <!-- Główne kafle odczytów -->
+    <div class="grid grid-cols-2 gap-3 my-auto flex-1 items-center">
+      <!-- Temperatura -->
+      <div class="h-full bg-background-primary rounded-2xl p-3.5 flex flex-col justify-between transition-all">
+        <div class="flex items-center justify-between">
+          <span class="text-body-14-medium text-text-primary">Temperatura</span>
+        </div>
+        <div class="flex items-baseline gap-1 my-1">
+          <span class="text-headline-h1-36-bold text-text-primary">22.4</span>
+          <span class="text-body-16-medium text-text-primary/50">°C</span>
+        </div>
+        <span class="text-body-12-regular text-accent">Komfortowa</span>
+      </div>
+      <!-- Ciśnienie atmosferyczne -->
+      <div class="h-full bg-background-primary rounded-2xl p-3.5 flex flex-col justify-between transition-all">
+        <div class="flex items-center justify-between">
+          <span class="text-body-14-medium text-text-primary">Ciśnienie</span>
+        </div>
+        <div class="flex items-baseline gap-1 my-1">
+          <span class="text-headline-h1-36-bold text-text-primary">1014</span>
+          <span class="text-body-14-medium text-text-primary/50">hPa</span>
+        </div>
+        <span class="text-body-12-regular text-accent">Stabilne</span>
+      </div>
+    </div>
+    <!-- Tendencja -->
+    <div class="flex items-center justify-between text-body-12-regular text-text-primary pt-2 shrink-0">
+      <span>Tendencja: <strong class=" text-accent">Brak wahań</strong></span>
+    </div>
+  </div>
+} @else {
+  <div
+    class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden">
+    <!-- Nagłówek widgetu — tytuł -->
+    <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3 shrink-0">
       <div class="flex items-center gap-2">
         <svg-icon src="assets/icons/air.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
         <h2 class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
@@ -11,4 +53,4 @@
       </div>
     </div>
   </div>
-</div>
+}
