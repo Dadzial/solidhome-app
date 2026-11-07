@@ -1,30 +1,28 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { LogoutService } from './logout.service';
+import { ApiService } from '@core/services/api/api.service';
 import { LogoutResponse } from '@core/models/core.models';
-import { environment } from '@environments/environment';
+import { of, throwError } from 'rxjs';
 
 describe('LogoutService', () => {
   let service: LogoutService;
-  let httpMock: HttpTestingController;
-  const expectedUrl = `${environment.apiUrl}/user/logout`;
+  let apiServiceMock: { delete: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
+    apiServiceMock = {
+      delete: vi.fn(),
+    };
+
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
         LogoutService,
-      ],
+        {
+          provide: ApiService,
+          useValue: apiServiceMock
+        }],
     });
 
     service = TestBed.inject(LogoutService);
-    httpMock = TestBed.inject(HttpTestingController);
-  });
-
-  afterEach(() => {
-    httpMock.verify();
   });
 
   it('should be created', () => {
@@ -32,25 +30,24 @@ describe('LogoutService', () => {
   });
 
   describe('logout', () => {
-    it('should send a DELETE request to logout endpoint and return LogoutResponse', () => {
+    it('should call api.delete with "user/logout" and return response', () => {
       const mockResponse: LogoutResponse = { message: 'Logged out successfully' };
-      let responseData: LogoutResponse | undefined;
+      apiServiceMock.delete.mockReturnValue(of(mockResponse));
 
+      let responseData: LogoutResponse | undefined;
       service.logout().subscribe((res) => {
         responseData = res;
       });
 
-      const req = httpMock.expectOne(expectedUrl);
-      expect(req.request.method).toBe('DELETE');
-
-      req.flush(mockResponse);
-
+      expect(apiServiceMock.delete).toHaveBeenCalledWith('user/logout');
       expect(responseData).toEqual(mockResponse);
     });
 
-    it('should propagate error when logout request fails', () => {
-      let capturedError: unknown;
+    it('should propagate error when api.delete fails', () => {
+      const mockError = new Error('Unauthorized');
+      apiServiceMock.delete.mockReturnValue(throwError(() => mockError));
 
+      let capturedError: unknown;
       service.logout().subscribe({
         next: () => {},
         error: (err) => {
@@ -58,12 +55,8 @@ describe('LogoutService', () => {
         },
       });
 
-      const req = httpMock.expectOne(expectedUrl);
-      expect(req.request.method).toBe('DELETE');
-
-      req.flush({ error: 'Unauthorized' }, { status: 401, statusText: 'Unauthorized' });
-
-      expect(capturedError).toBeDefined();
+      expect(apiServiceMock.delete).toHaveBeenCalledWith('user/logout');
+      expect(capturedError).toBe(mockError);
     });
   });
 });

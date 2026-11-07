@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
+import { ApiService } from '@core/services/api/api.service';
 import { LogoutResponse } from '@core/models/core.models';
 import { Observable } from 'rxjs';
 
@@ -15,18 +14,15 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LogoutService {
-  /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
-  private http = inject(HttpClient);
-
-  /** Adres endpoint API odpowiedzialnego za operacje związane z użytkownikiem. */
-  private readonly apiUrl = `${environment.apiUrl}/user`;
+  /** Inject ApiService do wykonywania żądań do backendu. */
+  private api = inject(ApiService);
 
   /**
    * Wysyła żądanie HTTP DELETE do endpointu API w celu wylogowania użytkownika.
    *
    * @returns {Observable<LogoutResponse>} Obserwowalny obiekt zawierający odpowiedź z serwera po wylogowaniu.
    */
-  public logout() : Observable<LogoutResponse> {
-    return this.http.delete<LogoutResponse>(`${this.apiUrl}/logout`);
+  public logout(): Observable<LogoutResponse> {
+    return this.api.delete<LogoutResponse>('user/logout');
   }
 }
