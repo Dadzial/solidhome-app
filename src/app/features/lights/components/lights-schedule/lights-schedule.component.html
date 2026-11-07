@@ -1,25 +1,36 @@
 <div
-  class="@container w-full h-87.5 lg:h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden transition-all">
+  class="@container w-full h-87.5 lg:h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden transition-all"
+>
   <!-- Nakładka błędu — wyświetlana gdy wystąpił błąd pobierania danych -->
   @if (hasError()) {
     <div
-      class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background-secondary/40 backdrop-blur-md rounded-3xl p-4 text-center">
-      <svg-icon src="assets/icons/error.svg" [applyClass]="true" class="w-12 h-12 text-text-error mb-2"></svg-icon>
-      <h2 class="text-text-primary text-body-18-semibold text-shadow-sm"
-          [innerHTML]="'lightsPage.rulesError' | translate"></h2>
+      class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background-secondary/40 backdrop-blur-md rounded-3xl p-4 text-center"
+    >
+      <svg-icon
+        src="assets/icons/error.svg"
+        [applyClass]="true"
+        class="w-12 h-12 text-text-error mb-2"
+      ></svg-icon>
+      <h2
+        class="text-text-primary text-body-18-semibold text-shadow-sm"
+        [innerHTML]="'lightsPage.rulesError' | translate"
+      ></h2>
     </div>
   }
   @if (enableAddSchedule()) {
     <!-- Przestrzeń formularza dodania reguły aktywowana przez signal 'enableAddSchedule' -->
     <div class="flex flex-col flex-1 h-full min-h-0 animate-fade-in">
       <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3 shrink-0">
-        <h2 class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
+        <h2
+          class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs"
+        >
           {{ 'lightsPage.addRule' | translate }}
         </h2>
         <!-- Przycisk zamknięcia formularza -->
         <button
           (click)="toggleAddSchedule()"
-          class="w-8 h-8 flex items-center justify-center rounded-full text-text-primary/50 hover:text-accent hover:bg-background-tertiary transition-colors cursor-pointer">
+          class="w-8 h-8 flex items-center justify-center rounded-full text-text-primary/50 hover:text-accent hover:bg-background-tertiary transition-colors cursor-pointer"
+        >
           <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-9 h-9"></svg-icon>
         </button>
       </div>
@@ -57,7 +68,8 @@
                 [class.text-text-primary]="!isDaySelected($index)"
                 [class.opacity-60]="!isDaySelected($index)"
                 [class.hover:opacity-100]="!isDaySelected($index)"
-                [class.hover:bg-background-tertiary]="!isDaySelected($index)">
+                [class.hover:bg-background-tertiary]="!isDaySelected($index)"
+              >
                 {{ key | translate }}
               </button>
             }
@@ -70,30 +82,39 @@
               {{ 'lightsPage.ruleActiveDuration' | translate }}
             </label>
             <div class="flex items-center gap-1.5 text-body-14-medium">
-              <span class="text-accent ">{{ format(start()) }}</span>
+              <span class="text-accent">{{ format(start()) }}</span>
               <span class="text-text-primary/40">{{ 'lightsPage.to' | translate }}</span>
               <span class="text-text-primary">{{ format(end()) }}</span>
-              <span class="text-accent text-body-12-medium bg-accent/15 px-2 py-0.5 rounded-md ml-1">
+              <span
+                class="text-accent text-body-12-medium bg-accent/15 px-2 py-0.5 rounded-md ml-1"
+              >
                 {{ duration() }}
               </span>
             </div>
           </div>
-          <div class="relative w-full h-7 flex items-center bg-background-primary px-3 rounded-2xl select-none">
-            <div class="absolute inset-x-3 h-1.5 bg-background-secondary rounded-full overflow-hidden">
+          <div
+            class="relative w-full h-7 flex items-center bg-background-primary px-3 rounded-2xl select-none"
+          >
+            <div
+              class="absolute inset-x-3 h-1.5 bg-background-secondary rounded-full overflow-hidden"
+            >
               @if (end() >= start()) {
                 <div
                   class="absolute h-full bg-accent rounded-full transition-all duration-75"
                   [style.left.%]="(start() / 24) * 100"
-                  [style.width.%]="((end() - start()) / 24) * 100"></div>
+                  [style.width.%]="((end() - start()) / 24) * 100"
+                ></div>
               } @else {
                 <div
                   class="absolute h-full bg-accent rounded-full"
                   [style.left.%]="(start() / 24) * 100"
-                  [style.width.%]="100 - (start() / 24) * 100"></div>
+                  [style.width.%]="100 - (start() / 24) * 100"
+                ></div>
                 <div
                   class="absolute h-full bg-accent rounded-full"
                   [style.left.%]="0"
-                  [style.width.%]="(end() / 24) * 100"></div>
+                  [style.width.%]="(end() / 24) * 100"
+                ></div>
               }
             </div>
             <input
@@ -103,14 +124,7 @@
               step="0.25"
               [value]="start()"
               (input)="start.set(+$any($event.target).value)"
-              class="absolute inset-x-3 h-1.5 appearance-none bg-transparent pointer-events-none z-10
-                     [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:pointer-events-auto
-                     [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full
-                     [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background-secondary
-                     [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110
-                     [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4
-                     [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-accent [&::-moz-range-thumb]:border-2
-                     [&::-moz-range-thumb]:border-background-secondary [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-pointer"
+              class="absolute inset-x-3 h-1.5 appearance-none bg-transparent pointer-events-none z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background-secondary [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110 [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-accent [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-background-secondary [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-pointer"
             />
 
             <input
@@ -120,14 +134,7 @@
               step="0.25"
               [value]="end()"
               (input)="end.set(+$any($event.target).value)"
-              class="absolute inset-x-3 h-1.5 appearance-none bg-transparent pointer-events-none z-20 hover:z-30
-                     [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:pointer-events-auto
-                     [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full
-                     [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background-secondary
-                     [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110
-                     [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4
-                     [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-accent [&::-moz-range-thumb]:border-2
-                     [&::-moz-range-thumb]:border-background-secondary [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-pointer"
+              class="absolute inset-x-3 h-1.5 appearance-none bg-transparent pointer-events-none z-20 hover:z-30 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background-secondary [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110 [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-accent [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-background-secondary [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-pointer"
             />
           </div>
         </div>
@@ -147,7 +154,8 @@
                 [class.bg-background-primary]="!isRoomSelected(option.value)"
                 [class.text-text-primary]="!isRoomSelected(option.value)"
                 [class.opacity-60]="!isRoomSelected(option.value)"
-                [class.hover:opacity-100]="!isRoomSelected(option.value)">
+                [class.hover:opacity-100]="!isRoomSelected(option.value)"
+              >
                 {{ option.labelKey | translate }}
               </button>
             }
@@ -160,7 +168,8 @@
           [disabled]="!canSave()"
           [class.opacity-50]="!canSave()"
           [class.cursor-not-allowed]="!canSave()"
-          class="mt-auto bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all cursor-pointer shrink-0">
+          class="mt-auto bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all cursor-pointer shrink-0"
+        >
           {{ 'lightsPage.save' | translate }}
         </button>
       </div>
@@ -169,52 +178,74 @@
     <!-- Nagłówek Schedule — tytuł i przycisk dodawania -->
     <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
       <div class="flex items-center gap-2">
-        <svg-icon src="assets/icons/light_schedule.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
+        <svg-icon
+          src="assets/icons/light_schedule.svg"
+          [applyClass]="true"
+          class="w-8 h-8 text-accent"
+        ></svg-icon>
         <h2
-          class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
+          class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs"
+        >
           {{ 'lightsPage.rules' | translate }}
         </h2>
       </div>
       <!-- Przycisk dodawania reguły -->
       <button
         (click)="toggleAddSchedule()"
-        class="bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all active:scale-95 cursor-pointer">
+        class="bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all active:scale-95 cursor-pointer"
+      >
         {{ 'lightsPage.add' | translate }}
       </button>
     </div>
     <!-- Lista istniejących reguł -->
     @if (empty()) {
-      <div class="flex flex-col items-center justify-center flex-1 h-full min-h-35 text-center text-text-primary/40 py-6">
-        <svg-icon src="assets/icons/light_schedule_empty.svg" [applyClass]="true" class="w-16 h-16 text-background-primary mb-2"></svg-icon>
+      <div
+        class="flex flex-col items-center justify-center flex-1 h-full min-h-35 text-center text-text-primary/40 py-6"
+      >
+        <svg-icon
+          src="assets/icons/light_schedule_empty.svg"
+          [applyClass]="true"
+          class="w-16 h-16 text-background-primary mb-2"
+        ></svg-icon>
         <p class="text-body-14-medium">
           {{ 'lightsPage.noRules' | translate }}
         </p>
       </div>
     } @else {
-      <div class="flex-1 min-h-0 flex flex-col gap-2 overflow-y-auto pr-2 max-md:pr-1 rounded-scrollbar">
+      <div
+        class="flex-1 min-h-0 flex flex-col gap-2 overflow-y-auto pr-2 max-md:pr-1 rounded-scrollbar"
+      >
         @for (rule of schedule(); track rule.id) {
           <div
-            class="flex items-center justify-between p-3 max-md:p-2.5 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all">
+            class="flex items-center justify-between p-3 max-md:p-2.5 rounded-2xl bg-background-primary hover:brightness-95 dark:hover:brightness-110 transition-all"
+          >
             <div class="flex items-center gap-3 min-w-0">
               <!-- Informacje o regule -->
               <div class="flex flex-col min-w-0">
                 <div class="flex items-center gap-2">
-                  <span class="text-body-16-semibold max-md:text-body-14-semibold text-text-primary truncate">
+                  <span
+                    class="text-body-16-semibold max-md:text-body-14-semibold text-text-primary truncate"
+                  >
                     {{ rule.name }}
                   </span>
-                  <div class="bg-background-secondary h-4 px-1.5 rounded-md shrink-0 inline-flex items-center justify-center">
+                  <div
+                    class="bg-background-secondary h-4 px-1.5 rounded-md shrink-0 inline-flex items-center justify-center"
+                  >
                     <span class="text-xs font-normal text-text-primary/70 leading-none">
                       {{ rule.startTime }} - {{ rule.endTime }}
                     </span>
                   </div>
                 </div>
-                <div class="flex items-center gap-2 text-body-12-regular text-text-primary/60 mt-0.5">
+                <div
+                  class="flex items-center gap-2 text-body-12-regular text-text-primary/60 mt-0.5"
+                >
                   <div class="flex items-center gap-1">
                     @for (key of weekDayKeys; track $index) {
                       <span
                         class="text-body-12-medium"
                         [class.text-accent]="rule.days.includes($index)"
-                        [class.text-text-primary30]="!rule.days.includes($index)">
+                        [class.text-text-primary30]="!rule.days.includes($index)"
+                      >
                         {{ key | translate }}
                       </span>
                     }
@@ -223,7 +254,12 @@
                     <span>•</span>
                     <span class="truncate">
                       @for (room of rule.rooms; track room; let last = $last) {
-                        {{ (room === 'entireHouse' ? 'lightsPage.entireHouse' : (roomTranslations[room] ?? room)) | translate }}{{ last ? '' : ', ' }}
+                        {{
+                          (room === 'entireHouse'
+                            ? 'lightsPage.entireHouse'
+                            : (roomTranslations[room] ?? room)
+                          ) | translate
+                        }}{{ last ? '' : ', ' }}
                       }
                     </span>
                   }
@@ -240,19 +276,26 @@
                 class="w-10 h-5 rounded-full relative cursor-pointer shadow-inner border border-divider shrink-0 flex items-center px-0.5 transition-colors"
                 [class.bg-accent]="rule.active"
                 [class.border-accent]="rule.active"
-                [class.bg-background-secondary]="!rule.active">
+                [class.bg-background-secondary]="!rule.active"
+              >
                 <div
                   class="w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-200"
                   [class.translate-x-5]="rule.active"
-                  [class.translate-x-0]="!rule.active"></div>
+                  [class.translate-x-0]="!rule.active"
+                ></div>
               </button>
 
               <!-- Przycisk usuwania reguły -->
               <button
                 type="button"
                 (click)="deleteRule(rule.id)"
-                class="w-8 h-8 flex items-center justify-center rounded-lg text-text-primary/40 hover:text-text-error hover:bg-background-tertiary transition-colors cursor-pointer">
-                <svg-icon src="assets/icons/delete.svg" [applyClass]="true" class="w-4.5 h-4.5"></svg-icon>
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-text-primary/40 hover:text-text-error hover:bg-background-tertiary transition-colors cursor-pointer"
+              >
+                <svg-icon
+                  src="assets/icons/delete.svg"
+                  [applyClass]="true"
+                  class="w-4.5 h-4.5"
+                ></svg-icon>
               </button>
             </div>
           </div>

@@ -1,5 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClient, HttpInterceptorFn, provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpInterceptorFn,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter, Router } from '@angular/router';
 import { authInterceptor } from './auth-interceptor';
@@ -95,9 +100,11 @@ describe('authInterceptor', () => {
   it('should preserve existing headers when adding Authorization', () => {
     localStorage.setItem('token', 'local-jwt-token');
 
-    httpClient.get('/api/data', {
-      headers: { 'Custom-Header': 'TestValue' },
-    }).subscribe();
+    httpClient
+      .get('/api/data', {
+        headers: { 'Custom-Header': 'TestValue' },
+      })
+      .subscribe();
 
     const req = httpMock.expectOne('/api/data');
     expect(req.request.headers.get('Custom-Header')).toBe('TestValue');
@@ -139,7 +146,9 @@ describe('authInterceptor', () => {
       let capturedError: any;
       httpClient.get('/api/protected-data').subscribe({
         next: () => {},
-        error: (err) => { capturedError = err; },
+        error: (err) => {
+          capturedError = err;
+        },
       });
 
       const initialReq = httpMock.expectOne('/api/protected-data');
@@ -154,7 +163,9 @@ describe('authInterceptor', () => {
       let capturedError: any;
       httpClient.post('/api/user/auth', { userName: 'bad', password: 'bad' }).subscribe({
         next: () => {},
-        error: (err) => { capturedError = err; },
+        error: (err) => {
+          capturedError = err;
+        },
       });
 
       const authReq = httpMock.expectOne('/api/user/auth');
@@ -172,14 +183,19 @@ describe('authInterceptor', () => {
       let capturedError: any;
       httpClient.get('/api/protected-data').subscribe({
         next: () => {},
-        error: (err) => { capturedError = err; },
+        error: (err) => {
+          capturedError = err;
+        },
       });
 
       const initialReq = httpMock.expectOne('/api/protected-data');
       initialReq.flush({ error: 'Token expired' }, { status: 401, statusText: 'Unauthorized' });
 
       const refreshReq = httpMock.expectOne((req) => req.url.includes('/user/auth/refresh'));
-      refreshReq.flush({ error: 'Refresh token expired' }, { status: 401, statusText: 'Unauthorized' });
+      refreshReq.flush(
+        { error: 'Refresh token expired' },
+        { status: 401, statusText: 'Unauthorized' },
+      );
 
       expect(localStorage.getItem('token')).toBeNull();
       expect(localStorage.getItem('refreshToken')).toBeNull();

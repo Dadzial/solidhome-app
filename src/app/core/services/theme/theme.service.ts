@@ -26,7 +26,7 @@ export class ThemeService {
    * Reaktywny sygnał przechowujący aktualnie aktywny motyw aplikacji.
    * @type {signal}
    */
-  readonly theme = signal<Theme>(this.getSavedTheme())
+  readonly theme = signal<Theme>(this.getSavedTheme());
 
   /**`
    * Inicjalizuje serwis i rejestruje reaktywny efekt (`effect`), który przy każdej zmianie

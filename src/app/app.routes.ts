@@ -26,8 +26,7 @@ export const routes: Routes = [
   {
     path: 'home',
     canActivate: [loginGuard],
-    loadComponent: () =>
-      import('@pages/home/home-page.component').then((m) => m.HomePageComponent),
+    loadComponent: () => import('@pages/home/home-page.component').then((m) => m.HomePageComponent),
   },
   {
     path: 'lights',
@@ -44,8 +43,7 @@ export const routes: Routes = [
   {
     path: 'air',
     canActivate: [loginGuard],
-    loadComponent: () =>
-      import('@pages/air/air-page.component').then((m) => m.AirPageComponent),
+    loadComponent: () => import('@pages/air/air-page.component').then((m) => m.AirPageComponent),
   },
   {
     path: 'security',

@@ -57,7 +57,9 @@ describe('VerifyEmailService', () => {
         },
       });
 
-      expect(apiServiceMock.post).toHaveBeenCalledWith('user/reset/code', { email: 'notexist@test.com' });
+      expect(apiServiceMock.post).toHaveBeenCalledWith('user/reset/code', {
+        email: 'notexist@test.com',
+      });
       expect(capturedError).toBe(mockError);
     });
   });

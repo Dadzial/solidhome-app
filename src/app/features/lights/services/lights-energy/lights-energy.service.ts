@@ -93,8 +93,6 @@ export class LightsEnergyService {
    * @returns {Observable<{ message: string; deletedCount: number }>}
    */
   public resetEnergyStats(): Observable<{ message: string; deletedCount: number }> {
-    return this.api.delete<{ message: string; deletedCount: number }>(
-      'lights/energy/reset',
-    );
+    return this.api.delete<{ message: string; deletedCount: number }>('lights/energy/reset');
   }
 }

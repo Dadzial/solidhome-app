@@ -86,9 +86,7 @@ describe('HomePageComponent', () => {
 
     it('should display userName from localStorage token', () => {
       const fakeToken =
-        'eyJhbGciOiJIUzI1NiJ9.' +
-        btoa(JSON.stringify({ userName: 'testUser' })) +
-        '.signature';
+        'eyJhbGciOiJIUzI1NiJ9.' + btoa(JSON.stringify({ userName: 'testUser' })) + '.signature';
       localStorage.setItem('token', fakeToken);
 
       loginService.initUserFromToken();

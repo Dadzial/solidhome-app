@@ -80,7 +80,8 @@ describe('AuthPageComponent', () => {
       const registerFormEl = fixture.nativeElement.querySelector('app-register-form');
       expect(registerFormEl).toBeTruthy();
 
-      const registerForm = fixture.debugElement.children[0].children[0].children[1].children[0].componentInstance;
+      const registerForm =
+        fixture.debugElement.children[0].children[0].children[1].children[0].componentInstance;
       if (registerForm && registerForm.switchToLogin) {
         registerForm.switchToLogin.emit();
         fixture.detectChanges();
@@ -96,7 +97,8 @@ describe('AuthPageComponent', () => {
       const verifyFormEl = fixture.nativeElement.querySelector('app-verify-form');
       expect(verifyFormEl).toBeTruthy();
 
-      const verifyForm = fixture.debugElement.children[0].children[0].children[1].children[0].componentInstance;
+      const verifyForm =
+        fixture.debugElement.children[0].children[0].children[1].children[0].componentInstance;
       if (verifyForm && verifyForm.switchToNewPassword) {
         verifyForm.switchToNewPassword.emit();
         fixture.detectChanges();
@@ -112,7 +114,8 @@ describe('AuthPageComponent', () => {
       const restoreFormEl = fixture.nativeElement.querySelector('app-restore-form');
       expect(restoreFormEl).toBeTruthy();
 
-      const restoreForm = fixture.debugElement.children[0].children[0].children[1].children[0].componentInstance;
+      const restoreForm =
+        fixture.debugElement.children[0].children[0].children[1].children[0].componentInstance;
       if (restoreForm && restoreForm.switchToLogin) {
         restoreForm.switchToLogin.emit();
         fixture.detectChanges();

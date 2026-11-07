@@ -14,10 +14,7 @@ describe('UserSettingsService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        UserSettingsService,
-        { provide: ApiService, useValue: apiServiceMock },
-      ],
+      providers: [UserSettingsService, { provide: ApiService, useValue: apiServiceMock }],
     });
 
     service = TestBed.inject(UserSettingsService);

@@ -31,7 +31,7 @@ import { LightsEnergyComponent } from '@features/lights/components/lights-energy
     LightsWidgetComponent,
     LightsScheduleComponent,
     LightsScenesComponent,
-    LightsEnergyComponent
+    LightsEnergyComponent,
   ],
   standalone: true,
   templateUrl: './lights-page.component.html',

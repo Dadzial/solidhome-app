@@ -37,10 +37,7 @@ describe('LightsScheduleService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        LightsScheduleService,
-        { provide: ApiService, useValue: apiServiceMock },
-      ],
+      providers: [LightsScheduleService, { provide: ApiService, useValue: apiServiceMock }],
     });
 
     service = TestBed.inject(LightsScheduleService);

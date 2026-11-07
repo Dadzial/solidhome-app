@@ -56,16 +56,18 @@ describe('LightsPageComponent', () => {
     httpMock.expectOne(`${environment.apiUrl}/lights/status/app`).flush([]);
     httpMock.expectOne(`${environment.apiUrl}/lights/history?limit=20`).flush([]);
     httpMock.expectOne(`${environment.apiUrl}/lights/rules`).flush([]);
-    httpMock.expectOne(`${environment.apiUrl}/lights/energy?timeframe=today&room=entireHouse`).flush({
-      name: 'entireHouse',
-      timeframe: 'today',
-      totalKwh: 0,
-      chartData: [],
-      categories: [],
-      topRooms: [],
-      lightsKwh: {},
-      totalHouseKwh: 0,
-    });
+    httpMock
+      .expectOne(`${environment.apiUrl}/lights/energy?timeframe=today&room=entireHouse`)
+      .flush({
+        name: 'entireHouse',
+        timeframe: 'today',
+        totalKwh: 0,
+        chartData: [],
+        categories: [],
+        topRooms: [],
+        lightsKwh: {},
+        totalHouseKwh: 0,
+      });
 
     await fixture.whenStable();
   });

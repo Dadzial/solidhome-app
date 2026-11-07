@@ -1,4 +1,4 @@
-import { Injectable ,inject, signal} from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 /**
@@ -46,7 +46,7 @@ export class TranslationsService {
    * @param lang Kod nowego języka do ustawienia (`'en'` lub `'pl'`).
    * @returns {void}
    */
-  public setLanguage(lang: Language) : void {
+  public setLanguage(lang: Language): void {
     this.currentLang.set(lang);
     this.translate.use(lang);
     localStorage.setItem('lang', lang);

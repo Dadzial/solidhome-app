@@ -1,16 +1,20 @@
 <div
-  class="@container w-full h-87.5 lg:h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden transition-all">
+  class="@container w-full h-87.5 lg:h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden transition-all"
+>
   @if (enableAddScene()) {
     <!-- Przestrzeń dodania sceny aktywowana przez signal 'enableAddScene' -->
     <div class="flex flex-col flex-1 h-full min-h-0 animate-fade-in">
       <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3 shrink-0">
-        <h2 class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
+        <h2
+          class="text-text-primary text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs"
+        >
           {{ 'lightsPage.addScene' | translate }}
         </h2>
         <!-- Przycisk zamknięcia formularza -->
         <button
           (click)="toggleAddScene()"
-          class="w-8 h-8 flex items-center justify-center rounded-full text-text-primary/50 hover:text-accent hover:bg-background-tertiary transition-colors cursor-pointer">
+          class="w-8 h-8 flex items-center justify-center rounded-full text-text-primary/50 hover:text-accent hover:bg-background-tertiary transition-colors cursor-pointer"
+        >
           <svg-icon src="assets/icons/close.svg" [applyClass]="true" class="w-9 h-9"></svg-icon>
         </button>
       </div>
@@ -47,8 +51,13 @@
                 [class.bg-background-primary]="selectedIcon() !== icon"
                 [class.text-text-primary70]="selectedIcon() !== icon"
                 [class.hover:bg-background-tertiary]="selectedIcon() !== icon"
-                [class.hover:text-text-primary]="selectedIcon() !== icon">
-                <svg-icon [src]="icon" [applyClass]="true" class="w-5 h-5 flex items-center justify-center"></svg-icon>
+                [class.hover:text-text-primary]="selectedIcon() !== icon"
+              >
+                <svg-icon
+                  [src]="icon"
+                  [applyClass]="true"
+                  class="w-5 h-5 flex items-center justify-center"
+                ></svg-icon>
               </button>
             }
           </div>
@@ -69,7 +78,8 @@
                 [class.bg-background-primary]="!isRoomSelected(option.value)"
                 [class.text-text-primary]="!isRoomSelected(option.value)"
                 [class.opacity-60]="!isRoomSelected(option.value)"
-                [class.hover:opacity-100]="!isRoomSelected(option.value)">
+                [class.hover:opacity-100]="!isRoomSelected(option.value)"
+              >
                 {{ option.labelKey | translate }}
               </button>
             }
@@ -82,7 +92,8 @@
           [disabled]="!canSave()"
           [class.opacity-50]="!canSave()"
           [class.cursor-not-allowed]="!canSave()"
-          class="mt-auto bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all cursor-pointer shrink-0">
+          class="mt-auto bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all cursor-pointer shrink-0"
+        >
           {{ 'lightsPage.save' | translate }}
         </button>
       </div>
@@ -91,23 +102,35 @@
     <!-- Nagłówek Scenes — tytuł i przycisk dodawania -->
     <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3 shrink-0">
       <div class="flex items-center gap-2">
-        <svg-icon src="assets/icons/light_scenes.svg" [applyClass]="true" class="w-8 h-8 text-accent"></svg-icon>
+        <svg-icon
+          src="assets/icons/light_scenes.svg"
+          [applyClass]="true"
+          class="w-8 h-8 text-accent"
+        ></svg-icon>
         <h2
-          class="text-text-primary pt-0.5 text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs">
+          class="text-text-primary pt-0.5 text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs"
+        >
           {{ 'lightsPage.scenes' | translate }}
         </h2>
       </div>
       <!-- Przycisk dodawania sceny -->
       <button
         (click)="toggleAddScene()"
-        class="bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all active:scale-95 cursor-pointer">
+        class="bg-accent h-8 p-2 rounded-lg text-body-14-medium text-text-primary transition-all active:scale-95 cursor-pointer"
+      >
         {{ 'lightsPage.add' | translate }}
       </button>
     </div>
     <!-- Lista istniejących scen -->
     @if (empty()) {
-      <div class="flex flex-col items-center justify-center flex-1 h-full min-h-35 text-center text-text-primary/40 py-6">
-        <svg-icon src="assets/icons/light_scenes_empty.svg" [applyClass]="true" class="w-16 h-16 text-background-primary mb-2"></svg-icon>
+      <div
+        class="flex flex-col items-center justify-center flex-1 h-full min-h-35 text-center text-text-primary/40 py-6"
+      >
+        <svg-icon
+          src="assets/icons/light_scenes_empty.svg"
+          [applyClass]="true"
+          class="w-16 h-16 text-background-primary mb-2"
+        ></svg-icon>
         <p class="text-body-14-medium">
           {{ 'lightsPage.noScenes' | translate }}
         </p>
@@ -121,8 +144,8 @@
               (click)="activateScene(scene.id)"
               class="group relative h-26 p-3 rounded-2xl bg-background-primary flex flex-col justify-between transition-all cursor-pointer select-none"
               [class.border-accent]="scene.active"
-              [class.bg-accent10]="scene.active">
-
+              [class.bg-accent10]="scene.active"
+            >
               <!-- Górny wiersz: ikona sceny + przycisk usuwania -->
               <div class="flex items-center justify-between">
                 <div
@@ -130,8 +153,13 @@
                   [class.bg-accent]="scene.active"
                   [class.text-white]="scene.active"
                   [class.bg-background-secondary]="!scene.active"
-                  [class.text-accent]="!scene.active">
-                  <svg-icon [src]="scene.icon" [applyClass]="true" class="w-5 h-5 flex items-center justify-center"></svg-icon>
+                  [class.text-accent]="!scene.active"
+                >
+                  <svg-icon
+                    [src]="scene.icon"
+                    [applyClass]="true"
+                    class="w-5 h-5 flex items-center justify-center"
+                  ></svg-icon>
                 </div>
                 <div class="flex items-center gap-1.5">
                   @if (scene.active) {
@@ -140,8 +168,13 @@
                   <button
                     type="button"
                     (click)="deleteScene(scene.id, $event)"
-                    class="w-7 h-7 flex items-center justify-center rounded-lg text-text-primary hover:text-text-error transition-colors cursor-pointer">
-                    <svg-icon src="assets/icons/delete.svg" [applyClass]="true" class="w-4 h-4"></svg-icon>
+                    class="w-7 h-7 flex items-center justify-center rounded-lg text-text-primary hover:text-text-error transition-colors cursor-pointer"
+                  >
+                    <svg-icon
+                      src="assets/icons/delete.svg"
+                      [applyClass]="true"
+                      class="w-4 h-4"
+                    ></svg-icon>
                   </button>
                 </div>
               </div>
@@ -153,7 +186,7 @@
                 </span>
                 <span class="text-body-14-medium text-text-primary/60 truncate mt-0.5">
                   @for (room of scene.rooms; track room; let last = $last) {
-                    {{ (roomTranslations[room] ?? room) | translate }}{{ last ? '' : ', ' }}
+                    {{ roomTranslations[room] ?? room | translate }}{{ last ? '' : ', ' }}
                   }
                 </span>
               </div>
@@ -164,4 +197,3 @@
     }
   }
 </div>
-

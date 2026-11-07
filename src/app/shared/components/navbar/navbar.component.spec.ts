@@ -112,7 +112,9 @@ describe('NavbarComponent', () => {
       sessionStorage.setItem('token', 'fake_session_token');
       sessionStorage.setItem('refreshToken', 'fake_session_refresh');
 
-      vi.spyOn(logoutService, 'logout').mockReturnValue(throwError(() => new Error('Server error')));
+      vi.spyOn(logoutService, 'logout').mockReturnValue(
+        throwError(() => new Error('Server error')),
+      );
       const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
 
       component.logout();

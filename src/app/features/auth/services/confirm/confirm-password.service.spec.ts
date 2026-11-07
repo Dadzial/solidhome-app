@@ -57,7 +57,10 @@ describe('ConfirmPasswordService', () => {
         },
       });
 
-      expect(apiServiceMock.post).toHaveBeenCalledWith('user/reset/password', { code: 'WRONG', password: 'newPassword1' });
+      expect(apiServiceMock.post).toHaveBeenCalledWith('user/reset/password', {
+        code: 'WRONG',
+        password: 'newPassword1',
+      });
       expect(capturedError).toBe(mockError);
     });
   });

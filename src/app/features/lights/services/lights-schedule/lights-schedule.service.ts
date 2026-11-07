@@ -201,4 +201,3 @@ export class LightsScheduleService {
     return this.api.delete<DeleteScheduleRuleResponse>(`lights/rules/${id}`);
   }
 }
-

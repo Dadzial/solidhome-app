@@ -5,7 +5,7 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { ClickOutsideDirective } from '@shared/directives/click-outside/click-outside.directive';
 import { AccentColorService } from '@core/services/accent-color/accent-color.service';
 import { UserSettingsService } from '@features/settings/services/user-settings/user-settings.service';
-import {TimeFormatService} from '@features/settings/services/time-format/time-format.service';
+import { TimeFormatService } from '@features/settings/services/time-format/time-format.service';
 import { LoginService } from '@features/auth/services/login/login.service';
 import { ApiError } from '@core/models/core.models';
 import {

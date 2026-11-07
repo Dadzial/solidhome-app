@@ -1,7 +1,12 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { ApiService } from '@core/services/api/api.service';
 import { jwtDecode } from 'jwt-decode';
-import { LoginRequest, LoginResponse, RefreshTokenRequest, RefreshTokenResponse } from '@features/auth/models/auth.models';
+import {
+  LoginRequest,
+  LoginResponse,
+  RefreshTokenRequest,
+  RefreshTokenResponse,
+} from '@features/auth/models/auth.models';
 import { Observable } from 'rxjs';
 
 /**
@@ -69,7 +74,8 @@ export class LoginService {
    * @returns {void}
    */
   public saveTokens(token: string, refreshToken?: string): void {
-    const isLocalStorage = !!localStorage.getItem('token') || !!localStorage.getItem('refreshToken');
+    const isLocalStorage =
+      !!localStorage.getItem('token') || !!localStorage.getItem('refreshToken');
     const storage = isLocalStorage ? localStorage : sessionStorage;
 
     storage.setItem('token', token);

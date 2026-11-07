@@ -117,9 +117,7 @@ export class LightsScenesComponent {
    */
   public toggleRoom(roomValue: string): void {
     this.selectedRooms.update((rooms) =>
-      rooms.includes(roomValue)
-        ? rooms.filter((r) => r !== roomValue)
-        : [...rooms, roomValue],
+      rooms.includes(roomValue) ? rooms.filter((r) => r !== roomValue) : [...rooms, roomValue],
     );
   }
 
@@ -176,4 +174,3 @@ export class LightsScenesComponent {
     this.lightsScenesService.deleteScene(sceneId);
   }
 }
-

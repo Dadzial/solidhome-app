@@ -4,15 +4,22 @@
   <!-- Zawartość strony -->
   <div class="flex-1 px-6 p-6 pb-0 flex flex-col relative z-10 min-h-0">
     <div class="flex flex-row gap-3 mb-4 shrink-0">
-      <h2 class="text-text-primary text-headline-h1-36-bold text-shadow-2xs">{{ 'home.welcomeMessage' | translate }}</h2>
-      <h2 class="text-accent text-headline-h1-36-bold text-shadow-2xs">{{loginService.userName()}}!</h2>
+      <h2 class="text-text-primary text-headline-h1-36-bold text-shadow-2xs">
+        {{ 'home.welcomeMessage' | translate }}
+      </h2>
+      <h2 class="text-accent text-headline-h1-36-bold text-shadow-2xs">
+        {{ loginService.userName() }}!
+      </h2>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-0">
       <!-- lights widget -->
       <app-lights-widget class="col-span-1 block h-full min-h-0"></app-lights-widget>
       <div class="col-span-1 flex flex-col gap-6 min-h-0 lg:h-full">
         <!-- air widget -->
-        <app-air-widget variant="compact" class="block lg:h-[calc(50%-0.75rem)] min-h-0"></app-air-widget>
+        <app-air-widget
+          variant="compact"
+          class="block lg:h-[calc(50%-0.75rem)] min-h-0"
+        ></app-air-widget>
       </div>
     </div>
   </div>

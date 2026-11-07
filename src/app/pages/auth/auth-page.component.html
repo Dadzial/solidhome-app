@@ -1,25 +1,31 @@
-<div class="w-full min-h-screen lg:h-screen lg:overflow-hidden flex flex-col bg-background-primary p-3 sm:p-6">
-  <div class="flex flex-col justify-center gap-6 lg:gap-0 lg:grid lg:grid-cols-2 flex-1 overflow-hidden">
-
+<div
+  class="w-full min-h-screen lg:h-screen lg:overflow-hidden flex flex-col bg-background-primary p-3 sm:p-6"
+>
+  <div
+    class="flex flex-col justify-center gap-6 lg:gap-0 lg:grid lg:grid-cols-2 flex-1 overflow-hidden"
+  >
     <!-- Lewa kolumna — logo, tytuł aplikacji i opis (widoczny tylko na desktop) -->
     <div class="flex flex-col justify-center items-center px-12 xl:px-24">
       <div class="w-full max-w-xl">
-
         <!-- Logo i nazwa aplikacji -->
         <div class="flex flex-col lg:flex-row items-center text-center lg:text-left gap-2">
           <div class="w-20 h-20 flex items-center justify-center">
             <div class="w-16 h-16 logo-mask"></div>
           </div>
-          <h1 class="text-headline-h1-36-bold pt-2 text-text-primary"
-              [innerHTML]="'authPages.solidHome' | translate">
-          </h1>
+          <h1
+            class="text-headline-h1-36-bold pt-2 text-text-primary"
+            [innerHTML]="'authPages.solidHome' | translate"
+          ></h1>
         </div>
 
         <!-- Podtytuł i opis aplikacji -->
-        <h2 class="hidden lg:block text-headline-h1-36-bold text-text-primary mb-8 leading-tight whitespace-pre-line"
-            [innerHTML]="'authPages.subTitle' | translate">
-        </h2>
-        <p class="hidden lg:block text-body-16-medium text-text-primary leading-relaxed whitespace-pre-line">
+        <h2
+          class="hidden lg:block text-headline-h1-36-bold text-text-primary mb-8 leading-tight whitespace-pre-line"
+          [innerHTML]="'authPages.subTitle' | translate"
+        ></h2>
+        <p
+          class="hidden lg:block text-body-16-medium text-text-primary leading-relaxed whitespace-pre-line"
+        >
           {{ 'authPages.description' | translate }}
         </p>
       </div>
@@ -34,25 +40,19 @@
           (switchToSignup)="authMode.set('signUp')"
           (switchToVerify)="authMode.set('verify')"
         />
-      <!-- Formularz rejestracji -->
+        <!-- Formularz rejestracji -->
       } @else if (authMode() === 'signUp') {
-        <app-register-form
-          class="w-full max-w-xl"
-          (switchToLogin)="authMode.set('login')"
-        />
-      <!-- Formularz wysyłania kodu weryfikacyjnego -->
+        <app-register-form class="w-full max-w-xl" (switchToLogin)="authMode.set('login')" />
+        <!-- Formularz wysyłania kodu weryfikacyjnego -->
       } @else if (authMode() === 'verify') {
         <app-verify-form
           class="w-full max-w-xl"
           (switchToLogin)="authMode.set('login')"
           (switchToNewPassword)="authMode.set('restore')"
         />
-      <!-- Formularz ustawiania nowego hasła -->
+        <!-- Formularz ustawiania nowego hasła -->
       } @else if (authMode() === 'restore') {
-        <app-restore-form
-          class="w-full max-w-xl"
-          (switchToLogin)="authMode.set('login')"
-        />
+        <app-restore-form class="w-full max-w-xl" (switchToLogin)="authMode.set('login')" />
       }
     </div>
   </div>

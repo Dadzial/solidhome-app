@@ -1,10 +1,12 @@
 /* Import czcionki i Tailwind CSS */
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Konfiguracja motywu Tailwind CSS */
 @theme {
-  --font-app: "Sora", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-app:
+    'Sora', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
 
   --color-background-primary: var(--background-primary);
   --color-background-secondary: var(--background-secondary);
@@ -20,8 +22,8 @@
 /* Zmienne CSS — motyw jasny */
 :root {
   --background-primary: #efeeee;
-  --background-secondary: #FFFFFF;
-  --theme-accent-cyan: #00C7CE;
+  --background-secondary: #ffffff;
+  --theme-accent-cyan: #00c7ce;
   --theme-accent-green: #22c55e;
   --theme-accent-orange: #f97316;
   --theme-accent-purple: #a855f7;
@@ -30,20 +32,20 @@
   --accent-color: var(--theme-accent-cyan);
 
   --text-primary: #363434;
-  --text-secondary: #00C7CE;
-  --divider: #BDBDBD;
-  --text-error : #F44336;
+  --text-secondary: #00c7ce;
+  --divider: #bdbdbd;
+  --text-error: #f44336;
 }
 
 /* Zmienne CSS — motyw ciemny */
 .dark {
   --background-primary: #262525;
-  --background-secondary: #1A1818;
+  --background-secondary: #1a1818;
   --accent-color: var(--theme-accent-cyan);
-  --text-primary: #FFFFFF;
-  --text-secondary: #00C7CE;
-  --divider: #BDBDBD;
-  --text-error : #F44336;
+  --text-primary: #ffffff;
+  --text-secondary: #00c7ce;
+  --divider: #bdbdbd;
+  --text-error: #f44336;
 }
 
 /* Globalny pasek przewijania */
@@ -201,7 +203,10 @@ input {
   background-color: var(--accent-color);
   -webkit-mask-image: url('./app/assets/pictures/home.png');
   mask-image: url('./app/assets/pictures/home.png');
-  -webkit-mask-size: contain; mask-size: contain;
-  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
-  -webkit-mask-position: center; mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }

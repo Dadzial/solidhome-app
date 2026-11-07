@@ -40,10 +40,7 @@ describe('LightsEnergyService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        LightsEnergyService,
-        { provide: ApiService, useValue: apiServiceMock },
-      ],
+      providers: [LightsEnergyService, { provide: ApiService, useValue: apiServiceMock }],
     });
 
     service = TestBed.inject(LightsEnergyService);

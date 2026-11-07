@@ -156,7 +156,6 @@ describe('LightsEnergyComponent', () => {
     });
 
     it('should translate categories correctly for today, week and month', () => {
-
       lightsEnergyService.currentTimeframe.set('today');
       lightsEnergyService.energyData.set(mockEnergyData);
       expect(component.translatedCategories()).toEqual(['18:00', '18:01', '18:02']);
@@ -288,7 +287,7 @@ describe('LightsEnergyComponent', () => {
   describe('clearData', () => {
     it('should call resetEnergyStats and refresh energy stats on success', () => {
       vi.spyOn(lightsEnergyService, 'resetEnergyStats').mockReturnValue(
-        of({ message: 'Energy data reset successfully', deletedCount: 5 })
+        of({ message: 'Energy data reset successfully', deletedCount: 5 }),
       );
 
       lightsEnergyService.currentTimeframe.set('week');
@@ -338,7 +337,9 @@ describe('LightsEnergyComponent', () => {
 
       let clickedHref = '';
       let clickedDownload = '';
-      const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) {
+      const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (
+        this: HTMLAnchorElement,
+      ) {
         clickedHref = this.href;
         clickedDownload = this.download;
       });

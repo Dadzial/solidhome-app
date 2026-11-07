@@ -87,12 +87,16 @@ describe('LoginFormComponent', () => {
       expect(component.loginModel().rememberMe).toBe(false);
       fixture.detectChanges();
 
-      const checkboxContainer = fixture.nativeElement.querySelector('.mt-5.flex.items-center div') as HTMLElement;
+      const checkboxContainer = fixture.nativeElement.querySelector(
+        '.mt-5.flex.items-center div',
+      ) as HTMLElement;
       checkboxContainer.click();
       fixture.detectChanges();
 
       expect(component.loginModel().rememberMe).toBe(true);
-      expect(fixture.nativeElement.querySelector('svg-icon[src="assets/icons/checkbox.svg"]')).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('svg-icon[src="assets/icons/checkbox.svg"]'),
+      ).toBeTruthy();
 
       checkboxContainer.click();
       fixture.detectChanges();
@@ -100,7 +104,9 @@ describe('LoginFormComponent', () => {
     });
 
     it('should toggle rememberMe flag when clicking label in template', () => {
-      const label = fixture.nativeElement.querySelector('.mt-5.flex.items-center label') as HTMLElement;
+      const label = fixture.nativeElement.querySelector(
+        '.mt-5.flex.items-center label',
+      ) as HTMLElement;
       label.click();
       fixture.detectChanges();
       expect(component.loginModel().rememberMe).toBe(true);

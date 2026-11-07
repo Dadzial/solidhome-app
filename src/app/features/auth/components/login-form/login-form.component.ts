@@ -1,13 +1,7 @@
 import { Component, inject, output, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
-import {
-  form,
-  FormField,
-  FormRoot,
-  required,
-  submit,
-} from '@angular/forms/signals';
+import { form, FormField, FormRoot, required, submit } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { LoginService } from '@features/auth/services/login/login.service';
 import { LoadingService } from '@core/services/loading/loading.service';

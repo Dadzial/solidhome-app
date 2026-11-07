@@ -1,5 +1,7 @@
 <div class="w-full h-full flex items-center justify-center">
-  <div class="w-full px-4 sm:px-10 pb-8 sm:pb-10 pt-0 bg-background-secondary rounded-xl shadow-md overflow-hidden">
+  <div
+    class="w-full px-4 sm:px-10 pb-8 sm:pb-10 pt-0 bg-background-secondary rounded-xl shadow-md overflow-hidden"
+  >
     <!-- Logowanie - Przycisk -->
     <div class="flex bg-background-primary -mx-4 sm:-mx-10 mb-6 sm:mb-10 border-b border-divider">
       <button
@@ -11,18 +13,23 @@
       <div class="w-px bg-divider"></div>
     </div>
     <!-- Powitanie do zmiany hasła -->
-    <h2
-      class="text-body-24-semibold text-text-primary mb-2 text-start px-0 sm:px-2">{{ 'authPages.resetPassword' | translate }}
+    <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-0 sm:px-2">
+      {{ 'authPages.resetPassword' | translate }}
     </h2>
-    <p
-      class="text-body-14-medium text-text-primary mb-8 text-start px-0 sm:px-2">{{ 'authPages.resetPasswordDescription' | translate }}
+    <p class="text-body-14-medium text-text-primary mb-8 text-start px-0 sm:px-2">
+      {{ 'authPages.resetPasswordDescription' | translate }}
     </p>
     <!-- Formularz zmiany hasła -->
-    <form [formRoot]="restoreForm" (submit)="onSubmit($event)" novalidate class="space-y-6 px-0 sm:px-2">
+    <form
+      [formRoot]="restoreForm"
+      (submit)="onSubmit($event)"
+      novalidate
+      class="space-y-6 px-0 sm:px-2"
+    >
       <!-- Kod Weryfikacji -->
       <div class="relative">
-        <label for="code"
-               class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterVerificationCode' | translate }}
+        <label for="code" class="block text-body-16-medium mb-2 text-text-primary"
+          >{{ 'authPages.enterVerificationCode' | translate }}
         </label>
         <div class="relative flex items-center">
           <svg-icon
@@ -44,17 +51,15 @@
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && restoreForm.code().invalid()) {
             @for (error of restoreForm.code().errors(); track error.kind) {
-              <p
-                class="text-text-error text-body-10-medium">{{ error.message | translate }}
-              </p>
+              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
             }
           }
         </div>
       </div>
       <!-- Hasło -->
       <div class="relative">
-        <label for="password"
-               class="block text-body-16-medium mb-2 text-text-primary">{{ 'authPages.enterPassword' | translate }}
+        <label for="password" class="block text-body-16-medium mb-2 text-text-primary"
+          >{{ 'authPages.enterPassword' | translate }}
         </label>
         <div class="relative flex items-center">
           <svg-icon
@@ -76,9 +81,7 @@
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && restoreForm.password().invalid()) {
             @for (error of restoreForm.password().errors(); track error.kind) {
-              <p
-                class="text-text-error text-body-10-medium">{{ error.message | translate }}
-              </p>
+              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
             }
           }
         </div>
@@ -89,12 +92,12 @@
           <button
             type="submit"
             [disabled]="isLoading()"
-            class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold
-                   transition-all duration-300 hover:brightness-110 shadow-lg
-                   disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold transition-all duration-300 hover:brightness-110 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             @if (isLoading()) {
-              <span class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+              <span
+                class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"
+              ></span>
             }
             {{ 'authPages.confirmPassword' | translate }}
           </button>

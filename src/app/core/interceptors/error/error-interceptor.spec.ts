@@ -1,5 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClient, HttpInterceptorFn, provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpInterceptorFn,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { errorInterceptor } from './error-interceptor';
 import { ApiError } from '@core/models/core.models';
@@ -162,7 +167,10 @@ describe('errorInterceptor', () => {
       });
 
       const req = httpMock.expectOne('/api/test');
-      req.flush({ error: 'Database connection failed' }, { status: 500, statusText: 'Internal Server Error' });
+      req.flush(
+        { error: 'Database connection failed' },
+        { status: 500, statusText: 'Internal Server Error' },
+      );
 
       expect(capturedError).toEqual({ error: 'serverErrors.serverError' });
     });

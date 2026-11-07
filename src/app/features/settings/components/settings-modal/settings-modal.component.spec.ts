@@ -192,7 +192,9 @@ describe('SettingsModalComponent', () => {
     it('should render color buttons and allow selecting colors', () => {
       fixture.detectChanges();
 
-      const colorButtons = fixture.nativeElement.querySelectorAll('button[style*="background-color"]');
+      const colorButtons = fixture.nativeElement.querySelectorAll(
+        'button[style*="background-color"]',
+      );
       expect(colorButtons.length).toBe(6);
 
       const colorSpy = vi.spyOn(accentColorService, 'setAccentColor');
@@ -302,7 +304,9 @@ describe('SettingsModalComponent', () => {
     it('should call updateUser with email and clear model on success', async () => {
       vi.useFakeTimers();
       const mockResponse = { _id: 'abc', userName: 'testuser' };
-      const updateSpy = vi.spyOn(userSettingsService, 'updateUser').mockReturnValue(of(mockResponse));
+      const updateSpy = vi
+        .spyOn(userSettingsService, 'updateUser')
+        .mockReturnValue(of(mockResponse));
 
       component.emailModel.set({ email: 'new@test.com' });
       const event = new Event('submit');
@@ -368,7 +372,9 @@ describe('SettingsModalComponent', () => {
     it('should call updateUser with currentPassword and new password on success', async () => {
       vi.useFakeTimers();
       const mockResponse = { _id: 'abc', userName: 'testuser' };
-      const updateSpy = vi.spyOn(userSettingsService, 'updateUser').mockReturnValue(of(mockResponse));
+      const updateSpy = vi
+        .spyOn(userSettingsService, 'updateUser')
+        .mockReturnValue(of(mockResponse));
 
       component.passwordModel.set({
         currentPassword: 'OldPass1',
@@ -458,8 +464,12 @@ describe('SettingsModalComponent', () => {
       const setTimeFormatSpy = vi.spyOn(component.timeFormatService, 'setTimeFormat');
 
       const buttons = fixture.nativeElement.querySelectorAll('button');
-      const btn12h = Array.from(buttons).find((b: unknown) => (b as HTMLElement).textContent?.trim() === '12h') as HTMLElement;
-      const btn24h = Array.from(buttons).find((b: unknown) => (b as HTMLElement).textContent?.trim() === '24h') as HTMLElement;
+      const btn12h = Array.from(buttons).find(
+        (b: unknown) => (b as HTMLElement).textContent?.trim() === '12h',
+      ) as HTMLElement;
+      const btn24h = Array.from(buttons).find(
+        (b: unknown) => (b as HTMLElement).textContent?.trim() === '24h',
+      ) as HTMLElement;
 
       expect(btn12h).toBeTruthy();
       expect(btn24h).toBeTruthy();

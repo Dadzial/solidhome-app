@@ -25,6 +25,6 @@ export interface ApiError {
  */
 export interface ApiOptions {
   headers?: HttpHeaders | Record<string, string | string[]>;
-  params?: HttpParams | Record<string, string | number | boolean | readonly (string | number | boolean)[]>;
+  params?:
+    HttpParams | Record<string, string | number | boolean | readonly (string | number | boolean)[]>;
 }
-

@@ -1,12 +1,6 @@
 import { Component, output, inject, signal } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
-import {
-  form,
-  FormField,
-  FormRoot,
-  required,
-  submit,
-} from '@angular/forms/signals';
+import { form, FormField, FormRoot, required, submit } from '@angular/forms/signals';
 import { TranslateModule } from '@ngx-translate/core';
 import { VerifyEmailService } from '@features/auth/services/verify/verify-email.service';
 import { VerifyEmailRequest } from '@features/auth/models/auth.models';

@@ -271,4 +271,3 @@ export class LightsScheduleComponent implements OnInit {
     this.lightsScheduleService.deleteRule(id);
   }
 }
-

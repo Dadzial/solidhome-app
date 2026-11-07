@@ -34,8 +34,7 @@ export class ClickOutsideDirective {
 
     if (
       targetElement.closest &&
-      (targetElement.closest('#mobile-menu-btn') ||
-        targetElement.closest('.settings-toggle-btn'))
+      (targetElement.closest('#mobile-menu-btn') || targetElement.closest('.settings-toggle-btn'))
     ) {
       return;
     }

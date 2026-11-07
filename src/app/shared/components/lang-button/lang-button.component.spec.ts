@@ -13,10 +13,7 @@ describe('LangButtonComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [LangButtonComponent],
-      providers: [
-        provideTranslateService(),
-        TranslationsService,
-      ],
+      providers: [provideTranslateService(), TranslationsService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LangButtonComponent);

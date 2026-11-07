@@ -1,5 +1,7 @@
 <div class="w-full h-full flex items-center justify-center">
-  <div class="w-full px-4 sm:px-10 pb-8 sm:pb-10 pt-0 bg-background-secondary rounded-xl shadow-md overflow-hidden">
+  <div
+    class="w-full px-4 sm:px-10 pb-8 sm:pb-10 pt-0 bg-background-secondary rounded-xl shadow-md overflow-hidden"
+  >
     <!-- Logowanie Rejestracja - Przyciski -->
     <div class="flex bg-background-primary -mx-4 sm:-mx-10 mb-6 sm:mb-10 border-b border-divider">
       <button
@@ -16,22 +18,30 @@
       </button>
     </div>
     <!-- Powitanie do rejestracji -->
-    <h2
-      class="text-body-24-semibold text-text-primary mb-2 text-start px-0 sm:px-2">{{ 'authPages.createAccount' | translate }}
+    <h2 class="text-body-24-semibold text-text-primary mb-2 text-start px-0 sm:px-2">
+      {{ 'authPages.createAccount' | translate }}
     </h2>
-    <p
-      class="text-body-14-medium text-text-primary mb-8 text-start px-0 sm:px-2">{{ 'authPages.createAccountDescription' | translate }}
+    <p class="text-body-14-medium text-text-primary mb-8 text-start px-0 sm:px-2">
+      {{ 'authPages.createAccountDescription' | translate }}
     </p>
     <!-- Formularz Rejestracji -->
-    <form [formRoot]="registerForm" (submit)="onSubmit($event)" novalidate class="space-y-6 sm:space-y-8 px-0 sm:px-2">
+    <form
+      [formRoot]="registerForm"
+      (submit)="onSubmit($event)"
+      novalidate
+      class="space-y-6 sm:space-y-8 px-0 sm:px-2"
+    >
       <!-- Nazwa użytkownika -->
       <div class="relative">
         <label class="block text-body-16-medium mb-2 text-text-primary">
           {{ 'authPages.enterUsername' | translate }}
         </label>
         <div class="relative flex items-center">
-          <svg-icon src="assets/icons/user.svg" [applyClass]="true"
-                    class="absolute left-2.5 w-6 h-6 text-text-primary" />
+          <svg-icon
+            src="assets/icons/user.svg"
+            [applyClass]="true"
+            class="absolute left-2.5 w-6 h-6 text-text-primary"
+          />
           <input
             type="text"
             [formField]="registerForm.userName"
@@ -45,9 +55,7 @@
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && registerForm.userName().invalid()) {
             @for (error of registerForm.userName().errors(); track error.kind) {
-              <p
-                class="text-text-error text-body-10-medium">{{ error.message | translate }}
-              </p>
+              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
             }
           }
         </div>
@@ -58,8 +66,11 @@
           {{ 'authPages.enterEmail' | translate }}
         </label>
         <div class="relative flex items-center">
-          <svg-icon src="assets/icons/email.svg" [applyClass]="true"
-                    class="absolute left-2.5 w-6 h-6 text-text-primary" />
+          <svg-icon
+            src="assets/icons/email.svg"
+            [applyClass]="true"
+            class="absolute left-2.5 w-6 h-6 text-text-primary"
+          />
           <input
             type="email"
             [formField]="registerForm.email"
@@ -73,9 +84,7 @@
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && registerForm.email().invalid()) {
             @for (error of registerForm.email().errors(); track error.kind) {
-              <p
-                class="text-text-error text-body-10-medium">{{ error.message | translate }}
-              </p>
+              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
             }
           }
         </div>
@@ -86,8 +95,11 @@
           {{ 'authPages.enterPassword' | translate }}
         </label>
         <div class="relative flex items-center">
-          <svg-icon src="assets/icons/lock.svg" [applyClass]="true"
-                    class="absolute left-2.5 w-6 h-6 text-text-primary" />
+          <svg-icon
+            src="assets/icons/lock.svg"
+            [applyClass]="true"
+            class="absolute left-2.5 w-6 h-6 text-text-primary"
+          />
           <input
             type="password"
             [formField]="registerForm.password"
@@ -101,9 +113,7 @@
         <div class="absolute top-[calc(100%+4px)] left-0">
           @if (showLocalErrors() && registerForm.password().invalid()) {
             @for (error of registerForm.password().errors(); track error.kind) {
-              <p
-                class="text-text-error text-body-10-medium">{{ error.message | translate }}
-              </p>
+              <p class="text-text-error text-body-10-medium">{{ error.message | translate }}</p>
             }
           }
         </div>
@@ -114,12 +124,12 @@
           <button
             type="submit"
             [disabled]="isLoading()"
-            class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold
-               transition-all duration-300 hover:brightness-110 shadow-lg
-               disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            class="w-1/2 bg-accent text-text-primary py-4 rounded-xl text-body-18-bold transition-all duration-300 hover:brightness-110 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             @if (isLoading()) {
-              <span class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+              <span
+                class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"
+              ></span>
             }
             {{ 'authPages.register' | translate }}
           </button>
@@ -136,4 +146,3 @@
     </form>
   </div>
 </div>
-

@@ -29,4 +29,3 @@ import { AirWidgetComponent } from '@features/air/components/air-widget/air-widg
   styles: ``,
 })
 export class AirPageComponent {}
-

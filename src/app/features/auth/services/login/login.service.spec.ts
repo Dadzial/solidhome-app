@@ -21,10 +21,7 @@ describe('LoginService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        LoginService,
-        { provide: ApiService, useValue: apiServiceMock },
-      ],
+      providers: [LoginService, { provide: ApiService, useValue: apiServiceMock }],
     });
 
     service = TestBed.inject(LoginService);
@@ -66,7 +63,10 @@ describe('LoginService', () => {
         },
       });
 
-      expect(apiServiceMock.post).toHaveBeenCalledWith('user/auth', { userName: 'bad', password: 'bad' });
+      expect(apiServiceMock.post).toHaveBeenCalledWith('user/auth', {
+        userName: 'bad',
+        password: 'bad',
+      });
       expect(capturedError).toBe(mockError);
     });
   });
@@ -79,9 +79,7 @@ describe('LoginService', () => {
 
     it('should decode token from localStorage and set userName signal', () => {
       const fakeToken =
-        'eyJhbGciOiJIUzI1NiJ9.' +
-        btoa(JSON.stringify({ userName: 'localUser' })) +
-        '.signature';
+        'eyJhbGciOiJIUzI1NiJ9.' + btoa(JSON.stringify({ userName: 'localUser' })) + '.signature';
       localStorage.setItem('token', fakeToken);
 
       service.initUserFromToken();
@@ -91,9 +89,7 @@ describe('LoginService', () => {
 
     it('should decode token from sessionStorage and set userName signal', () => {
       const fakeToken =
-        'eyJhbGciOiJIUzI1NiJ9.' +
-        btoa(JSON.stringify({ userName: 'sessionUser' })) +
-        '.signature';
+        'eyJhbGciOiJIUzI1NiJ9.' + btoa(JSON.stringify({ userName: 'sessionUser' })) + '.signature';
       sessionStorage.setItem('token', fakeToken);
 
       service.initUserFromToken();
@@ -103,13 +99,9 @@ describe('LoginService', () => {
 
     it('should prefer localStorage token over sessionStorage token', () => {
       const localToken =
-        'eyJhbGciOiJIUzI1NiJ9.' +
-        btoa(JSON.stringify({ userName: 'localUser' })) +
-        '.signature';
+        'eyJhbGciOiJIUzI1NiJ9.' + btoa(JSON.stringify({ userName: 'localUser' })) + '.signature';
       const sessionToken =
-        'eyJhbGciOiJIUzI1NiJ9.' +
-        btoa(JSON.stringify({ userName: 'sessionUser' })) +
-        '.signature';
+        'eyJhbGciOiJIUzI1NiJ9.' + btoa(JSON.stringify({ userName: 'sessionUser' })) + '.signature';
 
       localStorage.setItem('token', localToken);
       sessionStorage.setItem('token', sessionToken);

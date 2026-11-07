@@ -101,7 +101,9 @@ describe('LightsWidgetComponent', () => {
       lightsHistoryService.history.set(mockHistory);
       fixture.detectChanges();
 
-      const renderedHistoryItems = fixture.nativeElement.querySelectorAll('.flex.items-center.justify-between.p-3');
+      const renderedHistoryItems = fixture.nativeElement.querySelectorAll(
+        '.flex.items-center.justify-between.p-3',
+      );
       expect(renderedHistoryItems.length).toBe(2);
     });
 
@@ -116,7 +118,9 @@ describe('LightsWidgetComponent', () => {
 
     it('should click light button in SVG template to toggle light', () => {
       const toggleSpy = vi.spyOn(component, 'toggleLight');
-      const lightButton = fixture.nativeElement.querySelector('svg foreignObject button') as HTMLButtonElement;
+      const lightButton = fixture.nativeElement.querySelector(
+        'svg foreignObject button',
+      ) as HTMLButtonElement;
 
       if (lightButton) {
         lightButton.click();
@@ -129,13 +133,19 @@ describe('LightsWidgetComponent', () => {
       lightsHistoryService.history.set(mockHistory);
       fixture.detectChanges();
 
-      const allButtons = Array.from(fixture.nativeElement.querySelectorAll('button')) as HTMLButtonElement[];
-      const clearBtn = allButtons.find((btn) => !btn.disabled && btn.textContent?.includes('home.lightsWidget.resetHistory'));
+      const allButtons = Array.from(
+        fixture.nativeElement.querySelectorAll('button'),
+      ) as HTMLButtonElement[];
+      const clearBtn = allButtons.find(
+        (btn) => !btn.disabled && btn.textContent?.includes('home.lightsWidget.resetHistory'),
+      );
 
       if (clearBtn) {
         clearBtn.click();
       } else {
-        const restartIconBtn = allButtons.find((btn) => !btn.disabled && btn.querySelector('svg-icon[src*="restart.svg"]'));
+        const restartIconBtn = allButtons.find(
+          (btn) => !btn.disabled && btn.querySelector('svg-icon[src*="restart.svg"]'),
+        );
         restartIconBtn?.click();
       }
 

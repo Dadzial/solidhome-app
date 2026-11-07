@@ -1,4 +1,4 @@
-import { Injectable , signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 /**
  * Serwis odpowiedzialny za wywołanie loading screen w aplikacji.

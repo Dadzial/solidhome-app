@@ -59,7 +59,14 @@ describe('LightsControlService', () => {
     it('should contain all expected room ids', () => {
       const ids = service.lights().map((l) => l.id);
       expect(ids).toEqual(
-        expect.arrayContaining(['living_room', 'kitchen', 'boiler_room', 'bathroom', 'hallway', 'garage']),
+        expect.arrayContaining([
+          'living_room',
+          'kitchen',
+          'boiler_room',
+          'bathroom',
+          'hallway',
+          'garage',
+        ]),
       );
     });
   });
@@ -81,9 +88,7 @@ describe('LightsControlService', () => {
     });
 
     it('should return false when only some lights are on', () => {
-      service.lights.update((lights) =>
-        lights.map((l, i) => ({ ...l, on: i === 0 })),
-      );
+      service.lights.update((lights) => lights.map((l, i) => ({ ...l, on: i === 0 })));
       expect(service.allLightsOn()).toBe(false);
     });
   });
@@ -112,7 +117,9 @@ describe('LightsControlService', () => {
       let capturedError: unknown;
       service.getStatus().subscribe({
         next: () => {},
-        error: (err) => { capturedError = err; },
+        error: (err) => {
+          capturedError = err;
+        },
       });
 
       expect(apiServiceMock.get).toHaveBeenCalledWith('lights/status/app');
@@ -130,7 +137,10 @@ describe('LightsControlService', () => {
         responseData = res;
       });
 
-      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/update', { name: 'living_room', state: 1 });
+      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/update', {
+        name: 'living_room',
+        state: 1,
+      });
       expect(responseData).toEqual(mockResponse);
     });
 
@@ -140,7 +150,10 @@ describe('LightsControlService', () => {
 
       service.updateStatus('kitchen', false).subscribe();
 
-      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/update', { name: 'kitchen', state: 0 });
+      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/update', {
+        name: 'kitchen',
+        state: 0,
+      });
     });
 
     it('should propagate error when updateStatus request fails', () => {
@@ -150,10 +163,15 @@ describe('LightsControlService', () => {
       let capturedError: unknown;
       service.updateStatus('garage', true).subscribe({
         next: () => {},
-        error: (err) => { capturedError = err; },
+        error: (err) => {
+          capturedError = err;
+        },
       });
 
-      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/update', { name: 'garage', state: 1 });
+      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/update', {
+        name: 'garage',
+        state: 1,
+      });
       expect(capturedError).toBe(mockError);
     });
   });

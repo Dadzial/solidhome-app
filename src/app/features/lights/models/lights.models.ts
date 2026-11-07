@@ -243,4 +243,3 @@ export interface LightScene {
   rooms: string[];
   active?: boolean;
 }
-

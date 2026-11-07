@@ -18,10 +18,7 @@ describe('LightsHistoryService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        LightsHistoryService,
-        { provide: ApiService, useValue: apiServiceMock },
-      ],
+      providers: [LightsHistoryService, { provide: ApiService, useValue: apiServiceMock }],
     });
 
     service = TestBed.inject(LightsHistoryService);
