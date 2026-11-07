@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
+import { ApiService } from '@core/services/api/api.service';
 import { ConfirmPasswordRequest, ConfirmPasswordResponse } from '@features/auth/models/auth.models';
 import { Observable } from 'rxjs';
 
@@ -15,11 +14,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ConfirmPasswordService {
-  /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
-  private http = inject(HttpClient);
-
-  /** Adres endpoint API odpowiedzialnego za operacje związane z użytkownikiem. */
-  private readonly apiUrl = `${environment.apiUrl}/user`;
+  /** Inject ApiService do wykonywania żądań do backendu. */
+  private api = inject(ApiService);
 
   /**
    * Wysyła żądanie HTTP POST do endpointu API w celu potwierdzenia resetu hasła.
@@ -28,6 +24,6 @@ export class ConfirmPasswordService {
    * @returns {Observable<ConfirmPasswordResponse>} Obserwowalny obiekt zawierający odpowiedź potwierdzającą zmianę hasła.
    */
   public confirmNewPassword(data: ConfirmPasswordRequest): Observable<ConfirmPasswordResponse> {
-    return this.http.post<ConfirmPasswordResponse>(`${this.apiUrl}/reset/password`, data);
+    return this.api.post<ConfirmPasswordResponse>('user/reset/password', data);
   }
 }

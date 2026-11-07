@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
+import { ApiService } from '@core/services/api/api.service';
 import { RegisterRequest, RegisterResponse } from '@features/auth/models/auth.models';
 import { Observable } from 'rxjs';
 
@@ -15,11 +14,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class RegisterService {
-  /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
-  private http = inject(HttpClient);
-
-  /** Adres endpoint API odpowiedzialnego za operacje związane z użytkownikiem. */
-  private readonly apiUrl = `${environment.apiUrl}/user`;
+  /** Inject ApiService do wykonywania żądań do backendu. */
+  private api = inject(ApiService);
 
   /**
    * Wysyła żądanie HTTP POST do endpointu API w celu rejestracji nowego użytkownika.
@@ -28,6 +24,6 @@ export class RegisterService {
    * @returns {Observable<RegisterResponse>} Obserwowalny obiekt zawierający dane nowo zarejestrowanego użytkownika.
    */
   public register(data: RegisterRequest): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(`${this.apiUrl}/create`, data);
+    return this.api.post<RegisterResponse>('user/create', data);
   }
 }

@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
+import { ApiService } from '@core/services/api/api.service';
 import { VerifyEmailRequest, VerifyEmailResponse } from '@features/auth/models/auth.models';
 import { Observable } from 'rxjs';
 
@@ -16,11 +15,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class VerifyEmailService {
-  /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
-  private http = inject(HttpClient);
-
-  /** Adres endpoint API odpowiedzialnego za operacje związane z użytkownikiem. */
-  private readonly apiUrl = `${environment.apiUrl}/user`;
+  /** Inject ApiService do wykonywania żądań do backendu. */
+  private api = inject(ApiService);
 
   /**
    * Wysyła żądanie HTTP POST do endpointu API w celu wygenerowania i przesłania kodu weryfikacyjnego na e-mail.
@@ -29,6 +25,6 @@ export class VerifyEmailService {
    * @returns {Observable<VerifyEmailResponse>} Obserwowalny obiekt zawierający odpowiedź potwierdzającą wysłanie kodu.
    */
   public verifyEmail(data: VerifyEmailRequest): Observable<VerifyEmailResponse> {
-    return this.http.post<VerifyEmailResponse>(`${this.apiUrl}/reset/code`, data);
+    return this.api.post<VerifyEmailResponse>('user/reset/code', data);
   }
 }
