@@ -1,30 +1,30 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { UserSettingsService } from './user-settings.service';
+import { ApiService } from '@core/services/api/api.service';
 import { UpdateUserRequest, UpdateUserResponse } from '@features/settings/models/settings.models';
-import { environment } from '@environments/environment';
+import { of, throwError } from 'rxjs';
 
 describe('UserSettingsService', () => {
   let service: UserSettingsService;
-  let httpMock: HttpTestingController;
-  const expectedUrl = `${environment.apiUrl}/user/update`;
+  let apiServiceMock: { post: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
+    apiServiceMock = {
+      post: vi.fn(),
+    };
+
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
         UserSettingsService,
+        { provide: ApiService, useValue: apiServiceMock },
       ],
     });
 
     service = TestBed.inject(UserSettingsService);
-    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpMock.verify();
+    vi.clearAllMocks();
   });
 
   it('should be created', () => {
@@ -35,32 +35,29 @@ describe('UserSettingsService', () => {
     it('should send a POST request with userName and return UpdateUserResponse', () => {
       const mockRequest: UpdateUserRequest = { userName: 'newuser' };
       const mockResponse: UpdateUserResponse = { _id: 'abc123', userName: 'newuser' };
-      let responseData: UpdateUserResponse | undefined;
+      apiServiceMock.post.mockReturnValue(of(mockResponse));
 
+      let responseData: UpdateUserResponse | undefined;
       service.updateUser(mockRequest).subscribe((res) => {
         responseData = res;
       });
 
-      const req = httpMock.expectOne(expectedUrl);
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual(mockRequest);
-
-      req.flush(mockResponse);
-
+      expect(apiServiceMock.post).toHaveBeenCalledWith('user/update', mockRequest);
       expect(responseData).toEqual(mockResponse);
     });
 
     it('should send a POST request with email only', () => {
       const mockRequest: UpdateUserRequest = { email: 'new@email.com' };
       const mockResponse: UpdateUserResponse = { _id: 'abc123', userName: 'existinguser' };
+      apiServiceMock.post.mockReturnValue(of(mockResponse));
 
-      service.updateUser(mockRequest).subscribe();
+      let responseData: UpdateUserResponse | undefined;
+      service.updateUser(mockRequest).subscribe((res) => {
+        responseData = res;
+      });
 
-      const req = httpMock.expectOne(expectedUrl);
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual(mockRequest);
-
-      req.flush(mockResponse);
+      expect(apiServiceMock.post).toHaveBeenCalledWith('user/update', mockRequest);
+      expect(responseData).toEqual(mockResponse);
     });
 
     it('should send a POST request with currentPassword and new password', () => {
@@ -69,42 +66,50 @@ describe('UserSettingsService', () => {
         password: 'newPassword1',
       };
       const mockResponse: UpdateUserResponse = { _id: 'abc123', userName: 'testuser' };
+      apiServiceMock.post.mockReturnValue(of(mockResponse));
 
-      service.updateUser(mockRequest).subscribe();
+      let responseData: UpdateUserResponse | undefined;
+      service.updateUser(mockRequest).subscribe((res) => {
+        responseData = res;
+      });
 
-      const req = httpMock.expectOne(expectedUrl);
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual(mockRequest);
-
-      req.flush(mockResponse);
+      expect(apiServiceMock.post).toHaveBeenCalledWith('user/update', mockRequest);
+      expect(responseData).toEqual(mockResponse);
     });
 
     it('should propagate error when updateUser request fails with 400', () => {
-      let capturedError: unknown;
+      const mockError = new Error('Username already taken');
+      apiServiceMock.post.mockReturnValue(throwError(() => mockError));
 
+      let capturedError: unknown;
       service.updateUser({ userName: 'taken' }).subscribe({
         next: () => {},
-        error: (err) => { capturedError = err; },
+        error: (err) => {
+          capturedError = err;
+        },
       });
 
-      const req = httpMock.expectOne(expectedUrl);
-      req.flush({ error: 'Username already taken' }, { status: 400, statusText: 'Bad Request' });
-
-      expect(capturedError).toBeDefined();
+      expect(apiServiceMock.post).toHaveBeenCalledWith('user/update', { userName: 'taken' });
+      expect(capturedError).toBe(mockError);
     });
 
     it('should propagate error when updateUser request fails with 401', () => {
-      let capturedError: unknown;
+      const mockError = new Error('Invalid current password');
+      apiServiceMock.post.mockReturnValue(throwError(() => mockError));
 
+      let capturedError: unknown;
       service.updateUser({ currentPassword: 'wrong', password: 'newPass1' }).subscribe({
         next: () => {},
-        error: (err) => { capturedError = err; },
+        error: (err) => {
+          capturedError = err;
+        },
       });
 
-      const req = httpMock.expectOne(expectedUrl);
-      req.flush({ error: 'Invalid current password' }, { status: 401, statusText: 'Unauthorized' });
-
-      expect(capturedError).toBeDefined();
+      expect(apiServiceMock.post).toHaveBeenCalledWith('user/update', {
+        currentPassword: 'wrong',
+        password: 'newPass1',
+      });
+      expect(capturedError).toBe(mockError);
     });
   });
 });
