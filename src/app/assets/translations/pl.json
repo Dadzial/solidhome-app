@@ -155,6 +155,7 @@
   },
   "workInProgress": "W trakcie realizacji",
   "serverErrors": {
+    "networkError": "Brak połączenia z serwerem",
     "unauthorized": "Nieprawidłowe dane logowania",
     "tooManyRequests": "Zbyt wiele prób, spróbuj ponownie później",
     "serverError": "Błąd serwera, spróbuj ponownie później",

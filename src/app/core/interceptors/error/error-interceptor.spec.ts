@@ -191,4 +191,22 @@ describe('errorInterceptor', () => {
       expect(capturedError).toEqual({ error: 'serverErrors.serverError' });
     });
   });
+
+  describe('when response status is 0 (network / offline / CORS)', () => {
+    it('should return networkError translation key when request fails with status 0', () => {
+      let capturedError: ApiError | undefined;
+
+      httpClient.get('/api/test').subscribe({
+        next: () => {},
+        error: (err: ApiError) => {
+          capturedError = err;
+        },
+      });
+
+      const req = httpMock.expectOne('/api/test');
+      req.error(new ProgressEvent('error'));
+
+      expect(capturedError).toEqual({ error: 'serverErrors.networkError' });
+    });
+  });
 });

@@ -6,6 +6,7 @@ import { ApiError } from '@core/models/core.models';
  * Interceptor HTTP przechwytujący błędy odpowiedzi serwera i normalizujący je do formatu `ApiError`.
  *
  * ### Zasady działania:
+ * - **Status 0: ** Normalizuje błąd braku połączenia z serwerem (offline, serwer wyłączony, CORS).
  * - **Status 400 / 409: ** Zwraca obiekt błędu z backendu lub wiadomość błędu.
  * - **Status 401: ** Normalizuje błąd nieautoryzowanego dostępu lub niepoprawnych danych logowania.
  * - **Status 429: ** Zwraca komunikat o zbyt dużej liczbie zapytań (rate limit).
@@ -23,7 +24,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
       let normalizedError: ApiError;
 
-      if (status === 400) {
+      if (status === 0) {
+        normalizedError = { error: 'serverErrors.networkError' };
+      } else if (status === 400) {
         normalizedError =
           typeof body === 'object' && body !== null ? body : { error: 'serverErrors.default' };
       } else if (status === 401) {

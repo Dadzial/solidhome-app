@@ -155,6 +155,7 @@
   },
   "workInProgress": "Work in progress",
   "serverErrors": {
+    "networkError": "Unable to connect to the server",
     "unauthorized": "Invalid credentials",
     "tooManyRequests": "Too many requests, try again later",
     "serverError": "Server error, try again later",
