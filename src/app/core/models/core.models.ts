@@ -1,3 +1,5 @@
+import { HttpHeaders, HttpParams } from '@angular/common/http';
+
 /**
  * Zunifikowany model błędu zwracanego przez backend API lub normalizowanego przez `errorInterceptor`.
  *
@@ -23,3 +25,16 @@ export interface ApiError {
 export interface LogoutResponse {
   message: string;
 }
+
+/**
+ * Opcje konfiguracyjne dla zapytań HTTP w `ApiService`.
+ *
+ * @interface ApiOptions
+ * @property headers Opcjonalne nagłówki HTTP.
+ * @property params Opcjonalne parametry zapytania (query params).
+ */
+export interface ApiOptions {
+  headers?: HttpHeaders | Record<string, string | string[]>;
+  params?: HttpParams | Record<string, string | number | boolean | readonly (string | number | boolean)[]>;
+}
+
