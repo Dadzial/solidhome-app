@@ -17,16 +17,6 @@ export interface ApiError {
 }
 
 /**
- * Model odpowiedzi serwera po pomyślnym żądaniu wylogowania użytkownika.
- *
- * @interface LogoutResponse
- * @property message Komunikat potwierdzający pomyślne wylogowanie z systemu (np. 'Logged out successfully').
- */
-export interface LogoutResponse {
-  message: string;
-}
-
-/**
  * Opcje konfiguracyjne dla zapytań HTTP w `ApiService`.
  *
  * @interface ApiOptions

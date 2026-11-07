@@ -1,33 +1,36 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { LoginService } from './login.service';
-import { LoginRequest, LoginResponse } from '@features/auth/models/auth.models';
-import { environment } from '@environments/environment';
+import { ApiService } from '@core/services/api/api.service';
+import {
+  LoginRequest,
+  LoginResponse,
+  RefreshTokenResponse,
+} from '@features/auth/models/auth.models';
+import { of, throwError } from 'rxjs';
 
 describe('LoginService', () => {
   let service: LoginService;
-  let httpMock: HttpTestingController;
-  const apiUrl = `${environment.apiUrl}/user`;
+  let apiServiceMock: { post: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     localStorage.clear();
     sessionStorage.clear();
 
+    apiServiceMock = {
+      post: vi.fn(),
+    };
+
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
         LoginService,
+        { provide: ApiService, useValue: apiServiceMock },
       ],
     });
 
     service = TestBed.inject(LoginService);
-    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpMock.verify();
     localStorage.clear();
     sessionStorage.clear();
   });
@@ -37,38 +40,34 @@ describe('LoginService', () => {
   });
 
   describe('login', () => {
-    it('should send a POST request to auth endpoint and return LoginResponse', () => {
+    it('should call api.post with "user/auth" and credentials and return LoginResponse', () => {
       const mockRequest: LoginRequest = { userName: 'testuser', password: 'password123' };
       const mockResponse: LoginResponse = { token: 'jwt-token-abc' };
-      let responseData: LoginResponse | undefined;
+      apiServiceMock.post.mockReturnValue(of(mockResponse));
 
+      let responseData: LoginResponse | undefined;
       service.login(mockRequest).subscribe((res) => {
         responseData = res;
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/auth`);
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual(mockRequest);
-
-      req.flush(mockResponse);
-
+      expect(apiServiceMock.post).toHaveBeenCalledWith('user/auth', mockRequest);
       expect(responseData).toEqual(mockResponse);
     });
 
     it('should propagate error when login request fails', () => {
-      let capturedError: unknown;
+      const mockError = new Error('Invalid credentials');
+      apiServiceMock.post.mockReturnValue(throwError(() => mockError));
 
+      let capturedError: unknown;
       service.login({ userName: 'bad', password: 'bad' }).subscribe({
         next: () => {},
-        error: (err) => { capturedError = err; },
+        error: (err) => {
+          capturedError = err;
+        },
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/auth`);
-      expect(req.request.method).toBe('POST');
-
-      req.flush({ error: 'Invalid credentials' }, { status: 401, statusText: 'Unauthorized' });
-
-      expect(capturedError).toBeDefined();
+      expect(apiServiceMock.post).toHaveBeenCalledWith('user/auth', { userName: 'bad', password: 'bad' });
+      expect(capturedError).toBe(mockError);
     });
   });
 
@@ -186,21 +185,23 @@ describe('LoginService', () => {
   });
 
   describe('refreshAccessToken', () => {
-    it('should send POST request to auth/refresh with stored refreshToken', () => {
+    it('should call api.post with "user/auth/refresh" and stored refreshToken', () => {
       localStorage.setItem('refreshToken', 'my-refresh-token');
+      const mockResponse: RefreshTokenResponse = {
+        token: 'new-access-token',
+        refreshToken: 'new-refresh-token',
+      };
+      apiServiceMock.post.mockReturnValue(of(mockResponse));
 
       let response: any;
       service.refreshAccessToken().subscribe((res) => {
         response = res;
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/auth/refresh`);
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual({ refreshToken: 'my-refresh-token' });
-
-      req.flush({ token: 'new-access-token', refreshToken: 'new-refresh-token' });
-
-      expect(response).toEqual({ token: 'new-access-token', refreshToken: 'new-refresh-token' });
+      expect(apiServiceMock.post).toHaveBeenCalledWith('user/auth/refresh', {
+        refreshToken: 'my-refresh-token',
+      });
+      expect(response).toEqual(mockResponse);
     });
   });
 });

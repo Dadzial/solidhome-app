@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { LogoutService } from './logout.service';
 import { ApiService } from '@core/services/api/api.service';
-import { LogoutResponse } from '@core/models/core.models';
+import { LogoutResponse } from '@features/auth/models/auth.models';
 import { of, throwError } from 'rxjs';
 
 describe('LogoutService', () => {
@@ -18,8 +18,9 @@ describe('LogoutService', () => {
         LogoutService,
         {
           provide: ApiService,
-          useValue: apiServiceMock
-        }],
+          useValue: apiServiceMock,
+        },
+      ],
     });
 
     service = TestBed.inject(LogoutService);

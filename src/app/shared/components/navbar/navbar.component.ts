@@ -2,7 +2,7 @@ import { Component, signal, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
-import { LogoutService } from '@core/services/logout/logout.service';
+import { LogoutService } from '@features/auth/services/logout/logout.service';
 import { ClickOutsideDirective } from '@shared/directives/click-outside/click-outside.directive';
 import { SettingsModalComponent } from '@features/settings/components/settings-modal/settings-modal.component';
 

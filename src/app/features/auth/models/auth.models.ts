@@ -115,3 +115,13 @@ export interface ConfirmPasswordRequest {
 export interface ConfirmPasswordResponse {
   message: string;
 }
+
+/**
+ * Odpowiedź serwera po pomyślnym żądaniu wylogowania użytkownika.
+ *
+ * @interface LogoutResponse
+ * @property message Komunikat potwierdzający pomyślne wylogowanie z systemu (np. 'Logged out successfully').
+ */
+export interface LogoutResponse {
+  message: string;
+}

@@ -1,13 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '@core/services/api/api.service';
-import { LogoutResponse } from '@core/models/core.models';
+import { LogoutResponse } from '@features/auth/models/auth.models';
 import { Observable } from 'rxjs';
 
 /**
  * Serwis odpowiedzialny za zakończenie sesji użytkownika w aplikacji poprzez wywołanie odpowiedniego endpointu API.
  *
  * ### Zasady działania:
- * - Wysyła żądanie HTTP DELETE do endpointu API odpowiedzialnego za wylogowanie użytkownika.
+ * - Wysyła żądanie HTTP DELETE za pośrednictwem serwisu ApiService do endpointu wylogowania użytkownika.
  * - Oczekuje odpowiedzi w formacie LogoutResponse, która zawiera informacje o wyniku operacji wylogowania.
  */
 @Injectable({

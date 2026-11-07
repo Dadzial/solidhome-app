@@ -5,7 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { SvgIconRegistryService } from 'angular-svg-icon';
 import { NavbarComponent } from './navbar.component';
-import { LogoutService } from '@core/services/logout/logout.service';
+import { LogoutService } from '@features/auth/services/logout/logout.service';
 import { of, throwError } from 'rxjs';
 
 describe('NavbarComponent', () => {

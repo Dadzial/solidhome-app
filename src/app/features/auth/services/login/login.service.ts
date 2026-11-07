@@ -1,7 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { ApiService } from '@core/services/api/api.service';
 import { jwtDecode } from 'jwt-decode';
-import { environment } from '@environments/environment';
 import { LoginRequest, LoginResponse, RefreshTokenRequest, RefreshTokenResponse } from '@features/auth/models/auth.models';
 import { Observable } from 'rxjs';
 
@@ -9,7 +8,7 @@ import { Observable } from 'rxjs';
  * Serwis odpowiedzialny za uwierzytelnianie użytkownika oraz zarządzanie jego tożsamością na podstawie tokenu JWT.
  *
  * ### Zasady działania:
- * - Wysyła żądanie HTTP POST do endpointu API w celu zalogowania użytkownika.
+ * - Wysyła żądanie HTTP POST za pośrednictwem serwisu ApiService do endpointu API w celu zalogowania użytkownika.
  * - Po zalogowaniu token JWT jest zapisywany przez komponent w `localStorage` (Remember Me) lub `sessionStorage`.
  * - Dekoduje token JWT i udostępnia nazwę zalogowanego użytkownika przez reaktywny sygnał `userName`.
  * - Inicjalizuje dane użytkownika automatycznie przy starcie serwisu (konstruktor) oraz na żądanie.
@@ -19,11 +18,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LoginService {
-  /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
-  private http = inject(HttpClient);
-
-  /** Adres endpoint API odpowiedzialnego za operacje związane z użytkownikiem. */
-  private readonly apiUrl = `${environment.apiUrl}/user`;
+  /** Inject ApiService do wykonywania żądań HTTP w aplikacji. */
+  private api = inject(ApiService);
 
   /**
    * Reaktywny sygnał przechowujący nazwę aktualnie zalogowanego użytkownika.
@@ -44,7 +40,7 @@ export class LoginService {
    * @returns {Observable<LoginResponse>} Obserwowalny obiekt zawierający token JWT po pomyślnym logowaniu.
    */
   public login(data: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/auth`, data);
+    return this.api.post<LoginResponse>('user/auth', data);
   }
 
   /**
@@ -104,7 +100,7 @@ export class LoginService {
     const payload: RefreshTokenRequest = {
       refreshToken: this.getRefreshToken() ?? '',
     };
-    return this.http.post<RefreshTokenResponse>(`${this.apiUrl}/auth/refresh`, payload);
+    return this.api.post<RefreshTokenResponse>('user/auth/refresh', payload);
   }
 
   /**
