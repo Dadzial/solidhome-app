@@ -55,7 +55,7 @@ export class LightsHistoryService {
    * @param {number} [limit=20] Opcjonalna maksymalna liczba wpisów do pobrania (domyślnie 20).
    * @returns {void}
    */
-  public loadHistory(limit: number = 20): void {
+  public loadHistory(limit = 20): void {
     this.getHistory(limit).subscribe({
       next: (items) => {
         const mapped: LightHistory[] = items.map((item) => ({

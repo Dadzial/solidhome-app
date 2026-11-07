@@ -19,8 +19,7 @@ import { ApiError } from '@core/models/core.models';
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((err: HttpErrorResponse) => {
-      const { status, error: body, message } = err;
-      const apiMessage = body?.error || body?.message;
+      const { status, error: body } = err;
 
       let normalizedError: ApiError;
 

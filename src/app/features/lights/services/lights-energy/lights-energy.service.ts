@@ -79,7 +79,7 @@ export class LightsEnergyService {
    */
   public getEnergyStats(
     timeframe: EnergyTimeframe = 'today',
-    room: string = 'entireHouse',
+    room = 'entireHouse',
   ): Observable<LightEnergyData> {
     const params = new HttpParams().set('timeframe', timeframe).set('room', room);
 
