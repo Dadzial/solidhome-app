@@ -4,9 +4,9 @@ import { ThemeButtonComponent } from '@shared/components/theme-button/theme-butt
 import { LangButtonComponent } from '@shared/components/lang-button/lang-button.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { LightsWidgetComponent } from '@features/lights/components/lights-widget/lights-widget.component';
-import {LightsScheduleComponent} from '@features/lights/components/lights-schedule/lights-schedule.component';
-import {LightsScenesComponent} from '@features/lights/components/lights-scenes/lights-scenes.component';
-import {LightsEnergyComponent} from '@features/lights/components/lights-enegry/lights-energy.component';
+import { LightsScheduleComponent } from '@features/lights/components/lights-schedule/lights-schedule.component';
+import { LightsScenesComponent } from '@features/lights/components/lights-scenes/lights-scenes.component';
+import { LightsEnergyComponent } from '@features/lights/components/lights-energy/lights-energy.component';
 
 /**
  * Komponent strony sterowania oświetleniem domowym.
