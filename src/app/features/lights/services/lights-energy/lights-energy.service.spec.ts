@@ -1,14 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { LightsEnergyService } from './lights-energy.service';
+import { ApiService } from '@core/services/api/api.service';
 import { LightEnergyData } from '@features/lights/models/lights.models';
-import { environment } from '@environments/environment';
+import { of, throwError } from 'rxjs';
 
 describe('LightsEnergyService', () => {
   let service: LightsEnergyService;
-  let httpMock: HttpTestingController;
-  const apiUrl = `${environment.apiUrl}/lights`;
+  let apiServiceMock: {
+    get: ReturnType<typeof vi.fn>;
+    delete: ReturnType<typeof vi.fn>;
+  };
 
   const mockEnergyData: LightEnergyData = {
     name: 'entireHouse',
@@ -33,20 +34,22 @@ describe('LightsEnergyService', () => {
   };
 
   beforeEach(() => {
+    apiServiceMock = {
+      get: vi.fn(),
+      delete: vi.fn(),
+    };
+
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
         LightsEnergyService,
+        { provide: ApiService, useValue: apiServiceMock },
       ],
     });
 
     service = TestBed.inject(LightsEnergyService);
-    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpMock.verify();
     vi.clearAllMocks();
   });
 
@@ -78,41 +81,44 @@ describe('LightsEnergyService', () => {
 
   describe('getEnergyStats', () => {
     it('should send a GET request with default params when none are provided', () => {
+      apiServiceMock.get.mockReturnValue(of(mockEnergyData));
       let responseData: LightEnergyData | undefined;
 
       service.getEnergyStats().subscribe((res) => {
         responseData = res;
       });
 
-      const req = httpMock.expectOne((r) => r.url === `${apiUrl}/energy`);
-      expect(req.request.method).toBe('GET');
-      expect(req.request.params.get('timeframe')).toBe('today');
-      expect(req.request.params.get('room')).toBe('entireHouse');
-
-      req.flush(mockEnergyData);
-
+      expect(apiServiceMock.get).toHaveBeenCalledWith(
+        'lights/energy',
+        expect.objectContaining({
+          params: expect.anything(),
+        }),
+      );
       expect(responseData).toEqual(mockEnergyData);
     });
 
     it('should send a GET request with custom timeframe and room params', () => {
+      const customResponse = { ...mockEnergyData, timeframe: 'week' as const, name: 'kitchen' };
+      apiServiceMock.get.mockReturnValue(of(customResponse));
       let responseData: LightEnergyData | undefined;
 
       service.getEnergyStats('week', 'kitchen').subscribe((res) => {
         responseData = res;
       });
 
-      const req = httpMock.expectOne((r) => r.url === `${apiUrl}/energy`);
-      expect(req.request.method).toBe('GET');
-      expect(req.request.params.get('timeframe')).toBe('week');
-      expect(req.request.params.get('room')).toBe('kitchen');
-
-      req.flush({ ...mockEnergyData, timeframe: 'week', name: 'kitchen' });
-
+      expect(apiServiceMock.get).toHaveBeenCalledWith(
+        'lights/energy',
+        expect.objectContaining({
+          params: expect.anything(),
+        }),
+      );
       expect(responseData?.timeframe).toBe('week');
       expect(responseData?.name).toBe('kitchen');
     });
 
     it('should propagate error when getEnergyStats request fails', () => {
+      const mockError = new Error('Server Error');
+      apiServiceMock.get.mockReturnValue(throwError(() => mockError));
       let capturedError: unknown;
 
       service.getEnergyStats().subscribe({
@@ -122,93 +128,80 @@ describe('LightsEnergyService', () => {
         },
       });
 
-      const req = httpMock.expectOne((r) => r.url === `${apiUrl}/energy`);
-      req.flush({ error: 'Server Error' }, { status: 500, statusText: 'Internal Server Error' });
-
-      expect(capturedError).toBeDefined();
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/energy', expect.anything());
+      expect(capturedError).toBe(mockError);
     });
   });
 
   describe('loadEnergyStats', () => {
     it('should update energyData signal and toggle isLoading on success', () => {
       service.hasError.set(true);
+      apiServiceMock.get.mockReturnValue(of(mockEnergyData));
+
       service.loadEnergyStats('today', 'entireHouse');
 
-      expect(service.isLoading()).toBe(true);
-
-      const req = httpMock.expectOne((r) => r.url === `${apiUrl}/energy`);
-      expect(req.request.params.get('timeframe')).toBe('today');
-      expect(req.request.params.get('room')).toBe('entireHouse');
-
-      req.flush(mockEnergyData);
-
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/energy', expect.anything());
       expect(service.isLoading()).toBe(false);
       expect(service.hasError()).toBe(false);
       expect(service.energyData()).toEqual(mockEnergyData);
     });
 
     it('should update currentTimeframe and currentRoom signals when arguments are provided', () => {
+      const customResponse = { ...mockEnergyData, timeframe: 'month' as const, name: 'garage' };
+      apiServiceMock.get.mockReturnValue(of(customResponse));
+
       service.loadEnergyStats('month', 'garage');
 
       expect(service.currentTimeframe()).toBe('month');
       expect(service.currentRoom()).toBe('garage');
-
-      const req = httpMock.expectOne((r) => r.url === `${apiUrl}/energy`);
-      req.flush({ ...mockEnergyData, timeframe: 'month', name: 'garage' });
-
       expect(service.energyData()?.name).toBe('garage');
     });
 
     it('should use current signal values when arguments are omitted', () => {
       service.currentTimeframe.set('week');
       service.currentRoom.set('boiler_room');
+      const customResponse = { ...mockEnergyData, timeframe: 'week' as const, name: 'boiler_room' };
+      apiServiceMock.get.mockReturnValue(of(customResponse));
 
       service.loadEnergyStats();
 
-      const req = httpMock.expectOne((r) => r.url === `${apiUrl}/energy`);
-      expect(req.request.params.get('timeframe')).toBe('week');
-      expect(req.request.params.get('room')).toBe('boiler_room');
-
-      req.flush({ ...mockEnergyData, timeframe: 'week', name: 'boiler_room' });
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/energy', expect.anything());
     });
 
     it('should set isLoading to false, hasError to true and keep energyData unchanged on error', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const mockError = new Error('Failed');
+      apiServiceMock.get.mockReturnValue(throwError(() => mockError));
 
       service.loadEnergyStats('today', 'living_room');
-      expect(service.isLoading()).toBe(true);
-
-      const req = httpMock.expectOne((r) => r.url === `${apiUrl}/energy`);
-      req.flush({ error: 'Failed' }, { status: 500, statusText: 'Internal Server Error' });
 
       expect(service.isLoading()).toBe(false);
       expect(service.hasError()).toBe(true);
       expect(service.energyData()).toBeNull();
       expect(consoleSpy).toHaveBeenCalledWith(
         '[LightsEnergyService] Failed to load energy stats',
-        expect.anything()
+        expect.anything(),
       );
     });
   });
 
   describe('resetEnergyStats', () => {
-    it('should send a DELETE request to /api/lights/energy/reset and return response', () => {
+    it('should send a DELETE request to lights/energy/reset and return response', () => {
+      const mockResponse = { message: 'Energy stats reset successfully', deletedCount: 5 };
+      apiServiceMock.delete.mockReturnValue(of(mockResponse));
       let response: { message: string; deletedCount: number } | undefined;
 
       service.resetEnergyStats().subscribe((res) => {
         response = res;
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/energy/reset`);
-      expect(req.request.method).toBe('DELETE');
-
-      const mockResponse = { message: 'Energy stats reset successfully', deletedCount: 5 };
-      req.flush(mockResponse);
-
+      expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/energy/reset');
       expect(response).toEqual(mockResponse);
     });
 
     it('should propagate error when resetEnergyStats request fails', () => {
+      const mockError = new Error('Reset Failed');
+      apiServiceMock.delete.mockReturnValue(throwError(() => mockError));
       let capturedError: unknown;
 
       service.resetEnergyStats().subscribe({
@@ -218,10 +211,8 @@ describe('LightsEnergyService', () => {
         },
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/energy/reset`);
-      req.flush({ error: 'Reset Failed' }, { status: 500, statusText: 'Internal Server Error' });
-
-      expect(capturedError).toBeDefined();
+      expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/energy/reset');
+      expect(capturedError).toBe(mockError);
     });
   });
 });

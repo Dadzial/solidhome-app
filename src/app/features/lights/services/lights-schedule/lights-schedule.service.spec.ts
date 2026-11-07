@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { LightsScheduleService } from './lights-schedule.service';
+import { ApiService } from '@core/services/api/api.service';
 import {
   LightScheduleRuleItem,
   CreateScheduleRulePayload,
   DeleteScheduleRuleResponse,
 } from '@features/lights/models/lights.models';
-import { environment } from '@environments/environment';
+import { of, throwError } from 'rxjs';
 
 const mockRuleItem: LightScheduleRuleItem = {
   _id: 'r1',
@@ -22,24 +21,32 @@ const mockRuleItem: LightScheduleRuleItem = {
 
 describe('LightsScheduleService', () => {
   let service: LightsScheduleService;
-  let httpMock: HttpTestingController;
-  const apiUrl = `${environment.apiUrl}/lights`;
+  let apiServiceMock: {
+    get: ReturnType<typeof vi.fn>;
+    post: ReturnType<typeof vi.fn>;
+    put: ReturnType<typeof vi.fn>;
+    delete: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(() => {
+    apiServiceMock = {
+      get: vi.fn(),
+      post: vi.fn(),
+      put: vi.fn(),
+      delete: vi.fn(),
+    };
+
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
         LightsScheduleService,
+        { provide: ApiService, useValue: apiServiceMock },
       ],
     });
 
     service = TestBed.inject(LightsScheduleService);
-    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpMock.verify();
     vi.clearAllMocks();
   });
 
@@ -80,14 +87,11 @@ describe('LightsScheduleService', () => {
 
   describe('loadRules', () => {
     it('should fetch rules, map _id to id, and update schedule signal on success', () => {
+      apiServiceMock.get.mockReturnValue(of([mockRuleItem]));
+
       service.loadRules();
 
-      expect(service.isLoading()).toBe(true);
-
-      const req = httpMock.expectOne(`${apiUrl}/rules`);
-      expect(req.request.method).toBe('GET');
-      req.flush([mockRuleItem]);
-
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/rules');
       expect(service.isLoading()).toBe(false);
       expect(service.hasError()).toBe(false);
       expect(service.schedule()).toEqual([
@@ -105,14 +109,17 @@ describe('LightsScheduleService', () => {
     });
 
     it('should set hasError to true and isLoading to false on failure', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const mockError = new Error('Server error');
+      apiServiceMock.get.mockReturnValue(throwError(() => mockError));
+
       service.loadRules();
 
-      const req = httpMock.expectOne(`${apiUrl}/rules`);
-      req.flush('Error', { status: 500, statusText: 'Server Error' });
-
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/rules');
       expect(service.isLoading()).toBe(false);
       expect(service.hasError()).toBe(true);
       expect(service.schedule()).toEqual([]);
+      expect(consoleSpy).toHaveBeenCalled();
     });
   });
 
@@ -127,20 +134,17 @@ describe('LightsScheduleService', () => {
       };
 
       const loadRulesSpy = vi.spyOn(service, 'loadRules').mockImplementation(() => {});
+      apiServiceMock.post.mockReturnValue(of({ ...payload, _id: 'r2', active: true }));
 
       service.createRule(payload).subscribe();
 
-      const req = httpMock.expectOne(`${apiUrl}/rules`);
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual(payload);
-
-      req.flush({ ...payload, _id: 'r2', active: true });
-
+      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/rules', payload);
       expect(loadRulesSpy).toHaveBeenCalled();
       expect(service.hasError()).toBe(false);
     });
 
     it('should set hasError to true on failure', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const payload: CreateScheduleRulePayload = {
         name: 'Night lights',
         days: [5],
@@ -148,16 +152,17 @@ describe('LightsScheduleService', () => {
         endTime: '06:00',
         rooms: ['entireHouse'],
       };
+      const mockError = new Error('Bad Request');
+      apiServiceMock.post.mockReturnValue(throwError(() => mockError));
 
       service.createRule(payload).subscribe({
         next: () => {},
         error: () => {},
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/rules`);
-      req.flush('Failed', { status: 400, statusText: 'Bad Request' });
-
+      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/rules', payload);
       expect(service.hasError()).toBe(true);
+      expect(consoleSpy).toHaveBeenCalled();
     });
   });
 
@@ -177,47 +182,41 @@ describe('LightsScheduleService', () => {
     });
 
     it('should optimistically invert active status and send PUT request', () => {
+      apiServiceMock.put.mockReturnValue(of({ ...mockRuleItem, active: false }));
+
       service.toggleRuleActive('r1');
 
-      // Optimistic update
-      expect(service.schedule()[0].active).toBe(false);
-
-      const req = httpMock.expectOne(`${apiUrl}/rules/r1`);
-      expect(req.request.method).toBe('PUT');
-      expect(req.request.body).toEqual({ active: false });
-
-      req.flush({ ...mockRuleItem, active: false });
-
+      expect(apiServiceMock.put).toHaveBeenCalledWith('lights/rules/r1', { active: false });
       expect(service.schedule()[0].active).toBe(false);
       expect(service.hasError()).toBe(false);
     });
 
     it('should respect explicitly provided active status', () => {
+      apiServiceMock.put.mockReturnValue(of({ ...mockRuleItem, active: true }));
+
       service.toggleRuleActive('r1', true);
 
       expect(service.schedule()[0].active).toBe(true);
-
-      const req = httpMock.expectOne(`${apiUrl}/rules/r1`);
-      expect(req.request.body).toEqual({ active: true });
-      req.flush({ ...mockRuleItem, active: true });
+      expect(apiServiceMock.put).toHaveBeenCalledWith('lights/rules/r1', { active: true });
     });
 
     it('should rollback to previous state and set hasError to true on failure', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const mockError = new Error('Server error');
+      apiServiceMock.put.mockReturnValue(throwError(() => mockError));
+
       service.toggleRuleActive('r1');
 
-      expect(service.schedule()[0].active).toBe(false);
-
-      const req = httpMock.expectOne(`${apiUrl}/rules/r1`);
-      req.flush('Error', { status: 500, statusText: 'Server Error' });
-
+      expect(apiServiceMock.put).toHaveBeenCalledWith('lights/rules/r1', { active: false });
       expect(service.schedule()[0].active).toBe(true);
       expect(service.hasError()).toBe(true);
+      expect(consoleSpy).toHaveBeenCalled();
     });
 
     it('should do nothing if rule is not found in schedule', () => {
       service.toggleRuleActive('non-existent-id');
 
-      httpMock.expectNone(`${apiUrl}/rules/non-existent-id`);
+      expect(apiServiceMock.put).not.toHaveBeenCalled();
       expect(service.schedule().length).toBe(1);
     });
   });
@@ -238,43 +237,39 @@ describe('LightsScheduleService', () => {
     });
 
     it('should optimistically remove rule and send DELETE request', () => {
+      const mockResponse: DeleteScheduleRuleResponse = { message: 'Rule deleted successfully' };
+      apiServiceMock.delete.mockReturnValue(of(mockResponse));
+
       service.deleteRule('r1');
 
-      expect(service.schedule()).toEqual([]);
-
-      const req = httpMock.expectOne(`${apiUrl}/rules/r1`);
-      expect(req.request.method).toBe('DELETE');
-
-      const mockResponse: DeleteScheduleRuleResponse = { message: 'Rule deleted successfully' };
-      req.flush(mockResponse);
-
+      expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/rules/r1');
       expect(service.schedule()).toEqual([]);
       expect(service.hasError()).toBe(false);
     });
 
     it('should rollback to previous state and set hasError to true on failure', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const mockError = new Error('Server error');
+      apiServiceMock.delete.mockReturnValue(throwError(() => mockError));
+
       service.deleteRule('r1');
 
-      expect(service.schedule()).toEqual([]);
-
-      const req = httpMock.expectOne(`${apiUrl}/rules/r1`);
-      req.flush('Error', { status: 500, statusText: 'Server Error' });
-
+      expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/rules/r1');
       expect(service.schedule().length).toBe(1);
       expect(service.schedule()[0].id).toBe('r1');
       expect(service.hasError()).toBe(true);
+      expect(consoleSpy).toHaveBeenCalled();
     });
   });
 
   describe('low-level HTTP methods', () => {
     it('getRules should return Observable of rules', () => {
+      apiServiceMock.get.mockReturnValue(of([mockRuleItem]));
+
       let response: LightScheduleRuleItem[] | undefined;
       service.getRules().subscribe((res) => (response = res));
 
-      const req = httpMock.expectOne(`${apiUrl}/rules`);
-      expect(req.request.method).toBe('GET');
-      req.flush([mockRuleItem]);
-
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/rules');
       expect(response).toEqual([mockRuleItem]);
     });
 
@@ -286,37 +281,32 @@ describe('LightsScheduleService', () => {
         endTime: '12:00',
         rooms: ['kitchen'],
       };
+      apiServiceMock.post.mockReturnValue(of({ ...payload, _id: 'r_test', active: true }));
 
       let response: LightScheduleRuleItem | undefined;
       service.postRule(payload).subscribe((res) => (response = res));
 
-      const req = httpMock.expectOne(`${apiUrl}/rules`);
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual(payload);
-      req.flush({ ...payload, _id: 'r_test', active: true });
-
+      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/rules', payload);
       expect(response?._id).toBe('r_test');
     });
 
     it('putRuleActive without active param should send empty body', () => {
+      apiServiceMock.put.mockReturnValue(of(mockRuleItem));
+
       service.putRuleActive('r1').subscribe();
 
-      const req = httpMock.expectOne(`${apiUrl}/rules/r1`);
-      expect(req.request.method).toBe('PUT');
-      expect(req.request.body).toEqual({});
-      req.flush(mockRuleItem);
+      expect(apiServiceMock.put).toHaveBeenCalledWith('lights/rules/r1', {});
     });
 
     it('deleteRuleApi should send DELETE request and return DeleteScheduleRuleResponse', () => {
+      const mockResponse: DeleteScheduleRuleResponse = { message: 'Deleted' };
+      apiServiceMock.delete.mockReturnValue(of(mockResponse));
+
       let response: DeleteScheduleRuleResponse | undefined;
       service.deleteRuleApi('r1').subscribe((res) => (response = res));
 
-      const req = httpMock.expectOne(`${apiUrl}/rules/r1`);
-      expect(req.request.method).toBe('DELETE');
-      req.flush({ message: 'Deleted' });
-
+      expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/rules/r1');
       expect(response?.message).toBe('Deleted');
     });
   });
 });
-

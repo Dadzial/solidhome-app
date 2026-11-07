@@ -1,40 +1,47 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { LightsControlService } from './lights-control.service';
+import { ApiService } from '@core/services/api/api.service';
 import { LightsHistoryService } from '../lights-history/lights-history.service';
 import { LightsEnergyService } from '../lights-energy/lights-energy.service';
 import { LightItem } from '@features/lights/models/lights.models';
-import { environment } from '@environments/environment';
+import { of, throwError } from 'rxjs';
 
 describe('LightsControlService', () => {
   let service: LightsControlService;
   let historyService: LightsHistoryService;
   let energyService: LightsEnergyService;
-  let httpMock: HttpTestingController;
-  const apiUrl = `${environment.apiUrl}/lights`;
+  let apiServiceMock: {
+    get: ReturnType<typeof vi.fn>;
+    post: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(() => {
+    apiServiceMock = {
+      get: vi.fn(),
+      post: vi.fn(),
+    };
+
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        LightsHistoryService,
-        LightsEnergyService,
         LightsControlService,
+        { provide: ApiService, useValue: apiServiceMock },
+        {
+          provide: LightsHistoryService,
+          useValue: { loadHistory: vi.fn() },
+        },
+        {
+          provide: LightsEnergyService,
+          useValue: { loadEnergyStats: vi.fn() },
+        },
       ],
     });
 
     service = TestBed.inject(LightsControlService);
     historyService = TestBed.inject(LightsHistoryService);
     energyService = TestBed.inject(LightsEnergyService);
-    httpMock = TestBed.inject(HttpTestingController);
-
-    vi.spyOn(energyService, 'loadEnergyStats').mockImplementation(() => {});
   });
 
   afterEach(() => {
-    httpMock.verify();
     vi.clearAllMocks();
   });
 
@@ -82,82 +89,72 @@ describe('LightsControlService', () => {
   });
 
   describe('getStatus', () => {
-    it('should send a GET request to status/app endpoint and return LightItem[]', () => {
+    it('should send a GET request to lights/status/app and return LightItem[]', () => {
       const mockResponse: LightItem[] = [
         { _id: '1', name: 'living_room', state: 1 },
         { _id: '2', name: 'kitchen', state: 0 },
       ];
-      let responseData: LightItem[] | undefined;
+      apiServiceMock.get.mockReturnValue(of(mockResponse));
 
+      let responseData: LightItem[] | undefined;
       service.getStatus().subscribe((res) => {
         responseData = res;
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/status/app`);
-      expect(req.request.method).toBe('GET');
-
-      req.flush(mockResponse);
-
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/status/app');
       expect(responseData).toEqual(mockResponse);
     });
 
     it('should propagate error when getStatus request fails', () => {
-      let capturedError: unknown;
+      const mockError = new Error('Server error');
+      apiServiceMock.get.mockReturnValue(throwError(() => mockError));
 
+      let capturedError: unknown;
       service.getStatus().subscribe({
         next: () => {},
         error: (err) => { capturedError = err; },
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/status/app`);
-      req.flush({ error: 'Server error' }, { status: 500, statusText: 'Internal Server Error' });
-
-      expect(capturedError).toBeDefined();
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/status/app');
+      expect(capturedError).toBe(mockError);
     });
   });
 
   describe('updateStatus', () => {
     it('should send a POST request with state=1 when state is true', () => {
       const mockResponse: LightItem = { _id: '1', name: 'living_room', state: 1 };
-      let responseData: LightItem | undefined;
+      apiServiceMock.post.mockReturnValue(of(mockResponse));
 
+      let responseData: LightItem | undefined;
       service.updateStatus('living_room', true).subscribe((res) => {
         responseData = res;
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/update`);
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual({ name: 'living_room', state: 1 });
-
-      req.flush(mockResponse);
-
+      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/update', { name: 'living_room', state: 1 });
       expect(responseData).toEqual(mockResponse);
     });
 
     it('should send a POST request with state=0 when state is false', () => {
       const mockResponse: LightItem = { _id: '1', name: 'kitchen', state: 0 };
+      apiServiceMock.post.mockReturnValue(of(mockResponse));
 
       service.updateStatus('kitchen', false).subscribe();
 
-      const req = httpMock.expectOne(`${apiUrl}/update`);
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual({ name: 'kitchen', state: 0 });
-
-      req.flush(mockResponse);
+      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/update', { name: 'kitchen', state: 0 });
     });
 
     it('should propagate error when updateStatus request fails', () => {
-      let capturedError: unknown;
+      const mockError = new Error('Not found');
+      apiServiceMock.post.mockReturnValue(throwError(() => mockError));
 
+      let capturedError: unknown;
       service.updateStatus('garage', true).subscribe({
         next: () => {},
         error: (err) => { capturedError = err; },
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/update`);
-      req.flush({ error: 'Not found' }, { status: 404, statusText: 'Not Found' });
-
-      expect(capturedError).toBeDefined();
+      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/update', { name: 'garage', state: 1 });
+      expect(capturedError).toBe(mockError);
     });
   });
 
@@ -171,13 +168,12 @@ describe('LightsControlService', () => {
         { name: 'hallway', state: 1 },
         { name: 'garage', state: 0 },
       ];
+      apiServiceMock.get.mockReturnValue(of(mockItems));
 
       service.hasError.set(true);
       service.loadLights();
 
-      const req = httpMock.expectOne(`${apiUrl}/status/app`);
-      req.flush(mockItems);
-
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/status/app');
       const lights = service.lights();
       expect(lights.find((l) => l.id === 'living_room')?.on).toBe(true);
       expect(lights.find((l) => l.id === 'kitchen')?.on).toBe(false);
@@ -187,77 +183,71 @@ describe('LightsControlService', () => {
 
     it('should set hasError to true when loadLights request fails', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const mockError = new Error('Server error');
+      apiServiceMock.get.mockReturnValue(throwError(() => mockError));
+
       service.loadLights();
 
-      const req = httpMock.expectOne(`${apiUrl}/status/app`);
-      req.flush({ error: 'Server error' }, { status: 500, statusText: 'Internal Server Error' });
-
       expect(service.hasError()).toBe(true);
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to load initial lights status', expect.any(Object));
+      expect(consoleSpy).toHaveBeenCalledWith('Failed to load initial lights status', mockError);
     });
   });
 
   describe('toggleLight', () => {
-    it('should optimistically update light state and call historyService.loadHistory on success', () => {
-      const historySpy = vi.spyOn(historyService, 'loadHistory').mockImplementation(() => {});
+    it('should optimistically update light state and call history and energy on success', () => {
       const id = 'living_room';
+      apiServiceMock.post.mockReturnValue(of({ name: id, state: 1 }));
 
       service.toggleLight(id);
 
       expect(service.lights().find((l) => l.id === id)?.on).toBe(true);
-
-      const req = httpMock.expectOne(`${apiUrl}/update`);
-      req.flush({ name: id, state: 1 });
-
+      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/update', { name: id, state: 1 });
       expect(service.hasError()).toBe(false);
-      expect(historySpy).toHaveBeenCalled();
+      expect(historyService.loadHistory).toHaveBeenCalled();
+      expect(energyService.loadEnergyStats).toHaveBeenCalled();
     });
 
     it('should revert light state and set hasError to true on error', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const id = 'hallway';
+      const mockError = new Error('Server error');
+      apiServiceMock.post.mockReturnValue(throwError(() => mockError));
 
       service.toggleLight(id);
-      expect(service.lights().find((l) => l.id === id)?.on).toBe(true);
-
-      const req = httpMock.expectOne(`${apiUrl}/update`);
-      req.flush({ error: 'Server error' }, { status: 500, statusText: 'Internal Server Error' });
 
       expect(service.lights().find((l) => l.id === id)?.on).toBe(false);
       expect(service.hasError()).toBe(true);
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to update light status', expect.any(Object));
+      expect(consoleSpy).toHaveBeenCalledWith('Failed to update light status', mockError);
     });
   });
 
   describe('toggleAllLights', () => {
-    it('should turn all lights on and call historyService.loadHistory on success', () => {
-      const historySpy = vi.spyOn(historyService, 'loadHistory').mockImplementation(() => {});
+    it('should turn all lights on and call history and energy on success', () => {
       service.lights.update((lights) => lights.map((l) => ({ ...l, on: false })));
+      apiServiceMock.post.mockImplementation((_endpoint, body: { name: string; state: number }) =>
+        of({ name: body.name, state: body.state }),
+      );
 
       service.toggleAllLights();
 
-      const requests = httpMock.match(`${apiUrl}/update`);
-      expect(requests).toHaveLength(6);
-      requests.forEach((req) => req.flush({ name: req.request.body.name, state: 1 }));
-
+      expect(apiServiceMock.post).toHaveBeenCalledTimes(6);
       expect(service.lights().every((l) => l.on === true)).toBe(true);
       expect(service.hasError()).toBe(false);
-      expect(historySpy).toHaveBeenCalled();
+      expect(historyService.loadHistory).toHaveBeenCalled();
+      expect(energyService.loadEnergyStats).toHaveBeenCalled();
     });
 
     it('should revert all lights to original state and set hasError to true on error', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const originalLights = service.lights();
+      const mockError = new Error('Server error');
+      apiServiceMock.post.mockReturnValue(throwError(() => mockError));
 
       service.toggleAllLights();
 
-      const requests = httpMock.match(`${apiUrl}/update`);
-      expect(requests).toHaveLength(6);
-      requests[0].flush({ error: 'Server error' }, { status: 500, statusText: 'Internal Server Error' });
-
       expect(service.lights()).toEqual(originalLights);
       expect(service.hasError()).toBe(true);
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to update lights status', expect.any(Object));
+      expect(consoleSpy).toHaveBeenCalledWith('Failed to update lights status', mockError);
     });
   });
 });

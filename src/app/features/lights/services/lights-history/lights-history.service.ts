@@ -1,6 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
+import { ApiService } from '@core/services/api/api.service';
 import { Observable } from 'rxjs';
 import {
   LightHistory,
@@ -37,11 +36,8 @@ export const ROOMS_NAMES_TRANSLATIONS: Record<string, string> = {
   providedIn: 'root',
 })
 export class LightsHistoryService {
-  /** Inject httpClient do wykonywania żądań HTTP w Angularze. */
-  private http = inject(HttpClient);
-
-  /** Adres endpoint API odpowiedzialnego za operacje związane z oświetleniem. */
-  private readonly apiUrl = `${environment.apiUrl}/lights`;
+  /** Inject ApiService do wykonywania żądań do backendu. */
+  private api = inject(ApiService);
 
   /**
    * Sygnał przechowujący przetworzone wpisy historii zmian świateł do wyświetlenia w widoku.
@@ -104,7 +100,7 @@ export class LightsHistoryService {
    */
   public getHistory(limit?: number): Observable<LightHistoryItem[]> {
     const options = limit ? { params: { limit: limit.toString() } } : {};
-    return this.http.get<LightHistoryItem[]>(`${this.apiUrl}/history`, options);
+    return this.api.get<LightHistoryItem[]>('lights/history', options);
   }
 
   /**
@@ -113,6 +109,6 @@ export class LightsHistoryService {
    * @returns {Observable<ResetHistoryResponse>} Obserwowalny obiekt zawierający odpowiedź z liczbą usuniętych wpisów.
    */
   public resetHistory(): Observable<ResetHistoryResponse> {
-    return this.http.delete<ResetHistoryResponse>(`${this.apiUrl}/history/reset`);
+    return this.api.delete<ResetHistoryResponse>('lights/history/reset');
   }
 }

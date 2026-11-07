@@ -1,30 +1,33 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { LightsHistoryService } from './lights-history.service';
+import { ApiService } from '@core/services/api/api.service';
 import { LightHistoryItem, ResetHistoryResponse } from '@features/lights/models/lights.models';
-import { environment } from '@environments/environment';
+import { of, throwError } from 'rxjs';
 
 describe('LightsHistoryService', () => {
   let service: LightsHistoryService;
-  let httpMock: HttpTestingController;
-  const apiUrl = `${environment.apiUrl}/lights`;
+  let apiServiceMock: {
+    get: ReturnType<typeof vi.fn>;
+    delete: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(() => {
+    apiServiceMock = {
+      get: vi.fn(),
+      delete: vi.fn(),
+    };
+
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
         LightsHistoryService,
+        { provide: ApiService, useValue: apiServiceMock },
       ],
     });
 
     service = TestBed.inject(LightsHistoryService);
-    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpMock.verify();
     vi.clearAllMocks();
   });
 
@@ -41,77 +44,80 @@ describe('LightsHistoryService', () => {
   describe('getHistory', () => {
     it('should send a GET request without params when limit is not provided', () => {
       const mockResponse: LightHistoryItem[] = [
-        { _id: 'h1', name: 'living_room', state: 1, createdAt: '2024-01-01T12:00:00Z', userId: { _id: 'u1', userName: 'admin', email: 'a@a.com' } },
+        {
+          _id: 'h1',
+          name: 'living_room',
+          state: 1,
+          createdAt: '2024-01-01T12:00:00Z',
+          userId: { _id: 'u1', userName: 'admin', email: 'a@a.com' },
+        },
       ];
+      apiServiceMock.get.mockReturnValue(of(mockResponse));
       let responseData: LightHistoryItem[] | undefined;
 
       service.getHistory().subscribe((res) => {
         responseData = res;
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/history`);
-      expect(req.request.method).toBe('GET');
-      expect(req.request.params.has('limit')).toBe(false);
-
-      req.flush(mockResponse);
-
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/history', {});
       expect(responseData).toEqual(mockResponse);
     });
 
     it('should send a GET request with limit param when limit is provided', () => {
+      apiServiceMock.get.mockReturnValue(of([]));
+
       service.getHistory(20).subscribe();
 
-      const req = httpMock.expectOne((r) => r.url === `${apiUrl}/history`);
-      expect(req.request.method).toBe('GET');
-      expect(req.request.params.get('limit')).toBe('20');
-
-      req.flush([]);
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/history', {
+        params: { limit: '20' },
+      });
     });
 
     it('should propagate error when getHistory request fails', () => {
+      const mockError = new Error('Unauthorized');
+      apiServiceMock.get.mockReturnValue(throwError(() => mockError));
       let capturedError: unknown;
 
       service.getHistory().subscribe({
         next: () => {},
-        error: (err) => { capturedError = err; },
+        error: (err) => {
+          capturedError = err;
+        },
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/history`);
-      req.flush({ error: 'Unauthorized' }, { status: 401, statusText: 'Unauthorized' });
-
-      expect(capturedError).toBeDefined();
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/history', {});
+      expect(capturedError).toBe(mockError);
     });
   });
 
   describe('resetHistory', () => {
-    it('should send a DELETE request to history/reset endpoint and return ResetHistoryResponse', () => {
+    it('should send a DELETE request to lights/history/reset and return ResetHistoryResponse', () => {
       const mockResponse: ResetHistoryResponse = { message: 'History cleared', deletedCount: 5 };
+      apiServiceMock.delete.mockReturnValue(of(mockResponse));
       let responseData: ResetHistoryResponse | undefined;
 
       service.resetHistory().subscribe((res) => {
         responseData = res;
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/history/reset`);
-      expect(req.request.method).toBe('DELETE');
-
-      req.flush(mockResponse);
-
+      expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/history/reset');
       expect(responseData).toEqual(mockResponse);
     });
 
     it('should propagate error when resetHistory request fails', () => {
+      const mockError = new Error('Server error');
+      apiServiceMock.delete.mockReturnValue(throwError(() => mockError));
       let capturedError: unknown;
 
       service.resetHistory().subscribe({
         next: () => {},
-        error: (err) => { capturedError = err; },
+        error: (err) => {
+          capturedError = err;
+        },
       });
 
-      const req = httpMock.expectOne(`${apiUrl}/history/reset`);
-      req.flush({ error: 'Server error' }, { status: 500, statusText: 'Internal Server Error' });
-
-      expect(capturedError).toBeDefined();
+      expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/history/reset');
+      expect(capturedError).toBe(mockError);
     });
   });
 
@@ -133,21 +139,19 @@ describe('LightsHistoryService', () => {
           userId: null,
         },
       ];
+      apiServiceMock.get.mockReturnValue(of(mockItems));
 
       service.loadHistory(20);
 
-      const req = httpMock.expectOne((r) => r.url === `${apiUrl}/history`);
-      expect(req.request.params.get('limit')).toBe('20');
-      req.flush(mockItems);
-
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/history', {
+        params: { limit: '20' },
+      });
       const history = service.history();
       expect(history).toHaveLength(2);
-
       expect(history[0].id).toBe('h1');
       expect(history[0].name).toBe('home.lightsWidget.rooms.livingRoom');
       expect(history[0].action).toBe('ON');
       expect(history[0].user).toBe('admin');
-
       expect(history[1].id).toBe('h2');
       expect(history[1].name).toBe('home.lightsWidget.rooms.kitchen');
       expect(history[1].action).toBe('OFF');
@@ -158,11 +162,9 @@ describe('LightsHistoryService', () => {
       const mockItems: LightHistoryItem[] = [
         { _id: 'h3', name: 'unknown_room', state: 1, createdAt: '2024-01-01T10:00:00Z' },
       ];
+      apiServiceMock.get.mockReturnValue(of(mockItems));
 
       service.loadHistory();
-
-      const req = httpMock.expectOne((r) => r.url === `${apiUrl}/history`);
-      req.flush(mockItems);
 
       expect(service.history()[0].name).toBe('unknown_room');
     });
@@ -171,11 +173,9 @@ describe('LightsHistoryService', () => {
       const mockItems: LightHistoryItem[] = [
         { _id: 'h4', name: 'garage', state: 0, createdAt: '2024-01-01T08:00:00Z' },
       ];
+      apiServiceMock.get.mockReturnValue(of(mockItems));
 
       service.loadHistory();
-
-      const req = httpMock.expectOne((r) => r.url === `${apiUrl}/history`);
-      req.flush(mockItems);
 
       expect(service.history()[0].user).toBe('System');
     });
@@ -184,15 +184,14 @@ describe('LightsHistoryService', () => {
       service.history.set([
         { id: 'existing', name: 'Living Room', action: 'ON', time: '10:00', user: 'admin' },
       ]);
-
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const mockError = new Error('Server error');
+      apiServiceMock.get.mockReturnValue(throwError(() => mockError));
+
       service.loadHistory();
 
-      const req = httpMock.expectOne((r) => r.url === `${apiUrl}/history`);
-      req.flush({ error: 'Server error' }, { status: 500, statusText: 'Internal Server Error' });
-
       expect(service.history()).toHaveLength(1);
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to load lights history', expect.any(Object));
+      expect(consoleSpy).toHaveBeenCalledWith('Failed to load lights history', mockError);
     });
   });
 
@@ -202,12 +201,11 @@ describe('LightsHistoryService', () => {
         { id: 'h1', name: 'Living Room', action: 'ON', time: '10:00', user: 'admin' },
         { id: 'h2', name: 'Kitchen', action: 'OFF', time: '11:00', user: 'System' },
       ]);
+      apiServiceMock.delete.mockReturnValue(of({ message: 'History cleared', deletedCount: 2 }));
 
       service.clearHistory();
 
-      const req = httpMock.expectOne(`${apiUrl}/history/reset`);
-      req.flush({ message: 'History cleared', deletedCount: 2 });
-
+      expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/history/reset');
       expect(service.history()).toEqual([]);
     });
 
@@ -215,15 +213,15 @@ describe('LightsHistoryService', () => {
       service.history.set([
         { id: 'h1', name: 'Living Room', action: 'ON', time: '10:00', user: 'admin' },
       ]);
-
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const mockError = new Error('Server error');
+      apiServiceMock.delete.mockReturnValue(throwError(() => mockError));
+
       service.clearHistory();
 
-      const req = httpMock.expectOne(`${apiUrl}/history/reset`);
-      req.flush({ error: 'Server error' }, { status: 500, statusText: 'Internal Server Error' });
-
+      expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/history/reset');
       expect(service.history()).toHaveLength(1);
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to reset lights history', expect.any(Object));
+      expect(consoleSpy).toHaveBeenCalledWith('Failed to reset lights history', mockError);
     });
   });
 });

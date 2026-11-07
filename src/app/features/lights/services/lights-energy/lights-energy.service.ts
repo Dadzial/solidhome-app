@@ -1,8 +1,8 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from '@environments/environment';
+import { ApiService } from '@core/services/api/api.service';
 import { Observable } from 'rxjs';
 import { LightEnergyData, EnergyTimeframe } from '@features/lights/models/lights.models';
+import { HttpParams } from '@angular/common/http';
 
 /**
  * Serwis odpowiedzialny za pobieranie i zarządzanie statystykami zużycia energii oświetlenia w systemie SolidHome.
@@ -14,11 +14,8 @@ import { LightEnergyData, EnergyTimeframe } from '@features/lights/models/lights
   providedIn: 'root',
 })
 export class LightsEnergyService {
-  /** Inject HttpClient do wykonywania żądań HTTP w Angularze. */
-  private http = inject(HttpClient);
-
-  /** Adres bazowy API dla operacji świateł. */
-  private readonly apiUrl = `${environment.apiUrl}/lights`;
+  /** Inject ApiService do wykonywania żądań do backendu. */
+  private api = inject(ApiService);
 
   /**
    * Sygnał przechowujący bieżące dane statystyk zużycia energii pobrane z API.
@@ -86,7 +83,7 @@ export class LightsEnergyService {
   ): Observable<LightEnergyData> {
     const params = new HttpParams().set('timeframe', timeframe).set('room', room);
 
-    return this.http.get<LightEnergyData>(`${this.apiUrl}/energy`, { params });
+    return this.api.get<LightEnergyData>('lights/energy', { params });
   }
 
   /**
@@ -96,8 +93,8 @@ export class LightsEnergyService {
    * @returns {Observable<{ message: string; deletedCount: number }>}
    */
   public resetEnergyStats(): Observable<{ message: string; deletedCount: number }> {
-    return this.http.delete<{ message: string; deletedCount: number }>(
-      `${this.apiUrl}/energy/reset`,
+    return this.api.delete<{ message: string; deletedCount: number }>(
+      'lights/energy/reset',
     );
   }
 }

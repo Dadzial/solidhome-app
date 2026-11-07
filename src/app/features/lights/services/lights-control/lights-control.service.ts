@@ -1,6 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
+import { ApiService } from '@core/services/api/api.service';
 import { Observable, forkJoin } from 'rxjs';
 import { Light, LightItem } from '@features/lights/models/lights.models';
 import { LightsHistoryService } from '../lights-history/lights-history.service';
@@ -36,17 +35,14 @@ const INITIAL_LIGHTS: Light[] = [
   providedIn: 'root',
 })
 export class LightsControlService {
-  /** Inject httpClient do wykonywania żądań HTTP w Angularze. */
-  private http = inject(HttpClient);
+  /** Inject ApiService do wykonywania żądań do backendu. */
+  private api = inject(ApiService);
 
   /** Inject LightsHistoryService do automatycznego odświeżania historii po akcjach użytkownika. */
   private lightsHistoryService = inject(LightsHistoryService);
 
   /** Inject LightsEnergyService do automatycznego odświeżania zużycia energii po zmianie stanu świateł. */
   private lightsEnergyService = inject(LightsEnergyService);
-
-  /** Adres endpoint API odpowiedzialnego za operacje związane z oświetleniem. */
-  private readonly apiUrl = `${environment.apiUrl}/lights`;
 
   /**
    * Sygnał przechowujący listę lamp z ich pozycjami na mapie SVG i aktualnym stanem.
@@ -152,7 +148,7 @@ export class LightsControlService {
    * @returns {Observable<LightItem[]>} Obserwowalny obiekt zawierający listę lamp z ich aktualnym stanem.
    */
   public getStatus(): Observable<LightItem[]> {
-    return this.http.get<LightItem[]>(`${this.apiUrl}/status/app`);
+    return this.api.get<LightItem[]>('lights/status/app');
   }
 
   /**
@@ -167,6 +163,6 @@ export class LightsControlService {
       name,
       state: state ? 1 : 0,
     };
-    return this.http.post<LightItem>(`${this.apiUrl}/update`, payload);
+    return this.api.post<LightItem>('lights/update', payload);
   }
 }

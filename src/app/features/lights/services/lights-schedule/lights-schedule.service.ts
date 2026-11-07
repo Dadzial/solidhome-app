@@ -1,6 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
+import { ApiService } from '@core/services/api/api.service';
 import { Observable, tap } from 'rxjs';
 import {
   LightScheduleRule,
@@ -26,11 +25,8 @@ import {
   providedIn: 'root',
 })
 export class LightsScheduleService {
-  /** Inject httpClient do wykonywania żądań HTTP w Angularze. */
-  private http = inject(HttpClient);
-
-  /** Adres endpoint API odpowiedzialnego za operacje związane z oświetleniem. */
-  private readonly apiUrl = `${environment.apiUrl}/lights`;
+  /** Inject ApiService do wykonywania żądań do backendu. */
+  private api = inject(ApiService);
 
   /**
    * Sygnał przechowujący wpisy harmonogramu zmian świateł do wyświetlenia w widoku.
@@ -170,7 +166,7 @@ export class LightsScheduleService {
    * @returns {Observable<LightScheduleRuleItem[]>}
    */
   public getRules(): Observable<LightScheduleRuleItem[]> {
-    return this.http.get<LightScheduleRuleItem[]>(`${this.apiUrl}/rules`);
+    return this.api.get<LightScheduleRuleItem[]>('lights/rules');
   }
 
   /**
@@ -180,7 +176,7 @@ export class LightsScheduleService {
    * @returns {Observable<LightScheduleRuleItem>}
    */
   public postRule(payload: CreateScheduleRulePayload): Observable<LightScheduleRuleItem> {
-    return this.http.post<LightScheduleRuleItem>(`${this.apiUrl}/rules`, payload);
+    return this.api.post<LightScheduleRuleItem>('lights/rules', payload);
   }
 
   /**
@@ -192,7 +188,7 @@ export class LightsScheduleService {
    */
   public putRuleActive(id: string, active?: boolean): Observable<LightScheduleRuleItem> {
     const body = typeof active === 'boolean' ? { active } : {};
-    return this.http.put<LightScheduleRuleItem>(`${this.apiUrl}/rules/${id}`, body);
+    return this.api.put<LightScheduleRuleItem>(`lights/rules/${id}`, body);
   }
 
   /**
@@ -202,7 +198,7 @@ export class LightsScheduleService {
    * @returns {Observable<DeleteScheduleRuleResponse>}
    */
   public deleteRuleApi(id: string): Observable<DeleteScheduleRuleResponse> {
-    return this.http.delete<DeleteScheduleRuleResponse>(`${this.apiUrl}/rules/${id}`);
+    return this.api.delete<DeleteScheduleRuleResponse>(`lights/rules/${id}`);
   }
 }
 
