@@ -43,3 +43,14 @@ jobs:
 
       - name: Build production bundle
         run: pnpm ng build
+
+  deploy:
+    name: Deploy to Render
+    needs: build-and-test
+    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main') && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Render Deploy Hook
+        run: |
+          curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
