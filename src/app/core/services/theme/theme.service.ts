@@ -1,4 +1,4 @@
-import { Injectable, signal, effect, Signal } from '@angular/core';
+import { Injectable, signal, effect } from '@angular/core';
 
 /**
  * Dostępne tryby motywów w aplikacji.
@@ -24,11 +24,11 @@ export class ThemeService {
 
   /**
    * Reaktywny sygnał przechowujący aktualnie aktywny motyw aplikacji.
-   * @type {Signal<Theme>}
+   * @type {signal}
    */
   readonly theme = signal<Theme>(this.getSavedTheme())
 
-  /**
+  /**`
    * Inicjalizuje serwis i rejestruje reaktywny efekt (`effect`), który przy każdej zmianie
    * sygnału `theme` aktualizuje `localStorage` oraz dodaje/usuwa klasę `.dark` na elemencie `<html>`.
    */
