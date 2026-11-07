@@ -4,6 +4,6 @@
 export const environment = {
   /** Flaga określająca, czy aplikacja działa w trybie produkcyjnym. */
   production: true,
-  /** Adres bazowy API w środowisku produkcyjnym z proxy. */
-  apiUrl: '/api',
+  /** Adres bazowy API w środowisku produkcyjnym (Render Web Service). */
+  apiUrl: 'https://solidhome-api.onrender.com/api',
 };
