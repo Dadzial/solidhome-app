@@ -14,6 +14,7 @@ import { loginGuard } from '@core/guards/login/login-guard';
  * - `'gates'` — Podstrona sterowania bramami (w budowie)
  * - `'air'` — Podstrona jakości powietrza (w budowie)
  * - `'security'` — Podstrona systemu bezpieczeństwa (w budowie)
+ * - `'**'` — Przekierowanie tras nieznanych (wildcard) do strony głównej
  */
 export const routes: Routes = [
   {
@@ -51,5 +52,9 @@ export const routes: Routes = [
     canActivate: [loginGuard],
     loadComponent: () =>
       import('@pages/security/security-page.component').then((m) => m.SecurityPageComponent),
+  },
+  {
+    path: '**',
+    redirectTo: '',
   },
 ];
