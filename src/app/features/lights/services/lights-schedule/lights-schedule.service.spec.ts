@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LightsScheduleService } from './lights-schedule.service';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import {
   LightScheduleRuleItem,
   CreateScheduleRulePayload,
@@ -37,7 +37,7 @@ describe('LightsScheduleService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [LightsScheduleService, { provide: ApiService, useValue: apiServiceMock }],
+      providers: [LightsScheduleService, { provide: ApiConnectService, useValue: apiServiceMock }],
     });
 
     service = TestBed.inject(LightsScheduleService);

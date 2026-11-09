@@ -1,5 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { Observable, tap } from 'rxjs';
 import {
   LightScheduleRule,
@@ -25,8 +25,8 @@ import {
   providedIn: 'root',
 })
 export class LightsScheduleService {
-  /** Inject ApiService do wykonywania żądań do backendu. */
-  private api = inject(ApiService);
+  /** Inject ApiConnectService do wykonywania żądań do backendu. */
+  private api = inject(ApiConnectService);
 
   /**
    * Sygnał przechowujący wpisy harmonogramu zmian świateł do wyświetlenia w widoku.

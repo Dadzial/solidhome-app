@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { UpdateUserRequest, UpdateUserResponse } from '@features/settings/models/settings.models';
 import { Observable } from 'rxjs';
 
@@ -15,8 +15,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UserSettingsService {
-  /** Inject ApiService do wykonywania żądań do backendu. */
-  private api = inject(ApiService);
+  /** Inject ApiConnectService do wykonywania żądań do backendu. */
+  private api = inject(ApiConnectService);
 
   /**
    *  Wysyła żądanie HTTP POST do endpointu API w celu aktualizacji danych użytkownika.

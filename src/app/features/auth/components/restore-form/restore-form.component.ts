@@ -18,7 +18,7 @@ import { ApiError } from '@core/models/core.models';
  * - Waliduje wymagane pola: `code` (kod weryfikacyjny) i `password` (nowe hasło).
  * - Wysyła żądanie potwierdzenia zmiany hasła przez `ConfirmPasswordService`.
  * - Po sukcesie emituje zdarzenie `switchToLogin`, by przekierować użytkownika do logowania.
- * - Obsługuje błędy walidacji lokalnej oraz błędy z backendu (`ApiError`), wyświetlając je tymczasowo przez 3 sekundy.
+ * - Obsługuje błędy walidacji lokalnej oraz błędy z backendu (`ApiErrorService`), wyświetlając je tymczasowo przez 3 sekundy.
  */
 @Component({
   selector: 'app-restore-form',

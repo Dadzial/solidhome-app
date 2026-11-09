@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { UserSettingsService } from './user-settings.service';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { UpdateUserRequest, UpdateUserResponse } from '@features/settings/models/settings.models';
 import { of, throwError } from 'rxjs';
 
@@ -14,7 +14,7 @@ describe('UserSettingsService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [UserSettingsService, { provide: ApiService, useValue: apiServiceMock }],
+      providers: [UserSettingsService, { provide: ApiConnectService, useValue: apiServiceMock }],
     });
 
     service = TestBed.inject(UserSettingsService);

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LightsEnergyService } from './lights-energy.service';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { LightEnergyData } from '@features/lights/models/lights.models';
 import { of, throwError } from 'rxjs';
 
@@ -40,7 +40,7 @@ describe('LightsEnergyService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [LightsEnergyService, { provide: ApiService, useValue: apiServiceMock }],
+      providers: [LightsEnergyService, { provide: ApiConnectService, useValue: apiServiceMock }],
     });
 
     service = TestBed.inject(LightsEnergyService);

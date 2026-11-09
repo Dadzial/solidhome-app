@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { VerifyEmailRequest, VerifyEmailResponse } from '@features/auth/models/auth.models';
 import { Observable } from 'rxjs';
 
@@ -15,8 +15,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class VerifyEmailService {
-  /** Inject ApiService do wykonywania żądań do backendu. */
-  private api = inject(ApiService);
+  /** Inject ApiConnectService do wykonywania żądań do backendu. */
+  private api = inject(ApiConnectService);
 
   /**
    * Wysyła żądanie HTTP POST do endpointu API w celu wygenerowania i przesłania kodu weryfikacyjnego na e-mail.

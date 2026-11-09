@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { Observable } from 'rxjs';
 import { LightEnergyData, EnergyTimeframe } from '@features/lights/models/lights.models';
 import { HttpParams } from '@angular/common/http';
@@ -14,8 +14,8 @@ import { HttpParams } from '@angular/common/http';
   providedIn: 'root',
 })
 export class LightsEnergyService {
-  /** Inject ApiService do wykonywania żądań do backendu. */
-  private api = inject(ApiService);
+  /** Inject ApiConnectService do wykonywania żądań do backendu. */
+  private api = inject(ApiConnectService);
 
   /**
    * Sygnał przechowujący bieżące dane statystyk zużycia energii pobrane z API.

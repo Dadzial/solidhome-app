@@ -17,7 +17,7 @@ export interface ApiError {
 }
 
 /**
- * Opcje konfiguracyjne dla zapytań HTTP w `ApiService`.
+ * Opcje konfiguracyjne dla zapytań HTTP w `ApiConnectService`.
  *
  * @interface ApiOptions
  * @property headers Opcjonalne nagłówki HTTP.

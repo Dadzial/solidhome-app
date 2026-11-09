@@ -19,7 +19,7 @@ import { ApiError } from '@core/models/core.models';
  * - Waliduje wymagane pola (`userName`, `password`) po stronie klienta.
  * - Wysyła żądanie logowania przez `LoginService` i zapisuje token JWT w `localStorage` (opcja Remember Me) lub `sessionStorage`.
  * - Inicjalizuje dane użytkownika z tokenu i przekierowuje do strony głównej (`/home`) z animacją okna ładowania (`LoadingService`).
- * - Obsługuje błędy walidacji lokalnej oraz błędy z backendu (`ApiError`), wyświetlając je tymczasowo na 3 sekundy.
+ * - Obsługuje błędy walidacji lokalnej oraz błędy z backendu (`ApiErrorService`), wyświetlając je tymczasowo na 3 sekundy.
  */
 @Component({
   selector: 'app-login-form',

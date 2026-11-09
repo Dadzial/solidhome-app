@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { Observable } from 'rxjs';
 import {
   LightHistory,
@@ -36,8 +36,8 @@ export const ROOMS_NAMES_TRANSLATIONS: Record<string, string> = {
   providedIn: 'root',
 })
 export class LightsHistoryService {
-  /** Inject ApiService do wykonywania żądań do backendu. */
-  private api = inject(ApiService);
+  /** Inject ApiConnectService do wykonywania żądań do backendu. */
+  private api = inject(ApiConnectService);
 
   /**
    * Sygnał przechowujący przetworzone wpisy historii zmian świateł do wyświetlenia w widoku.

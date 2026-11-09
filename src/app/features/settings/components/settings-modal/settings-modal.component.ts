@@ -31,7 +31,7 @@ import {
  * - Widoczność modalu sterowana jest przez wejściowy sygnał `isOpen` oraz dyrektywę `appClickOutside`.
  * - Każda sekcja edycji (username / email / password) jest rozwijana niezależnie przez `expandedSection`.
  * - Formularz hasła dodatkowo weryfikuje zgodność nowego hasła z potwierdzeniem przed wysłaniem do API.
- * - Błędy walidacji lokalnej i błędy z backendu (`ApiError`) są wyświetlane tymczasowo przez 3 sekundy.
+ * - Błędy walidacji lokalnej i błędy z backendu (`ApiErrorService`) są wyświetlane tymczasowo przez 3 sekundy.
  * - Po sukcesie zmiany nazwy użytkownika lokalny sygnał `userName` w `LoginService` jest aktualizowany natychmiast.
  */
 @Component({

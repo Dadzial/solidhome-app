@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LoginService } from './login.service';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import {
   LoginRequest,
   LoginResponse,
@@ -21,7 +21,7 @@ describe('LoginService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [LoginService, { provide: ApiService, useValue: apiServiceMock }],
+      providers: [LoginService, { provide: ApiConnectService, useValue: apiServiceMock }],
     });
 
     service = TestBed.inject(LoginService);

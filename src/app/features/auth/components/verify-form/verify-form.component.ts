@@ -19,7 +19,7 @@ import { ApiError } from '@core/models/core.models';
  * - Wysyła żądanie weryfikacji e-mail przez `VerifyEmailService`.
  * - Po sukcesie emituje zdarzenie `switchToNewPassword`, by przejść do etapu ustawiania nowego hasła.
  * - Umożliwia powrót do logowania przez zdarzenie `switchToLogin`.
- * - Obsługuje błędy walidacji lokalnej oraz błędy z backendu (`ApiError`), wyświetlając je tymczasowo przez 3 sekundy.
+ * - Obsługuje błędy walidacji lokalnej oraz błędy z backendu (`ApiErrorService`), wyświetlając je tymczasowo przez 3 sekundy.
  */
 @Component({
   selector: 'app-verify-form',

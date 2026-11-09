@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LightsControlService } from './lights-control.service';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { LightsHistoryService } from '../lights-history/lights-history.service';
 import { LightsEnergyService } from '../lights-energy/lights-energy.service';
 import { LightItem } from '@features/lights/models/lights.models';
@@ -24,7 +24,7 @@ describe('LightsControlService', () => {
     TestBed.configureTestingModule({
       providers: [
         LightsControlService,
-        { provide: ApiService, useValue: apiServiceMock },
+        { provide: ApiConnectService, useValue: apiServiceMock },
         {
           provide: LightsHistoryService,
           useValue: { loadHistory: vi.fn() },

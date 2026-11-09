@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ConfirmPasswordService } from './confirm-password.service';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { ConfirmPasswordRequest, ConfirmPasswordResponse } from '@features/auth/models/auth.models';
 import { of, throwError } from 'rxjs';
 
@@ -17,7 +17,7 @@ describe('ConfirmPasswordService', () => {
       providers: [
         ConfirmPasswordService,
         {
-          provide: ApiService,
+          provide: ApiConnectService,
           useValue: apiServiceMock,
         },
       ],

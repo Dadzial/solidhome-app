@@ -1,20 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { ApiService } from './api.service';
+import { ApiConnectService } from './api-connect.service';
 import { ApiOptions } from '@core/models/core.models';
 import { environment } from '@environments/environment';
 import { describe } from 'vitest';
 
-describe('ApiService', () => {
-  let service: ApiService;
+describe('ApiConnectService', () => {
+  let service: ApiConnectService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting(), ApiService],
+      providers: [provideHttpClient(), provideHttpClientTesting(), ApiConnectService],
     });
-    service = TestBed.inject(ApiService);
+    service = TestBed.inject(ApiConnectService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 

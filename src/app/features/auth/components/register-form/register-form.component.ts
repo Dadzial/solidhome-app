@@ -26,7 +26,7 @@ import { ApiError } from '@core/models/core.models';
  * - Waliduje pole `email` (format RFC), `userName` (długość 3–30 znaków, tylko litery i cyfry) oraz `password` (min. 8 znaków).
  * - Wysyła żądanie rejestracji przez `RegisterService`.
  * - Po sukcesie emituje zdarzenie `switchToLogin`, by przekierować użytkownika do logowania.
- * - Obsługuje błędy walidacji lokalnej oraz błędy z backendu (`ApiError`), wyświetlając je tymczasowo przez 3 sekundy.
+ * - Obsługuje błędy walidacji lokalnej oraz błędy z backendu (`ApiErrorService`), wyświetlając je tymczasowo przez 3 sekundy.
  */
 @Component({
   selector: 'app-register-form',

@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { jwtDecode } from 'jwt-decode';
 import {
   LoginRequest,
@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
  * Serwis odpowiedzialny za uwierzytelnianie użytkownika oraz zarządzanie jego tożsamością na podstawie tokenu JWT.
  *
  * ### Zasady działania:
- * - Wysyła żądanie HTTP POST za pośrednictwem serwisu ApiService do endpointu API w celu zalogowania użytkownika.
+ * - Wysyła żądanie HTTP POST za pośrednictwem serwisu ApiConnectService do endpointu API w celu zalogowania użytkownika.
  * - Po zalogowaniu token JWT jest zapisywany przez komponent w `localStorage` (Remember Me) lub `sessionStorage`.
  * - Dekoduje token JWT i udostępnia nazwę zalogowanego użytkownika przez reaktywny sygnał `userName`.
  * - Inicjalizuje dane użytkownika automatycznie przy starcie serwisu (konstruktor) oraz na żądanie.
@@ -23,8 +23,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LoginService {
-  /** Inject ApiService do wykonywania żądań HTTP w aplikacji. */
-  private api = inject(ApiService);
+  /** Inject ApiConnectService do wykonywania żądań HTTP w aplikacji. */
+  private api = inject(ApiConnectService);
 
   /**
    * Reaktywny sygnał przechowujący nazwę aktualnie zalogowanego użytkownika.

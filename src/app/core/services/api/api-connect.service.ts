@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ApiService {
+export class ApiConnectService {
   /** Inject httpClient do wykonywania żądań HTTP w Angularze.*/
   private http = inject(HttpClient);
 

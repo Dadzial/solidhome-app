@@ -3,7 +3,7 @@ import { catchError, throwError } from 'rxjs';
 import { ApiError } from '@core/models/core.models';
 
 /**
- * Interceptor HTTP przechwytujący błędy odpowiedzi serwera i normalizujący je do formatu `ApiError`.
+ * Interceptor HTTP przechwytujący błędy odpowiedzi serwera i normalizujący je do formatu `ApiErrorService`.
  *
  * ### Zasady działania:
  * - **Status 0: ** Normalizuje błąd braku połączenia z serwerem (offline, serwer wyłączony, CORS).

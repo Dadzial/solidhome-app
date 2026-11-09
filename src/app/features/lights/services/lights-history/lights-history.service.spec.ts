@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LightsHistoryService } from './lights-history.service';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { LightHistoryItem, ResetHistoryResponse } from '@features/lights/models/lights.models';
 import { of, throwError } from 'rxjs';
 
@@ -18,7 +18,7 @@ describe('LightsHistoryService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [LightsHistoryService, { provide: ApiService, useValue: apiServiceMock }],
+      providers: [LightsHistoryService, { provide: ApiConnectService, useValue: apiServiceMock }],
     });
 
     service = TestBed.inject(LightsHistoryService);

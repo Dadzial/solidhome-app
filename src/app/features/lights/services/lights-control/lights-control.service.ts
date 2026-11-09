@@ -1,5 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { Observable, forkJoin } from 'rxjs';
 import { Light, LightItem } from '@features/lights/models/lights.models';
 import { LightsHistoryService } from '../lights-history/lights-history.service';
@@ -35,8 +35,8 @@ const INITIAL_LIGHTS: Light[] = [
   providedIn: 'root',
 })
 export class LightsControlService {
-  /** Inject ApiService do wykonywania żądań do backendu. */
-  private api = inject(ApiService);
+  /** Inject ApiConnectService do wykonywania żądań do backendu. */
+  private api = inject(ApiConnectService);
 
   /** Inject LightsHistoryService do automatycznego odświeżania historii po akcjach użytkownika. */
   private lightsHistoryService = inject(LightsHistoryService);

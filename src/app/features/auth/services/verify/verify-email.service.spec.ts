@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { VerifyEmailService } from './verify-email.service';
-import { ApiService } from '@core/services/api/api.service';
+import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { VerifyEmailRequest, VerifyEmailResponse } from '@features/auth/models/auth.models';
 import { of, throwError } from 'rxjs';
 
@@ -17,7 +17,7 @@ describe('VerifyEmailService', () => {
       providers: [
         VerifyEmailService,
         {
-          provide: ApiService,
+          provide: ApiConnectService,
           useValue: apiServiceMock,
         },
       ],
