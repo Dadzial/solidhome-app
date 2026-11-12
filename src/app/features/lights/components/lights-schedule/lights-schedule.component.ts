@@ -236,7 +236,7 @@ export class LightsScheduleComponent implements OnInit {
           this.enableAddSchedule.set(false);
         },
         error: (err) => {
-          console.error('[LightsScheduleComponent] Failed to save rule', err);
+          console.error('Failed to save rule', err);
         },
       });
   }

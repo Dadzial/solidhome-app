@@ -77,7 +77,7 @@ export class LightsScheduleService {
         this.isLoading.set(false);
       },
       error: (err) => {
-        console.error('[LightsScheduleService] Failed to load schedule rules', err);
+        console.error('Failed to load schedule rules', err);
         this.hasError.set(true);
         this.isLoading.set(false);
       },
@@ -98,7 +98,7 @@ export class LightsScheduleService {
           this.hasError.set(false);
         },
         error: (err) => {
-          console.error('[LightsScheduleService] Failed to create schedule rule', err);
+          console.error('Failed to create schedule rule', err);
           this.hasError.set(true);
         },
       }),
@@ -130,7 +130,7 @@ export class LightsScheduleService {
         this.hasError.set(false);
       },
       error: (err) => {
-        console.error(`[LightsScheduleService] Failed to toggle active state for rule ${id}`, err);
+        console.error(`Failed to toggle active state for rule ${id}`, err);
         this.schedule.set(previousRules);
         this.hasError.set(true);
       },
@@ -153,7 +153,7 @@ export class LightsScheduleService {
         this.hasError.set(false);
       },
       error: (err) => {
-        console.error(`[LightsScheduleService] Failed to delete schedule rule ${id}`, err);
+        console.error(`Failed to delete schedule rule ${id}`, err);
         this.schedule.set(previousRules);
         this.hasError.set(true);
       },

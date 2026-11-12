@@ -227,6 +227,52 @@ export interface DeleteScheduleRuleResponse {
 }
 
 /**
+ * Surowy model sceny zwracany bezpośrednio z API backendu.
+ *
+ * @interface LightSceneItem
+ * @property _id Identyfikator dokumentu sceny w bazie MongoDB.
+ * @property name Nazwa sceny oświetleniowej.
+ * @property icon Ścieżka do pliku ikony SVG.
+ * @property rooms Tablica identyfikatorów przypisanych pomieszczeń.
+ * @property active Flaga określająca stan aktywności sceny.
+ * @property createdAt Opcjonalna data utworzenia w formacie ISO.
+ */
+export interface LightSceneItem {
+  _id: string;
+  name: string;
+  icon: string;
+  rooms: string[];
+  active: boolean;
+  createdAt?: string;
+}
+
+/**
+ * Dane wejściowe przesyłane do API podczas tworzenia nowej sceny oświetlenia.
+ *
+ * @interface CreateLightScenePayload
+ * @property name Nazwa nowej sceny.
+ * @property icon Ścieżka do wybranej ikony SVG.
+ * @property rooms Lista pomieszczeń przypisanych do sceny.
+ */
+export interface CreateLightScenePayload {
+  name: string;
+  icon: string;
+  rooms: string[];
+}
+
+/**
+ * Odpowiedź serwera po usunięciu sceny oświetleniowej.
+ *
+ * @interface DeleteLightSceneResponse
+ * @property message Komunikat potwierdzający usunięcie sceny.
+ * @property deletedCount Opcjonalna liczba usuniętych dokumentów.
+ */
+export interface DeleteLightSceneResponse {
+  message: string;
+  deletedCount?: number;
+}
+
+/**
  * Model pojedynczej sceny oświetleniowej.
  *
  * @interface LightScene

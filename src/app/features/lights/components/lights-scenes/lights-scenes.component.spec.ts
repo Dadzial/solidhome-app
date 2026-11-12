@@ -1,15 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { SvgIconRegistryService } from 'angular-svg-icon';
 import { of } from 'rxjs';
 import { LightsScenesComponent } from './lights-scenes.component';
+import { environment } from '@environments/environment';
 
 describe('LightsScenesComponent', () => {
   let component: LightsScenesComponent;
   let fixture: ComponentFixture<LightsScenesComponent>;
+  let httpMock: HttpTestingController;
 
   beforeEach(async () => {
-    localStorage.clear();
     const mockSvgRegistry: Partial<SvgIconRegistryService> = {
       loadSvg: () => of(undefined),
     };
@@ -17,18 +20,25 @@ describe('LightsScenesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LightsScenesComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         provideTranslateService(),
         { provide: SvgIconRegistryService, useValue: mockSvgRegistry },
       ],
     }).compileComponents();
 
+    httpMock = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(LightsScenesComponent);
     component = fixture.componentInstance;
+
+    const initReq = httpMock.expectOne(`${environment.apiUrl}/lights/scenes`);
+    initReq.flush([]);
+
     await fixture.whenStable();
   });
 
   afterEach(() => {
-    localStorage.clear();
+    httpMock.verify();
     vi.clearAllMocks();
   });
 
@@ -137,7 +147,7 @@ describe('LightsScenesComponent', () => {
       component.sceneName.set('Test Scena');
       component.selectedRooms.set(['living_room']);
 
-      const addSpy = vi.spyOn(component.lightsScenesService, 'addScene');
+      const addSpy = vi.spyOn(component.lightsScenesService, 'addScene').mockImplementation(() => {});
       component.saveScene();
 
       expect(addSpy).toHaveBeenCalledWith({
@@ -150,7 +160,7 @@ describe('LightsScenesComponent', () => {
     });
 
     it('should not save when canSave is false', () => {
-      const addSpy = vi.spyOn(component.lightsScenesService, 'addScene');
+      const addSpy = vi.spyOn(component.lightsScenesService, 'addScene').mockImplementation(() => {});
       component.sceneName.set('');
       component.saveScene();
       expect(addSpy).not.toHaveBeenCalled();
@@ -159,13 +169,17 @@ describe('LightsScenesComponent', () => {
 
   describe('activateScene and deleteScene', () => {
     it('should call activateScene on service', () => {
-      const activateSpy = vi.spyOn(component.lightsScenesService, 'activateScene');
+      const activateSpy = vi
+        .spyOn(component.lightsScenesService, 'activateScene')
+        .mockImplementation(() => {});
       component.activateScene('scene_123');
       expect(activateSpy).toHaveBeenCalledWith('scene_123');
     });
 
     it('should call deleteScene on service and stop event propagation', () => {
-      const deleteSpy = vi.spyOn(component.lightsScenesService, 'deleteScene');
+      const deleteSpy = vi
+        .spyOn(component.lightsScenesService, 'deleteScene')
+        .mockImplementation(() => {});
       const mockEvent = { stopPropagation: vi.fn() } as unknown as Event;
 
       component.deleteScene('scene_123', mockEvent);

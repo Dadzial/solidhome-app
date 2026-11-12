@@ -63,7 +63,7 @@ export class LightsEnergyService {
         this.isLoading.set(false);
       },
       error: (err) => {
-        console.error('[LightsEnergyService] Failed to load energy stats', err);
+        console.error('Failed to load energy stats', err);
         this.hasError.set(true);
         this.isLoading.set(false);
       },

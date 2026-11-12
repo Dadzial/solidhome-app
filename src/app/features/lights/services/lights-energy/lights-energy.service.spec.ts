@@ -176,7 +176,7 @@ describe('LightsEnergyService', () => {
       expect(service.hasError()).toBe(true);
       expect(service.energyData()).toBeNull();
       expect(consoleSpy).toHaveBeenCalledWith(
-        '[LightsEnergyService] Failed to load energy stats',
+        'Failed to load energy stats',
         expect.anything(),
       );
     });
