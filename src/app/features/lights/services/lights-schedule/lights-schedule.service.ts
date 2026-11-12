@@ -1,5 +1,6 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
+import { ApiError } from '@core/models/core.models';
 import { Observable, tap } from 'rxjs';
 import {
   LightScheduleRule,
@@ -53,6 +54,12 @@ export class LightsScheduleService {
   public readonly hasError = signal<boolean>(false);
 
   /**
+   * Klucz błędu translacji i18n otrzymany z API/interceptora.
+   * @type {signal<string | null>}
+   */
+  public readonly errorMessage = signal<string | null>(null);
+
+  /**
    * Pobiera listę wszystkich reguł harmonogramu z API, mapuje je na model widoku `LightScheduleRule`
    * i aktualizuje sygnał `schedule`.
    *
@@ -74,11 +81,13 @@ export class LightsScheduleService {
         }));
         this.schedule.set(mapped);
         this.hasError.set(false);
+        this.errorMessage.set(null);
         this.isLoading.set(false);
       },
-      error: (err) => {
+      error: (err: ApiError) => {
         console.error('Failed to load schedule rules', err);
         this.hasError.set(true);
+        this.errorMessage.set(err?.error ?? 'apiErrors.server');
         this.isLoading.set(false);
       },
     });
@@ -96,10 +105,12 @@ export class LightsScheduleService {
         next: () => {
           this.loadRules();
           this.hasError.set(false);
+          this.errorMessage.set(null);
         },
-        error: (err) => {
+        error: (err: ApiError) => {
           console.error('Failed to create schedule rule', err);
           this.hasError.set(true);
+          this.errorMessage.set(err?.error ?? 'apiErrors.server');
         },
       }),
     );
@@ -128,11 +139,13 @@ export class LightsScheduleService {
     this.putRuleActive(id, targetActive).subscribe({
       next: () => {
         this.hasError.set(false);
+        this.errorMessage.set(null);
       },
-      error: (err) => {
+      error: (err: ApiError) => {
         console.error(`Failed to toggle active state for rule ${id}`, err);
         this.schedule.set(previousRules);
         this.hasError.set(true);
+        this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });
   }
@@ -151,11 +164,13 @@ export class LightsScheduleService {
     this.deleteRuleApi(id).subscribe({
       next: () => {
         this.hasError.set(false);
+        this.errorMessage.set(null);
       },
-      error: (err) => {
+      error: (err: ApiError) => {
         console.error(`Failed to delete schedule rule ${id}`, err);
         this.schedule.set(previousRules);
         this.hasError.set(true);
+        this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });
   }

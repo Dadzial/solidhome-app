@@ -3,14 +3,28 @@ import { catchError, throwError } from 'rxjs';
 import { ApiError } from '@core/models/core.models';
 
 /**
- * Interceptor HTTP przechwytujący błędy odpowiedzi serwera i normalizujący je do formatu `ApiErrorService`.
+ * Mapa statusów odpowiedzi HTTP na czytelne klucze tłumaczeń `apiErrors.*`.
+ * @type {Record<number, string>}
+ */
+const STATUS_ERROR_MAP: Record<number, string> = {
+  0: 'apiErrors.network',
+  401: 'apiErrors.unauthorized',
+  403: 'apiErrors.forbidden',
+  409: 'apiErrors.conflict',
+  429: 'apiErrors.rateLimit',
+};
+
+/**
+ * Interceptor HTTP przechwytujący błędy odpowiedzi serwera i normalizujący je do jednolitego formatu `ApiError`.
  *
- * ### Zasady działania:
- * - **Status 0: ** Normalizuje błąd braku połączenia z serwerem (offline, serwer wyłączony, CORS).
- * - **Status 400 / 409: ** Zwraca obiekt błędu z backendu lub wiadomość błędu.
- * - **Status 401: ** Normalizuje błąd nieautoryzowanego dostępu lub niepoprawnych danych logowania.
- * - **Status 429: ** Zwraca komunikat o zbyt dużej liczbie zapytań (rate limit).
- * - **Pozostałe błędy (np. 500): ** Zwraca ogólny komunikat o błędzie serwera.
+ * ### Zasady mapowania:
+ * - **Status 0: ** Brak połączenia z serwerem (`apiErrors.network`).
+ * - **Status 400: ** Treść błędu z odpowiedzi backendu lub domyślny fallback (`apiErrors.default`).
+ * - **Status 401: ** Błąd uwierzytelnienia (`apiErrors.unauthorized`).
+ * - **Status 403: ** Brak uprawnień (`apiErrors.forbidden`).
+ * - **Status 409: ** Konflikt unikalności danych (`apiErrors.conflict`).
+ * - **Status 429: ** Limit zapytań do API (`apiErrors.rateLimit`).
+ * - **Pozostałe błędy (np. 500): ** Ogólny błąd serwera (`apiErrors.server`).
  *
  * @param req Wychodzące żądanie HTTP.
  * @param next Następny handler w łańcuchu przetwarzania HTTP.
@@ -23,19 +37,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
       let normalizedError: ApiError;
 
-      if (status === 0) {
-        normalizedError = { error: 'serverErrors.networkError' };
-      } else if (status === 400) {
+      if (status === 400) {
         normalizedError =
-          typeof body === 'object' && body !== null ? body : { error: 'serverErrors.default' };
-      } else if (status === 401) {
-        normalizedError = { error: 'serverErrors.unauthorized' };
-      } else if (status === 409) {
-        normalizedError = { error: 'serverErrors.conflict' };
-      } else if (status === 429) {
-        normalizedError = { error: 'serverErrors.tooManyRequests' };
+          typeof body === 'object' && body !== null ? body : { error: 'apiErrors.default' };
       } else {
-        normalizedError = { error: 'serverErrors.serverError' };
+        const errorKey = STATUS_ERROR_MAP[status] ?? 'apiErrors.server';
+        normalizedError = { error: errorKey };
       }
 
       return throwError(() => normalizedError);

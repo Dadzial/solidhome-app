@@ -3,19 +3,7 @@
 >
   <!-- Nakładka błędu — wyświetlana gdy wystąpił błąd pobierania danych -->
   @if (hasError()) {
-    <div
-      class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background-secondary/40 backdrop-blur-md rounded-3xl p-4 text-center"
-    >
-      <svg-icon
-        src="assets/icons/error.svg"
-        [applyClass]="true"
-        class="w-12 h-12 text-text-error mb-2"
-      ></svg-icon>
-      <h2
-        class="text-text-primary text-body-18-semibold text-shadow-sm"
-        [innerHTML]="'lightsPage.rulesError' | translate"
-      ></h2>
-    </div>
+    <app-error-overlay [title]="errorMessage() ?? ''" (retry)="onRetry()"></app-error-overlay>
   }
   @if (enableAddSchedule()) {
     <!-- Przestrzeń formularza dodania reguły aktywowana przez signal 'enableAddSchedule' -->

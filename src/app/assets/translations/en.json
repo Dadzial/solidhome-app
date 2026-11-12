@@ -84,7 +84,6 @@
       "turnOffBy": "Turned off by",
       "turnedOnAt": "Turned on at",
       "turnedOffAt": "Turned off at",
-      "lightsError": "Lighting control is not available check DevTools.",
       "noHistory": "No history available",
       "rooms": {
         "livingRoom": "Living Room",
@@ -130,8 +129,6 @@
     "month": "Month",
     "entireHouse": "Entire House",
     "greatestConsumption": "Greatest consumption",
-    "energyError": "Energy statistics is not available check DevTools.",
-    "rulesError": "Failed to load rules Check developer tools.",
     "noRules": "No defined rules",
     "noScenes": "No defined scenes"
   },
@@ -154,12 +151,15 @@
     "sun": "Sun"
   },
   "workInProgress": "Work in progress",
-  "serverErrors": {
-    "networkError": "Unable to connect to the server",
+  "apiErrors": {
+    "network": "No connection to the server",
+    "badRequest": "Bad request",
     "unauthorized": "Invalid credentials",
-    "tooManyRequests": "Too many requests, try again later",
-    "serverError": "Server error, try again later",
+    "forbidden": "Forbidden action",
     "conflict": "Email or username is already taken",
-    "default": "An unexpected error occurred"
+    "rateLimit": "Too many requests. Please try again in a moment",
+    "server": "A server error occurred. Please try again later",
+    "default": "An unexpected error occurred",
+    "retryNow": "Try again"
   }
 }

@@ -2,6 +2,7 @@ import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { NgClass } from '@angular/common';
+import { ErrorOverlayComponent } from '@shared/components/error-overlay/error-overlay.component';
 import { LightsControlService } from '@features/lights/services/lights-control/lights-control.service';
 import { LightsHistoryService } from '@features/lights/services/lights-history/lights-history.service';
 
@@ -20,7 +21,7 @@ import { LightsHistoryService } from '@features/lights/services/lights-history/l
  */
 @Component({
   selector: 'app-lights-widget',
-  imports: [TranslateModule, SvgIconComponent, NgClass],
+  imports: [TranslateModule, SvgIconComponent, NgClass, ErrorOverlayComponent],
   standalone: true,
   templateUrl: './lights-widget.component.html',
   styles: ``,
@@ -43,6 +44,9 @@ export class LightsWidgetComponent implements OnInit {
 
   /** Sygnał informujący o błędzie komunikacji z API. */
   public readonly hasError = this.lightsControlService.hasError;
+
+  /** Klucz błędu translacji i18n otrzymany z serwisu lamp. */
+  public readonly errorMessage = this.lightsControlService.errorMessage;
 
   /** Sygnał obliczeniowy zwracający `true`, gdy wszystkie lampy są włączone. */
   public readonly allLightsOn = this.lightsControlService.allLightsOn;
@@ -104,5 +108,15 @@ export class LightsWidgetComponent implements OnInit {
    */
   public toggleAllLights(): void {
     this.lightsControlService.toggleAllLights();
+  }
+
+  /**
+   * Ponawia pobranie stanu lamp i historii zdarzeń po wystąpieniu błędu.
+   *
+   * @returns {void}
+   */
+  public onRetry(): void {
+    this.lightsControlService.loadLights();
+    this.loadHistory();
   }
 }

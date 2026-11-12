@@ -161,9 +161,7 @@ describe('LightsScenesService', () => {
     });
 
     it('should turn off active lights in scene rooms when deleting an active scene', () => {
-      mockLightsControlService.lights.set([
-        { id: 'bathroom', x: 0, y: 0, on: true },
-      ]);
+      mockLightsControlService.lights.set([{ id: 'bathroom', x: 0, y: 0, on: true }]);
       mockLightsControlService.toggleLight.mockClear();
 
       service.deleteScene('scene_2');

@@ -51,6 +51,11 @@ describe('LightsScenesComponent', () => {
       expect(component.scenes).toBe(component.lightsScenesService.scenes);
     });
 
+    it('should delegate hasError and errorMessage signals to service', () => {
+      expect(component.hasError).toBe(component.lightsScenesService.hasError);
+      expect(component.errorMessage).toBe(component.lightsScenesService.errorMessage);
+    });
+
     it('should delegate empty signal to service', () => {
       expect(component.empty).toBe(component.lightsScenesService.empty);
       expect(component.empty()).toBe(true);
@@ -147,7 +152,9 @@ describe('LightsScenesComponent', () => {
       component.sceneName.set('Test Scena');
       component.selectedRooms.set(['living_room']);
 
-      const addSpy = vi.spyOn(component.lightsScenesService, 'addScene').mockImplementation(() => {});
+      const addSpy = vi
+        .spyOn(component.lightsScenesService, 'addScene')
+        .mockImplementation(() => {});
       component.saveScene();
 
       expect(addSpy).toHaveBeenCalledWith({
@@ -160,7 +167,9 @@ describe('LightsScenesComponent', () => {
     });
 
     it('should not save when canSave is false', () => {
-      const addSpy = vi.spyOn(component.lightsScenesService, 'addScene').mockImplementation(() => {});
+      const addSpy = vi
+        .spyOn(component.lightsScenesService, 'addScene')
+        .mockImplementation(() => {});
       component.sceneName.set('');
       component.saveScene();
       expect(addSpy).not.toHaveBeenCalled();
@@ -186,6 +195,24 @@ describe('LightsScenesComponent', () => {
 
       expect(deleteSpy).toHaveBeenCalledWith('scene_123');
       expect(mockEvent.stopPropagation).toHaveBeenCalled();
+    });
+  });
+
+  describe('error handling and overlay', () => {
+    it('should render error overlay when hasError is true and reload scenes on retry', () => {
+      component.lightsScenesService.hasError.set(true);
+      fixture.detectChanges();
+
+      const overlay = fixture.nativeElement.querySelector('app-error-overlay');
+      expect(overlay).toBeTruthy();
+
+      const loadSpy = vi
+        .spyOn(component.lightsScenesService, 'loadScenes')
+        .mockImplementation(() => {});
+      const retryBtn = overlay.querySelector('button') as HTMLButtonElement;
+      retryBtn.click();
+
+      expect(loadSpy).toHaveBeenCalled();
     });
   });
 });

@@ -1,5 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
+import { ApiError } from '@core/models/core.models';
 import { Observable } from 'rxjs';
 import { LightEnergyData, EnergyTimeframe } from '@features/lights/models/lights.models';
 import { HttpParams } from '@angular/common/http';
@@ -42,6 +43,12 @@ export class LightsEnergyService {
   public readonly hasError = signal<boolean>(false);
 
   /**
+   * Klucz błędu translacji i18n otrzymany z API/interceptora.
+   * @type {signal<string | null>}
+   */
+  public readonly errorMessage = signal<string | null>(null);
+
+  /**
    * Pobiera statystyki zużycia energii z API i aktualizuje sygnał `energyData`.
    * Jeśli parametry nie zostaną przekazane, używa bieżących zapamiętanych filtrów.
    *
@@ -60,11 +67,13 @@ export class LightsEnergyService {
       next: (data) => {
         this.energyData.set(data);
         this.hasError.set(false);
+        this.errorMessage.set(null);
         this.isLoading.set(false);
       },
-      error: (err) => {
+      error: (err: ApiError) => {
         console.error('Failed to load energy stats', err);
         this.hasError.set(true);
+        this.errorMessage.set(err?.error ?? 'apiErrors.server');
         this.isLoading.set(false);
       },
     });

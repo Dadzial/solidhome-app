@@ -4,6 +4,7 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslationsService } from '@core/services/translations/translations.service';
 import { LightsScheduleService } from '@features/lights/services/lights-schedule/lights-schedule.service';
 import { ROOMS_NAMES_TRANSLATIONS } from '@features/lights/services/lights-history/lights-history.service';
+import { ErrorOverlayComponent } from '@shared/components/error-overlay/error-overlay.component';
 
 /**
  * Komponent zarządzania harmonogramem oświetlenia w systemie SolidHome.
@@ -20,7 +21,7 @@ import { ROOMS_NAMES_TRANSLATIONS } from '@features/lights/services/lights-histo
  */
 @Component({
   selector: 'app-lights-schedule',
-  imports: [TranslateModule, SvgIconComponent],
+  imports: [TranslateModule, SvgIconComponent, ErrorOverlayComponent],
   templateUrl: './lights-schedule.component.html',
   styles: ``,
 })
@@ -33,6 +34,9 @@ export class LightsScheduleComponent implements OnInit {
 
   /** Sygnał informujący o błędzie komunikacji z API przy obsłudze harmonogramu. */
   public readonly hasError = this.lightsScheduleService.hasError;
+
+  /** Klucz błędu translacji i18n otrzymany z serwisu harmonogramu. */
+  public readonly errorMessage = this.lightsScheduleService.errorMessage;
 
   /** Sygnał przechowujący listę reguł harmonogramu do wyświetlenia w widoku. */
   public readonly schedule = this.lightsScheduleService.schedule;
@@ -269,5 +273,14 @@ export class LightsScheduleComponent implements OnInit {
    */
   public deleteRule(id: string): void {
     this.lightsScheduleService.deleteRule(id);
+  }
+
+  /**
+   * Ponawia pobranie reguł harmonogramu po wystąpieniu błędu.
+   *
+   * @returns {void}
+   */
+  public onRetry(): void {
+    this.lightsScheduleService.loadRules();
   }
 }

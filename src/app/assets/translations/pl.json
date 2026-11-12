@@ -84,7 +84,6 @@
       "turnOffBy": "Wyłączone przez",
       "turnedOnAt": "Włączone o",
       "turnedOffAt": "Wyłączone o",
-      "lightsError": "Błąd sterowania oświetleniem <br/> Sprawdź narzędzia developerskie.",
       "noHistory": "Brak historii zdarzeń",
       "rooms": {
         "livingRoom": "Salon",
@@ -130,8 +129,6 @@
     "month": "Miesiąc",
     "entireHouse": "Cały dom",
     "greatestConsumption": "Największe zużycie",
-    "energyError": "Błąd ładowania statystyk energii <br/> Sprawdź narzędzia developerskie.",
-    "rulesError": "Błąd ładowania reguł <br/> Sprawdź narzędzia developerskie.",
     "noRules": "Brak zdefiniowanych reguł",
     "noScenes": "Brak zdefiniowanych scen"
   },
@@ -154,12 +151,15 @@
     "sun": "Nd"
   },
   "workInProgress": "W trakcie realizacji",
-  "serverErrors": {
-    "networkError": "Brak połączenia z serwerem",
+  "apiErrors": {
+    "network": "Brak połączenia z serwerem",
+    "badRequest": "Nieprawidłowe żądanie",
     "unauthorized": "Nieprawidłowe dane logowania",
-    "tooManyRequests": "Zbyt wiele prób, spróbuj ponownie później",
-    "serverError": "Błąd serwera, spróbuj ponownie później",
+    "forbidden": "Brak uprawnień do wykonania akcji",
     "conflict": "Email lub nazwa użytkownika jest już zajęta",
-    "default": "Wystąpił błąd, spróbuj ponownie później"
+    "rateLimit": "Zbyt wiele prób. Spróbuj ponownie za chwilę",
+    "server": "Wystąpił błąd serwera. Spróbuj ponownie później",
+    "default": "Wystąpił błąd, spróbuj ponownie później",
+    "retryNow": "Spróbuj ponownie"
   }
 }

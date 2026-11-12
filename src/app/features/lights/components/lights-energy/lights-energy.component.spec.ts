@@ -113,12 +113,24 @@ describe('LightsEnergyComponent', () => {
   });
 
   describe('computed signals and data mapping', () => {
-    it('should reflect hasError signal from lightsEnergyService', () => {
+    it('should reflect hasError signal and render error overlay with retry functionality', () => {
       lightsEnergyService.hasError.set(false);
+      fixture.detectChanges();
       expect(component.hasError()).toBe(false);
+      expect(fixture.nativeElement.querySelector('app-error-overlay')).toBeNull();
 
       lightsEnergyService.hasError.set(true);
+      fixture.detectChanges();
       expect(component.hasError()).toBe(true);
+
+      const overlay = fixture.nativeElement.querySelector('app-error-overlay');
+      expect(overlay).toBeTruthy();
+
+      const loadSpy = vi.spyOn(lightsEnergyService, 'loadEnergyStats');
+      const retryBtn = overlay.querySelector('button') as HTMLButtonElement;
+      retryBtn.click();
+
+      expect(loadSpy).toHaveBeenCalled();
     });
 
     it('should compute totalKwh correctly when energyData is present and when null', () => {

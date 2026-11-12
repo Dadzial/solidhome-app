@@ -1,5 +1,6 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
+import { ApiError } from '@core/models/core.models';
 import { Observable, forkJoin } from 'rxjs';
 import { Light, LightItem } from '@features/lights/models/lights.models';
 import { LightsHistoryService } from '../lights-history/lights-history.service';
@@ -57,6 +58,12 @@ export class LightsControlService {
   public readonly hasError = signal<boolean>(false);
 
   /**
+   * Klucz błędu translacji i18n otrzymany z API/interceptora.
+   * @type {signal<string | null>}
+   */
+  public readonly errorMessage = signal<string | null>(null);
+
+  /**
    * Sygnał obliczeniowy zwracający `true`, gdy wszystkie lampy są włączone.
    * @type {computed}
    */
@@ -80,10 +87,12 @@ export class LightsControlService {
           }),
         );
         this.hasError.set(false);
+        this.errorMessage.set(null);
       },
-      error: (err) => {
+      error: (err: ApiError) => {
         console.error('Failed to load initial lights status', err);
         this.hasError.set(true);
+        this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });
   }
@@ -102,15 +111,17 @@ export class LightsControlService {
     this.updateStatus(id, newState).subscribe({
       next: () => {
         this.hasError.set(false);
+        this.errorMessage.set(null);
         this.lightsHistoryService.loadHistory();
         this.lightsEnergyService.loadEnergyStats();
       },
-      error: (err) => {
+      error: (err: ApiError) => {
         console.error('Failed to update light status', err);
         this.lights.update((lights) =>
           lights.map((l) => (l.id === id ? { ...l, on: !newState } : l)),
         );
         this.hasError.set(true);
+        this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });
   }
@@ -131,13 +142,15 @@ export class LightsControlService {
     forkJoin(requests).subscribe({
       next: () => {
         this.hasError.set(false);
+        this.errorMessage.set(null);
         this.lightsHistoryService.loadHistory();
         this.lightsEnergyService.loadEnergyStats();
       },
-      error: (err) => {
+      error: (err: ApiError) => {
         console.error('Failed to update lights status', err);
         this.lights.set(originalLights);
         this.hasError.set(true);
+        this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });
   }

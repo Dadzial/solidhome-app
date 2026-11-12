@@ -18,6 +18,7 @@ import {
 import { ROOMS_NAMES_TRANSLATIONS } from '@features/lights/services/lights-history/lights-history.service';
 import { LightsEnergyService } from '@features/lights/services/lights-energy/lights-energy.service';
 import { EnergyTimeframe, DisplayTopRoom } from '@features/lights/models/lights.models';
+import { ErrorOverlayComponent } from '@shared/components/error-overlay/error-overlay.component';
 
 /**
  * Etykiety dni tygodnia w zależności od wybranego języka interfejsu.
@@ -51,7 +52,7 @@ const MONTH_WEEKS = {
  */
 @Component({
   selector: 'app-lights-energy',
-  imports: [SvgIconComponent, TranslateModule, ChartComponent],
+  imports: [SvgIconComponent, TranslateModule, ChartComponent, ErrorOverlayComponent],
   standalone: true,
   templateUrl: './lights-energy.component.html',
   styles: ``,
@@ -68,6 +69,9 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
 
   /** Sygnał informujący o błędzie komunikacji z API. */
   public readonly hasError = this.lightsEnergyService.hasError;
+
+  /** Klucz błędu translacji i18n otrzymany z serwisu energii. */
+  public readonly errorMessage = this.lightsEnergyService.errorMessage;
 
   /** Uchwyt interwału cyklicznego odświeżania danych wykresu. */
   private refreshInterval: ReturnType<typeof setInterval> | null = null;
@@ -448,6 +452,15 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
       },
       error: (err) => console.error('Error:', err),
     });
+  }
+
+  /**
+   * Ponawia pobranie danych energii po wystąpieniu błędu.
+   *
+   * @returns {void}
+   */
+  public onRetry(): void {
+    this.lightsEnergyService.loadEnergyStats(this.selectedTimeframe(), this.selectedRoom());
   }
 
   /**

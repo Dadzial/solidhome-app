@@ -81,7 +81,7 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.flush('Bad request string error', { status: 400, statusText: 'Bad Request' });
 
-      expect(capturedError).toEqual({ error: 'serverErrors.default' });
+      expect(capturedError).toEqual({ error: 'apiErrors.default' });
     });
   });
 
@@ -99,7 +99,7 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.flush({ error: 'User already exists' }, { status: 409, statusText: 'Conflict' });
 
-      expect(capturedError).toEqual({ error: 'serverErrors.conflict' });
+      expect(capturedError).toEqual({ error: 'apiErrors.conflict' });
     });
   });
 
@@ -117,7 +117,7 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.flush({ error: 'Token expired' }, { status: 401, statusText: 'Unauthorized' });
 
-      expect(capturedError).toEqual({ error: 'serverErrors.unauthorized' });
+      expect(capturedError).toEqual({ error: 'apiErrors.unauthorized' });
     });
 
     it('should return unauthorized translation key if backend does not provide one', () => {
@@ -133,7 +133,7 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.flush(null, { status: 401, statusText: 'Unauthorized' });
 
-      expect(capturedError).toEqual({ error: 'serverErrors.unauthorized' });
+      expect(capturedError).toEqual({ error: 'apiErrors.unauthorized' });
     });
   });
 
@@ -151,7 +151,7 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.flush(null, { status: 429, statusText: 'Too Many Requests' });
 
-      expect(capturedError).toEqual({ error: 'serverErrors.tooManyRequests' });
+      expect(capturedError).toEqual({ error: 'apiErrors.rateLimit' });
     });
   });
 
@@ -172,7 +172,7 @@ describe('errorInterceptor', () => {
         { status: 500, statusText: 'Internal Server Error' },
       );
 
-      expect(capturedError).toEqual({ error: 'serverErrors.serverError' });
+      expect(capturedError).toEqual({ error: 'apiErrors.server' });
     });
 
     it('should return default server error translation key if no backend error is present', () => {
@@ -188,7 +188,7 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.flush(null, { status: 500, statusText: 'Internal Server Error' });
 
-      expect(capturedError).toEqual({ error: 'serverErrors.serverError' });
+      expect(capturedError).toEqual({ error: 'apiErrors.server' });
     });
   });
 
@@ -206,7 +206,7 @@ describe('errorInterceptor', () => {
       const req = httpMock.expectOne('/api/test');
       req.error(new ProgressEvent('error'));
 
-      expect(capturedError).toEqual({ error: 'serverErrors.networkError' });
+      expect(capturedError).toEqual({ error: 'apiErrors.network' });
     });
   });
 });

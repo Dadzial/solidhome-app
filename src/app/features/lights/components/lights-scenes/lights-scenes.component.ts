@@ -3,6 +3,7 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ROOMS_NAMES_TRANSLATIONS } from '@features/lights/services/lights-history/lights-history.service';
 import { LightsScenesService } from '@features/lights/services/lights-scenes/lights-scenes.service';
+import { ErrorOverlayComponent } from '@shared/components/error-overlay/error-overlay.component';
 
 /**
  * Komponent zarządzania scenami oświetlenia w systemie SolidHome.
@@ -12,13 +13,19 @@ import { LightsScenesService } from '@features/lights/services/lights-scenes/lig
  */
 @Component({
   selector: 'app-lights-scenes',
-  imports: [SvgIconComponent, TranslatePipe],
+  imports: [SvgIconComponent, TranslatePipe, ErrorOverlayComponent],
   templateUrl: './lights-scenes.component.html',
   styles: ``,
 })
 export class LightsScenesComponent {
   /** Serwis zarządzający logiką scen. */
   public lightsScenesService = inject(LightsScenesService);
+
+  /** Sygnał informujący o błędzie komunikacji z API. */
+  public readonly hasError = this.lightsScenesService.hasError;
+
+  /** Klucz błędu translacji i18n otrzymany z serwisu scen. */
+  public readonly errorMessage = this.lightsScenesService.errorMessage;
 
   /** Sygnał z listą scen. */
   public readonly scenes = this.lightsScenesService.scenes;
@@ -172,5 +179,14 @@ export class LightsScenesComponent {
       event.stopPropagation();
     }
     this.lightsScenesService.deleteScene(sceneId);
+  }
+
+  /**
+   * Ponawia pobranie scen po wystąpieniu błędu.
+   *
+   * @returns {void}
+   */
+  public onRetry(): void {
+    this.lightsScenesService.loadScenes();
   }
 }

@@ -56,8 +56,9 @@ describe('LightsScheduleComponent', () => {
       expect(component.isLoading).toBe(lightsScheduleService.isLoading);
     });
 
-    it('should delegate hasError signal', () => {
+    it('should delegate hasError and errorMessage signal', () => {
       expect(component.hasError).toBe(lightsScheduleService.hasError);
+      expect(component.errorMessage).toBe(lightsScheduleService.errorMessage);
     });
 
     it('should delegate empty signal and evaluate emptiness correctly', () => {
@@ -259,12 +260,18 @@ describe('LightsScheduleComponent', () => {
   });
 
   describe('template rendering', () => {
-    it('should render error overlay when hasError is true', () => {
+    it('should render error overlay when hasError is true and reload rules on retry', () => {
       lightsScheduleService.hasError.set(true);
       fixture.detectChanges();
 
-      const overlay = fixture.nativeElement.querySelector('.bg-background-secondary\\/40');
+      const overlay = fixture.nativeElement.querySelector('app-error-overlay');
       expect(overlay).toBeTruthy();
+
+      const loadRulesSpy = vi.spyOn(lightsScheduleService, 'loadRules');
+      const retryBtn = overlay.querySelector('button') as HTMLButtonElement;
+      retryBtn.click();
+
+      expect(loadRulesSpy).toHaveBeenCalled();
     });
 
     it('should render form container when enableAddSchedule is true', () => {

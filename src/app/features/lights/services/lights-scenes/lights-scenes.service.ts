@@ -1,5 +1,6 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
+import { ApiError } from '@core/models/core.models';
 import { Observable } from 'rxjs';
 import {
   LightScene,
@@ -46,6 +47,12 @@ export class LightsScenesService {
   public readonly hasError = signal<boolean>(false);
 
   /**
+   * Klucz błędu translacji i18n otrzymany z API/interceptora.
+   * @type {signal<string | null>}
+   */
+  public readonly errorMessage = signal<string | null>(null);
+
+  /**
    * Sygnał obliczeniowy informujący, czy lista scen jest pusta.
    */
   public readonly empty = computed(() => this.scenes().length === 0);
@@ -72,11 +79,13 @@ export class LightsScenesService {
         }));
         this.scenes.set(mapped);
         this.hasError.set(false);
+        this.errorMessage.set(null);
         this.isLoading.set(false);
       },
-      error: (err) => {
+      error: (err: ApiError) => {
         console.error('Failed to load scenes', err);
         this.hasError.set(true);
+        this.errorMessage.set(err?.error ?? 'apiErrors.server');
         this.isLoading.set(false);
       },
     });
@@ -93,10 +102,12 @@ export class LightsScenesService {
       next: () => {
         this.loadScenes();
         this.hasError.set(false);
+        this.errorMessage.set(null);
       },
-      error: (err) => {
+      error: (err: ApiError) => {
         console.error('Failed to add scene', err);
         this.hasError.set(true);
+        this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });
   }
@@ -127,11 +138,13 @@ export class LightsScenesService {
     this.deleteSceneApi(id).subscribe({
       next: () => {
         this.hasError.set(false);
+        this.errorMessage.set(null);
       },
-      error: (err) => {
+      error: (err: ApiError) => {
         console.error(`Failed to delete scene ${id}`, err);
         this.scenes.set(previousScenes);
         this.hasError.set(true);
+        this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });
   }
@@ -201,7 +214,10 @@ export class LightsScenesService {
    * @returns {Observable<LightSceneItem>} Observable z zaktualizowaną sceną.
    */
   public putSceneActive(id: string, active?: boolean): Observable<LightSceneItem> {
-    return this.api.put<LightSceneItem>(`lights/scenes/${id}`, active !== undefined ? { active } : {});
+    return this.api.put<LightSceneItem>(
+      `lights/scenes/${id}`,
+      active !== undefined ? { active } : {},
+    );
   }
 
   /**

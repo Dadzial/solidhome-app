@@ -77,9 +77,11 @@ describe('LightsWidgetComponent', () => {
       expect(component.history()).toEqual([]);
     });
 
-    it('should delegate hasError signal to LightsControlService', () => {
+    it('should delegate hasError and errorMessage signals to LightsControlService', () => {
       expect(component.hasError).toBe(lightsControlService.hasError);
+      expect(component.errorMessage).toBe(lightsControlService.errorMessage);
       expect(component.hasError()).toBe(false);
+      expect(component.errorMessage()).toBeNull();
     });
 
     it('should delegate allLightsOn computed to LightsControlService', () => {
@@ -89,12 +91,21 @@ describe('LightsWidgetComponent', () => {
   });
 
   describe('template rendering', () => {
-    it('should render error overlay when hasError is true', () => {
+    it('should render error overlay when hasError is true and trigger reload on retry', () => {
       lightsControlService.hasError.set(true);
+      lightsControlService.errorMessage.set('apiErrors.network');
       fixture.detectChanges();
 
-      const errorOverlay = fixture.nativeElement.querySelector('.bg-background-secondary\\/40');
+      const errorOverlay = fixture.nativeElement.querySelector('app-error-overlay');
       expect(errorOverlay).toBeTruthy();
+
+      const onRetrySpy = vi.spyOn(component, 'onRetry');
+      const retryBtn = errorOverlay.querySelector('button') as HTMLButtonElement;
+      retryBtn.click();
+
+      expect(onRetrySpy).toHaveBeenCalled();
+      expect(lightsControlService.loadLights).toHaveBeenCalled();
+      expect(lightsHistoryService.loadHistory).toHaveBeenCalled();
     });
 
     it('should render history items when history is populated', () => {

@@ -175,10 +175,7 @@ describe('LightsEnergyService', () => {
       expect(service.isLoading()).toBe(false);
       expect(service.hasError()).toBe(true);
       expect(service.energyData()).toBeNull();
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Failed to load energy stats',
-        expect.anything(),
-      );
+      expect(consoleSpy).toHaveBeenCalledWith('Failed to load energy stats', expect.anything());
     });
   });
 
