@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject } from '@angular/core';
+import { Component, signal, computed, inject, input } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ROOMS_NAMES_TRANSLATIONS } from '@features/lights/services/lights-history/lights-history.service';
@@ -26,6 +26,11 @@ export class LightsScenesComponent {
 
   /** Klucz błędu translacji i18n otrzymany z serwisu scen. */
   public readonly errorMessage = this.lightsScenesService.errorMessage;
+
+  /**
+   * Flaga wymuszająca ukrycie lokalnej nakładki błędu (np. gdy aktywna jest globalna nakładka strony).
+   */
+  public hideError = input<boolean>(false);
 
   /** Sygnał z listą scen. */
   public readonly scenes = this.lightsScenesService.scenes;

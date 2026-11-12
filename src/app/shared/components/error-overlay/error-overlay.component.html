@@ -1,15 +1,24 @@
 <div
-  class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background-secondary/40 backdrop-blur-md rounded-3xl p-4 text-center animate-fade-in"
+  [class]="
+    mode() === 'full'
+      ? 'flex flex-col items-center justify-center w-full h-full p-6 text-center animate-fade-in'
+      : 'absolute inset-0 z-50 flex flex-col items-center justify-center bg-background-secondary/40 backdrop-blur-md rounded-3xl p-4 text-center animate-fade-in'
+  "
 >
   <!-- Ikona błędu -->
   <svg-icon
     src="assets/icons/error.svg"
     [applyClass]="true"
-    class="w-12 h-12 text-text-error mb-2"
+    [class]="
+      mode() === 'full' ? 'w-16 h-16 text-text-error mb-3' : 'w-12 h-12 text-text-error mb-2'
+    "
   ></svg-icon>
 
   <!-- Tytuł błędu -->
-  <h2 class="text-text-primary text-body-18-semibold text-shadow-sm max-w-lg mb-4">
+  <h2
+    class="text-text-primary text-shadow-sm max-w-lg mb-4"
+    [class]="mode() === 'full' ? 'text-headline-h2-28-bold' : 'text-body-18-semibold'"
+  >
     {{ title() || 'apiErrors.server' | translate }}
   </h2>
 
@@ -17,7 +26,7 @@
   <button
     type="button"
     (click)="onRetryClick()"
-    class="px-5 py-2.5 rounded-xl bg-accent active:scale-95 text-text-primary text-body-14-medium transition-all duration-200 cursor-pointer flex items-center gap-2"
+    class="px-5 py-2.5 rounded-xl bg-accent active:scale-95 text-text-primary text-body-14-medium transition-all duration-200 cursor-pointer flex items-center gap-2 hover:bg-accent/90"
   >
     <span>{{ 'apiErrors.retryNow' | translate }}</span>
   </button>

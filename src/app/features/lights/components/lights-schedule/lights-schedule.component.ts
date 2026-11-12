@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, OnInit } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslationsService } from '@core/services/translations/translations.service';
@@ -37,6 +37,11 @@ export class LightsScheduleComponent implements OnInit {
 
   /** Klucz błędu translacji i18n otrzymany z serwisu harmonogramu. */
   public readonly errorMessage = this.lightsScheduleService.errorMessage;
+
+  /**
+   * Flaga wymuszająca ukrycie lokalnej nakładki błędu (np. gdy aktywna jest globalna nakładka strony).
+   */
+  public hideError = input<boolean>(false);
 
   /** Sygnał przechowujący listę reguł harmonogramu do wyświetlenia w widoku. */
   public readonly schedule = this.lightsScheduleService.schedule;

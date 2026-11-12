@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, OnDestroy, input } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslationsService } from '@core/services/translations/translations.service';
@@ -72,6 +72,11 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
 
   /** Klucz błędu translacji i18n otrzymany z serwisu energii. */
   public readonly errorMessage = this.lightsEnergyService.errorMessage;
+
+  /**
+   * Flaga wymuszająca ukrycie lokalnej nakładki błędu (np. gdy aktywna jest globalna nakładka strony).
+   */
+  public hideError = input<boolean>(false);
 
   /** Uchwyt interwału cyklicznego odświeżania danych wykresu. */
   private refreshInterval: ReturnType<typeof setInterval> | null = null;

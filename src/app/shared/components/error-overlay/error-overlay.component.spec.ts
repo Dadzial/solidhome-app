@@ -81,5 +81,25 @@ describe('ErrorOverlayComponent', () => {
       const button = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
       expect(button?.textContent?.trim()).toBe('Spróbuj ponownie');
     });
+
+    it('should apply overlay mode classes by default', () => {
+      const div = fixture.nativeElement.querySelector('div') as HTMLElement;
+      expect(div.classList.contains('absolute')).toBe(true);
+      expect(div.classList.contains('inset-0')).toBe(true);
+      expect(div.classList.contains('rounded-3xl')).toBe(true);
+      expect(div.classList.contains('backdrop-blur-md')).toBe(true);
+    });
+
+    it('should apply full mode classes when mode is set to full', () => {
+      fixture.componentRef.setInput('mode', 'full');
+      fixture.detectChanges();
+
+      const div = fixture.nativeElement.querySelector('div') as HTMLElement;
+      expect(div.classList.contains('w-full')).toBe(true);
+      expect(div.classList.contains('h-full')).toBe(true);
+      expect(div.classList.contains('rounded-3xl')).toBe(false);
+      expect(div.classList.contains('backdrop-blur-md')).toBe(false);
+      expect(div.classList.contains('absolute')).toBe(false);
+    });
   });
 });

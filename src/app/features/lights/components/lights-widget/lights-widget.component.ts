@@ -39,6 +39,11 @@ export class LightsWidgetComponent implements OnInit {
    */
   public titleKey = input<string>('home.lightsWidget.title');
 
+  /**
+   * Flaga wymuszająca ukrycie lokalnej nakładki błędu (np. gdy aktywna jest globalna nakładka strony).
+   */
+  public hideError = input<boolean>(false);
+
   /** Sygnał przechowujący listę lamp z ich pozycjami na mapie SVG i aktualnym stanem. */
   public readonly lights = this.lightsControlService.lights;
 

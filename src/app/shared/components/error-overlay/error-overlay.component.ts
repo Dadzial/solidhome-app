@@ -3,10 +3,12 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 
 /**
- * Reużywalny komponent nakładki błędu dla widgetów dashboardu.
+ * Reużywalny komponent nakładki błędu dla widgetów dashboardu oraz widoków poziomu strony.
  *
  * ### Funkcjonalności:
- * - Wyświetla estetyczny komunikat o błędzie z rozmyciem tła (backdrop-blur-md).
+ * - Dwa tryby wyświetlania (`mode`):
+ *   - `'overlay'` (domyślny) - nakładka z rozmyciem tła (backdrop-blur-md) i zaokrągleniem (rounded-3xl) dedykowana dla pojedynczych kafelków/widgetów.
+ *   - `'full'` - dedykowany dla błędu poziomu strony; czysty, wycentrowany widok bez rozmycia i sztucznych zaokrągleń tła.
  * - Prezentuje pojedynczy, czytelny komunikat o błędzie (z domyślnym fallbackiem do `apiErrors.server`).
  * - Udostępnia przycisk manualnego ponowienia ("Spróbuj ponownie"), który pozwala użytkownikowi
  *   natychmiast ponowić zapytanie bez konieczności odświeżania całej strony (F5).
@@ -19,6 +21,13 @@ import { SvgIconComponent } from 'angular-svg-icon';
   styles: ``,
 })
 export class ErrorOverlayComponent {
+  /**
+   * Tryb wyświetlania nakładki:
+   * - `'overlay'`: pozycjonowanie absolutne z tłem i zaokrągleniem dopasowanym do pojedynczego kafelka
+   * - `'full'`: pełnowymiarowy, wycentrowany widok błędu dla całej strony
+   */
+  public mode = input<'overlay' | 'full'>('overlay');
+
   /**
    * Opcjonalny tytuł błędu wyświetlany na nakładce.
    * Jeśli nie zostanie podany, używany jest domyślny komunikat 'apiErrors.server'.

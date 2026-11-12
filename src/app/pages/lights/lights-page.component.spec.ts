@@ -81,4 +81,71 @@ describe('LightsPageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('global error overlay and allFailed computed', () => {
+    it('should evaluate allFailed as false when not all services failed', () => {
+      component.lightsControlService.hasError.set(true);
+      component.lightsScheduleService.hasError.set(false);
+      component.lightsEnergyService.hasError.set(true);
+      component.lightsScenesService.hasError.set(true);
+
+      expect(component.allFailed()).toBe(false);
+      fixture.detectChanges();
+
+      const globalOverlay = fixture.nativeElement.querySelector(
+        '.page-error-container app-error-overlay',
+      );
+      expect(globalOverlay).toBeNull();
+    });
+
+    it('should evaluate allFailed as true and render global error overlay when all services failed', () => {
+      component.lightsControlService.hasError.set(true);
+      component.lightsScheduleService.hasError.set(true);
+      component.lightsEnergyService.hasError.set(true);
+      component.lightsScenesService.hasError.set(true);
+      component.lightsControlService.errorMessage.set('apiErrors.network');
+
+      expect(component.allFailed()).toBe(true);
+      fixture.detectChanges();
+
+      const globalOverlay = fixture.nativeElement.querySelector(
+        '.page-error-container app-error-overlay',
+      );
+      expect(globalOverlay).toBeTruthy();
+    });
+
+    it('should call retryAll on all 4 services when retry is clicked on global overlay', () => {
+      component.lightsControlService.hasError.set(true);
+      component.lightsScheduleService.hasError.set(true);
+      component.lightsEnergyService.hasError.set(true);
+      component.lightsScenesService.hasError.set(true);
+      fixture.detectChanges();
+
+      const loadLightsSpy = vi
+        .spyOn(component.lightsControlService, 'loadLights')
+        .mockImplementation(() => {});
+      const loadRulesSpy = vi
+        .spyOn(component.lightsScheduleService, 'loadRules')
+        .mockImplementation(() => {});
+      const loadEnergySpy = vi
+        .spyOn(component.lightsEnergyService, 'loadEnergyStats')
+        .mockImplementation(() => {});
+      const loadScenesSpy = vi
+        .spyOn(component.lightsScenesService, 'loadScenes')
+        .mockImplementation(() => {});
+
+      const globalOverlay = fixture.nativeElement.querySelector(
+        '.page-error-container app-error-overlay',
+      );
+      expect(globalOverlay).toBeTruthy();
+
+      const retryBtn = globalOverlay.querySelector('button') as HTMLButtonElement;
+      retryBtn.click();
+
+      expect(loadLightsSpy).toHaveBeenCalled();
+      expect(loadRulesSpy).toHaveBeenCalled();
+      expect(loadEnergySpy).toHaveBeenCalled();
+      expect(loadScenesSpy).toHaveBeenCalled();
+    });
+  });
 });
