@@ -9,42 +9,44 @@
       </h2>
     </div>
 
-    <!-- Globalny stan błędu poziomu strony -->
-    @if (allFailed()) {
-      <div class="flex-1 w-full min-h-0 flex items-center justify-center page-error-container">
+    <!-- Kontener zawartości (siatka kafelków + globalna nakładka z rozmyciem w razie błędu) -->
+    <div class="relative flex-1 min-h-0">
+      <!-- Globalna nakładka błędu: rozmywa wszystkie widgety w tle i wyświetla komunikat z przyciskiem -->
+      @if (allFailed()) {
         <app-error-overlay
-          mode="full"
+          data-testid="page-error-overlay"
+          mode="page"
           [title]="globalErrorMessage()"
           (retry)="retryAll()"
         ></app-error-overlay>
-      </div>
-    }
+      }
 
-    <!-- Siatka widgetów która jest ukrywana całkowicie, gdy wszystkie moduły ulegną awarii -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-0" [class.hidden]="allFailed()">
-      <!-- lights widget -->
-      <app-lights-widget
-        class="col-span-1 block h-full min-h-0"
-        titleKey="lightsPage.steering"
-        [hideError]="allFailed()"
-      ></app-lights-widget>
-      <div class="col-span-1 flex flex-col gap-6 min-h-0 lg:h-full">
-        <!-- lights schedule -->
-        <app-lights-schedule
-          class="block lg:flex-1 lg:min-h-0"
+      <!-- Siatka wszystkich widgetów (widoczna w tle, w razie błędu rozmywana) -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full min-h-0">
+        <!-- lights widget -->
+        <app-lights-widget
+          class="col-span-1 block h-full min-h-0"
+          titleKey="lightsPage.steering"
           [hideError]="allFailed()"
-        ></app-lights-schedule>
-        <!-- lights scenes -->
-        <app-lights-scenes
-          class="block flex-1 min-h-45 sm:min-h-50 lg:min-h-0"
+        ></app-lights-widget>
+        <div class="col-span-1 flex flex-col gap-6 min-h-0 lg:h-full">
+          <!-- lights schedule -->
+          <app-lights-schedule
+            class="block lg:flex-1 lg:min-h-0"
+            [hideError]="allFailed()"
+          ></app-lights-schedule>
+          <!-- lights scenes -->
+          <app-lights-scenes
+            class="block flex-1 min-h-45 sm:min-h-50 lg:min-h-0"
+            [hideError]="allFailed()"
+          ></app-lights-scenes>
+        </div>
+        <!-- lights energy -->
+        <app-lights-energy
+          class="col-span-1 block h-full min-h-0"
           [hideError]="allFailed()"
-        ></app-lights-scenes>
+        ></app-lights-energy>
       </div>
-      <!-- lights energy -->
-      <app-lights-energy
-        class="col-span-1 block h-full min-h-0"
-        [hideError]="allFailed()"
-      ></app-lights-energy>
     </div>
   </div>
   <!-- Stopka -->

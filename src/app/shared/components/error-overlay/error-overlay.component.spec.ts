@@ -90,16 +90,15 @@ describe('ErrorOverlayComponent', () => {
       expect(div.classList.contains('backdrop-blur-md')).toBe(true);
     });
 
-    it('should apply full mode classes when mode is set to full', () => {
-      fixture.componentRef.setInput('mode', 'full');
+    it('should apply page mode classes when mode is set to page', () => {
+      fixture.componentRef.setInput('mode', 'page');
       fixture.detectChanges();
 
       const div = fixture.nativeElement.querySelector('div') as HTMLElement;
-      expect(div.classList.contains('w-full')).toBe(true);
-      expect(div.classList.contains('h-full')).toBe(true);
+      expect(div.classList.contains('absolute')).toBe(true);
+      expect(div.classList.contains('inset-0')).toBe(true);
+      expect(div.classList.contains('backdrop-blur-md')).toBe(true);
       expect(div.classList.contains('rounded-3xl')).toBe(false);
-      expect(div.classList.contains('backdrop-blur-md')).toBe(false);
-      expect(div.classList.contains('absolute')).toBe(false);
     });
   });
 });

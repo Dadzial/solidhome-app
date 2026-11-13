@@ -93,7 +93,7 @@ describe('LightsPageComponent', () => {
       fixture.detectChanges();
 
       const globalOverlay = fixture.nativeElement.querySelector(
-        '.page-error-container app-error-overlay',
+        'app-error-overlay[data-testid="page-error-overlay"]',
       );
       expect(globalOverlay).toBeNull();
     });
@@ -109,7 +109,7 @@ describe('LightsPageComponent', () => {
       fixture.detectChanges();
 
       const globalOverlay = fixture.nativeElement.querySelector(
-        '.page-error-container app-error-overlay',
+        'app-error-overlay[data-testid="page-error-overlay"]',
       );
       expect(globalOverlay).toBeTruthy();
     });
@@ -135,7 +135,7 @@ describe('LightsPageComponent', () => {
         .mockImplementation(() => {});
 
       const globalOverlay = fixture.nativeElement.querySelector(
-        '.page-error-container app-error-overlay',
+        'app-error-overlay[data-testid="page-error-overlay"]',
       );
       expect(globalOverlay).toBeTruthy();
 

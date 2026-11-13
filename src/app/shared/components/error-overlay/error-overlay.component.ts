@@ -23,10 +23,10 @@ import { SvgIconComponent } from 'angular-svg-icon';
 export class ErrorOverlayComponent {
   /**
    * Tryb wyświetlania nakładki:
-   * - `'overlay'`: pozycjonowanie absolutne z tłem i zaokrągleniem dopasowanym do pojedynczego kafelka
-   * - `'full'`: pełnowymiarowy, wycentrowany widok błędu dla całej strony
+   * - `'overlay'` (domyślny): nakładka dopasowana do pojedynczego kafelka widgetu (z `rounded-3xl`).
+   * - `'page'`: pełnowymiarowa nakładka poziomu strony rozmywająca wszystkie kafelki w tle (bez zaokrąglenia krawędzi).
    */
-  public mode = input<'overlay' | 'full'>('overlay');
+  public mode = input<'overlay' | 'page'>('overlay');
 
   /**
    * Opcjonalny tytuł błędu wyświetlany na nakładce.
