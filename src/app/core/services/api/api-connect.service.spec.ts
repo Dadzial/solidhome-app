@@ -5,7 +5,6 @@ import { ApiConnectService } from './api-connect.service';
 import { ApiOptions } from '@core/models/core.models';
 import { environment } from '@environments/environment';
 
-
 describe('ApiConnectService', () => {
   let service: ApiConnectService;
   let httpMock: HttpTestingController;

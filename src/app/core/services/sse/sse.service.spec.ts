@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { SseService } from './sse.service';
 import { LoginService } from '@features/auth/services/login/login.service';
 import { environment } from '@environments/environment';
+import * as fetchModule from '@microsoft/fetch-event-source';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
@@ -16,6 +17,8 @@ describe('SseService', () => {
   };
 
   beforeEach(() => {
+    vi.spyOn(fetchModule, 'fetchEventSource').mockImplementation(vi.fn());
+
     loginServiceMock = {
       getAccessToken: vi.fn().mockReturnValue('mock-jwt-token'),
     };
