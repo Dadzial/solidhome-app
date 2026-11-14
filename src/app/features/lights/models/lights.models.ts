@@ -289,3 +289,15 @@ export interface LightScene {
   rooms: string[];
   active?: boolean;
 }
+
+/**
+ * Ładunek danych wysyłany przez SSE przy zmianie stanu lampy.
+ *
+ * @interface LightUpdatedEvent
+ * @property name Nazwa lampy, której stan uległ zmianie.
+ * @property state Stan lampy zwracany przez API: `1` — włączona, `0` — wyłączona.
+ */
+export interface LightUpdatedEvent {
+  name: string;
+  state: 0 | 1;
+}

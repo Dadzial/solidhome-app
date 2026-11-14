@@ -28,3 +28,19 @@ export interface ApiOptions {
   params?:
     HttpParams | Record<string, string | number | boolean | readonly (string | number | boolean)[]>;
 }
+
+/**
+ * Zunifikowany model wiadomości przesyłanej przez SSE (Server-Sent Events) z serwera.
+ *
+ * @interface SseMessage
+ * @property domain Domeny, do której odnosi się wiadomość (np. 'lights', 'air').
+ * @property event Typ zdarzenia w domenie.
+ * @property data Dane przesyłane w wiadomości dowolnego typu.
+ * @property timestamp Znacznik czasu, kiedy wiadomość została wygenerowana na serwerze.
+ */
+export interface SseMessage<T = unknown> {
+  domain: 'lights' | 'air';
+  event: string;
+  data: T;
+  timestamp: string;
+}

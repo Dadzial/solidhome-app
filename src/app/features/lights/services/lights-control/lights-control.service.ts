@@ -2,9 +2,10 @@ import { Injectable, inject, signal, computed } from '@angular/core';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { ApiError } from '@core/models/core.models';
 import { Observable, forkJoin } from 'rxjs';
-import { Light, LightItem } from '@features/lights/models/lights.models';
+import { Light, LightItem, LightUpdatedEvent } from '@features/lights/models/lights.models';
 import { LightsHistoryService } from '../lights-history/lights-history.service';
 import { LightsEnergyService } from '../lights-energy/lights-energy.service';
+import { SseService} from '@core/services/sse/sse.service';
 
 /**
  * Domyślne rozmieszczenie lamp na rzucie SVG (home_preview.png)
@@ -39,6 +40,9 @@ export class LightsControlService {
   /** Inject ApiConnectService do wykonywania żądań do backendu. */
   private api = inject(ApiConnectService);
 
+  /** Inject SseService do subskrybowania zdarzeń SSE z backendu. */
+  private sseService = inject(SseService);
+
   /** Inject LightsHistoryService do automatycznego odświeżania historii po akcjach użytkownika. */
   private lightsHistoryService = inject(LightsHistoryService);
 
@@ -71,6 +75,13 @@ export class LightsControlService {
     const currentLights = this.lights();
     return currentLights.length > 0 && currentLights.every((l) => l.on);
   });
+
+  /**
+   * @constructor
+   */
+  constructor() {
+    this.listenToSseUpdates();
+  }
 
   /**
    * Pobiera aktualny stan wszystkich lamp z API i aktualizuje sygnał `lights`.
@@ -177,5 +188,9 @@ export class LightsControlService {
       state: state ? 1 : 0,
     };
     return this.api.post<LightItem>('lights/update', payload);
+  }
+
+  public listenToSseUpdates(): void {
+
   }
 }
