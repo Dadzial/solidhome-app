@@ -6,6 +6,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { SvgIconRegistryService } from 'angular-svg-icon';
 import { NavbarComponent } from './navbar.component';
 import { LogoutService } from '@features/auth/services/logout/logout.service';
+import { SseService } from '@core/services/sse/sse.service';
 import { of, throwError } from 'rxjs';
 
 describe('NavbarComponent', () => {
@@ -14,10 +15,16 @@ describe('NavbarComponent', () => {
   let router: Router;
   let logoutService: LogoutService;
   let httpMock: HttpTestingController;
+  let sseServiceMock: { connect: ReturnType<typeof vi.fn>; disconnect: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     localStorage.clear();
     sessionStorage.clear();
+
+    sseServiceMock = {
+      connect: vi.fn(),
+      disconnect: vi.fn(),
+    };
 
     const mockSvgRegistry: Partial<SvgIconRegistryService> = {
       loadSvg: () => of(undefined),
@@ -31,6 +38,7 @@ describe('NavbarComponent', () => {
         provideRouter([]),
         provideTranslateService(),
         { provide: SvgIconRegistryService, useValue: mockSvgRegistry },
+        { provide: SseService, useValue: sseServiceMock },
       ],
     }).compileComponents();
 
@@ -103,6 +111,7 @@ describe('NavbarComponent', () => {
       expect(localStorage.getItem('refreshToken')).toBeNull();
       expect(sessionStorage.getItem('token')).toBeNull();
       expect(sessionStorage.getItem('refreshToken')).toBeNull();
+      expect(sseServiceMock.disconnect).toHaveBeenCalled();
       expect(navigateSpy).toHaveBeenCalledWith(['/']);
     });
 
@@ -123,6 +132,7 @@ describe('NavbarComponent', () => {
       expect(localStorage.getItem('refreshToken')).toBeNull();
       expect(sessionStorage.getItem('token')).toBeNull();
       expect(sessionStorage.getItem('refreshToken')).toBeNull();
+      expect(sseServiceMock.disconnect).toHaveBeenCalled();
       expect(navigateSpy).toHaveBeenCalledWith(['/']);
     });
   });

@@ -21,6 +21,9 @@ export class SseService implements OnDestroy {
   /** Kontroler anulowania żądania fetch */
   private abortController: AbortController | null = null;
 
+  /** Funkcja nawiązująca połączenie SSE (domyślnie fetchEventSource). */
+  public fetchEventSource = fetchEventSource;
+
   /**
    * Metoda inicjalizująca połączenie SSE z serwerem. Jeśli token dostępu nie
    * jest dostępny lub połączenie jest już aktywne, metoda kończy działanie.
@@ -35,7 +38,7 @@ export class SseService implements OnDestroy {
 
     this.abortController = new AbortController();
     try {
-      await fetchEventSource(`${environment.apiUrl}/events`, {
+      await this.fetchEventSource(`${environment.apiUrl}/events`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,

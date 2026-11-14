@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { LogoutService } from '@features/auth/services/logout/logout.service';
+import { SseService } from '@core/services/sse/sse.service';
 import { ClickOutsideDirective } from '@shared/directives/click-outside/click-outside.directive';
 import { SettingsModalComponent } from '@features/settings/components/settings-modal/settings-modal.component';
 
@@ -39,6 +40,9 @@ export class NavbarComponent {
 
   /** Router Angulara do przekierowywania po wylogowaniu. */
   private router = inject(Router);
+
+  /** Serwis do obsługi Server-Sent Events (SSE). */
+  private sseService = inject(SseService);
 
   /**
    * Sygnał określający stan otwarcia menu mobilnego.
@@ -96,11 +100,13 @@ export class NavbarComponent {
 
   /**
    * Czyści tokeny autoryzacyjne i przekierowuje użytkownika do widoku autoryzacji (`/`).
+   * Zamyka również połączenie SSE, aby uniknąć dalszych powiadomień z serwera.
    *
    * @private
    * @returns {void}
    */
   private handleSuccessfulLogout(): void {
+    this.sseService.disconnect();
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     sessionStorage.removeItem('token');

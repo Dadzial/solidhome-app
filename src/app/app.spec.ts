@@ -5,6 +5,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { SvgIconRegistryService } from 'angular-svg-icon';
 import { App } from './app';
+import { SseService } from '@core/services/sse/sse.service';
+import { LoginService } from '@features/auth/services/login/login.service';
 import { of } from 'rxjs';
 
 describe('App', () => {
@@ -12,6 +14,8 @@ describe('App', () => {
   let fixture: ComponentFixture<App>;
   let router: Router;
   let httpMock: HttpTestingController;
+  let sseServiceMock: { connect: ReturnType<typeof vi.fn>; disconnect: ReturnType<typeof vi.fn> };
+  let loginServiceMock: { getAccessToken: ReturnType<typeof vi.fn> };
 
   const mockMatchMedia = (matches: boolean) => {
     Object.defineProperty(window, 'matchMedia', {
@@ -35,6 +39,15 @@ describe('App', () => {
     localStorage.clear();
     sessionStorage.clear();
 
+    sseServiceMock = {
+      connect: vi.fn(),
+      disconnect: vi.fn(),
+    };
+
+    loginServiceMock = {
+      getAccessToken: vi.fn().mockReturnValue(null),
+    };
+
     const mockSvgRegistry: Partial<SvgIconRegistryService> = {
       loadSvg: () => of(undefined),
     };
@@ -47,6 +60,8 @@ describe('App', () => {
         provideRouter([]),
         provideTranslateService(),
         { provide: SvgIconRegistryService, useValue: mockSvgRegistry },
+        { provide: SseService, useValue: sseServiceMock },
+        { provide: LoginService, useValue: loginServiceMock },
       ],
     }).compileComponents();
 
@@ -119,5 +134,22 @@ describe('App', () => {
     } as StorageEvent);
 
     expect(navigateSpy).not.toHaveBeenCalled();
+  });
+
+  it('onStorageChange should disconnect SSE when token is removed', () => {
+    component.onStorageChange({
+      key: 'token',
+      newValue: null,
+    } as StorageEvent);
+
+    expect(sseServiceMock.disconnect).toHaveBeenCalled();
+  });
+
+  it('should connect SSE on initialization when token is present', () => {
+    loginServiceMock.getAccessToken.mockReturnValue('valid-jwt-token');
+    const localFixture = TestBed.createComponent(App);
+    localFixture.detectChanges();
+
+    expect(sseServiceMock.connect).toHaveBeenCalled();
   });
 });

@@ -5,6 +5,7 @@ import { form, FormField, FormRoot, required, submit } from '@angular/forms/sign
 import { Router } from '@angular/router';
 import { LoginService } from '@features/auth/services/login/login.service';
 import { LoadingService } from '@core/services/loading/loading.service';
+import { SseService } from '@core/services/sse/sse.service';
 import { LoginRequest } from '@features/auth/models/auth.models';
 import { ApiError } from '@core/models/core.models';
 
@@ -37,6 +38,9 @@ export class LoginFormComponent {
 
   /** Serwis routingu do przekierowań między widokami. */
   private router = inject(Router);
+
+  /** Serwis do obsługi Server-Sent Events (SSE). */
+  private sseService = inject(SseService);
 
   /** Zdarzenie wywoływane w celu przełączenia widoku na formularz rejestracji. */
   public switchToSignup = output<void>();
@@ -73,6 +77,7 @@ export class LoginFormComponent {
   });
   /**
    * Reaktywny formularz logowania oparty o Signal Forms z regułami walidacji i logiką wysyłania (submit action).
+   * Otwiera również połączenie SSE.
    */
   protected loginForm = form(
     this.loginModel,
@@ -102,6 +107,7 @@ export class LoginFormComponent {
                     }
                   }
                   this.loginService.initUserFromToken();
+                  this.sseService.connect();
                   resolve();
                 },
                 error: (err: ApiError) => reject(err),

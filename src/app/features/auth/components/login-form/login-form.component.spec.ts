@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { LoginFormComponent } from './login-form.component';
 import { LoginService } from '@features/auth/services/login/login.service';
 import { LoadingService } from '@core/services/loading/loading.service';
+import { SseService } from '@core/services/sse/sse.service';
 import { of, throwError } from 'rxjs';
 import { ApiError } from '@core/models/core.models';
 
@@ -16,10 +17,16 @@ describe('LoginFormComponent', () => {
   let loginService: LoginService;
   let router: Router;
   let loadingService: LoadingService;
+  let sseServiceMock: { connect: ReturnType<typeof vi.fn>; disconnect: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     localStorage.clear();
     sessionStorage.clear();
+
+    sseServiceMock = {
+      connect: vi.fn(),
+      disconnect: vi.fn(),
+    };
 
     const mockSvgRegistry: Partial<SvgIconRegistryService> = {
       loadSvg: () => of(undefined),
@@ -32,6 +39,7 @@ describe('LoginFormComponent', () => {
         provideHttpClientTesting(),
         provideTranslateService(),
         { provide: SvgIconRegistryService, useValue: mockSvgRegistry },
+        { provide: SseService, useValue: sseServiceMock },
       ],
     }).compileComponents();
 
@@ -154,6 +162,7 @@ describe('LoginFormComponent', () => {
       expect(localStorage.getItem('token')).toBeNull();
       expect(localStorage.getItem('refreshToken')).toBeNull();
       expect(initUserSpy).toHaveBeenCalled();
+      expect(sseServiceMock.connect).toHaveBeenCalled();
       expect(showLoadingSpy).toHaveBeenCalled();
 
       vi.advanceTimersByTime(800);
@@ -187,6 +196,7 @@ describe('LoginFormComponent', () => {
       expect(localStorage.getItem('refreshToken')).toBe('jwt-local-refresh');
       expect(sessionStorage.getItem('token')).toBeNull();
       expect(sessionStorage.getItem('refreshToken')).toBeNull();
+      expect(sseServiceMock.connect).toHaveBeenCalled();
     });
 
     it('should handle login error from server and display temporary error', async () => {

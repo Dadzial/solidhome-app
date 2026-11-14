@@ -2,22 +2,17 @@ import { TestBed } from '@angular/core/testing';
 import { SseService } from './sse.service';
 import { LoginService } from '@features/auth/services/login/login.service';
 import { environment } from '@environments/environment';
-import * as fetchModule from '@microsoft/fetch-event-source';
-import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
-
-vi.mock('@microsoft/fetch-event-source', () => ({
-  fetchEventSource: vi.fn(),
-}));
 
 describe('SseService', () => {
   let service: SseService;
+  let fetchEventSourceMock: ReturnType<typeof vi.fn>;
   let loginServiceMock: {
     getAccessToken: ReturnType<typeof vi.fn>;
   };
 
   beforeEach(() => {
-    vi.spyOn(fetchModule, 'fetchEventSource').mockImplementation(vi.fn());
+    fetchEventSourceMock = vi.fn();
 
     loginServiceMock = {
       getAccessToken: vi.fn().mockReturnValue('mock-jwt-token'),
@@ -34,6 +29,7 @@ describe('SseService', () => {
     });
 
     service = TestBed.inject(SseService);
+    service.fetchEventSource = fetchEventSourceMock as any;
     vi.clearAllMocks();
   });
 
@@ -56,7 +52,7 @@ describe('SseService', () => {
 
       await service.connect();
 
-      expect(fetchEventSource).not.toHaveBeenCalled();
+      expect(fetchEventSourceMock).not.toHaveBeenCalled();
       expect(service.isConnected()).toBe(false);
     });
 
@@ -65,14 +61,14 @@ describe('SseService', () => {
 
       await service.connect();
 
-      expect(fetchEventSource).not.toHaveBeenCalled();
+      expect(fetchEventSourceMock).not.toHaveBeenCalled();
     });
 
     it('should call fetchEventSource with correct endpoint, headers and signal', async () => {
       await service.connect();
 
-      expect(fetchEventSource).toHaveBeenCalledTimes(1);
-      const [url, options] = vi.mocked(fetchEventSource).mock.calls[0];
+      expect(fetchEventSourceMock).toHaveBeenCalledTimes(1);
+      const [url, options] = fetchEventSourceMock.mock.calls[0];
 
       expect(url).toBe(`${environment.apiUrl}/events`);
       expect(options.method).toBe('GET');
@@ -87,7 +83,7 @@ describe('SseService', () => {
     it('should set isConnected to true on successful onopen response', async () => {
       await service.connect();
 
-      const options = vi.mocked(fetchEventSource).mock.calls[0][1];
+      const options = fetchEventSourceMock.mock.calls[0][1];
       const mockResponse = {
         ok: true,
         headers: {
@@ -103,7 +99,7 @@ describe('SseService', () => {
     it('should call disconnect when onopen response is not ok', async () => {
       await service.connect();
 
-      const options = vi.mocked(fetchEventSource).mock.calls[0][1];
+      const options = fetchEventSourceMock.mock.calls[0][1];
       const disconnectSpy = vi.spyOn(service, 'disconnect');
 
       const unauthorizedResponse = {
@@ -124,7 +120,7 @@ describe('SseService', () => {
       await service.connect();
       service.isConnected.set(true);
 
-      const options = vi.mocked(fetchEventSource).mock.calls[0][1];
+      const options = fetchEventSourceMock.mock.calls[0][1];
       options.onclose!();
 
       expect(service.isConnected()).toBe(false);
@@ -135,7 +131,7 @@ describe('SseService', () => {
       await service.connect();
       service.isConnected.set(true);
 
-      const options = vi.mocked(fetchEventSource).mock.calls[0][1];
+      const options = fetchEventSourceMock.mock.calls[0][1];
       options.onerror!(new Error('Network error'));
 
       expect(service.isConnected()).toBe(false);
@@ -143,7 +139,7 @@ describe('SseService', () => {
     });
 
     it('should set isConnected to false when fetchEventSource throws', async () => {
-      vi.mocked(fetchEventSource).mockRejectedValueOnce(new Error('Fetch fatal error'));
+      fetchEventSourceMock.mockRejectedValueOnce(new Error('Fetch fatal error'));
 
       await service.connect();
 
@@ -154,7 +150,7 @@ describe('SseService', () => {
   describe('onEvent', () => {
     it('should emit data when domain and event match incoming message', async () => {
       await service.connect();
-      const options = vi.mocked(fetchEventSource).mock.calls[0][1];
+      const options = fetchEventSourceMock.mock.calls[0][1];
 
       let receivedData: { name: string; state: boolean } | undefined;
       const sub = service
@@ -182,7 +178,7 @@ describe('SseService', () => {
 
     it('should not emit data when incoming message has different domain', async () => {
       await service.connect();
-      const options = vi.mocked(fetchEventSource).mock.calls[0][1];
+      const options = fetchEventSourceMock.mock.calls[0][1];
 
       let receivedData: unknown = undefined;
       const sub = service.onEvent('lights', 'light_updated').subscribe((data) => {
@@ -206,7 +202,7 @@ describe('SseService', () => {
 
     it('should not emit data when incoming message has different event name', async () => {
       await service.connect();
-      const options = vi.mocked(fetchEventSource).mock.calls[0][1];
+      const options = fetchEventSourceMock.mock.calls[0][1];
 
       let receivedData: unknown = undefined;
       const sub = service.onEvent('lights', 'light_updated').subscribe((data) => {
@@ -230,7 +226,7 @@ describe('SseService', () => {
 
     it('should handle messages with empty data gracefully', async () => {
       await service.connect();
-      const options = vi.mocked(fetchEventSource).mock.calls[0][1];
+      const options = fetchEventSourceMock.mock.calls[0][1];
 
       expect(() => {
         options.onmessage!({ id: '4', event: '', data: '' });
@@ -240,7 +236,7 @@ describe('SseService', () => {
     it('should log warning when incoming message has invalid JSON data', async () => {
       const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
       await service.connect();
-      const options = vi.mocked(fetchEventSource).mock.calls[0][1];
+      const options = fetchEventSourceMock.mock.calls[0][1];
 
       options.onmessage!({ id: '5', event: 'test', data: 'INVALID_JSON' });
 
@@ -256,7 +252,7 @@ describe('SseService', () => {
       await service.connect();
       service.isConnected.set(true);
 
-      const options = vi.mocked(fetchEventSource).mock.calls[0][1];
+      const options = fetchEventSourceMock.mock.calls[0][1];
       const abortSignal = options.signal as AbortSignal;
       expect(abortSignal.aborted).toBe(false);
 
