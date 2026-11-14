@@ -1,21 +1,31 @@
 import { TestBed } from '@angular/core/testing';
 import { LightsControlService } from './lights-control.service';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
+import { SseService } from '@core/services/sse/sse.service';
 import { LightsHistoryService } from '../lights-history/lights-history.service';
 import { LightsEnergyService } from '../lights-energy/lights-energy.service';
-import { LightItem } from '@features/lights/models/lights.models';
-import { of, throwError } from 'rxjs';
+import { LightItem, LightUpdatedEvent } from '@features/lights/models/lights.models';
+import { of, throwError, Subject } from 'rxjs';
 
 describe('LightsControlService', () => {
   let service: LightsControlService;
   let historyService: LightsHistoryService;
   let energyService: LightsEnergyService;
+  let sseSubject: Subject<LightUpdatedEvent>;
+  let sseServiceMock: {
+    onEvent: ReturnType<typeof vi.fn>;
+  };
   let apiServiceMock: {
     get: ReturnType<typeof vi.fn>;
     post: ReturnType<typeof vi.fn>;
   };
 
   beforeEach(() => {
+    sseSubject = new Subject<LightUpdatedEvent>();
+    sseServiceMock = {
+      onEvent: vi.fn().mockReturnValue(sseSubject.asObservable()),
+    };
+
     apiServiceMock = {
       get: vi.fn(),
       post: vi.fn(),
@@ -25,6 +35,7 @@ describe('LightsControlService', () => {
       providers: [
         LightsControlService,
         { provide: ApiConnectService, useValue: apiServiceMock },
+        { provide: SseService, useValue: sseServiceMock },
         {
           provide: LightsHistoryService,
           useValue: { loadHistory: vi.fn() },
@@ -266,6 +277,34 @@ describe('LightsControlService', () => {
       expect(service.lights()).toEqual(originalLights);
       expect(service.hasError()).toBe(true);
       expect(consoleSpy).toHaveBeenCalledWith('Failed to update lights status', mockError);
+    });
+  });
+
+  describe('listenToSseUpdates', () => {
+    it('should subscribe to lights:light_updated events on SseService', () => {
+      expect(sseServiceMock.onEvent).toHaveBeenCalledWith('lights', 'light_updated');
+    });
+
+    it('should update light state to on when event with state 1 is received', () => {
+      service.lights.update((lights) => lights.map((l) => ({ ...l, on: false })));
+
+      sseSubject.next({ name: 'kitchen', state: 1 });
+
+      const kitchen = service.lights().find((l) => l.id === 'kitchen');
+      expect(kitchen?.on).toBe(true);
+      expect(historyService.loadHistory).toHaveBeenCalled();
+      expect(energyService.loadEnergyStats).toHaveBeenCalled();
+    });
+
+    it('should update light state to off when event with state 0 is received', () => {
+      service.lights.update((lights) => lights.map((l) => ({ ...l, on: true })));
+
+      sseSubject.next({ name: 'kitchen', state: 0 });
+
+      const kitchen = service.lights().find((l) => l.id === 'kitchen');
+      expect(kitchen?.on).toBe(false);
+      expect(historyService.loadHistory).toHaveBeenCalled();
+      expect(energyService.loadEnergyStats).toHaveBeenCalled();
     });
   });
 });

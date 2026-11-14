@@ -5,7 +5,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { Light, LightItem, LightUpdatedEvent } from '@features/lights/models/lights.models';
 import { LightsHistoryService } from '../lights-history/lights-history.service';
 import { LightsEnergyService } from '../lights-energy/lights-energy.service';
-import { SseService} from '@core/services/sse/sse.service';
+import { SseService } from '@core/services/sse/sse.service';
 
 /**
  * Domyślne rozmieszczenie lamp na rzucie SVG (home_preview.png)
@@ -190,7 +190,20 @@ export class LightsControlService {
     return this.api.post<LightItem>('lights/update', payload);
   }
 
+  /**
+   * Subskrybuje zdarzenia SSE dla domeny świateł i na bieżąco aktualizuje stan lamp w sygnale `lights`.
+   *
+   * @returns {void}
+   */
   public listenToSseUpdates(): void {
-
+    this.sseService.onEvent<LightUpdatedEvent>('lights', 'light_updated').subscribe((event) => {
+      this.lights.update((currentLights) =>
+        currentLights.map((light) =>
+          light.id === event.name ? { ...light, on: Boolean(event.state) } : light,
+        ),
+      );
+      this.lightsHistoryService.loadHistory();
+      this.lightsEnergyService.loadEnergyStats();
+    });
   }
 }
