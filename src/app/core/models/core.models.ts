@@ -39,8 +39,18 @@ export interface ApiOptions {
  * @property timestamp Znacznik czasu, kiedy wiadomość została wygenerowana na serwerze.
  */
 export interface SseMessage<T = unknown> {
-  domain: 'lights' | 'air';
+  domain: 'lights' | 'air' | 'hardware';
   event: string;
   data: T;
   timestamp: string;
+}
+
+/**
+ * Model zdarzenia statusu fizycznej płytki mikrokontrolera odbieranego przez SSE.
+ *
+ * @interface BoardStatusEvent
+ * @property online Flaga informująca, czy płytka przesyła sygnały heartbeat.
+ */
+export interface BoardStatusEvent {
+  online: boolean;
 }

@@ -5,6 +5,15 @@ import { environment } from '@environments/environment';
 import { LoginService } from '@features/auth/services/login/login.service';
 import { SseMessage } from '@core/models/core.models';
 
+/**
+ * Serwis odpowiedzialny za obsługę połączenia Server-Sent Events (SSE) w aplikacji Angular.
+ *
+ * ### Zasady działania:
+ * - Umożliwia nawiązanie połączenia SSE z backendem API.
+ * - Udostępnia obserwowalny strumień zdarzeń SSE dla określonej domeny i zdarzenia.
+ * - Obsługuje automatyczne ponowne połączenie w przypadku utraty połączenia.
+ * - Umożliwia rozłączenie połączenia SSE.
+ */
 @Injectable({
   providedIn: 'root',
 })
