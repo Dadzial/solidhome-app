@@ -1,0 +1,9 @@
+{
+  "title": "SolidHome App - Dokumentacja Architektury",
+  "output": "documentation",
+  "tsconfig": "tsconfig.app.json",
+  "theme": "original",
+  "hideGenerator": true,
+  "disableCoverage": false,
+  "disableSourceCode": false
+}

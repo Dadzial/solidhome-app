@@ -11,7 +11,9 @@
     "format": "prettier --write \"src/**/*.{ts,html,css,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,html,css,json}\"",
     "lint": "ng lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "docs:build": "compodoc --language pl-PL",
+    "docs:serve": "compodoc -s --port 8080 --language pl-PL"
   },
   "private": true,
   "packageManager": "pnpm@12.11.2",
