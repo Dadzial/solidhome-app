@@ -1,7 +1,6 @@
 import { Component, inject, computed } from '@angular/core';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
-import { ThemeButtonComponent } from '@shared/components/theme-button/theme-button.component';
-import { LangButtonComponent } from '@shared/components/lang-button/lang-button.component';
+import { FooterComponent } from '@shared/components/footer/footer.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ErrorOverlayComponent } from '@shared/components/error-overlay/error-overlay.component';
 import { LightsWidgetComponent } from '@features/lights/components/lights-widget/lights-widget.component';
@@ -29,8 +28,7 @@ import { LightsScenesService } from '@features/lights/services/lights-scenes/lig
   imports: [
     TranslateModule,
     NavbarComponent,
-    LangButtonComponent,
-    ThemeButtonComponent,
+    FooterComponent,
     LightsWidgetComponent,
     LightsScheduleComponent,
     LightsScenesComponent,

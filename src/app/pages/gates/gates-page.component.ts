@@ -1,7 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
-import { ThemeButtonComponent } from '@shared/components/theme-button/theme-button.component';
-import { LangButtonComponent } from '@shared/components/lang-button/lang-button.component';
+import { FooterComponent } from '@shared/components/footer/footer.component';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -10,13 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
  */
 @Component({
   selector: 'app-gates',
-  imports: [
-    SvgIconComponent,
-    NavbarComponent,
-    LangButtonComponent,
-    ThemeButtonComponent,
-    TranslateModule,
-  ],
+  imports: [SvgIconComponent, NavbarComponent, FooterComponent, TranslateModule],
   standalone: true,
   templateUrl: './gates-page.component.html',
   styles: ``,

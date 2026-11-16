@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
-import { ThemeButtonComponent } from '@shared/components/theme-button/theme-button.component';
-import { LangButtonComponent } from '@shared/components/lang-button/lang-button.component';
+import { FooterComponent } from '@shared/components/footer/footer.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AirWidgetComponent } from '@features/air/components/air-widget/air-widget.component';
 
@@ -17,13 +16,7 @@ import { AirWidgetComponent } from '@features/air/components/air-widget/air-widg
  */
 @Component({
   selector: 'app-air',
-  imports: [
-    NavbarComponent,
-    LangButtonComponent,
-    ThemeButtonComponent,
-    TranslateModule,
-    AirWidgetComponent,
-  ],
+  imports: [NavbarComponent, FooterComponent, TranslateModule, AirWidgetComponent],
   standalone: true,
   templateUrl: './air-page.component.html',
   styles: ``,
