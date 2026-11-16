@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -6,13 +7,16 @@ import { SvgIconRegistryService } from 'angular-svg-icon';
 import { of, throwError } from 'rxjs';
 import { LightsScheduleComponent } from './lights-schedule.component';
 import { LightsScheduleService } from '@features/lights/services/lights-schedule/lights-schedule.service';
+import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
 
 describe('LightsScheduleComponent', () => {
   let component: LightsScheduleComponent;
   let fixture: ComponentFixture<LightsScheduleComponent>;
   let lightsScheduleService: LightsScheduleService;
+  let isBoardOnlineMock: ReturnType<typeof signal<boolean>>;
 
   beforeEach(async () => {
+    isBoardOnlineMock = signal<boolean>(true);
     const mockSvgRegistry: Partial<SvgIconRegistryService> = {
       loadSvg: () => of(undefined),
     };
@@ -24,6 +28,7 @@ describe('LightsScheduleComponent', () => {
         provideHttpClientTesting(),
         provideTranslateService(),
         { provide: SvgIconRegistryService, useValue: mockSvgRegistry },
+        { provide: HardwareStatusService, useValue: { isBoardOnline: isBoardOnlineMock } },
       ],
     }).compileComponents();
 
@@ -246,10 +251,17 @@ describe('LightsScheduleComponent', () => {
   });
 
   describe('toggleRuleActive and deleteRule delegations', () => {
-    it('should delegate toggleRuleActive to service', () => {
+    it('should delegate toggleRuleActive to service when board is online', () => {
       const spy = vi.spyOn(lightsScheduleService, 'toggleRuleActive').mockImplementation(() => {});
       component.toggleRuleActive('r1', true);
       expect(spy).toHaveBeenCalledWith('r1', true);
+    });
+
+    it('should not delegate toggleRuleActive to service when board is offline', () => {
+      isBoardOnlineMock.set(false);
+      const spy = vi.spyOn(lightsScheduleService, 'toggleRuleActive').mockImplementation(() => {});
+      component.toggleRuleActive('r1', true);
+      expect(spy).not.toHaveBeenCalled();
     });
 
     it('should delegate deleteRule to service', () => {
@@ -285,6 +297,27 @@ describe('LightsScheduleComponent', () => {
     it('should expose roomTranslations matching ROOMS_NAMES_TRANSLATIONS', () => {
       expect(component.roomTranslations['living_room']).toBe('home.lightsWidget.rooms.livingRoom');
       expect(component.roomTranslations['boiler_room']).toBe('home.lightsWidget.rooms.boilerRoom');
+    });
+
+    it('should disable rule active toggle button when board is offline', () => {
+      lightsScheduleService.schedule.set([
+        {
+          id: 'r1',
+          name: 'Test rule',
+          days: [1],
+          startTime: '10:00',
+          endTime: '12:00',
+          rooms: ['entireHouse'],
+          active: false,
+        },
+      ]);
+      isBoardOnlineMock.set(false);
+      fixture.detectChanges();
+
+      const toggleBtn = fixture.nativeElement.querySelector('button[type="button"][disabled]');
+      expect(toggleBtn).toBeTruthy();
+      expect(toggleBtn.classList.contains('cursor-not-allowed')).toBe(true);
+      expect(toggleBtn.classList.contains('opacity-50')).toBe(true);
     });
   });
 });

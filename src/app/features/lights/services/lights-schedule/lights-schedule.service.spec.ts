@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
 import { LightsScheduleService } from './lights-schedule.service';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
+import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
 import {
   LightScheduleRuleItem,
   CreateScheduleRulePayload,
@@ -21,6 +23,7 @@ const mockRuleItem: LightScheduleRuleItem = {
 
 describe('LightsScheduleService', () => {
   let service: LightsScheduleService;
+  let isBoardOnlineMock: ReturnType<typeof signal<boolean>>;
   let apiServiceMock: {
     get: ReturnType<typeof vi.fn>;
     post: ReturnType<typeof vi.fn>;
@@ -29,6 +32,7 @@ describe('LightsScheduleService', () => {
   };
 
   beforeEach(() => {
+    isBoardOnlineMock = signal<boolean>(true);
     apiServiceMock = {
       get: vi.fn(),
       post: vi.fn(),
@@ -37,7 +41,11 @@ describe('LightsScheduleService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [LightsScheduleService, { provide: ApiConnectService, useValue: apiServiceMock }],
+      providers: [
+        LightsScheduleService,
+        { provide: ApiConnectService, useValue: apiServiceMock },
+        { provide: HardwareStatusService, useValue: { isBoardOnline: isBoardOnlineMock } },
+      ],
     });
 
     service = TestBed.inject(LightsScheduleService);
@@ -140,6 +148,34 @@ describe('LightsScheduleService', () => {
       expect(service.hasError()).toBe(false);
     });
 
+    it('should deactivate the rule immediately via putRuleActive when hardware is offline', () => {
+      isBoardOnlineMock.set(false);
+      const payload: CreateScheduleRulePayload = {
+        name: 'Night lights',
+        days: [5, 6],
+        startTime: '23:00',
+        endTime: '06:00',
+        rooms: ['entireHouse'],
+      };
+
+      const loadRulesSpy = vi.spyOn(service, 'loadRules').mockImplementation(() => {});
+      apiServiceMock.post.mockReturnValue(of({ ...payload, _id: 'r2', active: true }));
+      apiServiceMock.put.mockReturnValue(of({ ...payload, _id: 'r2', active: false }));
+
+      let resultActive: boolean | undefined;
+      service.createRule(payload).subscribe({
+        next: (rule) => {
+          resultActive = rule.active;
+        },
+      });
+
+      expect(apiServiceMock.post).toHaveBeenCalledWith('lights/rules', payload);
+      expect(apiServiceMock.put).toHaveBeenCalledWith('lights/rules/r2', { active: false });
+      expect(resultActive).toBe(false);
+      expect(loadRulesSpy).toHaveBeenCalled();
+      expect(service.hasError()).toBe(false);
+    });
+
     it('should set hasError to true on failure', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const payload: CreateScheduleRulePayload = {
@@ -215,6 +251,15 @@ describe('LightsScheduleService', () => {
 
       expect(apiServiceMock.put).not.toHaveBeenCalled();
       expect(service.schedule().length).toBe(1);
+    });
+
+    it('should not toggle rule active state when hardware is offline', () => {
+      isBoardOnlineMock.set(false);
+
+      service.toggleRuleActive('r1');
+
+      expect(apiServiceMock.put).not.toHaveBeenCalled();
+      expect(service.schedule()[0].active).toBe(true);
     });
   });
 

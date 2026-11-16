@@ -50,6 +50,9 @@ export class LightsWidgetComponent implements OnInit {
   /** Sygnał informujący o błędzie komunikacji z API. */
   public readonly hasError = this.lightsControlService.hasError;
 
+  /** Sygnał określający dostępność fizycznej płytki sterownika. */
+  public readonly isBoardOnline = this.lightsControlService.hardwareStatusService.isBoardOnline;
+
   /** Klucz błędu translacji i18n otrzymany z serwisu lamp. */
   public readonly errorMessage = this.lightsControlService.errorMessage;
 
@@ -103,6 +106,9 @@ export class LightsWidgetComponent implements OnInit {
    * @returns {void}
    */
   public toggleLight(id: string): void {
+    if (!this.isBoardOnline()) {
+      return;
+    }
     this.lightsControlService.toggleLight(id);
   }
 
@@ -112,6 +118,9 @@ export class LightsWidgetComponent implements OnInit {
    * @returns {void}
    */
   public toggleAllLights(): void {
+    if (!this.isBoardOnline()) {
+      return;
+    }
     this.lightsControlService.toggleAllLights();
   }
 

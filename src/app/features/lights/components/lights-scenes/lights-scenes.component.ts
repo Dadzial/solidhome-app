@@ -24,6 +24,9 @@ export class LightsScenesComponent {
   /** Sygnał informujący o błędzie komunikacji z API. */
   public readonly hasError = this.lightsScenesService.hasError;
 
+  /** Sygnał określający dostępność fizycznej płytki sterownika. */
+  public readonly isBoardOnline = this.lightsScenesService.hardwareStatusService.isBoardOnline;
+
   /** Klucz błędu translacji i18n otrzymany z serwisu scen. */
   public readonly errorMessage = this.lightsScenesService.errorMessage;
 
@@ -169,6 +172,9 @@ export class LightsScenesComponent {
    * @returns {void}
    */
   public activateScene(sceneId: string): void {
+    if (!this.isBoardOnline()) {
+      return;
+    }
     this.lightsScenesService.activateScene(sceneId);
   }
 

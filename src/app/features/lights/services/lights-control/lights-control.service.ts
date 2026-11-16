@@ -6,6 +6,7 @@ import { Light, LightItem, LightUpdatedEvent } from '@features/lights/models/lig
 import { LightsHistoryService } from '../lights-history/lights-history.service';
 import { LightsEnergyService } from '../lights-energy/lights-energy.service';
 import { SseService } from '@core/services/sse/sse.service';
+import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
 
 /**
  * Domyślne rozmieszczenie lamp na rzucie SVG (home_preview.png)
@@ -48,6 +49,9 @@ export class LightsControlService {
 
   /** Inject LightsEnergyService do automatycznego odświeżania zużycia energii po zmianie stanu świateł. */
   private lightsEnergyService = inject(LightsEnergyService);
+
+  /** Inject HardwareStatusService do monitorowania stanu fizycznej płytki sterownika. */
+  public hardwareStatusService = inject(HardwareStatusService);
 
   /**
    * Sygnał przechowujący listę lamp z ich pozycjami na mapie SVG i aktualnym stanem.
@@ -116,6 +120,10 @@ export class LightsControlService {
    * @returns {void}
    */
   public toggleLight(id: string): void {
+    if (!this.hardwareStatusService.isBoardOnline()) {
+      return;
+    }
+
     this.lights.update((lights) => lights.map((l) => (l.id === id ? { ...l, on: !l.on } : l)));
     const newState = this.lights().find((l) => l.id === id)?.on ?? false;
 
@@ -143,6 +151,10 @@ export class LightsControlService {
    * @returns {void}
    */
   public toggleAllLights(): void {
+    if (!this.hardwareStatusService.isBoardOnline()) {
+      return;
+    }
+
     const targetState = !this.allLightsOn();
     const originalLights = this.lights();
 

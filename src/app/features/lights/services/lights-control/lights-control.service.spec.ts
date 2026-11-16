@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
 import { LightsControlService } from './lights-control.service';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { SseService } from '@core/services/sse/sse.service';
 import { LightsHistoryService } from '../lights-history/lights-history.service';
 import { LightsEnergyService } from '../lights-energy/lights-energy.service';
+import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
 import { LightItem, LightUpdatedEvent } from '@features/lights/models/lights.models';
 import { of, throwError, Subject } from 'rxjs';
 
@@ -43,6 +45,10 @@ describe('LightsControlService', () => {
         {
           provide: LightsEnergyService,
           useValue: { loadEnergyStats: vi.fn() },
+        },
+        {
+          provide: HardwareStatusService,
+          useValue: { isBoardOnline: signal(true) },
         },
       ],
     });
@@ -305,6 +311,30 @@ describe('LightsControlService', () => {
       expect(kitchen?.on).toBe(false);
       expect(historyService.loadHistory).toHaveBeenCalled();
       expect(energyService.loadEnergyStats).toHaveBeenCalled();
+    });
+  });
+
+  describe('hardware offline protection', () => {
+    it('should not toggle light when board is offline', () => {
+      const hwService = TestBed.inject(HardwareStatusService);
+      (hwService.isBoardOnline as any).set(false);
+
+      const initialLights = service.lights();
+      service.toggleLight('living_room');
+
+      expect(apiServiceMock.post).not.toHaveBeenCalled();
+      expect(service.lights()).toEqual(initialLights);
+    });
+
+    it('should not toggle all lights when board is offline', () => {
+      const hwService = TestBed.inject(HardwareStatusService);
+      (hwService.isBoardOnline as any).set(false);
+
+      const initialLights = service.lights();
+      service.toggleAllLights();
+
+      expect(apiServiceMock.post).not.toHaveBeenCalled();
+      expect(service.lights()).toEqual(initialLights);
     });
   });
 });

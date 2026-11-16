@@ -29,8 +29,12 @@
         }}
       </span>
       <button
+        [disabled]="!isBoardOnline()"
         (click)="toggleAllLights()"
-        class="w-12 h-6 rounded-full relative cursor-pointer shadow-inner border border-divider shrink-0 flex items-center px-1"
+        class="w-12 h-6 rounded-full relative shadow-inner border border-divider shrink-0 flex items-center px-1"
+        [class.cursor-pointer]="isBoardOnline()"
+        [class.cursor-not-allowed]="!isBoardOnline()"
+        [class.opacity-50]="!isBoardOnline()"
         [class.transition-colors]="isLoaded()"
         [ngClass]="allLightsOn() ? 'bg-accent border-accent' : 'bg-background-primary'"
       >
@@ -65,8 +69,14 @@
           <div class="w-full h-full flex items-center justify-center">
             <!-- Przycisk lampy — kolor i cień zmieniają się w zależności od stanu włączenia -->
             <button
+              [disabled]="!isBoardOnline()"
               (click)="toggleLight(light.id)"
-              class="p-5 rounded-full backdrop-blur-md transition-all duration-300 border border-white/20 hover:scale-110 active:scale-95"
+              class="p-5 rounded-full backdrop-blur-md transition-all duration-300 border border-white/20"
+              [class.cursor-pointer]="isBoardOnline()"
+              [class.cursor-not-allowed]="!isBoardOnline()"
+              [class.opacity-50]="!isBoardOnline()"
+              [class.hover:scale-110]="isBoardOnline()"
+              [class.active:scale-95]="isBoardOnline()"
               [ngClass]="{
                 'bg-accent shadow-[0_0_25px_rgba(255,255,255,0.7)]': light.on,
                 'bg-white/30 shadow-lg': !light.on,

@@ -1,7 +1,8 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { ApiError } from '@core/models/core.models';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, switchMap, map, catchError, of } from 'rxjs';
+import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
 import {
   LightScheduleRule,
   LightScheduleRuleItem,
@@ -28,6 +29,9 @@ import {
 export class LightsScheduleService {
   /** Inject ApiConnectService do wykonywania żądań do backendu. */
   private api = inject(ApiConnectService);
+
+  /** Inject HardwareStatusService do monitorowania stanu fizycznej płytki sterownika. */
+  public hardwareStatusService = inject(HardwareStatusService);
 
   /**
    * Sygnał przechowujący wpisy harmonogramu zmian świateł do wyświetlenia w widoku.
@@ -95,12 +99,22 @@ export class LightsScheduleService {
 
   /**
    * Tworzy nową regułę harmonogramu oświetlenia w API i po sukcesie odświeża sygnał `schedule`.
+   * Jeśli płytka sterownika jest offline, nowo utworzona reguła zostaje natychmiast dezaktywowana (active: false).
    *
    * @param {CreateScheduleRulePayload} payload Dane nowej reguły harmonogramu.
    * @returns {Observable<LightScheduleRuleItem>} Obserwowalny obiekt zawierający utworzoną regułę.
    */
   public createRule(payload: CreateScheduleRulePayload): Observable<LightScheduleRuleItem> {
     return this.postRule(payload).pipe(
+      switchMap((createdRule) => {
+        if (!this.hardwareStatusService.isBoardOnline()) {
+          return this.putRuleActive(createdRule._id, false).pipe(
+            map(() => ({ ...createdRule, active: false })),
+            catchError(() => of(createdRule)),
+          );
+        }
+        return of(createdRule);
+      }),
       tap({
         next: () => {
           this.loadRules();
@@ -118,12 +132,17 @@ export class LightsScheduleService {
 
   /**
    * Przełącza stan aktywności reguły z optymistyczną aktualizacją w sygnale `schedule` i rollbackiem w razie błędu.
+   * Jeśli płytka sterownika jest offline, operacja przełączenia zostaje zablokowana.
    *
    * @param {string} id Identyfikator reguły.
    * @param {boolean} [active] Opcjonalny zadany stan aktywności (jeśli brak, odwraca obecny stan).
    * @returns {void}
    */
   public toggleRuleActive(id: string, active?: boolean): void {
+    if (!this.hardwareStatusService.isBoardOnline()) {
+      return;
+    }
+
     const previousRules = this.schedule();
     const currentRule = previousRules.find((r) => r.id === id);
     if (!currentRule) {

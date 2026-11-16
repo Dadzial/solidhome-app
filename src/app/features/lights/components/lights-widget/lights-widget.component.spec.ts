@@ -3,9 +3,11 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SvgIconRegistryService } from 'angular-svg-icon';
+import { signal } from '@angular/core';
 import { LightsWidgetComponent } from './lights-widget.component';
 import { LightsControlService } from '@features/lights/services/lights-control/lights-control.service';
 import { LightsHistoryService } from '@features/lights/services/lights-history/lights-history.service';
+import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
 import { of } from 'rxjs';
 import { LightHistory } from '@features/lights/models/lights.models';
 
@@ -44,6 +46,7 @@ describe('LightsWidgetComponent', () => {
         provideHttpClientTesting(),
         provideTranslateService(),
         { provide: SvgIconRegistryService, useValue: mockSvgRegistry },
+        { provide: HardwareStatusService, useValue: { isBoardOnline: signal(true) } },
       ],
     }).compileComponents();
 
@@ -197,6 +200,26 @@ describe('LightsWidgetComponent', () => {
       component.clearHistory();
 
       expect(clearSpy).toHaveBeenCalled();
+    });
+
+    it('should not call lightsControlService.toggleLight when board is offline', () => {
+      const hwService = TestBed.inject(HardwareStatusService);
+      (hwService.isBoardOnline as any).set(false);
+      const toggleSpy = vi.spyOn(lightsControlService, 'toggleLight');
+
+      component.toggleLight('living_room');
+
+      expect(toggleSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not call lightsControlService.toggleAllLights when board is offline', () => {
+      const hwService = TestBed.inject(HardwareStatusService);
+      (hwService.isBoardOnline as any).set(false);
+      const toggleAllSpy = vi.spyOn(lightsControlService, 'toggleAllLights');
+
+      component.toggleAllLights();
+
+      expect(toggleAllSpy).not.toHaveBeenCalled();
     });
   });
 });

@@ -3,6 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { LightsScenesService } from './lights-scenes.service';
 import { LightsControlService } from '../lights-control/lights-control.service';
+import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
 import { signal } from '@angular/core';
 import { Light, LightSceneItem } from '@features/lights/models/lights.models';
 import { environment } from '@environments/environment';
@@ -50,6 +51,7 @@ describe('LightsScenesService', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: LightsControlService, useValue: mockLightsControlService },
+        { provide: HardwareStatusService, useValue: { isBoardOnline: signal(true) } },
       ],
     });
 
@@ -198,6 +200,17 @@ describe('LightsScenesService', () => {
       expect(mockLightsControlService.toggleLight).toHaveBeenCalledWith('living_room');
       expect(mockLightsControlService.toggleLight).toHaveBeenCalledWith('kitchen');
 
+      const scene = service.scenes().find((s) => s.id === 'scene_1');
+      expect(scene?.active).toBe(false);
+    });
+
+    it('should not activate scene or toggle lights when board is offline', () => {
+      const hwService = TestBed.inject(HardwareStatusService);
+      (hwService.isBoardOnline as any).set(false);
+
+      service.activateScene('scene_1');
+
+      expect(mockLightsControlService.toggleLight).not.toHaveBeenCalled();
       const scene = service.scenes().find((s) => s.id === 'scene_1');
       expect(scene?.active).toBe(false);
     });

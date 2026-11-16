@@ -4,7 +4,9 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { provideTranslateService } from '@ngx-translate/core';
 import { SvgIconRegistryService } from 'angular-svg-icon';
 import { of } from 'rxjs';
+import { signal } from '@angular/core';
 import { LightsScenesComponent } from './lights-scenes.component';
+import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
 import { environment } from '@environments/environment';
 
 describe('LightsScenesComponent', () => {
@@ -24,6 +26,7 @@ describe('LightsScenesComponent', () => {
         provideHttpClientTesting(),
         provideTranslateService(),
         { provide: SvgIconRegistryService, useValue: mockSvgRegistry },
+        { provide: HardwareStatusService, useValue: { isBoardOnline: signal(true) } },
       ],
     }).compileComponents();
 

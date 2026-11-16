@@ -32,6 +32,9 @@ export class LightsScheduleComponent implements OnInit {
   /** Serwis zarządzający regułami harmonogramu oświetlenia w systemie. */
   public lightsScheduleService = inject(LightsScheduleService);
 
+  /** Sygnał określający dostępność fizycznej płytki sterownika. */
+  public readonly isBoardOnline = this.lightsScheduleService.hardwareStatusService.isBoardOnline;
+
   /** Sygnał informujący o błędzie komunikacji z API przy obsłudze harmonogramu. */
   public readonly hasError = this.lightsScheduleService.hasError;
 
@@ -263,11 +266,15 @@ export class LightsScheduleComponent implements OnInit {
 
   /**
    * Przełącza stan aktywności (active) wybranej reguły harmonogramu w API.
+   * Blokowane, gdy płytka sterownika jest offline.
    *
    * @param {string} id Identyfikator reguły.
    * @param {boolean} [active] Opcjonalny docelowy stan aktywności.
    */
   public toggleRuleActive(id: string, active?: boolean): void {
+    if (!this.isBoardOnline()) {
+      return;
+    }
     this.lightsScheduleService.toggleRuleActive(id, active);
   }
 

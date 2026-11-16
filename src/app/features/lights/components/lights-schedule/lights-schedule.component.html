@@ -260,8 +260,12 @@
               <!-- Przełącznik aktywności reguły -->
               <button
                 type="button"
+                [disabled]="!isBoardOnline()"
                 (click)="toggleRuleActive(rule.id)"
-                class="w-10 h-5 rounded-full relative cursor-pointer shadow-inner border border-divider shrink-0 flex items-center px-0.5 transition-colors"
+                class="w-10 h-5 rounded-full relative shadow-inner border border-divider shrink-0 flex items-center px-0.5 transition-colors"
+                [class.cursor-pointer]="isBoardOnline()"
+                [class.cursor-not-allowed]="!isBoardOnline()"
+                [class.opacity-50]="!isBoardOnline()"
                 [class.bg-accent]="rule.active"
                 [class.border-accent]="rule.active"
                 [class.bg-background-secondary]="!rule.active"

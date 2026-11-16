@@ -9,6 +9,7 @@ import {
   DeleteLightSceneResponse,
 } from '@features/lights/models/lights.models';
 import { LightsControlService } from '../lights-control/lights-control.service';
+import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
 
 /**
  * Serwis zarządzający scenami oświetlenia w systemie SolidHome.
@@ -30,6 +31,9 @@ export class LightsScenesService {
 
   /** Serwis kontrolujący fizyczny stan oświetlenia. */
   private lightsControlService = inject(LightsControlService);
+
+  /** Serwis monitorujący stan fizycznej płytki sterownika. */
+  public hardwareStatusService = inject(HardwareStatusService);
 
   /**
    * Sygnał przechowujący listę scen oświetleniowych.
@@ -124,7 +128,7 @@ export class LightsScenesService {
     const previousScenes = this.scenes();
     const targetScene = previousScenes.find((s) => s.id === id);
 
-    if (targetScene && targetScene.active) {
+    if (targetScene && targetScene.active && this.hardwareStatusService.isBoardOnline()) {
       const currentLights = this.lightsControlService.lights();
       for (const roomId of targetScene.rooms) {
         const lamp = currentLights.find((l) => l.id === roomId);
@@ -158,6 +162,10 @@ export class LightsScenesService {
    * @returns {void}
    */
   public activateScene(sceneId: string): void {
+    if (!this.hardwareStatusService.isBoardOnline()) {
+      return;
+    }
+
     const targetScene = this.scenes().find((s) => s.id === sceneId);
     if (!targetScene) {
       return;
