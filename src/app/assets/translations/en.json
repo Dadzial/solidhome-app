@@ -95,7 +95,11 @@
       }
     },
     "airWidget": {
-      "airQuality": "Air Quality"
+      "airQuality": "Air Quality",
+      "temperature": "Temperature",
+      "pressure": "Pressure",
+      "comfortable": "Comfortable",
+      "stable": "Stable"
     }
   },
   "lightsPage": {

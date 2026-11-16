@@ -1,7 +1,10 @@
-import { Component, input } from '@angular/core';
+import { Component } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
 
+/**
+ * Widżet prezentujący bieżące parametry powietrza (temperatura, wilgotność, ciśnienie z czujnika BMP280).
+ */
 @Component({
   selector: 'app-air-widget',
   imports: [SvgIconComponent, TranslateModule],
@@ -9,11 +12,4 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './air-widget.component.html',
   styles: ``,
 })
-export class AirWidgetComponent {
-  /**
-   * Wariant wyświetlania widgetu:
-   * - 'compact': zwięzły widok dla pulpitu głównego (Home)
-   * - 'expanded': pełnowymiarowy widok ze szczegółami dla dedykowanej strony Powietrze (Air)
-   */
-  public variant = input<'compact' | 'expanded'>('compact');
-}
+export class AirWidgetComponent {}
