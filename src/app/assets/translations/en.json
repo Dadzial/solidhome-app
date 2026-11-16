@@ -169,5 +169,14 @@
   "footer": {
     "boardOffline": "Driver offline",
     "boardOnline": "Driver online"
+  },
+  "temperatureDisplay": {
+    "title": "Temperatura"
+  },
+  "pressureDisplay": {
+    "title": "Ciśnienie"
+  },
+  "humidityDisplay": {
+    "title": "Wilgotność"
   }
 }

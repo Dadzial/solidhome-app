@@ -169,5 +169,14 @@
   "footer": {
     "boardOffline": "Sterownik niedostępny",
     "boardOnline": "Sterownik dostępny"
+  },
+  "temperatureDisplay": {
+    "title": "Temperatura"
+  },
+  "pressureDisplay": {
+    "title": "Ciśnienie"
+  },
+  "humidityDisplay": {
+    "title": "Wilgotność"
   }
 }
