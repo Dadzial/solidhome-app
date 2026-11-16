@@ -45,7 +45,7 @@
     "passwordsMismatch": "Passwords do not match"
   },
   "home": {
-    "welcomeMessage": "Welcome",
+    "welcomeMessage": "Hello",
     "navbar": {
       "home": "Home",
       "lights": "Lights",
@@ -167,8 +167,8 @@
     "retryNow": "Try again"
   },
   "footer": {
-    "boardOffline": "Driver offline",
-    "boardOnline": "Driver online"
+    "boardOffline": "Not connected",
+    "boardOnline": "Connected"
   },
   "temperatureDisplay": {
     "title": "Temperatura"

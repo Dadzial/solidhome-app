@@ -8,20 +8,20 @@
         {{ 'airPage.title' | translate }}
       </h2>
     </div>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-0">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:flex-1 min-h-0">
       <!-- Kafelki odczytów wewnętrznych z czujnika-->
       <div class="col-span-1 flex flex-col gap-4 sm:gap-6 min-h-0 lg:h-full">
-        <app-temperature-display></app-temperature-display>
-        <app-pressure-display></app-pressure-display>
-        <app-humidity-display></app-humidity-display>
+        <app-temperature-display class="block lg:flex-1 min-h-0"></app-temperature-display>
+        <app-pressure-display class="block lg:flex-1 min-h-0"></app-pressure-display>
+        <app-humidity-display class="block lg:flex-1 min-h-0"></app-humidity-display>
       </div>
       <!-- Historia i wykresy pomiarów -->
-      <div class="col-span-1 block h-full min-h-0">
-        <app-air-charts></app-air-charts>
+      <div class="col-span-1 block lg:h-full min-h-0">
+        <app-air-charts class="block h-full"></app-air-charts>
       </div>
       <!-- Pogoda zewnętrzna -->
-      <div class="col-span-1 block h-full min-h-0">
-        <app-outside-data></app-outside-data>
+      <div class="col-span-1 block lg:h-full min-h-0">
+        <app-outside-data class="block h-full"></app-outside-data>
       </div>
     </div>
   </div>

@@ -5,7 +5,7 @@
   <!-- Komunikat o braku połączenia z płytką -->
   @if (showStatus()) {
     <span
-      class="absolute left-1/2 -translate-x-1/2 h-10 px-4 flex items-center justify-center bg-background-secondary shadow-2xl rounded-3xl text-body-16-medium text-center pointer-events-none"
+      class="absolute left-1/2 -translate-x-1/2 h-10 px-4 sm:px-5 flex items-center justify-center w-max max-w-max whitespace-nowrap bg-background-secondary shadow-2xl rounded-3xl text-body-16-medium max-sm:text-body-14-medium text-center pointer-events-none select-none transition-all"
       [class.text-text-success]="isBoardOnline()"
       [class.text-text-error]="!isBoardOnline()"
     >

@@ -167,8 +167,8 @@
     "retryNow": "Spróbuj ponownie"
   },
   "footer": {
-    "boardOffline": "Sterownik niedostępny",
-    "boardOnline": "Sterownik dostępny"
+    "boardOffline": "Brak połączenia",
+    "boardOnline": "Połączono"
   },
   "temperatureDisplay": {
     "title": "Temperatura"

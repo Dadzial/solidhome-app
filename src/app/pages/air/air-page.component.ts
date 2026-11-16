@@ -5,7 +5,7 @@ import { TemperatureDisplayComponent } from '@features/air/components/temperatur
 import { PressureDisplayComponent } from '@features/air/components/pressure-display/pressure-display.component';
 import { HumidityDisplayComponent } from '@features/air/components/humidity-display/humidity-display.component';
 import { OutsideDataComponent } from '@features/air/components/outside-data/outside-data.component';
-import { AirChartsComponent} from '@features/air/components/air-charts/air-charts.component';
+import { AirChartsComponent } from '@features/air/components/air-charts/air-charts.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 /**
