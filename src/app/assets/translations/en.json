@@ -178,5 +178,11 @@
   },
   "humidityDisplay": {
     "title": "Wilgotność"
+  },
+  "OutsideData": {
+    "title": "Weather"
+  },
+  "AirCharts": {
+    "title": "History"
   }
 }

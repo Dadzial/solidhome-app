@@ -4,6 +4,8 @@ import { FooterComponent } from '@shared/components/footer/footer.component';
 import { TemperatureDisplayComponent } from '@features/air/components/temperature-display/temperature-display.component';
 import { PressureDisplayComponent } from '@features/air/components/pressure-display/pressure-display.component';
 import { HumidityDisplayComponent } from '@features/air/components/humidity-display/humidity-display.component';
+import { OutsideDataComponent } from '@features/air/components/outside-data/outside-data.component';
+import { AirChartsComponent} from '@features/air/components/air-charts/air-charts.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 /**
@@ -18,6 +20,8 @@ import { TranslateModule } from '@ngx-translate/core';
     TemperatureDisplayComponent,
     PressureDisplayComponent,
     HumidityDisplayComponent,
+    OutsideDataComponent,
+    AirChartsComponent,
   ],
   standalone: true,
   templateUrl: './air-page.component.html',
