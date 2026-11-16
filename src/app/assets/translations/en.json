@@ -161,5 +161,9 @@
     "server": "A server error occurred. Please try again later",
     "default": "An unexpected error occurred",
     "retryNow": "Try again"
+  },
+  "footer": {
+    "boardOffline": "Driver offline",
+    "boardOnline": "Driver online"
   }
 }

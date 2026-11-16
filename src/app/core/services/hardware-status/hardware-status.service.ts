@@ -30,7 +30,7 @@ export class HardwareStatusService {
    * Sygnał informujący o stanie fizycznej płytki mikrokontrolera.
    * `true` = płytka działa i przesyła heartbeat, `false` = brak zasilania lub łączności.
    */
-  public readonly isBoardOnline = signal<boolean>(true);
+  public readonly isBoardOnline = signal<boolean>(false);
 
   /**
    * @constructor

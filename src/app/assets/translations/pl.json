@@ -161,5 +161,9 @@
     "server": "Wystąpił błąd serwera. Spróbuj ponownie później",
     "default": "Wystąpił błąd, spróbuj ponownie później",
     "retryNow": "Spróbuj ponownie"
+  },
+  "footer": {
+    "boardOffline": "Sterownik niedostępny",
+    "boardOnline": "Sterownik dostępny"
   }
 }
