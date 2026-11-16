@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-humidity-display',
-  imports: [SvgIconComponent, TranslatePipe],
+  imports: [SvgIconComponent, TranslateModule],
   standalone: true,
   templateUrl: './humidity-display.component.html',
   styles: ``,

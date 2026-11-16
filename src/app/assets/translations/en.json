@@ -171,18 +171,18 @@
     "boardOnline": "Connected"
   },
   "temperatureDisplay": {
-    "title": "Temperatura"
+    "title": "Temperature"
   },
   "pressureDisplay": {
-    "title": "Ciśnienie"
+    "title": "Pressure"
   },
   "humidityDisplay": {
-    "title": "Wilgotność"
+    "title": "Humidity"
   },
-  "OutsideData": {
+  "outsideData": {
     "title": "Weather"
   },
-  "AirCharts": {
+  "airCharts": {
     "title": "History"
   }
 }
