@@ -60,6 +60,7 @@ describe('HomePageComponent', () => {
     fixture.detectChanges();
     httpMock.expectOne(`${environment.apiUrl}/lights/status/app`).flush([]);
     httpMock.expectOne(`${environment.apiUrl}/lights/history?limit=20`).flush([]);
+    httpMock.expectOne(`${environment.apiUrl}/air/current`).flush(null);
 
     await fixture.whenStable();
   });
