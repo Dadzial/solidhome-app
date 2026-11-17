@@ -8,6 +8,7 @@ import { HttpParams } from '@angular/common/http';
 /**
  * Serwis odpowiedzialny za pobieranie i zarządzanie statystykami zużycia energii oświetlenia w systemie SolidHome.
  *
+ * ### Zasady działania:
  * Utrzymuje reaktywny sygnał `energyData` zawierający aktualne dane wykresu,
  * całkowite zużycie oraz ranking TOP 3 największego zużycia energii.
  */

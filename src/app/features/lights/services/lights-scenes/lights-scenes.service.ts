@@ -14,8 +14,8 @@ import { HardwareStatusService } from '@core/services/hardware-status/hardware-s
 /**
  * Serwis zarządzający scenami oświetlenia w systemie SolidHome.
  *
- * Utrzymuje reaktywny sygnał `scenes` z listą zdefiniowanych scen pobieranych z API backendu.
- * Odpowiada za:
+ *
+ * ### Zasady działania:
  * - pobieranie listy scen z backendu (`loadScenes`)
  * - dodawanie nowej sceny (`addScene`)
  * - usuwanie wybranej sceny z optymistyczną aktualizacją (`deleteScene`)
