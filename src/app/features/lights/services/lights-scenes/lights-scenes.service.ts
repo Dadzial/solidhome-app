@@ -51,6 +51,10 @@ export class LightsScenesService {
    */
   public readonly empty = computed(() => this.scenes().length === 0);
 
+  /**
+   * @constructor
+   * Inicjalizuje serwis i pobiera listę scen z API.
+   */
   constructor() {
     this.loadScenes();
   }
