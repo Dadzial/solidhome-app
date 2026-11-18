@@ -25,12 +25,6 @@ export class LightsEnergyService {
    */
   public readonly energyData = signal<LightEnergyData | null>(null);
 
-  /**
-   * Flaga określająca trwanie zapytania pobierania danych.
-   * @type {signal}
-   */
-  public readonly isLoading = signal<boolean>(false);
-
   /** Bieżący aktywny filtr okresu czasu */
   public readonly currentTimeframe = signal<EnergyTimeframe>('today');
 
@@ -57,17 +51,14 @@ export class LightsEnergyService {
     this.currentTimeframe.set(tf);
     this.currentRoom.set(r);
 
-    this.isLoading.set(true);
     this.getEnergyStats(tf, r).subscribe({
       next: (data) => {
         this.energyData.set(data);
         this.errorMessage.set(null);
-        this.isLoading.set(false);
       },
       error: (err: ApiError) => {
         console.error('Failed to load energy stats', err);
         this.errorMessage.set(err?.error ?? 'apiErrors.server');
-        this.isLoading.set(false);
       },
     });
   }

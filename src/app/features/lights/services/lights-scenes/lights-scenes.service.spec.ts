@@ -71,19 +71,16 @@ describe('LightsScenesService', () => {
     expect(service).toBeTruthy();
     expect(service.scenes().length).toBe(2);
     expect(service.empty()).toBe(false);
-    expect(service.isLoading()).toBe(false);
     expect(service.errorMessage()).toBeNull();
   });
 
   describe('loadScenes', () => {
     it('should set errorMessage when API fails', () => {
       service.loadScenes();
-      expect(service.isLoading()).toBe(true);
 
       const req = httpMock.expectOne(`${environment.apiUrl}/lights/scenes`);
       req.error(new ProgressEvent('error'));
 
-      expect(service.isLoading()).toBe(false);
       expect(service.errorMessage()).toBe('apiErrors.server');
     });
   });

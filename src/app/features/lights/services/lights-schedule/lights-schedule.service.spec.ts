@@ -64,10 +64,6 @@ describe('LightsScheduleService', () => {
       expect(service.schedule()).toEqual([]);
     });
 
-    it('should initialize isLoading with false', () => {
-      expect(service.isLoading()).toBe(false);
-    });
-
     it('should initialize errorMessage with null', () => {
       expect(service.errorMessage()).toBeNull();
     });
@@ -97,7 +93,6 @@ describe('LightsScheduleService', () => {
       service.loadRules();
 
       expect(apiServiceMock.get).toHaveBeenCalledWith('lights/rules');
-      expect(service.isLoading()).toBe(false);
       expect(service.errorMessage()).toBeNull();
       expect(service.schedule()).toEqual([
         {
@@ -113,7 +108,7 @@ describe('LightsScheduleService', () => {
       ]);
     });
 
-    it('should set errorMessage and isLoading to false on failure', () => {
+    it('should set errorMessage on failure', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const mockError = new Error('Server error');
       apiServiceMock.get.mockReturnValue(throwError(() => mockError));
@@ -121,7 +116,6 @@ describe('LightsScheduleService', () => {
       service.loadRules();
 
       expect(apiServiceMock.get).toHaveBeenCalledWith('lights/rules');
-      expect(service.isLoading()).toBe(false);
       expect(service.errorMessage()).toBe('apiErrors.server');
       expect(service.schedule()).toEqual([]);
       expect(consoleSpy).toHaveBeenCalled();

@@ -41,11 +41,6 @@ export class LightsScenesService {
   public readonly scenes = signal<LightScene[]>([]);
 
   /**
-   * Sygnał informujący o trwaniu operacji ładowania danych z API.
-   */
-  public readonly isLoading = signal<boolean>(false);
-
-  /**
    * Klucz błędu translacji i18n otrzymany z API/interceptora.
    * @type {signal<string | null>}
    */
@@ -66,7 +61,6 @@ export class LightsScenesService {
    * @returns {void}
    */
   public loadScenes(): void {
-    this.isLoading.set(true);
     this.getScenes().subscribe({
       next: (items) => {
         const mapped: LightScene[] = items.map((item) => ({
@@ -78,12 +72,10 @@ export class LightsScenesService {
         }));
         this.scenes.set(mapped);
         this.errorMessage.set(null);
-        this.isLoading.set(false);
       },
       error: (err: ApiError) => {
         console.error('Failed to load scenes', err);
         this.errorMessage.set(typeof err?.error === 'string' ? err.error : 'apiErrors.server');
-        this.isLoading.set(false);
       },
     });
   }

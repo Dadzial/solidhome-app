@@ -59,10 +59,6 @@ describe('LightsEnergyService', () => {
       expect(service.energyData()).toBeNull();
     });
 
-    it('should initialize isLoading signal with false', () => {
-      expect(service.isLoading()).toBe(false);
-    });
-
     it('should initialize currentTimeframe signal with "today"', () => {
       expect(service.currentTimeframe()).toBe('today');
     });
@@ -131,14 +127,13 @@ describe('LightsEnergyService', () => {
   });
 
   describe('loadEnergyStats', () => {
-    it('should update energyData signal and toggle isLoading on success', () => {
+    it('should update energyData signal and clear errorMessage on success', () => {
       service.errorMessage.set('apiErrors.server');
       apiServiceMock.get.mockReturnValue(of(mockEnergyData));
 
       service.loadEnergyStats('today', 'entireHouse');
 
       expect(apiServiceMock.get).toHaveBeenCalledWith('lights/energy', expect.anything());
-      expect(service.isLoading()).toBe(false);
       expect(service.errorMessage()).toBeNull();
       expect(service.energyData()).toEqual(mockEnergyData);
     });
@@ -165,14 +160,13 @@ describe('LightsEnergyService', () => {
       expect(apiServiceMock.get).toHaveBeenCalledWith('lights/energy', expect.anything());
     });
 
-    it('should set isLoading to false, errorMessage and keep energyData unchanged on error', () => {
+    it('should set errorMessage and keep energyData unchanged on error', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const mockError = new Error('Failed');
       apiServiceMock.get.mockReturnValue(throwError(() => mockError));
 
       service.loadEnergyStats('today', 'living_room');
 
-      expect(service.isLoading()).toBe(false);
       expect(service.errorMessage()).toBe('apiErrors.server');
       expect(service.energyData()).toBeNull();
       expect(consoleSpy).toHaveBeenCalledWith('Failed to load energy stats', expect.anything());

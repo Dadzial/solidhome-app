@@ -15,7 +15,7 @@ import { ErrorOverlayComponent } from '@shared/components/error-overlay/error-ov
  *
  * ### Zasady działania:
  * - Pobiera listę reguł z API za pośrednictwem `LightsScheduleService` w cyklu życia `ngOnInit`.
- * - Udostępnia sygnały stanu (`schedule`, `isLoading`, `errorMessage`) bezpośrednio do szablonu HTML.
+ * - Udostępnia sygnały stanu (`schedule`, `errorMessage`) bezpośrednio do szablonu HTML.
  * - Formularz dodawania reguły (`enableAddSchedule`) waliduje obecność nazwy i przynajmniej jednego dnia tygodnia (`canSave`).
  * - Przekazuje akcje użytkownika z widoku do odpowiednich metod serwisu (zapis, przełączenie, usunięcie).
  */
@@ -45,9 +45,6 @@ export class LightsScheduleComponent implements OnInit {
 
   /** Sygnał przechowujący listę reguł harmonogramu do wyświetlenia w widoku. */
   public readonly schedule = this.lightsScheduleService.schedule;
-
-  /** Sygnał informujący o trwaniu operacji ładowania danych harmonogramu. */
-  public readonly isLoading = this.lightsScheduleService.isLoading;
 
   /**
    * Sygnał obliczeniowy informujący, czy lista reguł harmonogramu jest pusta.

@@ -57,10 +57,6 @@ describe('LightsScheduleComponent', () => {
       expect(component.schedule).toBe(lightsScheduleService.schedule);
     });
 
-    it('should delegate isLoading signal', () => {
-      expect(component.isLoading).toBe(lightsScheduleService.isLoading);
-    });
-
     it('should delegate errorMessage signal', () => {
       expect(component.errorMessage).toBe(lightsScheduleService.errorMessage);
     });

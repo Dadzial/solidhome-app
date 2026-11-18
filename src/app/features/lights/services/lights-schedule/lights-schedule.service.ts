@@ -14,7 +14,7 @@ import {
  * Serwis odpowiedzialny za zarządzanie regułami harmonogramu oświetlenia w systemie SolidHome.
  *
  * Utrzymuje reaktywny sygnał `schedule` z listą zdefiniowanych reguł oświetlenia,
- * flagę ładowania `isLoading`, błąd `errorMessage` oraz stan pustej listy `empty`.
+ * błąd `errorMessage` oraz stan pustej listy `empty`.
  *
  * ### Zasady działania:
  * - `loadRules()` pobiera listę reguł z API, mapuje na model widoku `LightScheduleRule` i aktualizuje sygnał `schedule`.
@@ -46,12 +46,6 @@ export class LightsScheduleService {
   public readonly empty = computed(() => this.schedule().length === 0);
 
   /**
-   * Sygnał informujący o trwaniu operacji ładowania danych z API.
-   * @type {signal}
-   */
-  public readonly isLoading = signal<boolean>(false);
-
-  /**
    * Klucz błędu translacji i18n otrzymany z API/interceptora.
    * @type {signal<string | null>}
    */
@@ -64,7 +58,6 @@ export class LightsScheduleService {
    * @returns {void}
    */
   public loadRules(): void {
-    this.isLoading.set(true);
     this.getRules().subscribe({
       next: (items) => {
         const mapped: LightScheduleRule[] = items.map((item) => ({
@@ -79,12 +72,10 @@ export class LightsScheduleService {
         }));
         this.schedule.set(mapped);
         this.errorMessage.set(null);
-        this.isLoading.set(false);
       },
       error: (err: ApiError) => {
         console.error('Failed to load schedule rules', err);
         this.errorMessage.set(err?.error ?? 'apiErrors.server');
-        this.isLoading.set(false);
       },
     });
   }
