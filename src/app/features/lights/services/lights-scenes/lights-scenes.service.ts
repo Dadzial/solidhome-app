@@ -46,11 +46,6 @@ export class LightsScenesService {
   public readonly isLoading = signal<boolean>(false);
 
   /**
-   * Sygnał informujący o błędzie komunikacji z API.
-   */
-  public readonly hasError = signal<boolean>(false);
-
-  /**
    * Klucz błędu translacji i18n otrzymany z API/interceptora.
    * @type {signal<string | null>}
    */
@@ -82,14 +77,12 @@ export class LightsScenesService {
           active: item.active,
         }));
         this.scenes.set(mapped);
-        this.hasError.set(false);
         this.errorMessage.set(null);
         this.isLoading.set(false);
       },
       error: (err: ApiError) => {
         console.error('Failed to load scenes', err);
-        this.hasError.set(true);
-        this.errorMessage.set(err?.error ?? 'apiErrors.server');
+        this.errorMessage.set(typeof err?.error === 'string' ? err.error : 'apiErrors.server');
         this.isLoading.set(false);
       },
     });
@@ -105,13 +98,11 @@ export class LightsScenesService {
     this.postScene(payload).subscribe({
       next: () => {
         this.loadScenes();
-        this.hasError.set(false);
         this.errorMessage.set(null);
       },
       error: (err: ApiError) => {
         console.error('Failed to add scene', err);
-        this.hasError.set(true);
-        this.errorMessage.set(err?.error ?? 'apiErrors.server');
+        this.errorMessage.set(typeof err?.error === 'string' ? err.error : 'apiErrors.server');
       },
     });
   }
@@ -141,14 +132,12 @@ export class LightsScenesService {
     this.scenes.update((current) => current.filter((s) => s.id !== id));
     this.deleteSceneApi(id).subscribe({
       next: () => {
-        this.hasError.set(false);
         this.errorMessage.set(null);
       },
       error: (err: ApiError) => {
         console.error(`Failed to delete scene ${id}`, err);
         this.scenes.set(previousScenes);
-        this.hasError.set(true);
-        this.errorMessage.set(err?.error ?? 'apiErrors.server');
+        this.errorMessage.set(typeof err?.error === 'string' ? err.error : 'apiErrors.server');
       },
     });
   }

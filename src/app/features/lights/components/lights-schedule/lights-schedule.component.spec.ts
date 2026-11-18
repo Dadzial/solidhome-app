@@ -61,8 +61,7 @@ describe('LightsScheduleComponent', () => {
       expect(component.isLoading).toBe(lightsScheduleService.isLoading);
     });
 
-    it('should delegate hasError and errorMessage signal', () => {
-      expect(component.hasError).toBe(lightsScheduleService.hasError);
+    it('should delegate errorMessage signal', () => {
       expect(component.errorMessage).toBe(lightsScheduleService.errorMessage);
     });
 
@@ -272,8 +271,8 @@ describe('LightsScheduleComponent', () => {
   });
 
   describe('template rendering', () => {
-    it('should render error overlay when hasError is true and reload rules on retry', () => {
-      lightsScheduleService.hasError.set(true);
+    it('should render error overlay when errorMessage is set and reload rules on retry', () => {
+      lightsScheduleService.errorMessage.set('apiErrors.server');
       fixture.detectChanges();
 
       const overlay = fixture.nativeElement.querySelector('app-error-overlay');

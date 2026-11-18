@@ -71,8 +71,8 @@ describe('LightsEnergyService', () => {
       expect(service.currentRoom()).toBe('entireHouse');
     });
 
-    it('should initialize hasError signal with false', () => {
-      expect(service.hasError()).toBe(false);
+    it('should initialize errorMessage signal with null', () => {
+      expect(service.errorMessage()).toBeNull();
     });
   });
 
@@ -132,14 +132,14 @@ describe('LightsEnergyService', () => {
 
   describe('loadEnergyStats', () => {
     it('should update energyData signal and toggle isLoading on success', () => {
-      service.hasError.set(true);
+      service.errorMessage.set('apiErrors.server');
       apiServiceMock.get.mockReturnValue(of(mockEnergyData));
 
       service.loadEnergyStats('today', 'entireHouse');
 
       expect(apiServiceMock.get).toHaveBeenCalledWith('lights/energy', expect.anything());
       expect(service.isLoading()).toBe(false);
-      expect(service.hasError()).toBe(false);
+      expect(service.errorMessage()).toBeNull();
       expect(service.energyData()).toEqual(mockEnergyData);
     });
 
@@ -165,7 +165,7 @@ describe('LightsEnergyService', () => {
       expect(apiServiceMock.get).toHaveBeenCalledWith('lights/energy', expect.anything());
     });
 
-    it('should set isLoading to false, hasError to true and keep energyData unchanged on error', () => {
+    it('should set isLoading to false, errorMessage and keep energyData unchanged on error', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const mockError = new Error('Failed');
       apiServiceMock.get.mockReturnValue(throwError(() => mockError));
@@ -173,7 +173,7 @@ describe('LightsEnergyService', () => {
       service.loadEnergyStats('today', 'living_room');
 
       expect(service.isLoading()).toBe(false);
-      expect(service.hasError()).toBe(true);
+      expect(service.errorMessage()).toBe('apiErrors.server');
       expect(service.energyData()).toBeNull();
       expect(consoleSpy).toHaveBeenCalledWith('Failed to load energy stats', expect.anything());
     });

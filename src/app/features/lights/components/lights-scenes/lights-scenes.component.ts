@@ -28,9 +28,6 @@ export class LightsScenesComponent {
   /** Serwis zarządzający logiką scen. */
   public lightsScenesService = inject(LightsScenesService);
 
-  /** Sygnał informujący o błędzie komunikacji z API. */
-  public readonly hasError = this.lightsScenesService.hasError;
-
   /** Sygnał określający dostępność fizycznej płytki sterownika. */
   public readonly isBoardOnline = this.lightsScenesService.hardwareStatusService.isBoardOnline;
 

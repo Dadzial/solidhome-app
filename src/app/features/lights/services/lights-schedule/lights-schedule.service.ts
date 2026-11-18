@@ -14,7 +14,7 @@ import {
  * Serwis odpowiedzialny za zarządzanie regułami harmonogramu oświetlenia w systemie SolidHome.
  *
  * Utrzymuje reaktywny sygnał `schedule` z listą zdefiniowanych reguł oświetlenia,
- * flagę ładowania `isLoading`, flagę błędów `hasError` stan pustej listy `empty`.
+ * flagę ładowania `isLoading`, błąd `errorMessage` oraz stan pustej listy `empty`.
  *
  * ### Zasady działania:
  * - `loadRules()` pobiera listę reguł z API, mapuje na model widoku `LightScheduleRule` i aktualizuje sygnał `schedule`.
@@ -52,12 +52,6 @@ export class LightsScheduleService {
   public readonly isLoading = signal<boolean>(false);
 
   /**
-   * Sygnał informujący o błędzie komunikacji z API.
-   * @type {signal}
-   */
-  public readonly hasError = signal<boolean>(false);
-
-  /**
    * Klucz błędu translacji i18n otrzymany z API/interceptora.
    * @type {signal<string | null>}
    */
@@ -84,13 +78,11 @@ export class LightsScheduleService {
           createdAt: item.createdAt,
         }));
         this.schedule.set(mapped);
-        this.hasError.set(false);
         this.errorMessage.set(null);
         this.isLoading.set(false);
       },
       error: (err: ApiError) => {
         console.error('Failed to load schedule rules', err);
-        this.hasError.set(true);
         this.errorMessage.set(err?.error ?? 'apiErrors.server');
         this.isLoading.set(false);
       },
@@ -118,12 +110,10 @@ export class LightsScheduleService {
       tap({
         next: () => {
           this.loadRules();
-          this.hasError.set(false);
           this.errorMessage.set(null);
         },
         error: (err: ApiError) => {
           console.error('Failed to create schedule rule', err);
-          this.hasError.set(true);
           this.errorMessage.set(err?.error ?? 'apiErrors.server');
         },
       }),
@@ -157,13 +147,11 @@ export class LightsScheduleService {
 
     this.putRuleActive(id, targetActive).subscribe({
       next: () => {
-        this.hasError.set(false);
         this.errorMessage.set(null);
       },
       error: (err: ApiError) => {
         console.error(`Failed to toggle active state for rule ${id}`, err);
         this.schedule.set(previousRules);
-        this.hasError.set(true);
         this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });
@@ -182,13 +170,11 @@ export class LightsScheduleService {
 
     this.deleteRuleApi(id).subscribe({
       next: () => {
-        this.hasError.set(false);
         this.errorMessage.set(null);
       },
       error: (err: ApiError) => {
         console.error(`Failed to delete schedule rule ${id}`, err);
         this.schedule.set(previousRules);
-        this.hasError.set(true);
         this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });

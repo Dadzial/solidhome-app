@@ -84,10 +84,10 @@ describe('LightsPageComponent', () => {
 
   describe('global error overlay and allFailed computed', () => {
     it('should evaluate allFailed as false when not all services failed', () => {
-      component.lightsControlService.hasError.set(true);
-      component.lightsScheduleService.hasError.set(false);
-      component.lightsEnergyService.hasError.set(true);
-      component.lightsScenesService.hasError.set(true);
+      component.lightsControlService.errorMessage.set('apiErrors.server');
+      component.lightsScheduleService.errorMessage.set(null);
+      component.lightsEnergyService.errorMessage.set('apiErrors.server');
+      component.lightsScenesService.errorMessage.set('apiErrors.server');
 
       expect(component.allFailed()).toBe(false);
       fixture.detectChanges();
@@ -99,11 +99,10 @@ describe('LightsPageComponent', () => {
     });
 
     it('should evaluate allFailed as true and render global error overlay when all services failed', () => {
-      component.lightsControlService.hasError.set(true);
-      component.lightsScheduleService.hasError.set(true);
-      component.lightsEnergyService.hasError.set(true);
-      component.lightsScenesService.hasError.set(true);
       component.lightsControlService.errorMessage.set('apiErrors.network');
+      component.lightsScheduleService.errorMessage.set('apiErrors.server');
+      component.lightsEnergyService.errorMessage.set('apiErrors.server');
+      component.lightsScenesService.errorMessage.set('apiErrors.server');
 
       expect(component.allFailed()).toBe(true);
       fixture.detectChanges();
@@ -115,10 +114,10 @@ describe('LightsPageComponent', () => {
     });
 
     it('should call retryAll on all 4 services when retry is clicked on global overlay', () => {
-      component.lightsControlService.hasError.set(true);
-      component.lightsScheduleService.hasError.set(true);
-      component.lightsEnergyService.hasError.set(true);
-      component.lightsScenesService.hasError.set(true);
+      component.lightsControlService.errorMessage.set('apiErrors.server');
+      component.lightsScheduleService.errorMessage.set('apiErrors.server');
+      component.lightsEnergyService.errorMessage.set('apiErrors.server');
+      component.lightsScenesService.errorMessage.set('apiErrors.server');
       fixture.detectChanges();
 
       const loadLightsSpy = vi

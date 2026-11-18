@@ -113,15 +113,15 @@ describe('LightsEnergyComponent', () => {
   });
 
   describe('computed signals and data mapping', () => {
-    it('should reflect hasError signal and render error overlay with retry functionality', () => {
-      lightsEnergyService.hasError.set(false);
+    it('should reflect errorMessage signal and render error overlay with retry functionality', () => {
+      lightsEnergyService.errorMessage.set(null);
       fixture.detectChanges();
-      expect(component.hasError()).toBe(false);
+      expect(component.errorMessage()).toBeNull();
       expect(fixture.nativeElement.querySelector('app-error-overlay')).toBeNull();
 
-      lightsEnergyService.hasError.set(true);
+      lightsEnergyService.errorMessage.set('apiErrors.server');
       fixture.detectChanges();
-      expect(component.hasError()).toBe(true);
+      expect(component.errorMessage()).toBe('apiErrors.server');
 
       const overlay = fixture.nativeElement.querySelector('app-error-overlay');
       expect(overlay).toBeTruthy();

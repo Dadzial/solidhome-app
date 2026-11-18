@@ -72,11 +72,11 @@ describe('LightsScenesService', () => {
     expect(service.scenes().length).toBe(2);
     expect(service.empty()).toBe(false);
     expect(service.isLoading()).toBe(false);
-    expect(service.hasError()).toBe(false);
+    expect(service.errorMessage()).toBeNull();
   });
 
   describe('loadScenes', () => {
-    it('should set hasError to true when API fails', () => {
+    it('should set errorMessage when API fails', () => {
       service.loadScenes();
       expect(service.isLoading()).toBe(true);
 
@@ -84,7 +84,7 @@ describe('LightsScenesService', () => {
       req.error(new ProgressEvent('error'));
 
       expect(service.isLoading()).toBe(false);
-      expect(service.hasError()).toBe(true);
+      expect(service.errorMessage()).toBe('apiErrors.server');
     });
   });
 
@@ -119,10 +119,10 @@ describe('LightsScenesService', () => {
       ]);
 
       expect(service.scenes().length).toBe(3);
-      expect(service.hasError()).toBe(false);
+      expect(service.errorMessage()).toBeNull();
     });
 
-    it('should set hasError to true when POST fails', () => {
+    it('should set errorMessage when POST fails', () => {
       service.addScene({
         name: 'Błędna scena',
         icon: 'assets/icons/heart.svg',
@@ -132,7 +132,7 @@ describe('LightsScenesService', () => {
       const postReq = httpMock.expectOne(`${environment.apiUrl}/lights/scenes`);
       postReq.error(new ProgressEvent('error'));
 
-      expect(service.hasError()).toBe(true);
+      expect(service.errorMessage()).toBe('apiErrors.server');
     });
   });
 
@@ -146,10 +146,10 @@ describe('LightsScenesService', () => {
       expect(delReq.request.method).toBe('DELETE');
       delReq.flush({ message: 'Scene deleted', deletedCount: 1 });
 
-      expect(service.hasError()).toBe(false);
+      expect(service.errorMessage()).toBeNull();
     });
 
-    it('should rollback scenes and set hasError to true if DELETE fails', () => {
+    it('should rollback scenes and set errorMessage if DELETE fails', () => {
       const initialCount = service.scenes().length;
 
       service.deleteScene('scene_1');
@@ -159,7 +159,7 @@ describe('LightsScenesService', () => {
       delReq.error(new ProgressEvent('error'));
 
       expect(service.scenes().length).toBe(initialCount);
-      expect(service.hasError()).toBe(true);
+      expect(service.errorMessage()).toBe('apiErrors.server');
     });
 
     it('should turn off active lights in scene rooms when deleting an active scene', () => {

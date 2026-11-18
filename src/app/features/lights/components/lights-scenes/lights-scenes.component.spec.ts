@@ -54,8 +54,7 @@ describe('LightsScenesComponent', () => {
       expect(component.scenes).toBe(component.lightsScenesService.scenes);
     });
 
-    it('should delegate hasError and errorMessage signals to service', () => {
-      expect(component.hasError).toBe(component.lightsScenesService.hasError);
+    it('should delegate errorMessage signal to service', () => {
       expect(component.errorMessage).toBe(component.lightsScenesService.errorMessage);
     });
 
@@ -202,8 +201,8 @@ describe('LightsScenesComponent', () => {
   });
 
   describe('error handling and overlay', () => {
-    it('should render error overlay when hasError is true and reload scenes on retry', () => {
-      component.lightsScenesService.hasError.set(true);
+    it('should render error overlay when errorMessage is set and reload scenes on retry', () => {
+      component.lightsScenesService.errorMessage.set('apiErrors.server');
       fixture.detectChanges();
 
       const overlay = fixture.nativeElement.querySelector('app-error-overlay');

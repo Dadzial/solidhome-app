@@ -88,9 +88,9 @@ describe('LightsControlService', () => {
     });
   });
 
-  describe('hasError signal', () => {
-    it('should default to false', () => {
-      expect(service.hasError()).toBe(false);
+  describe('errorMessage signal', () => {
+    it('should default to null', () => {
+      expect(service.errorMessage()).toBeNull();
     });
   });
 
@@ -194,7 +194,7 @@ describe('LightsControlService', () => {
   });
 
   describe('loadLights', () => {
-    it('should update lights signal from API response and set hasError to false', () => {
+    it('should update lights signal from API response and clear errorMessage', () => {
       const mockItems: LightItem[] = [
         { name: 'living_room', state: 1 },
         { name: 'kitchen', state: 0 },
@@ -205,7 +205,7 @@ describe('LightsControlService', () => {
       ];
       apiServiceMock.get.mockReturnValue(of(mockItems));
 
-      service.hasError.set(true);
+      service.errorMessage.set('apiErrors.server');
       service.loadLights();
 
       expect(apiServiceMock.get).toHaveBeenCalledWith('lights/status/app');
@@ -213,17 +213,17 @@ describe('LightsControlService', () => {
       expect(lights.find((l) => l.id === 'living_room')?.on).toBe(true);
       expect(lights.find((l) => l.id === 'kitchen')?.on).toBe(false);
       expect(lights.find((l) => l.id === 'boiler_room')?.on).toBe(true);
-      expect(service.hasError()).toBe(false);
+      expect(service.errorMessage()).toBeNull();
     });
 
-    it('should set hasError to true when loadLights request fails', () => {
+    it('should set errorMessage when loadLights request fails', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const mockError = new Error('Server error');
       apiServiceMock.get.mockReturnValue(throwError(() => mockError));
 
       service.loadLights();
 
-      expect(service.hasError()).toBe(true);
+      expect(service.errorMessage()).toBe('apiErrors.server');
       expect(consoleSpy).toHaveBeenCalledWith('Failed to load initial lights status', mockError);
     });
   });
@@ -237,12 +237,12 @@ describe('LightsControlService', () => {
 
       expect(service.lights().find((l) => l.id === id)?.on).toBe(true);
       expect(apiServiceMock.post).toHaveBeenCalledWith('lights/update', { name: id, state: 1 });
-      expect(service.hasError()).toBe(false);
+      expect(service.errorMessage()).toBeNull();
       expect(historyService.loadHistory).toHaveBeenCalled();
       expect(energyService.loadEnergyStats).toHaveBeenCalled();
     });
 
-    it('should revert light state and set hasError to true on error', () => {
+    it('should revert light state and set errorMessage on error', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const id = 'hallway';
       const mockError = new Error('Server error');
@@ -251,7 +251,7 @@ describe('LightsControlService', () => {
       service.toggleLight(id);
 
       expect(service.lights().find((l) => l.id === id)?.on).toBe(false);
-      expect(service.hasError()).toBe(true);
+      expect(service.errorMessage()).toBe('apiErrors.server');
       expect(consoleSpy).toHaveBeenCalledWith('Failed to update light status', mockError);
     });
   });
@@ -267,12 +267,12 @@ describe('LightsControlService', () => {
 
       expect(apiServiceMock.post).toHaveBeenCalledTimes(6);
       expect(service.lights().every((l) => l.on === true)).toBe(true);
-      expect(service.hasError()).toBe(false);
+      expect(service.errorMessage()).toBeNull();
       expect(historyService.loadHistory).toHaveBeenCalled();
       expect(energyService.loadEnergyStats).toHaveBeenCalled();
     });
 
-    it('should revert all lights to original state and set hasError to true on error', () => {
+    it('should revert all lights to original state and set errorMessage on error', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const originalLights = service.lights();
       const mockError = new Error('Server error');
@@ -281,7 +281,7 @@ describe('LightsControlService', () => {
       service.toggleAllLights();
 
       expect(service.lights()).toEqual(originalLights);
-      expect(service.hasError()).toBe(true);
+      expect(service.errorMessage()).toBe('apiErrors.server');
       expect(consoleSpy).toHaveBeenCalledWith('Failed to update lights status', mockError);
     });
   });

@@ -67,9 +67,6 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
   /** Serwis zarządzający pobieraniem danych statystyk energii świateł. */
   private lightsEnergyService = inject(LightsEnergyService);
 
-  /** Sygnał informujący o błędzie komunikacji z API. */
-  public readonly hasError = this.lightsEnergyService.hasError;
-
   /** Klucz błędu translacji i18n otrzymany z serwisu energii. */
   public readonly errorMessage = this.lightsEnergyService.errorMessage;
 

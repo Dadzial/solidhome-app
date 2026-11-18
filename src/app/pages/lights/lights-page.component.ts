@@ -57,10 +57,10 @@ export class LightsPageComponent {
    */
   public readonly allFailed = computed(
     () =>
-      this.lightsControlService.hasError() &&
-      this.lightsScheduleService.hasError() &&
-      this.lightsEnergyService.hasError() &&
-      this.lightsScenesService.hasError(),
+      this.lightsControlService.errorMessage() !== null &&
+      this.lightsScheduleService.errorMessage() !== null &&
+      this.lightsEnergyService.errorMessage() !== null &&
+      this.lightsScenesService.errorMessage() !== null,
   );
 
   /**

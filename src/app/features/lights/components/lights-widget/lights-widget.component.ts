@@ -16,7 +16,7 @@ import { LightsHistoryService } from '@features/lights/services/lights-history/l
  * ### Zasady działania:
  * - Deleguje zarządzanie stanem i komunikację z API do serwisów `LightsControlService` oraz `LightsHistoryService`.
  * - Przy inicjalizacji (`ngOnInit`) wywołuje pobranie aktualnego stanu lamp i historii zdarzeń.
- * - Udostępnia sygnały serwisów bezpośrednio dla szablonu HTML (`lights`, `history`, `hasError`, `allLightsOn`).
+ * - Udostępnia sygnały serwisów bezpośrednio dla szablonu HTML (`lights`, `history`, `errorMessage`, `allLightsOn`).
  * - Przekazuje akcje użytkownika z widoku do odpowiednich metod serwisów.
  */
 @Component({
@@ -46,9 +46,6 @@ export class LightsWidgetComponent implements OnInit {
 
   /** Sygnał przechowujący listę lamp z ich pozycjami na mapie SVG i aktualnym stanem. */
   public readonly lights = this.lightsControlService.lights;
-
-  /** Sygnał informujący o błędzie komunikacji z API. */
-  public readonly hasError = this.lightsControlService.hasError;
 
   /** Sygnał określający dostępność fizycznej płytki sterownika. */
   public readonly isBoardOnline = this.lightsControlService.hardwareStatusService.isBoardOnline;

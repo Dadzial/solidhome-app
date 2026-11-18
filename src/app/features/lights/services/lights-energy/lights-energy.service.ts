@@ -38,12 +38,6 @@ export class LightsEnergyService {
   public readonly currentRoom = signal<string>('entireHouse');
 
   /**
-   * Sygnał informujący o błędzie komunikacji z API (np. nieudane pobranie lub aktualizacja stanu lamp).
-   * @type {signal}
-   */
-  public readonly hasError = signal<boolean>(false);
-
-  /**
    * Klucz błędu translacji i18n otrzymany z API/interceptora.
    * @type {signal<string | null>}
    */
@@ -67,13 +61,11 @@ export class LightsEnergyService {
     this.getEnergyStats(tf, r).subscribe({
       next: (data) => {
         this.energyData.set(data);
-        this.hasError.set(false);
         this.errorMessage.set(null);
         this.isLoading.set(false);
       },
       error: (err: ApiError) => {
         console.error('Failed to load energy stats', err);
-        this.hasError.set(true);
         this.errorMessage.set(err?.error ?? 'apiErrors.server');
         this.isLoading.set(false);
       },

@@ -68,8 +68,8 @@ describe('LightsScheduleService', () => {
       expect(service.isLoading()).toBe(false);
     });
 
-    it('should initialize hasError with false', () => {
-      expect(service.hasError()).toBe(false);
+    it('should initialize errorMessage with null', () => {
+      expect(service.errorMessage()).toBeNull();
     });
 
     it('should compute empty as true when schedule is empty and false when schedule has items', () => {
@@ -98,7 +98,7 @@ describe('LightsScheduleService', () => {
 
       expect(apiServiceMock.get).toHaveBeenCalledWith('lights/rules');
       expect(service.isLoading()).toBe(false);
-      expect(service.hasError()).toBe(false);
+      expect(service.errorMessage()).toBeNull();
       expect(service.schedule()).toEqual([
         {
           id: 'r1',
@@ -113,7 +113,7 @@ describe('LightsScheduleService', () => {
       ]);
     });
 
-    it('should set hasError to true and isLoading to false on failure', () => {
+    it('should set errorMessage and isLoading to false on failure', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const mockError = new Error('Server error');
       apiServiceMock.get.mockReturnValue(throwError(() => mockError));
@@ -122,7 +122,7 @@ describe('LightsScheduleService', () => {
 
       expect(apiServiceMock.get).toHaveBeenCalledWith('lights/rules');
       expect(service.isLoading()).toBe(false);
-      expect(service.hasError()).toBe(true);
+      expect(service.errorMessage()).toBe('apiErrors.server');
       expect(service.schedule()).toEqual([]);
       expect(consoleSpy).toHaveBeenCalled();
     });
@@ -145,7 +145,7 @@ describe('LightsScheduleService', () => {
 
       expect(apiServiceMock.post).toHaveBeenCalledWith('lights/rules', payload);
       expect(loadRulesSpy).toHaveBeenCalled();
-      expect(service.hasError()).toBe(false);
+      expect(service.errorMessage()).toBeNull();
     });
 
     it('should deactivate the rule immediately via putRuleActive when hardware is offline', () => {
@@ -173,10 +173,10 @@ describe('LightsScheduleService', () => {
       expect(apiServiceMock.put).toHaveBeenCalledWith('lights/rules/r2', { active: false });
       expect(resultActive).toBe(false);
       expect(loadRulesSpy).toHaveBeenCalled();
-      expect(service.hasError()).toBe(false);
+      expect(service.errorMessage()).toBeNull();
     });
 
-    it('should set hasError to true on failure', () => {
+    it('should set errorMessage on failure', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const payload: CreateScheduleRulePayload = {
         name: 'Night lights',
@@ -194,7 +194,7 @@ describe('LightsScheduleService', () => {
       });
 
       expect(apiServiceMock.post).toHaveBeenCalledWith('lights/rules', payload);
-      expect(service.hasError()).toBe(true);
+      expect(service.errorMessage()).toBe('apiErrors.server');
       expect(consoleSpy).toHaveBeenCalled();
     });
   });
@@ -221,7 +221,7 @@ describe('LightsScheduleService', () => {
 
       expect(apiServiceMock.put).toHaveBeenCalledWith('lights/rules/r1', { active: false });
       expect(service.schedule()[0].active).toBe(false);
-      expect(service.hasError()).toBe(false);
+      expect(service.errorMessage()).toBeNull();
     });
 
     it('should respect explicitly provided active status', () => {
@@ -233,7 +233,7 @@ describe('LightsScheduleService', () => {
       expect(apiServiceMock.put).toHaveBeenCalledWith('lights/rules/r1', { active: true });
     });
 
-    it('should rollback to previous state and set hasError to true on failure', () => {
+    it('should rollback to previous state and set errorMessage on failure', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const mockError = new Error('Server error');
       apiServiceMock.put.mockReturnValue(throwError(() => mockError));
@@ -242,7 +242,7 @@ describe('LightsScheduleService', () => {
 
       expect(apiServiceMock.put).toHaveBeenCalledWith('lights/rules/r1', { active: false });
       expect(service.schedule()[0].active).toBe(true);
-      expect(service.hasError()).toBe(true);
+      expect(service.errorMessage()).toBe('apiErrors.server');
       expect(consoleSpy).toHaveBeenCalled();
     });
 
@@ -286,10 +286,10 @@ describe('LightsScheduleService', () => {
 
       expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/rules/r1');
       expect(service.schedule()).toEqual([]);
-      expect(service.hasError()).toBe(false);
+      expect(service.errorMessage()).toBeNull();
     });
 
-    it('should rollback to previous state and set hasError to true on failure', () => {
+    it('should rollback to previous state and set errorMessage on failure', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       const mockError = new Error('Server error');
       apiServiceMock.delete.mockReturnValue(throwError(() => mockError));
@@ -299,7 +299,7 @@ describe('LightsScheduleService', () => {
       expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/rules/r1');
       expect(service.schedule().length).toBe(1);
       expect(service.schedule()[0].id).toBe('r1');
-      expect(service.hasError()).toBe(true);
+      expect(service.errorMessage()).toBe('apiErrors.server');
       expect(consoleSpy).toHaveBeenCalled();
     });
   });

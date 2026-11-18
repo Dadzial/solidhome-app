@@ -80,10 +80,8 @@ describe('LightsWidgetComponent', () => {
       expect(component.history()).toEqual([]);
     });
 
-    it('should delegate hasError and errorMessage signals to LightsControlService', () => {
-      expect(component.hasError).toBe(lightsControlService.hasError);
+    it('should delegate errorMessage signal to LightsControlService', () => {
       expect(component.errorMessage).toBe(lightsControlService.errorMessage);
-      expect(component.hasError()).toBe(false);
       expect(component.errorMessage()).toBeNull();
     });
 
@@ -94,8 +92,7 @@ describe('LightsWidgetComponent', () => {
   });
 
   describe('template rendering', () => {
-    it('should render error overlay when hasError is true and trigger reload on retry', () => {
-      lightsControlService.hasError.set(true);
+    it('should render error overlay when errorMessage is set and trigger reload on retry', () => {
       lightsControlService.errorMessage.set('apiErrors.network');
       fixture.detectChanges();
 

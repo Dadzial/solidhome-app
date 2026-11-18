@@ -24,13 +24,14 @@ const INITIAL_LIGHTS: Light[] = [
 /**
  * Serwis odpowiedzialny za pobieranie i aktualizację stanu świateł w aplikacji.
  *
- * Zarządza reaktywnym stanem lamp (`lights`), flagą błędów (`hasError`) oraz
+ * Zarządza reaktywnym stanem lamp (`lights`), błędem (`errorMessage`) oraz
  * obliczanym stanem włączenia wszystkich lamp (`allLightsOn`).
  *
  * ### Zasady działania:
  * - Przechowuje listę lamp z ich koordynatami na rzucie w sygnale `lights`.
  * - `loadLights()` pobiera aktualny stan z API i synchronizuje sygnał `lights`.
- * - `toggleLight()` wykonuje optymistyczną aktualizację (optimistic update) w UI i wysyła POST do API. W razie błędu wycofuje zmianę (rollback) i ustawia `hasError`.
+ * - `toggleLight()` wykonuje optymistyczną aktualizację (optimistic update) w UI i wysyła POST do API.
+ *    W razie błędu wycofuje zmianę (rollback) i ustawia `errorMessage`.
  * - `toggleAllLights()` przełącza wszystkie lampy równolegle za pomocą `forkJoin` z obsługą rollbacku.
  * - Po udanej zmianie stanu świateł automatycznie wywołuje `loadHistory()` z `LightsHistoryService`.
  */
@@ -60,13 +61,7 @@ export class LightsControlService {
   public readonly lights = signal<Light[]>(INITIAL_LIGHTS);
 
   /**
-   * Sygnał informujący o błędzie komunikacji z API (np. nieudane pobranie lub aktualizacja stanu lamp).
-   * @type {signal}
-   */
-  public readonly hasError = signal<boolean>(false);
-
-  /**
-   * Klucz błędu translacji i18n otrzymany z API/interceptora.
+   * Klucz błędu translacji i18n otrzymany z API/interceptora (lub null w przypadku braku błędu).
    * @type {signal<string | null>}
    */
   public readonly errorMessage = signal<string | null>(null);
@@ -101,12 +96,10 @@ export class LightsControlService {
             return found ? { ...light, on: found.state === 1 } : light;
           }),
         );
-        this.hasError.set(false);
         this.errorMessage.set(null);
       },
       error: (err: ApiError) => {
         console.error('Failed to load initial lights status', err);
-        this.hasError.set(true);
         this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });
@@ -129,7 +122,6 @@ export class LightsControlService {
 
     this.updateStatus(id, newState).subscribe({
       next: () => {
-        this.hasError.set(false);
         this.errorMessage.set(null);
         this.lightsHistoryService.loadHistory();
         this.lightsEnergyService.loadEnergyStats();
@@ -139,7 +131,6 @@ export class LightsControlService {
         this.lights.update((lights) =>
           lights.map((l) => (l.id === id ? { ...l, on: !newState } : l)),
         );
-        this.hasError.set(true);
         this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });
@@ -164,7 +155,6 @@ export class LightsControlService {
 
     forkJoin(requests).subscribe({
       next: () => {
-        this.hasError.set(false);
         this.errorMessage.set(null);
         this.lightsHistoryService.loadHistory();
         this.lightsEnergyService.loadEnergyStats();
@@ -172,7 +162,6 @@ export class LightsControlService {
       error: (err: ApiError) => {
         console.error('Failed to update lights status', err);
         this.lights.set(originalLights);
-        this.hasError.set(true);
         this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });
