@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { form, FormField, FormRoot, required, submit } from '@angular/forms/signals';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { LoginService } from '@features/auth/services/login/login.service';
 import { LoadingService } from '@core/services/loading/loading.service';
 import { SseService } from '@core/services/sse/sse.service';
@@ -91,28 +92,22 @@ export class LoginFormComponent {
           this.isLoading.set(true);
           this.serverError.set(null);
           try {
-            await new Promise<void>((resolve, reject) => {
-              const credentials = this.loginModel();
-              this.loginService.login(credentials).subscribe({
-                next: (response) => {
-                  if (credentials.rememberMe) {
-                    localStorage.setItem('token', response.token);
-                    if (response.refreshToken) {
-                      localStorage.setItem('refreshToken', response.refreshToken);
-                    }
-                  } else {
-                    sessionStorage.setItem('token', response.token);
-                    if (response.refreshToken) {
-                      sessionStorage.setItem('refreshToken', response.refreshToken);
-                    }
-                  }
-                  this.loginService.initUserFromToken();
-                  this.sseService.connect();
-                  resolve();
-                },
-                error: (err: ApiError) => reject(err),
-              });
-            });
+            const credentials = this.loginModel();
+            const response = await firstValueFrom(this.loginService.login(credentials));
+
+            if (credentials.rememberMe) {
+              localStorage.setItem('token', response.token);
+              if (response.refreshToken) {
+                localStorage.setItem('refreshToken', response.refreshToken);
+              }
+            } else {
+              sessionStorage.setItem('token', response.token);
+              if (response.refreshToken) {
+                sessionStorage.setItem('refreshToken', response.refreshToken);
+              }
+            }
+            this.loginService.initUserFromToken();
+            this.sseService.connect();
 
             this.loadingService.showLoadingWindow();
 

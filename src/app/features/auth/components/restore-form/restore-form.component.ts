@@ -2,6 +2,7 @@ import { Component, output, inject, signal } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { form, FormField, FormRoot, required, submit } from '@angular/forms/signals';
 import { TranslateModule } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 import { ConfirmPasswordService } from '@features/auth/services/confirm/confirm-password.service';
 import { ConfirmPasswordRequest } from '@features/auth/models/auth.models';
 import { ApiError } from '@core/models/core.models';
@@ -75,12 +76,9 @@ export class RestoreFormComponent {
           this.isLoading.set(true);
           this.serverError.set(null);
           try {
-            await new Promise<void>((resolve, reject) => {
-              this.confirmPasswordService.confirmNewPassword(this.restoreModel()).subscribe({
-                next: () => resolve(),
-                error: (err: ApiError) => reject(err),
-              });
-            });
+            await firstValueFrom(
+              this.confirmPasswordService.confirmNewPassword(this.restoreModel()),
+            );
             this.switchToLogin.emit();
           } catch (err) {
             const apiError = err as ApiError;

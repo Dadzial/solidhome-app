@@ -2,6 +2,7 @@ import { Component, output, inject, signal } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { form, FormField, FormRoot, required, submit } from '@angular/forms/signals';
 import { TranslateModule } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 import { VerifyEmailService } from '@features/auth/services/verify/verify-email.service';
 import { VerifyEmailRequest } from '@features/auth/models/auth.models';
 import { ApiError } from '@core/models/core.models';
@@ -77,12 +78,7 @@ export class VerifyFormComponent {
           this.isLoading.set(true);
           this.serverError.set(null);
           try {
-            await new Promise<void>((resolve, reject) => {
-              this.verifyService.verifyEmail(this.verifyEmailModel()).subscribe({
-                next: () => resolve(),
-                error: (err: ApiError) => reject(err),
-              });
-            });
+            await firstValueFrom(this.verifyService.verifyEmail(this.verifyEmailModel()));
             this.switchToNewPassword.emit();
           } catch (err) {
             const apiError = err as ApiError;

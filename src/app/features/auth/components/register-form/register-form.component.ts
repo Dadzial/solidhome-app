@@ -1,6 +1,7 @@
 import { Component, output, inject, signal } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 import {
   email,
   form,
@@ -92,12 +93,7 @@ export class RegisterFormComponent {
           this.isLoading.set(true);
           this.serverError.set(null);
           try {
-            await new Promise<void>((resolve, reject) => {
-              this.registerService.register(this.registerModel()).subscribe({
-                next: () => resolve(),
-                error: (err: ApiError) => reject(err),
-              });
-            });
+            await firstValueFrom(this.registerService.register(this.registerModel()));
             this.switchToLogin.emit();
           } catch (err) {
             const apiError = err as ApiError;
