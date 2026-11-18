@@ -10,6 +10,13 @@ import { ErrorOverlayComponent } from '@shared/components/error-overlay/error-ov
  *
  * Umożliwia tworzenie gotowych zestawów oświetlenia (np. Wieczór filmowy, Romantyczny),
  * ich błyskawiczne wyzwalanie jednym kliknięciem oraz usuwanie.
+ *
+ * ### Zasady działania:
+ * - Pobiera listę scen z serwisu `LightsScenesService`, który komunikuje się z backendem.
+ * - Obsługuje błędy komunikacji z API i wyświetla je w nakładce błędu.
+ * - Umożliwia dodawanie nowych scen poprzez formularz z wyborem nazwy, ikony i przypisanych pokoi.
+ * - Weryfikuje poprawność danych nowej sceny (nazwa niepusta, co najmniej jeden pokój).
+ * - Pozwala aktywować scenę (zapala przypisane pokoje) oraz usuwać istniejące sceny.
  */
 @Component({
   selector: 'app-lights-scenes',

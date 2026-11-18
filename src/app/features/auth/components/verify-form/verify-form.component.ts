@@ -98,7 +98,7 @@ export class VerifyFormComponent {
   /**
    * Obsługuje zdarzenie zatwierdzenia formularza (submit).
    *
-   * Zapobiega domyślnej akcji przeglądarki, wywołuje akcję `submit` na `verifyEmailForm`
+   * Zapobiega domyślnej akcji przeglądarki, wywołuje akcję `submit` na `verifyemailform`
    * i wyświetla błędy walidacji, jeśli formularz jest niepoprawny.
    *
    * @param {Event} event Zdarzenie submit z formularza DOM.

@@ -6,6 +6,14 @@ import { Injectable, signal } from '@angular/core';
  */
 export type TimeFormat = '12h' | '24h';
 
+/**
+ * Serwis odpowiedzialny za zarządzanie formatem czasu (12h/24h) w aplikacji.
+ *
+ * ### Zasady działania:
+ * - Przechowuje aktualny format czasu w reaktywnym sygnale `timeFormat`.
+ * - Odczytuje zapisany format z `localStorage` lub ustawia domyślny format `'24h'`.
+ * - Udostępnia metodę `formatTimeString`, która konwertuje ciąg godziny z formatu 24-godzinnego na 12-godzinny, jeśli aktywny jest format `'12h'`.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -25,6 +33,7 @@ export class TimeFormatService {
    * Ustawia nowy format czasu i zapisuje go w pamięci lokalnej przeglądarki (`localStorage`).
    *
    * @param {TimeFormat} format Nowy format czasu do ustawienia (`'12h'` lub `'24h'`).
+   * @returns {void}
    */
   public setTimeFormat(format: TimeFormat): void {
     this.timeFormat.set(format);
@@ -64,7 +73,6 @@ export class TimeFormatService {
    * Sprawdza poprawność odczytanej wartości. Jeśli w pamięci brak klucza lub zawiera
    * nieobsługiwaną wartość, domyślnie zwraca format `'24h'`.
    *
-   * @private
    * @returns {TimeFormat} Odczytany lub domyślny format czasu (`'24h'` albo `'12h'`).
    */
   private getSavedFormat(): TimeFormat {
