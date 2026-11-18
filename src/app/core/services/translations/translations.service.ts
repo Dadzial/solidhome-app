@@ -12,7 +12,7 @@ type Language = 'en' | 'pl';
  *
  * ### Zasady działania:
  * - Rejestruje obsługiwane języki (`pl`, `en`) oraz ustawia język domyślny (`pl`).
- * - Odczytuje zapisany wcześniej język z `localStorage` podczas startu (fallback: `'en'`).
+ * - Odczytuje zapisany wcześniej język z `localstorage` podczas startu (fallback: `'en'`).
  * - Umożliwia dynamiczną zmianę języka, aktualizując stan w reaktywnym sygnale, bibliotece tłumaczeń
  */
 @Injectable({

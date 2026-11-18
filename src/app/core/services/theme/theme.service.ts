@@ -19,7 +19,7 @@ type Theme = 'light' | 'dark';
   providedIn: 'root',
 })
 export class ThemeService {
-  /** Klucz używany do zapisu wybranego motywu w `localStorage`. */
+  /** Klucz używany do zapisu wybranego motywu w `localstorage`. */
   private readonly localStoreTheme = 'app-theme';
 
   /**
@@ -48,7 +48,6 @@ export class ThemeService {
   /**
    * Pobiera zapisany motyw z `localStorage` lub wykrywa preferencje systemowe użytkownika.
    *
-   * @private
    * @returns {Theme} Odczytany lub wykryty motyw (`'light'` lub `'dark'`).
    */
   private getSavedTheme(): Theme {
