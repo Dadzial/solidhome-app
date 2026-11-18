@@ -34,13 +34,7 @@ export class AirDataReadService {
   public readonly currentAir = signal<AirMeasurement | null>(null);
 
   /**
-   * Sygnał informujący o błędzie komunikacji z API.
-   * @type {signal}
-   */
-  public readonly hasError = signal<boolean>(false);
-
-  /**
-   * Klucz błędu translacji i18n otrzymany z API.
+   * Klucz błędu translacji i18n otrzymany z API (lub null w przypadku braku błędu).
    * @type {signal<string | null>}
    */
   public readonly errorMessage = signal<string | null>(null);
@@ -77,7 +71,7 @@ export class AirDataReadService {
 
   /**
    * Pobiera najświeższy odczyt parametrów powietrza z endpointu REST API.
-   * Aktualizuje sygnały `currentAir`, `hasError` i `errorMessage`.
+   * Aktualizuje sygnały `currentAir` i `errorMessage`.
    *
    * @returns {void}
    */
@@ -85,11 +79,9 @@ export class AirDataReadService {
     this.api.get<AirMeasurement>('air/current').subscribe({
       next: (data) => {
         this.currentAir.set(data);
-        this.hasError.set(false);
         this.errorMessage.set(null);
       },
       error: (err: ApiError) => {
-        this.hasError.set(true);
         this.errorMessage.set(err?.error ?? 'apiErrors.server');
       },
     });
@@ -104,7 +96,6 @@ export class AirDataReadService {
   public listenToSseUpdates(): void {
     this.sseService.onEvent<AirMeasurement>('air', 'air_updated').subscribe((event) => {
       this.currentAir.set(event);
-      this.hasError.set(false);
       this.errorMessage.set(null);
     });
   }

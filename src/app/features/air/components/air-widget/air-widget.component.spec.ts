@@ -33,4 +33,24 @@ describe('AirWidgetComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call loadCurrentAir on onRetry', () => {
+    const spy = vi.spyOn(component.airDataService, 'loadCurrentAir');
+    component.onRetry();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should render error overlay when errorMessage is set and trigger onRetry on click', () => {
+    component.airDataService.errorMessage.set('apiErrors.server');
+    fixture.detectChanges();
+
+    const errorOverlay = fixture.nativeElement.querySelector('app-error-overlay');
+    expect(errorOverlay).toBeTruthy();
+
+    const onRetrySpy = vi.spyOn(component, 'onRetry');
+    const retryBtn = errorOverlay.querySelector('button') as HTMLButtonElement;
+    retryBtn.click();
+
+    expect(onRetrySpy).toHaveBeenCalled();
+  });
 });
