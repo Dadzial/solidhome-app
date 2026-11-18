@@ -3,7 +3,7 @@ import { catchError, throwError } from 'rxjs';
 import { ApiError } from '@core/models/core.models';
 
 /**
- * Mapa statusów odpowiedzi HTTP na czytelne klucze tłumaczeń `apiErrors.*`.
+ * Mapa statusów odpowiedzi HTTP na czytelne klucze tłumaczeń `apierrors.*`.
  * @type {Record<number, string>}
  */
 const STATUS_ERROR_MAP: Record<number, string> = {
@@ -18,14 +18,15 @@ const STATUS_ERROR_MAP: Record<number, string> = {
  * Interceptor HTTP przechwytujący błędy odpowiedzi serwera i normalizujący je do jednolitego formatu `ApiError`.
  *
  * ### Zasady mapowania:
- * - **Status 0: ** Brak połączenia z serwerem (`apiErrors.network`).
- * - **Status 400: ** Treść błędu z odpowiedzi backendu lub domyślny fallback (`apiErrors.default`).
- * - **Status 401: ** Błąd uwierzytelnienia (`apiErrors.unauthorized`).
- * - **Status 403: ** Brak uprawnień (`apiErrors.forbidden`).
- * - **Status 409: ** Konflikt unikalności danych (`apiErrors.conflict`).
- * - **Status 429: ** Limit zapytań do API (`apiErrors.rateLimit`).
- * - **Pozostałe błędy (np. 500): ** Ogólny błąd serwera (`apiErrors.server`).
+ * - **Status 0: ** Brak połączenia z serwerem (`apierrors.network`).
+ * - **Status 400: ** Treść błędu z odpowiedzi backendu lub domyślny fallback (`apierrors.default`).
+ * - **Status 401: ** Błąd uwierzytelnienia (`apierrors.unauthorized`).
+ * - **Status 403: ** Brak uprawnień (`apierrors.forbidden`).
+ * - **Status 409: ** Konflikt unikalności danych (`apierrors.conflict`).
+ * - **Status 429: ** Limit zapytań do API (`apierrors.rateLimit`).
+ * - **Pozostałe błędy (np. 500): ** Ogólny błąd serwera (`apierrors.server`).
  *
+ * @constant errorInterceptor
  * @param req Wychodzące żądanie HTTP.
  * @param next Następny handler w łańcuchu przetwarzania HTTP.
  * @returns Strumień Observable zdarzeń HTTP ze znormalizowaną obsługą błędów.
