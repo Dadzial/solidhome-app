@@ -8,13 +8,14 @@ import { catchError, switchMap, throwError } from 'rxjs';
  * Interceptor HTTP dołączający token JWT do nagłówków wychodzących żądań oraz obsługujący ciche odświeżanie sesji.
  *
  * ### Zasady działania:
- * - Pobiera aktywny token dostępowy z magazynu przeglądarki (`localStorage` lub `sessionStorage`).
+ * - Pobiera aktywny token dostępowy z magazynu przeglądarki (`localstorage` lub `sessionstorage`).
  * - Jeśli token istnieje, dołącza nagłówek `Authorization: Bearer <token>`.
  * - W przypadku błędu `401 Unauthorized` (z wyłączeniem żądań logowania/odświeżania):
- *   - Pobiera zapisany `refreshToken` i wysyła zapytanie do API o nową parę tokenów.
- *   - Po pomyślnym odświeżeniu zapisuje nowe tokeny i automatycznie ponawia pierwotne zapytanie.
- *   - W razie niepowodzenia odświeżenia lub braku `refreshToken` czyści sesję i przekierowuje na stronę logowania (`/`).
+ * - Pobiera zapisany `refreshtoken` i wysyła zapytanie do API o nową parę tokenów.
+ * - Po pomyślnym odświeżeniu zapisuje nowe tokeny i automatycznie ponawia pierwotne zapytanie.
+ * - W razie niepowodzenia odświeżenia lub braku `refreshtoken` czyści sesję i przekierowuje na stronę logowania (`/`).
  *
+ * @constant authInterceptor
  * @param req Wychodzące żądanie HTTP.
  * @param next Następny handler w łańcuchu przetwarzania HTTP.
  * @returns Strumień Observable zdarzeń HTTP.
