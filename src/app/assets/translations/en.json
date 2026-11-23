@@ -97,9 +97,13 @@
     "airWidget": {
       "airQuality": "Air Quality",
       "temperature": "Temperature",
-      "pressure": "Pressure",
       "comfortable": "Comfortable",
-      "stable": "Stable"
+      "neutral": "Neutral",
+      "notComfortable": "Not Comfortable",
+      "pressure": "Pressure",
+      "stable": "Stable",
+      "moderate": "Moderate",
+      "unstable": "Unstable"
     }
   },
   "lightsPage": {

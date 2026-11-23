@@ -29,9 +29,9 @@
       class="h-full bg-background-primary rounded-2xl p-3.5 flex flex-col justify-between transition-all"
     >
       <div class="flex items-center justify-between">
-        <span class="text-body-14-medium text-text-primary">{{
-          'home.airWidget.temperature' | translate
-        }}</span>
+        <span class="text-body-14-medium text-text-primary">
+          {{ 'home.airWidget.temperature' | translate }}
+        </span>
       </div>
       <div
         class="flex items-center gap-1 my-auto transition-opacity duration-300"
@@ -45,9 +45,7 @@
         </span>
         <span class="text-body-16-medium text-text-primary/50 leading-none">°C</span>
       </div>
-      <span class="text-body-12-regular text-accent">{{
-        'home.airWidget.comfortable' | translate
-      }}</span>
+      <span class="text-body-12-regular text-accent">{{ temperatureStatusKey() | translate }}</span>
     </div>
 
     <!-- Ciśnienie atmosferyczne -->
@@ -55,9 +53,9 @@
       class="h-full bg-background-primary rounded-2xl p-3.5 flex flex-col justify-between transition-all"
     >
       <div class="flex items-center justify-between">
-        <span class="text-body-14-medium text-text-primary">{{
-          'home.airWidget.pressure' | translate
-        }}</span>
+        <span class="text-body-14-medium text-text-primary">
+          {{ 'home.airWidget.pressure' | translate }}
+        </span>
       </div>
       <div
         class="flex items-center gap-1 my-auto transition-opacity duration-300"
@@ -71,9 +69,7 @@
         </span>
         <span class="text-body-14-medium text-text-primary/50 leading-none">hPa</span>
       </div>
-      <span class="text-body-12-regular text-accent">{{
-        'home.airWidget.stable' | translate
-      }}</span>
+      <span class="text-body-12-regular text-accent">{{ pressureStatusKey() | translate }}</span>
     </div>
   </div>
 </div>
