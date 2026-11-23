@@ -34,17 +34,20 @@
         }}</span>
       </div>
       <div
-        class="flex items-baseline gap-1 my-1 transition-opacity duration-300"
+        class="flex items-center gap-1 my-auto transition-opacity duration-300"
         [class.opacity-50]="!airDataService.isBoardOnline()"
       >
-        <span class="text-headline-h1-36-bold text-text-primary">
+        <span
+          class="text-headline-h1-36-bold text-text-primary leading-none pb-1"
+          [class.!font-normal]="airDataService.temperature() === null"
+        >
           {{ airDataService.temperature() !== null ? airDataService.temperature() : '--' }}
         </span>
-        <span class="text-body-16-medium text-text-primary/50">°C</span>
+        <span class="text-body-16-medium text-text-primary/50 leading-none">°C</span>
       </div>
-      <!--      <span class="text-body-12-regular text-accent">{{-->
-      <!--          'home.airWidget.comfortable' | translate }}-->
-      <!--      </span>-->
+      <span class="text-body-12-regular text-accent">{{
+        'home.airWidget.comfortable' | translate
+      }}</span>
     </div>
 
     <!-- Ciśnienie atmosferyczne -->
@@ -57,17 +60,20 @@
         }}</span>
       </div>
       <div
-        class="flex items-baseline gap-1 my-1 transition-opacity duration-300"
+        class="flex items-center gap-1 my-auto transition-opacity duration-300"
         [class.opacity-50]="!airDataService.isBoardOnline()"
       >
-        <span class="text-headline-h1-36-bold text-text-primary">
+        <span
+          class="text-headline-h1-36-bold text-text-primary leading-none"
+          [class.!font-normal]="airDataService.pressure() === null"
+        >
           {{ airDataService.pressure() !== null ? airDataService.pressure() : '--' }}
         </span>
-        <span class="text-body-14-medium text-text-primary/50">hPa</span>
+        <span class="text-body-14-medium text-text-primary/50 leading-none">hPa</span>
       </div>
-      <!--      <span class="text-body-12-regular text-accent">{{-->
-      <!--          'home.airWidget.stable' | translate }}-->
-      <!--      </span>-->
+      <span class="text-body-12-regular text-accent">{{
+        'home.airWidget.stable' | translate
+      }}</span>
     </div>
   </div>
 </div>
