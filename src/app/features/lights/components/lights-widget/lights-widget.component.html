@@ -59,19 +59,13 @@
 
       <!-- Iteracja po lampach — każda lampa renderowana jako interaktywny przycisk w SVG -->
       @for (light of lights(); track light.id) {
-        <foreignObject
-          [attr.x]="light.x - 60"
-          [attr.y]="light.y - 60"
-          width="120"
-          height="120"
-          class="overflow-visible"
-        >
-          <div class="w-full h-full flex items-center justify-center">
+        <foreignObject [attr.x]="light.x - 60" [attr.y]="light.y - 60" width="120" height="120">
+          <div class="w-full h-full flex items-center justify-center p-2">
             <!-- Przycisk lampy — kolor i cień zmieniają się w zależności od stanu włączenia -->
             <button
               [disabled]="!isBoardOnline()"
               (click)="toggleLight(light.id)"
-              class="p-5 rounded-full backdrop-blur-md transition-all duration-300 border border-white/20"
+              class="w-full h-full rounded-full flex items-center justify-center transition-all duration-300 border border-white/20"
               [class.cursor-pointer]="isBoardOnline()"
               [class.cursor-not-allowed]="!isBoardOnline()"
               [class.opacity-50]="!isBoardOnline()"
@@ -79,13 +73,13 @@
               [class.active:scale-95]="isBoardOnline()"
               [ngClass]="{
                 'bg-accent shadow-[0_0_25px_rgba(255,255,255,0.7)]': light.on,
-                'bg-white/30 shadow-lg': !light.on,
+                'bg-white/40 shadow-lg': !light.on,
               }"
             >
               <svg-icon
                 src="assets/icons/light_bulb.svg"
                 [applyClass]="true"
-                class="w-16 h-16 text-white transition-colors"
+                class="w-14 h-14 text-white transition-colors"
               ></svg-icon>
             </button>
           </div>
