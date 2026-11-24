@@ -173,7 +173,20 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
     type: 'area',
     height: '100%',
     width: '100%',
-    toolbar: { show: false },
+    toolbar: {
+      show: false,
+      tools: {
+        download: false,
+        selection: false,
+        zoom: false,
+        zoomin: false,
+        zoomout: false,
+        pan: false,
+        reset: false,
+      },
+    },
+    zoom: { enabled: false },
+    selection: { enabled: false },
     fontFamily: 'inherit',
     animations: {
       enabled: false,

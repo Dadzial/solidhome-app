@@ -88,6 +88,11 @@ input {
   line-height: normal;
 }
 
+/* Ukrycie paska narzędzi w wykresach ApexCharts */
+.apexcharts-toolbar {
+  display: none !important;
+}
+
 /* Pomocnicze klasy typograficzne (@utility text-*) */
 @utility text-headline-h1-36-bold {
   font-family: var(--font-app), sans-serif;
