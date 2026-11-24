@@ -54,6 +54,7 @@ export class LightsPageComponent {
 
   /**
    * Sygnał obliczeniowy weryfikujący, czy wszystkie 4 komponenty uległy awarii (np. całkowity brak połączenia z serwerem).
+   * @type {computed}
    */
   public readonly allFailed = computed(
     () =>
@@ -65,6 +66,7 @@ export class LightsPageComponent {
 
   /**
    * Klucz translacji błędu dla globalnej nakładki poziomu strony.
+   * @type {computed}
    */
   public readonly globalErrorMessage = computed(
     () =>

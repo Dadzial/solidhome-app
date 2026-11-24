@@ -91,6 +91,7 @@ export class LightsScenesComponent {
 
   /**
    * Sygnał obliczeniowy weryfikujący możliwość zapisu sceny.
+   * @type {computed}
    */
   public readonly canSave = computed(
     () => this.sceneName().trim().length > 0 && this.selectedRooms().length > 0,

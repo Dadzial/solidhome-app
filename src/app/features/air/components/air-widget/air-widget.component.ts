@@ -37,6 +37,7 @@ export class AirWidgetComponent implements OnInit {
    * - 20°C - 24°C: Komfortowa (comfortable)
    * - 18°C - 19.9°C lub 24.1°C - 26°C: Neutralna (neutral)
    * - poniżej 18°C lub powyżej 26°C: Niekomfortowa (notComfortable)
+   * @type {computed}
    */
   public readonly temperatureStatusKey = computed<string>(() => {
     const temp = this.airDataService.temperature();
@@ -57,6 +58,7 @@ export class AirWidgetComponent implements OnInit {
    * - 1010 hPa - 1020 hPa: Stabilne (stable)
    * - 1000 hPa - 1009 hPa lub 1021 hPa - 1030 hPa: Umiarkowane (moderate)
    * - poniżej 1000 hPa (niż) lub powyżej 1030 hPa (silny wyż): Niestabilne (unstable)
+   * @type {computed}
    */
   public readonly pressureStatusKey = computed<string>(() => {
     const press = this.airDataService.pressure();

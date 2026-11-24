@@ -48,6 +48,7 @@ export class LightsScenesService {
 
   /**
    * Sygnał obliczeniowy informujący, czy lista scen jest pusta.
+   * @type {computed}
    */
   public readonly empty = computed(() => this.scenes().length === 0);
 

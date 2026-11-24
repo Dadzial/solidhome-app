@@ -90,6 +90,7 @@ export class LightsScheduleComponent implements OnInit {
   /**
    * Sygnał obliczeniowy sprawdzający, czy formularz nowej reguły spełnia minimalne kryteria zapisu
    * (niepusta nazwa oraz co najmniej jeden wybrany dzień tygodnia).
+   * @type {computed}
    */
   public canSave = computed(
     () => this.ruleName().trim().length > 0 && this.selectedDays().length > 0,
@@ -97,6 +98,7 @@ export class LightsScheduleComponent implements OnInit {
 
   /**
    * Sygnał obliczeniowy formatujący łączny czas trwania reguły (np. '5h' lub '5h 30m').
+   * @type {computed}
    */
   public duration = computed(() => {
     const d =
