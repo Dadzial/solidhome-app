@@ -10,12 +10,14 @@ import { BoardStatusEvent } from '@core/models/core.models';
 describe('HardwareStatusService', () => {
   let service: HardwareStatusService;
   let apiMock: { get: ReturnType<typeof vi.fn> };
-  let sseMock: { onEvent: ReturnType<typeof vi.fn> };
+  let sseMock: { onEvent: ReturnType<typeof vi.fn>; onReconnect: ReturnType<typeof vi.fn> };
   let loginMock: { getAccessToken: ReturnType<typeof vi.fn> };
   let sseSubject: Subject<BoardStatusEvent>;
+  let reconnectSubject: Subject<void>;
 
   beforeEach(() => {
     sseSubject = new Subject<BoardStatusEvent>();
+    reconnectSubject = new Subject<void>();
 
     apiMock = {
       get: vi.fn().mockReturnValue(of({ online: true })),
@@ -23,6 +25,7 @@ describe('HardwareStatusService', () => {
 
     sseMock = {
       onEvent: vi.fn().mockReturnValue(sseSubject.asObservable()),
+      onReconnect: vi.fn().mockReturnValue(reconnectSubject.asObservable()),
     };
 
     loginMock = {
@@ -78,5 +81,15 @@ describe('HardwareStatusService', () => {
 
     sseSubject.next({ online: true });
     expect(service.isBoardOnline()).toBe(true);
+  });
+
+  it('should recheck board status when SSE reconnects', () => {
+    apiMock.get.mockClear();
+    apiMock.get.mockReturnValue(of({ online: false }));
+
+    reconnectSubject.next();
+
+    expect(apiMock.get).toHaveBeenCalledWith('hardware/status');
+    expect(service.isBoardOnline()).toBe(false);
   });
 });

@@ -4,13 +4,21 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { LightsScenesService } from './lights-scenes.service';
 import { LightsControlService } from '../lights-control/lights-control.service';
 import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
+import { SseService } from '@core/services/sse/sse.service';
 import { signal } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Light, LightSceneItem } from '@features/lights/models/lights.models';
 import { environment } from '@environments/environment';
 
 describe('LightsScenesService', () => {
   let service: LightsScenesService;
   let httpMock: HttpTestingController;
+  let reconnectSubject: Subject<void>;
+  let disconnectSubject: Subject<void>;
+  let sseServiceMock: {
+    onReconnect: ReturnType<typeof vi.fn>;
+    onDisconnect: ReturnType<typeof vi.fn>;
+  };
   let mockLightsControlService: {
     lights: ReturnType<typeof signal<Light[]>>;
     toggleLight: ReturnType<typeof vi.fn>;
@@ -40,6 +48,13 @@ describe('LightsScenesService', () => {
   ];
 
   beforeEach(() => {
+    reconnectSubject = new Subject<void>();
+    disconnectSubject = new Subject<void>();
+    sseServiceMock = {
+      onReconnect: vi.fn().mockReturnValue(reconnectSubject.asObservable()),
+      onDisconnect: vi.fn().mockReturnValue(disconnectSubject.asObservable()),
+    };
+
     mockLightsControlService = {
       lights: signal<Light[]>(initialTestLights),
       toggleLight: vi.fn(),
@@ -52,6 +67,7 @@ describe('LightsScenesService', () => {
         provideHttpClientTesting(),
         { provide: LightsControlService, useValue: mockLightsControlService },
         { provide: HardwareStatusService, useValue: { isBoardOnline: signal(true) } },
+        { provide: SseService, useValue: sseServiceMock },
       ],
     });
 
@@ -221,6 +237,21 @@ describe('LightsScenesService', () => {
       expect(putReq.request.method).toBe('PUT');
       expect(putReq.request.body).toEqual({ active: true });
       putReq.flush(mockApiScenes[0]);
+    });
+  });
+
+  describe('listenToSseUpdates', () => {
+    it('should set network errorMessage when SSE disconnects', () => {
+      disconnectSubject.next();
+      expect(service.errorMessage()).toBe('apiErrors.network');
+    });
+
+    it('should reload scenes when SSE reconnects', () => {
+      reconnectSubject.next();
+
+      const req = httpMock.expectOne(`${environment.apiUrl}/lights/scenes`);
+      req.flush(mockApiScenes);
+      expect(service.errorMessage()).toBeNull();
     });
   });
 });

@@ -10,6 +10,7 @@ import {
 } from '@features/lights/models/lights.models';
 import { LightsControlService } from '../lights-control/lights-control.service';
 import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
+import { SseService } from '@core/services/sse/sse.service';
 
 /**
  * Serwis zarządzający scenami oświetlenia w systemie SolidHome.
@@ -35,6 +36,9 @@ export class LightsScenesService {
   /** Serwis monitorujący stan fizycznej płytki sterownika. */
   public hardwareStatusService = inject(HardwareStatusService);
 
+  /** Serwis zdarzeń Server-Sent Events do synchronizacji stanu połączenia. */
+  private sseService = inject(SseService);
+
   /**
    * Sygnał przechowujący listę scen oświetleniowych.
    */
@@ -54,10 +58,28 @@ export class LightsScenesService {
 
   /**
    * @constructor
-   * Inicjalizuje serwis i pobiera listę scen z API.
+   * Inicjalizuje serwis, pobiera listę scen z API oraz subskrybuje zdarzenia połączenia SSE.
    */
   constructor() {
     this.loadScenes();
+    this.listenToSseUpdates();
+  }
+
+  /**
+   * Subskrybuje zdarzenia utraty oraz przywrócenia połączenia SSE.
+   *
+   * @returns {void}
+   */
+  public listenToSseUpdates(): void {
+    this.sseService.onDisconnect().subscribe(() => {
+      if (!this.errorMessage()) {
+        this.errorMessage.set('apiErrors.network');
+      }
+    });
+
+    this.sseService.onReconnect().subscribe(() => {
+      this.loadScenes();
+    });
   }
 
   /**

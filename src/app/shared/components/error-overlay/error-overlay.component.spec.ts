@@ -24,6 +24,7 @@ describe('ErrorOverlayComponent', () => {
     translate = TestBed.inject(TranslateService);
     translate.setTranslation('pl', {
       apiErrors: {
+        network: 'Brak połączenia z serwerem',
         server: 'Wystąpił błąd serwera. Spróbuj ponownie później',
         retryNow: 'Spróbuj ponownie',
       },
@@ -75,6 +76,14 @@ describe('ErrorOverlayComponent', () => {
 
       const h2 = fixture.nativeElement.querySelector('h2');
       expect(h2?.textContent?.trim()).toBe('Tytuł błędu');
+    });
+
+    it('should translate i18n key passed via title input', () => {
+      fixture.componentRef.setInput('title', 'apiErrors.network');
+      fixture.detectChanges();
+
+      const h2 = fixture.nativeElement.querySelector('h2');
+      expect(h2?.textContent?.trim()).toBe('Brak połączenia z serwerem');
     });
 
     it('should render retry button with translated text', () => {

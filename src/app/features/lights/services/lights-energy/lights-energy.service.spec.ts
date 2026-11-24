@@ -1,14 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { LightsEnergyService } from './lights-energy.service';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
+import { SseService } from '@core/services/sse/sse.service';
 import { LightEnergyData } from '@features/lights/models/lights.models';
-import { of, throwError } from 'rxjs';
+import { of, throwError, Subject } from 'rxjs';
 
 describe('LightsEnergyService', () => {
   let service: LightsEnergyService;
+  let sseSubject: Subject<LightEnergyData>;
+  let disconnectSubject: Subject<void>;
   let apiServiceMock: {
     get: ReturnType<typeof vi.fn>;
     delete: ReturnType<typeof vi.fn>;
+  };
+  let sseServiceMock: {
+    onEvent: ReturnType<typeof vi.fn>;
+    onDisconnect: ReturnType<typeof vi.fn>;
   };
 
   const mockEnergyData: LightEnergyData = {
@@ -34,13 +41,23 @@ describe('LightsEnergyService', () => {
   };
 
   beforeEach(() => {
+    sseSubject = new Subject<LightEnergyData>();
+    disconnectSubject = new Subject<void>();
     apiServiceMock = {
       get: vi.fn(),
       delete: vi.fn(),
     };
+    sseServiceMock = {
+      onEvent: vi.fn().mockReturnValue(sseSubject.asObservable()),
+      onDisconnect: vi.fn().mockReturnValue(disconnectSubject.asObservable()),
+    };
 
     TestBed.configureTestingModule({
-      providers: [LightsEnergyService, { provide: ApiConnectService, useValue: apiServiceMock }],
+      providers: [
+        LightsEnergyService,
+        { provide: ApiConnectService, useValue: apiServiceMock },
+        { provide: SseService, useValue: sseServiceMock },
+      ],
     });
 
     service = TestBed.inject(LightsEnergyService);
@@ -201,6 +218,50 @@ describe('LightsEnergyService', () => {
 
       expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/energy/reset');
       expect(capturedError).toBe(mockError);
+    });
+  });
+
+  describe('listenToSseUpdates', () => {
+    it('should subscribe to lights:energy_updated events on SseService', () => {
+      expect(sseServiceMock.onEvent).toHaveBeenCalledWith('lights', 'energy_updated');
+    });
+
+    it('should directly update energyData and clear errorMessage for today and entireHouse', () => {
+      service.currentTimeframe.set('today');
+      service.currentRoom.set('entireHouse');
+      service.errorMessage.set('apiErrors.server');
+
+      sseSubject.next(mockEnergyData);
+
+      expect(service.energyData()).toEqual(mockEnergyData);
+      expect(service.errorMessage()).toBeNull();
+      expect(apiServiceMock.get).not.toHaveBeenCalled();
+    });
+
+    it('should call loadEnergyStats for today when a specific room is selected', () => {
+      service.currentTimeframe.set('today');
+      service.currentRoom.set('kitchen');
+      const loadSpy = vi.spyOn(service, 'loadEnergyStats').mockImplementation(() => {});
+
+      sseSubject.next(mockEnergyData);
+
+      expect(loadSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should ignore SSE updates when timeframe is not today', () => {
+      service.currentTimeframe.set('week');
+      service.currentRoom.set('entireHouse');
+      service.energyData.set(null);
+
+      sseSubject.next(mockEnergyData);
+
+      expect(service.energyData()).toBeNull();
+      expect(apiServiceMock.get).not.toHaveBeenCalled();
+    });
+
+    it('should set network errorMessage when SSE disconnects', () => {
+      disconnectSubject.next();
+      expect(service.errorMessage()).toBe('apiErrors.network');
     });
   });
 });

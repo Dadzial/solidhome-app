@@ -193,6 +193,7 @@ export class LightsControlService {
 
   /**
    * Subskrybuje zdarzenia SSE dla domeny świateł i na bieżąco aktualizuje stan lamp w sygnale `lights`.
+   * Po ponownym nawiązaniu połączenia SSE automatycznie resynchronizuje stan lamp, historii i energii.
    *
    * @returns {void}
    */
@@ -205,6 +206,18 @@ export class LightsControlService {
       );
       this.lightsHistoryService.loadHistory();
       this.lightsEnergyService.loadEnergyStats();
+    });
+
+    this.sseService.onReconnect().subscribe(() => {
+      this.loadLights();
+      this.lightsHistoryService.loadHistory();
+      this.lightsEnergyService.loadEnergyStats();
+    });
+
+    this.sseService.onDisconnect().subscribe(() => {
+      if (!this.errorMessage()) {
+        this.errorMessage.set('apiErrors.network');
+      }
     });
   }
 }

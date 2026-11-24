@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, OnInit, OnDestroy, input } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, input } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslationsService } from '@core/services/translations/translations.service';
@@ -48,7 +48,7 @@ const MONTH_WEEKS = {
  * - Umożliwia filtrowanie po przedziale czasowym ('today', 'week', 'month') oraz po wybranym pomieszczeniu ('entireHouse' lub konkretny pokój).
  * - Oś Y dynamicznie dostosowuje skalę: `0.25 kW` dla całego domu, `0.08 kW` dla pojedynczych lamp.
  * - Sekcja TOP 3 prezentuje sumaryczny udział pokoi w zużyciu energii całego domu.
- * - Cyklicznie odpytuje backend co 3 sekundy w celu płynnej aktualizacji profilu poboru mocy.
+ * - Dane wykresu oraz TOP 3 aktualizują się automatycznie w czasie rzeczywistym przez SSE (`LightsEnergyService`).
  */
 @Component({
   selector: 'app-lights-energy',
@@ -57,7 +57,7 @@ const MONTH_WEEKS = {
   templateUrl: './lights-energy.component.html',
   styles: ``,
 })
-export class LightsEnergyComponent implements OnInit, OnDestroy {
+export class LightsEnergyComponent implements OnInit {
   /** Serwis obsługujący aktualny język i translacje. */
   private translationsService = inject(TranslationsService);
 
@@ -74,9 +74,6 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
    * Flaga wymuszająca ukrycie lokalnej nakładki błędu (np. gdy aktywna jest globalna nakładka strony).
    */
   public hideError = input<boolean>(false);
-
-  /** Uchwyt interwału cyklicznego odświeżania danych wykresu. */
-  private refreshInterval: ReturnType<typeof setInterval> | null = null;
 
   /**
    * Sygnał wskazujący, które menu rozwijane (dropdown) jest aktualnie otwarte.
@@ -374,15 +371,12 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
   });
 
   /**
-   * Inicjalizuje komponent — pobiera pierwsze dane z API i uruchamia cykliczny interwał odświeżania.
+   * Inicjalizuje komponent — pobiera początkowe dane statystyk energii z API.
    *
    * @returns {void}
    */
   public ngOnInit(): void {
     this.lightsEnergyService.loadEnergyStats(this.selectedTimeframe(), this.selectedRoom());
-    this.refreshInterval = setInterval(() => {
-      this.lightsEnergyService.loadEnergyStats();
-    }, 3000);
   }
 
   /**
@@ -476,17 +470,5 @@ export class LightsEnergyComponent implements OnInit, OnDestroy {
    */
   public onRetry(): void {
     this.lightsEnergyService.loadEnergyStats(this.selectedTimeframe(), this.selectedRoom());
-  }
-
-  /**
-   * Czyści zasoby komponentu — zatrzymuje działający interwał cykliczny.
-   *
-   * @returns {void}
-   */
-  public ngOnDestroy(): void {
-    if (this.refreshInterval) {
-      clearInterval(this.refreshInterval);
-      this.refreshInterval = null;
-    }
   }
 }

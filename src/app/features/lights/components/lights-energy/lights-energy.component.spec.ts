@@ -78,7 +78,6 @@ describe('LightsEnergyComponent', () => {
 
   afterEach(() => {
     localStorage.clear();
-    component.ngOnDestroy();
     vi.useRealTimers();
     vi.clearAllMocks();
   });
@@ -90,25 +89,6 @@ describe('LightsEnergyComponent', () => {
   describe('lifecycle hooks', () => {
     it('should call loadEnergyStats on ngOnInit with current timeframe and room', () => {
       expect(lightsEnergyService.loadEnergyStats).toHaveBeenCalledWith('today', 'entireHouse');
-    });
-
-    it('should periodically refresh energy stats via setInterval', () => {
-      vi.mocked(lightsEnergyService.loadEnergyStats).mockClear();
-
-      vi.advanceTimersByTime(3000);
-      expect(lightsEnergyService.loadEnergyStats).toHaveBeenCalledTimes(1);
-
-      vi.advanceTimersByTime(3000);
-      expect(lightsEnergyService.loadEnergyStats).toHaveBeenCalledTimes(2);
-    });
-
-    it('should clear interval on ngOnDestroy', () => {
-      vi.mocked(lightsEnergyService.loadEnergyStats).mockClear();
-
-      component.ngOnDestroy();
-      vi.advanceTimersByTime(6000);
-
-      expect(lightsEnergyService.loadEnergyStats).not.toHaveBeenCalled();
     });
   });
 

@@ -65,7 +65,8 @@ export class HardwareStatusService {
   }
 
   /**
-   * Subskrybuje zdarzenia SSE dla domeny 'hardware' i typu 'status'.
+   * Subskrybuje zdarzenia SSE dla domeny 'hardware' i typu 'status'
+   * oraz odświeża status płytki po ponownym nawiązaniu połączenia SSE.
    * @returns {void}
    */
   private listenToBoardStatusEvents(): void {
@@ -73,6 +74,10 @@ export class HardwareStatusService {
       if (typeof event?.online === 'boolean') {
         this.isBoardOnline.set(event.online);
       }
+    });
+
+    this.sseService.onReconnect().subscribe(() => {
+      this.checkInitialStatus();
     });
   }
 }

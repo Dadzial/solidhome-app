@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { SseService } from './sse.service';
 import { LoginService } from '@features/auth/services/login/login.service';
 import { environment } from '@environments/environment';
+import { of, throwError } from 'rxjs';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 describe('SseService', () => {
@@ -9,13 +10,21 @@ describe('SseService', () => {
   let fetchEventSourceMock: ReturnType<typeof vi.fn>;
   let loginServiceMock: {
     getAccessToken: ReturnType<typeof vi.fn>;
+    getRefreshToken: ReturnType<typeof vi.fn>;
+    refreshAccessToken: ReturnType<typeof vi.fn>;
+    saveTokens: ReturnType<typeof vi.fn>;
   };
 
   beforeEach(() => {
-    fetchEventSourceMock = vi.fn();
+    fetchEventSourceMock = vi.fn().mockResolvedValue(undefined);
 
     loginServiceMock = {
       getAccessToken: vi.fn().mockReturnValue('mock-jwt-token'),
+      getRefreshToken: vi.fn().mockReturnValue('mock-refresh-token'),
+      refreshAccessToken: vi
+        .fn()
+        .mockReturnValue(of({ token: 'fresh-jwt-token', refreshToken: 'fresh-refresh-token' })),
+      saveTokens: vi.fn(),
     };
 
     TestBed.configureTestingModule({
@@ -34,7 +43,8 @@ describe('SseService', () => {
   });
 
   afterEach(() => {
-    service.disconnect();
+    service.ngOnDestroy();
+    vi.useRealTimers();
     vi.clearAllMocks();
   });
 
@@ -64,6 +74,24 @@ describe('SseService', () => {
       expect(fetchEventSourceMock).not.toHaveBeenCalled();
     });
 
+    it('should prevent duplicate concurrent connection attempts while connecting', async () => {
+      let resolveFetch!: () => void;
+      fetchEventSourceMock.mockImplementationOnce(
+        () =>
+          new Promise<void>((resolve) => {
+            resolveFetch = resolve;
+          }),
+      );
+
+      const first = service.connect();
+      const second = service.connect();
+
+      expect(fetchEventSourceMock).toHaveBeenCalledTimes(1);
+
+      resolveFetch();
+      await Promise.all([first, second]);
+    });
+
     it('should call fetchEventSource with correct endpoint, headers and signal', async () => {
       await service.connect();
 
@@ -80,10 +108,154 @@ describe('SseService', () => {
       expect(options.signal).toBeInstanceOf(AbortSignal);
     });
 
-    it('should set isConnected to true on successful onopen response', async () => {
+    it('should set isConnected to true on successful onopen response and emit onReconnect only on subsequent opens', async () => {
+      let reconnectCount = 0;
+      const sub = service.onReconnect().subscribe(() => {
+        reconnectCount += 1;
+      });
+
+      const mockResponse = {
+        ok: true,
+        headers: {
+          get: (name: string) => (name === 'content-type' ? 'text/event-stream' : null),
+        },
+      } as unknown as Response;
+
+      await service.connect();
+      const options1 = fetchEventSourceMock.mock.calls[0][1];
+      await options1.onopen!(mockResponse);
+
+      expect(service.isConnected()).toBe(true);
+      expect(reconnectCount).toBe(0);
+
+      // Simulate reconnect
+      service.isConnected.set(false);
+      await service.connect();
+      const options2 = fetchEventSourceMock.mock.calls[1][1];
+      await options2.onopen!(mockResponse);
+
+      expect(service.isConnected()).toBe(true);
+      expect(reconnectCount).toBe(1);
+      sub.unsubscribe();
+    });
+
+    it('should refresh access token on 401 response and throw to trigger reconnect', async () => {
+      await service.connect();
+      const options = fetchEventSourceMock.mock.calls[0][1];
+
+      const unauthorizedResponse = {
+        ok: false,
+        status: 401,
+        headers: {
+          get: () => 'application/json',
+        },
+      } as unknown as Response;
+
+      await expect(options.onopen!(unauthorizedResponse)).rejects.toThrow(
+        'SSE token refreshed, reconnecting',
+      );
+      expect(loginServiceMock.refreshAccessToken).toHaveBeenCalledTimes(1);
+      expect(loginServiceMock.saveTokens).toHaveBeenCalledWith(
+        'fresh-jwt-token',
+        'fresh-refresh-token',
+      );
+    });
+
+    it('should disconnect when 401 token refresh fails', async () => {
+      loginServiceMock.refreshAccessToken.mockReturnValue(throwError(() => new Error('Expired')));
       await service.connect();
 
       const options = fetchEventSourceMock.mock.calls[0][1];
+      const disconnectSpy = vi.spyOn(service, 'disconnect');
+
+      const unauthorizedResponse = {
+        ok: false,
+        status: 401,
+        headers: {
+          get: () => 'application/json',
+        },
+      } as unknown as Response;
+
+      await expect(options.onopen!(unauthorizedResponse)).rejects.toThrow('SSE unauthorized');
+      expect(disconnectSpy).toHaveBeenCalled();
+      expect(service.isConnected()).toBe(false);
+    });
+
+    it('should set isConnected to false and throw on onclose to trigger reconnect', async () => {
+      await service.connect();
+      service.isConnected.set(true);
+
+      const options = fetchEventSourceMock.mock.calls[0][1];
+      expect(() => options.onclose!()).toThrow('SSE stream closed by server');
+      expect(service.isConnected()).toBe(false);
+    });
+
+    it('should set isConnected to false, log error and rethrow on onerror', async () => {
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      await service.connect();
+      service.isConnected.set(true);
+
+      const options = fetchEventSourceMock.mock.calls[0][1];
+      const err = new Error('Network error');
+
+      expect(() => options.onerror!(err)).toThrow('Network error');
+      expect(service.isConnected()).toBe(false);
+      expect(consoleErrorSpy).toHaveBeenCalledWith('SSE connection error:', err);
+    });
+
+    it('should schedule reconnect with fresh token when fetchEventSource rejects', async () => {
+      vi.useFakeTimers();
+      fetchEventSourceMock.mockRejectedValueOnce(new Error('Fetch fatal error'));
+      loginServiceMock.getAccessToken
+        .mockReturnValueOnce('old-jwt-token')
+        .mockReturnValueOnce('new-jwt-token');
+
+      await service.connect();
+      expect(service.isConnected()).toBe(false);
+      expect(fetchEventSourceMock).toHaveBeenCalledTimes(1);
+
+      await vi.advanceTimersByTimeAsync(1000);
+
+      expect(fetchEventSourceMock).toHaveBeenCalledTimes(2);
+      expect(fetchEventSourceMock.mock.calls[1][1].headers.Authorization).toBe(
+        'Bearer new-jwt-token',
+      );
+    });
+
+    it('should emit onDisconnect and set connectionFailed after reaching failure threshold', async () => {
+      vi.useFakeTimers();
+      let disconnectEvents = 0;
+      const sub = service.onDisconnect().subscribe(() => {
+        disconnectEvents += 1;
+      });
+
+      fetchEventSourceMock
+        .mockRejectedValueOnce(new Error('Drop 1'))
+        .mockRejectedValueOnce(new Error('Drop 2'));
+
+      await service.connect();
+      expect(service.connectionFailed()).toBe(false);
+      expect(disconnectEvents).toBe(0);
+
+      await vi.advanceTimersByTimeAsync(1000);
+      expect(service.connectionFailed()).toBe(true);
+      expect(disconnectEvents).toBe(1);
+
+      sub.unsubscribe();
+    });
+
+    it('should emit onReconnect when first successful open happens after failed attempts', async () => {
+      vi.useFakeTimers();
+      let reconnectCount = 0;
+      const sub = service.onReconnect().subscribe(() => {
+        reconnectCount += 1;
+      });
+
+      fetchEventSourceMock.mockRejectedValueOnce(new Error('Backend offline'));
+      await service.connect();
+
+      await vi.advanceTimersByTimeAsync(1000);
+      const options = fetchEventSourceMock.mock.calls[1][1];
       const mockResponse = {
         ok: true,
         headers: {
@@ -94,56 +266,76 @@ describe('SseService', () => {
       await options.onopen!(mockResponse);
 
       expect(service.isConnected()).toBe(true);
+      expect(service.connectionFailed()).toBe(false);
+      expect(reconnectCount).toBe(1);
+      sub.unsubscribe();
     });
 
-    it('should call disconnect when onopen response is not ok', async () => {
+    it('should trigger reconnect via heartbeat watchdog when no messages arrive within timeout', async () => {
+      vi.useFakeTimers();
       await service.connect();
-
       const options = fetchEventSourceMock.mock.calls[0][1];
-      const disconnectSpy = vi.spyOn(service, 'disconnect');
-
-      const unauthorizedResponse = {
-        ok: false,
-        status: 401,
+      await options.onopen!({
+        ok: true,
         headers: {
-          get: () => 'text/html',
+          get: (name: string) => (name === 'content-type' ? 'text/event-stream' : null),
         },
-      } as unknown as Response;
+      } as unknown as Response);
 
-      await options.onopen!(unauthorizedResponse);
+      expect(service.isConnected()).toBe(true);
 
-      expect(disconnectSpy).toHaveBeenCalled();
-      expect(service.isConnected()).toBe(false);
+      // Advance past HEARTBEAT_TIMEOUT_MS (7000ms) + first reconnect backoff (1000ms)
+      await vi.advanceTimersByTimeAsync(8000);
+
+      expect(fetchEventSourceMock).toHaveBeenCalledTimes(2);
     });
+  });
 
-    it('should set isConnected to false on onclose', async () => {
+  describe('browser network & visibility events', () => {
+    it('should set isConnected to false, emit onDisconnect on window offline and reconnect on window online', async () => {
+      let disconnectEvents = 0;
+      const sub = service.onDisconnect().subscribe(() => {
+        disconnectEvents += 1;
+      });
+
       await service.connect();
       service.isConnected.set(true);
 
-      const options = fetchEventSourceMock.mock.calls[0][1];
-      options.onclose!();
-
+      window.dispatchEvent(new Event('offline'));
       expect(service.isConnected()).toBe(false);
+      expect(service.connectionFailed()).toBe(true);
+      expect(disconnectEvents).toBe(1);
+
+      fetchEventSourceMock.mockClear();
+      window.dispatchEvent(new Event('online'));
+      await Promise.resolve();
+
+      expect(fetchEventSourceMock).toHaveBeenCalledTimes(1);
+      sub.unsubscribe();
     });
 
-    it('should set isConnected to false and log error on onerror', async () => {
-      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    it('should force reconnect when tab returns to visible after being hidden long enough', async () => {
+      vi.useFakeTimers();
       await service.connect();
       service.isConnected.set(true);
+      fetchEventSourceMock.mockClear();
 
-      const options = fetchEventSourceMock.mock.calls[0][1];
-      options.onerror!(new Error('Network error'));
+      Object.defineProperty(document, 'visibilityState', {
+        configurable: true,
+        get: () => 'hidden',
+      });
+      document.dispatchEvent(new Event('visibilitychange'));
 
-      expect(service.isConnected()).toBe(false);
-      expect(consoleErrorSpy).toHaveBeenCalledWith('SSE connection error:', expect.any(Error));
-    });
+      vi.advanceTimersByTime(11000);
 
-    it('should set isConnected to false when fetchEventSource throws', async () => {
-      fetchEventSourceMock.mockRejectedValueOnce(new Error('Fetch fatal error'));
+      Object.defineProperty(document, 'visibilityState', {
+        configurable: true,
+        get: () => 'visible',
+      });
+      document.dispatchEvent(new Event('visibilitychange'));
+      await Promise.resolve();
 
-      await service.connect();
-
-      expect(service.isConnected()).toBe(false);
+      expect(fetchEventSourceMock).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -248,7 +440,19 @@ describe('SseService', () => {
   });
 
   describe('disconnect', () => {
-    it('should abort active fetch controller and set isConnected to false', async () => {
+    it('should abort active fetch controller, cancel scheduled reconnect and set isConnected to false', async () => {
+      vi.useFakeTimers();
+      fetchEventSourceMock.mockRejectedValueOnce(new Error('Drop'));
+
+      await service.connect();
+      service.disconnect();
+
+      await vi.advanceTimersByTimeAsync(5000);
+      expect(fetchEventSourceMock).toHaveBeenCalledTimes(1);
+      expect(service.isConnected()).toBe(false);
+    });
+
+    it('should abort active controller when connected', async () => {
       await service.connect();
       service.isConnected.set(true);
 

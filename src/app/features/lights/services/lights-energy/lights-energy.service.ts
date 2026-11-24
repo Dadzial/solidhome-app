@@ -1,5 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
+import { SseService } from '@core/services/sse/sse.service';
 import { ApiError } from '@core/models/core.models';
 import { Observable } from 'rxjs';
 import { LightEnergyData, EnergyTimeframe } from '@features/lights/models/lights.models';
@@ -9,8 +10,9 @@ import { HttpParams } from '@angular/common/http';
  * Serwis odpowiedzialny za pobieranie i zarządzanie statystykami zużycia energii oświetlenia w systemie SolidHome.
  *
  * ### Zasady działania:
- * Utrzymuje reaktywny sygnał `energyData` zawierający aktualne dane wykresu,
- * całkowite zużycie oraz ranking TOP 3 największego zużycia energii.
+ * - Utrzymuje reaktywny sygnał `energyData` zawierający aktualne dane wykresu,
+ *   całkowite zużycie oraz ranking TOP 3 największego zużycia energii.
+ * - Subskrybuje zdarzenia SSE `lights:energy_updated`, aktualizując widok na żywo bez cyklicznego odpytywania HTTP.
  */
 @Injectable({
   providedIn: 'root',
@@ -18,6 +20,9 @@ import { HttpParams } from '@angular/common/http';
 export class LightsEnergyService {
   /** Inject ApiConnectService do wykonywania żądań do backendu. */
   private api = inject(ApiConnectService);
+
+  /** Inject SseService do odbierania aktualizacji statystyk energii na żywo przez SSE. */
+  private sseService = inject(SseService);
 
   /**
    * Sygnał przechowujący bieżące dane statystyk zużycia energii pobrane z API.
@@ -36,6 +41,39 @@ export class LightsEnergyService {
    * @type {signal<string | null>}
    */
   public readonly errorMessage = signal<string | null>(null);
+
+  /**
+   * @constructor
+   */
+  constructor() {
+    this.listenToSseUpdates();
+  }
+
+  /**
+   * Subskrybuje zdarzenia SSE dla domeny świateł (`energy_updated`).
+   * Dla widoku `today` + `entireHouse` bezpośrednio aktualizuje sygnał `energyData` bez zapytania HTTP;
+   * dla pojedynczego pokoju w widoku `today` odświeża dedykowane dane tego pokoju.
+   *
+   * @returns {void}
+   */
+  public listenToSseUpdates(): void {
+    this.sseService.onEvent<LightEnergyData>('lights', 'energy_updated').subscribe((data) => {
+      if (this.currentTimeframe() === 'today') {
+        if (this.currentRoom() === 'entireHouse') {
+          this.energyData.set(data);
+          this.errorMessage.set(null);
+        } else {
+          this.loadEnergyStats();
+        }
+      }
+    });
+
+    this.sseService.onDisconnect().subscribe(() => {
+      if (!this.errorMessage()) {
+        this.errorMessage.set('apiErrors.network');
+      }
+    });
+  }
 
   /**
    * Pobiera statystyki zużycia energii z API i aktualizuje sygnał `energyData`.

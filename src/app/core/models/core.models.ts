@@ -39,7 +39,7 @@ export interface ApiOptions {
  * @property timestamp Znacznik czasu, kiedy wiadomość została wygenerowana na serwerze.
  */
 export interface SseMessage<T = unknown> {
-  domain: 'lights' | 'air' | 'hardware';
+  domain: 'lights' | 'air' | 'hardware' | 'api';
   event: string;
   data: T;
   timestamp: string;

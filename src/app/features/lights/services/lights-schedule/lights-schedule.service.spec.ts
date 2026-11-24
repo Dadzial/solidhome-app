@@ -3,12 +3,13 @@ import { signal } from '@angular/core';
 import { LightsScheduleService } from './lights-schedule.service';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
+import { SseService } from '@core/services/sse/sse.service';
 import {
   LightScheduleRuleItem,
   CreateScheduleRulePayload,
   DeleteScheduleRuleResponse,
 } from '@features/lights/models/lights.models';
-import { of, throwError } from 'rxjs';
+import { of, throwError, Subject } from 'rxjs';
 
 const mockRuleItem: LightScheduleRuleItem = {
   _id: 'r1',
@@ -24,6 +25,12 @@ const mockRuleItem: LightScheduleRuleItem = {
 describe('LightsScheduleService', () => {
   let service: LightsScheduleService;
   let isBoardOnlineMock: ReturnType<typeof signal<boolean>>;
+  let reconnectSubject: Subject<void>;
+  let disconnectSubject: Subject<void>;
+  let sseServiceMock: {
+    onReconnect: ReturnType<typeof vi.fn>;
+    onDisconnect: ReturnType<typeof vi.fn>;
+  };
   let apiServiceMock: {
     get: ReturnType<typeof vi.fn>;
     post: ReturnType<typeof vi.fn>;
@@ -33,6 +40,12 @@ describe('LightsScheduleService', () => {
 
   beforeEach(() => {
     isBoardOnlineMock = signal<boolean>(true);
+    reconnectSubject = new Subject<void>();
+    disconnectSubject = new Subject<void>();
+    sseServiceMock = {
+      onReconnect: vi.fn().mockReturnValue(reconnectSubject.asObservable()),
+      onDisconnect: vi.fn().mockReturnValue(disconnectSubject.asObservable()),
+    };
     apiServiceMock = {
       get: vi.fn(),
       post: vi.fn(),
@@ -45,6 +58,7 @@ describe('LightsScheduleService', () => {
         LightsScheduleService,
         { provide: ApiConnectService, useValue: apiServiceMock },
         { provide: HardwareStatusService, useValue: { isBoardOnline: isBoardOnlineMock } },
+        { provide: SseService, useValue: sseServiceMock },
       ],
     });
 
@@ -343,6 +357,23 @@ describe('LightsScheduleService', () => {
 
       expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/rules/r1');
       expect(response?.message).toBe('Deleted');
+    });
+  });
+
+  describe('listenToSseUpdates', () => {
+    it('should set network errorMessage when SSE disconnects', () => {
+      disconnectSubject.next();
+      expect(service.errorMessage()).toBe('apiErrors.network');
+    });
+
+    it('should reload rules when SSE reconnects', () => {
+      apiServiceMock.get.mockReturnValue(of([mockRuleItem]));
+
+      reconnectSubject.next();
+
+      expect(apiServiceMock.get).toHaveBeenCalledWith('lights/rules');
+      expect(service.schedule()).toHaveLength(1);
+      expect(service.errorMessage()).toBeNull();
     });
   });
 });

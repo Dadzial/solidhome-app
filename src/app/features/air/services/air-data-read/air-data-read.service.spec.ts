@@ -10,8 +10,12 @@ import { of, throwError, Subject } from 'rxjs';
 describe('AirDataReadService', () => {
   let service: AirDataReadService;
   let sseSubject: Subject<AirMeasurement>;
+  let reconnectSubject: Subject<void>;
+  let disconnectSubject: Subject<void>;
   let sseServiceMock: {
     onEvent: ReturnType<typeof vi.fn>;
+    onReconnect: ReturnType<typeof vi.fn>;
+    onDisconnect: ReturnType<typeof vi.fn>;
   };
   let apiServiceMock: {
     get: ReturnType<typeof vi.fn>;
@@ -26,8 +30,12 @@ describe('AirDataReadService', () => {
 
   beforeEach(() => {
     sseSubject = new Subject<AirMeasurement>();
+    reconnectSubject = new Subject<void>();
+    disconnectSubject = new Subject<void>();
     sseServiceMock = {
       onEvent: vi.fn().mockReturnValue(sseSubject.asObservable()),
+      onReconnect: vi.fn().mockReturnValue(reconnectSubject.asObservable()),
+      onDisconnect: vi.fn().mockReturnValue(disconnectSubject.asObservable()),
     };
 
     apiServiceMock = {
@@ -90,5 +98,19 @@ describe('AirDataReadService', () => {
     expect(service.currentAir()).toEqual(mockMeasurement);
     expect(service.temperature()).toBe(22.5);
     expect(service.errorMessage()).toBeNull();
+  });
+
+  it('should reload current air data when SSE reconnects', () => {
+    apiServiceMock.get.mockReturnValue(of(mockMeasurement));
+
+    reconnectSubject.next();
+
+    expect(apiServiceMock.get).toHaveBeenCalledWith('air/current');
+    expect(service.currentAir()).toEqual(mockMeasurement);
+  });
+
+  it('should set network errorMessage when SSE disconnects', () => {
+    disconnectSubject.next();
+    expect(service.errorMessage()).toBe('apiErrors.network');
   });
 });

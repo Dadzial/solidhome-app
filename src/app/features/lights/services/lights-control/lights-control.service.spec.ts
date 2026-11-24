@@ -14,8 +14,12 @@ describe('LightsControlService', () => {
   let historyService: LightsHistoryService;
   let energyService: LightsEnergyService;
   let sseSubject: Subject<LightUpdatedEvent>;
+  let reconnectSubject: Subject<void>;
+  let disconnectSubject: Subject<void>;
   let sseServiceMock: {
     onEvent: ReturnType<typeof vi.fn>;
+    onReconnect: ReturnType<typeof vi.fn>;
+    onDisconnect: ReturnType<typeof vi.fn>;
   };
   let apiServiceMock: {
     get: ReturnType<typeof vi.fn>;
@@ -24,8 +28,12 @@ describe('LightsControlService', () => {
 
   beforeEach(() => {
     sseSubject = new Subject<LightUpdatedEvent>();
+    reconnectSubject = new Subject<void>();
+    disconnectSubject = new Subject<void>();
     sseServiceMock = {
       onEvent: vi.fn().mockReturnValue(sseSubject.asObservable()),
+      onReconnect: vi.fn().mockReturnValue(reconnectSubject.asObservable()),
+      onDisconnect: vi.fn().mockReturnValue(disconnectSubject.asObservable()),
     };
 
     apiServiceMock = {
@@ -311,6 +319,21 @@ describe('LightsControlService', () => {
       expect(kitchen?.on).toBe(false);
       expect(historyService.loadHistory).toHaveBeenCalled();
       expect(energyService.loadEnergyStats).toHaveBeenCalled();
+    });
+
+    it('should reload lights, history and energy stats when SSE reconnects', () => {
+      const loadLightsSpy = vi.spyOn(service, 'loadLights').mockImplementation(() => {});
+
+      reconnectSubject.next();
+
+      expect(loadLightsSpy).toHaveBeenCalledTimes(1);
+      expect(historyService.loadHistory).toHaveBeenCalled();
+      expect(energyService.loadEnergyStats).toHaveBeenCalled();
+    });
+
+    it('should set network errorMessage when SSE disconnects', () => {
+      disconnectSubject.next();
+      expect(service.errorMessage()).toBe('apiErrors.network');
     });
   });
 

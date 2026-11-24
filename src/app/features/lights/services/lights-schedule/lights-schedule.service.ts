@@ -3,6 +3,7 @@ import { ApiConnectService } from '@core/services/api/api-connect.service';
 import { ApiError } from '@core/models/core.models';
 import { Observable, tap, switchMap, map, catchError, of } from 'rxjs';
 import { HardwareStatusService } from '@core/services/hardware-status/hardware-status.service';
+import { SseService } from '@core/services/sse/sse.service';
 import {
   LightScheduleRule,
   LightScheduleRuleItem,
@@ -33,6 +34,9 @@ export class LightsScheduleService {
   /** Inject HardwareStatusService do monitorowania stanu fizycznej płytki sterownika. */
   public hardwareStatusService = inject(HardwareStatusService);
 
+  /** Inject SseService do synchronizacji stanu połączenia z backendem. */
+  private sseService = inject(SseService);
+
   /**
    * Sygnał przechowujący wpisy harmonogramu zmian świateł do wyświetlenia w widoku.
    * @type {signal}
@@ -50,6 +54,30 @@ export class LightsScheduleService {
    * @type {signal<string | null>}
    */
   public readonly errorMessage = signal<string | null>(null);
+
+  /**
+   * @constructor
+   */
+  constructor() {
+    this.listenToSseUpdates();
+  }
+
+  /**
+   * Subskrybuje zdarzenia utraty oraz przywrócenia połączenia SSE.
+   *
+   * @returns {void}
+   */
+  public listenToSseUpdates(): void {
+    this.sseService.onDisconnect().subscribe(() => {
+      if (!this.errorMessage()) {
+        this.errorMessage.set('apiErrors.network');
+      }
+    });
+
+    this.sseService.onReconnect().subscribe(() => {
+      this.loadRules();
+    });
+  }
 
   /**
    * Pobiera listę wszystkich reguł harmonogramu z API, mapuje je na model widoku `LightScheduleRule`

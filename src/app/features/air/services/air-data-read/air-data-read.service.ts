@@ -89,7 +89,8 @@ export class AirDataReadService {
 
   /**
    * Subskrybuje zdarzenia SSE dla domeny 'air' i typu 'air_updated'.
-   * Na bieżąco aktualizuje stan w sygnale `currentAir` po każdym nowym pomiarze z czujnika.
+   * Na bieżąco aktualizuje stan w sygnale `currentAir` po każdym nowym pomiarze z czujnika
+   * oraz odświeża bieżący pomiar po ponownym nawiązaniu połączenia SSE.
    *
    * @returns {void}
    */
@@ -97,6 +98,16 @@ export class AirDataReadService {
     this.sseService.onEvent<AirMeasurement>('air', 'air_updated').subscribe((event) => {
       this.currentAir.set(event);
       this.errorMessage.set(null);
+    });
+
+    this.sseService.onReconnect().subscribe(() => {
+      this.loadCurrentAir();
+    });
+
+    this.sseService.onDisconnect().subscribe(() => {
+      if (!this.errorMessage()) {
+        this.errorMessage.set('apiErrors.network');
+      }
     });
   }
 }
