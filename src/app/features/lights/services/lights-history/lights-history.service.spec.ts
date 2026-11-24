@@ -1,24 +1,37 @@
 import { TestBed } from '@angular/core/testing';
 import { LightsHistoryService } from './lights-history.service';
 import { ApiConnectService } from '@core/services/api/api-connect.service';
+import { SseService } from '@core/services/sse/sse.service';
 import { LightHistoryItem, ResetHistoryResponse } from '@features/lights/models/lights.models';
-import { of, throwError } from 'rxjs';
+import { of, throwError, Subject } from 'rxjs';
 
 describe('LightsHistoryService', () => {
   let service: LightsHistoryService;
+  let sseSubject: Subject<LightHistoryItem[]>;
+  let sseServiceMock: {
+    onEvent: ReturnType<typeof vi.fn>;
+  };
   let apiServiceMock: {
     get: ReturnType<typeof vi.fn>;
     delete: ReturnType<typeof vi.fn>;
   };
 
   beforeEach(() => {
+    sseSubject = new Subject<LightHistoryItem[]>();
+    sseServiceMock = {
+      onEvent: vi.fn().mockReturnValue(sseSubject.asObservable()),
+    };
     apiServiceMock = {
       get: vi.fn(),
       delete: vi.fn(),
     };
 
     TestBed.configureTestingModule({
-      providers: [LightsHistoryService, { provide: ApiConnectService, useValue: apiServiceMock }],
+      providers: [
+        LightsHistoryService,
+        { provide: ApiConnectService, useValue: apiServiceMock },
+        { provide: SseService, useValue: sseServiceMock },
+      ],
     });
 
     service = TestBed.inject(LightsHistoryService);
@@ -219,6 +232,41 @@ describe('LightsHistoryService', () => {
       expect(apiServiceMock.delete).toHaveBeenCalledWith('lights/history/reset');
       expect(service.history()).toHaveLength(1);
       expect(consoleSpy).toHaveBeenCalledWith('Failed to reset lights history', mockError);
+    });
+  });
+
+  describe('listenToSseUpdates', () => {
+    it('should subscribe to lights:history_updated events on SseService', () => {
+      expect(sseServiceMock.onEvent).toHaveBeenCalledWith('lights', 'history_updated');
+    });
+
+    it('should update history signal when SSE history_updated event arrives', () => {
+      const mockItems: LightHistoryItem[] = [
+        {
+          _id: 'h1',
+          name: 'kitchen',
+          state: 1,
+          createdAt: '2024-01-01T12:05:00Z',
+          userId: { _id: 'u1', userName: 'admin', email: 'a@a.com' },
+        },
+      ];
+
+      sseSubject.next(mockItems);
+
+      expect(service.history()).toHaveLength(1);
+      expect(service.history()[0].name).toBe('home.lightsWidget.rooms.kitchen');
+      expect(service.history()[0].action).toBe('ON');
+      expect(service.history()[0].user).toBe('admin');
+    });
+
+    it('should clear history signal when SSE history_updated emits empty array', () => {
+      service.history.set([
+        { id: 'h1', name: 'Living Room', action: 'ON', time: '10:00', user: 'admin' },
+      ]);
+
+      sseSubject.next([]);
+
+      expect(service.history()).toEqual([]);
     });
   });
 });
