@@ -40,7 +40,7 @@ export class AirWidgetComponent implements OnInit {
    */
   public readonly temperatureStatusKey = computed<string>(() => {
     const temp = this.airDataService.temperature();
-    if (temp === null || !this.airDataService.isBoardOnline()) {
+    if (temp === null) {
       return 'home.airWidget.comfortable';
     }
     if (temp >= 20 && temp <= 24) {
@@ -60,7 +60,7 @@ export class AirWidgetComponent implements OnInit {
    */
   public readonly pressureStatusKey = computed<string>(() => {
     const press = this.airDataService.pressure();
-    if (press === null || !this.airDataService.isBoardOnline()) {
+    if (press === null) {
       return 'home.airWidget.stable';
     }
     if (press >= 1010 && press <= 1020) {

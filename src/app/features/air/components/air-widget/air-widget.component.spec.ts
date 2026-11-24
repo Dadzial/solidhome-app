@@ -55,13 +55,13 @@ describe('AirWidgetComponent', () => {
   });
 
   describe('temperatureStatusKey', () => {
-    it('should return comfortable when temperature is null or board is offline', () => {
+    it('should return comfortable when temperature is null and keep last reading status when board is offline', () => {
       component.airDataService.currentAir.set(null);
       expect(component.temperatureStatusKey()).toBe('home.airWidget.comfortable');
 
       (component.airDataService.hardwareStatus.isBoardOnline as any).set(false);
       component.airDataService.currentAir.set({ temperature: 30, pressure: 1013, humidity: 50 });
-      expect(component.temperatureStatusKey()).toBe('home.airWidget.comfortable');
+      expect(component.temperatureStatusKey()).toBe('home.airWidget.notComfortable');
     });
 
     it('should return comfortable when temperature is between 20 and 24', () => {
@@ -90,13 +90,13 @@ describe('AirWidgetComponent', () => {
   });
 
   describe('pressureStatusKey', () => {
-    it('should return stable when pressure is null or board is offline', () => {
+    it('should return stable when pressure is null and keep last reading status when board is offline', () => {
       component.airDataService.currentAir.set(null);
       expect(component.pressureStatusKey()).toBe('home.airWidget.stable');
 
       (component.airDataService.hardwareStatus.isBoardOnline as any).set(false);
       component.airDataService.currentAir.set({ temperature: 22, pressure: 980, humidity: 50 });
-      expect(component.pressureStatusKey()).toBe('home.airWidget.stable');
+      expect(component.pressureStatusKey()).toBe('home.airWidget.unstable');
     });
 
     it('should return stable when pressure is between 1010 and 1020', () => {
