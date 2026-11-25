@@ -5,11 +5,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ErrorOverlayComponent } from '@shared/components/error-overlay/error-overlay.component';
 
 /**
- * Widżet prezentujący bieżące parametry powietrza (temperatura, wilgotność, ciśnienie z czujnika BMP280).
+ * Komponent widgetu prezentujący bieżące parametry powietrza (temperatura, ciśnienie z czujnika BMP280).
  *
  * ### Zasady działania:
  * - Pobiera dane z serwisu `AirDataReadService`, który komunikuje się z API i nasłuchuje aktualizacji przez SSE.
  * - Wyświetla aktualną temperaturę i ciśnienie.
+ * - Dopasowuje status komfortu termicznego i stabilności ciśnienia na podstawie aktualnych odczytów.
  * - W razie błędu API wyświetla nakładkę błędu z możliwością ponowienia żądania (`onRetry`).
  */
 @Component({
