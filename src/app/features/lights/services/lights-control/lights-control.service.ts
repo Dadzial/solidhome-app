@@ -216,7 +216,11 @@ export class LightsControlService {
 
     this.sseService.onDisconnect().subscribe(() => {
       if (!this.errorMessage()) {
-        this.errorMessage.set('apiErrors.network');
+        const errorKey =
+          typeof navigator !== 'undefined' && !navigator.onLine
+            ? 'apiErrors.network'
+            : 'apiErrors.server';
+        this.errorMessage.set(errorKey);
       }
     });
   }
