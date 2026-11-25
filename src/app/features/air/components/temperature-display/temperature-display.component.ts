@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, computed } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { AirDataReadService } from '@features/air/services/air-data-read/air-data-read.service';
@@ -10,18 +10,9 @@ import { AirDataReadService } from '@features/air/services/air-data-read/air-dat
   templateUrl: './temperature-display.component.html',
   styles: ``,
 })
-export class TemperatureDisplayComponent implements OnInit {
+export class TemperatureDisplayComponent {
   /** Inject AirDataReadService do pobierania danych o jakości powietrza. */
   public readonly airDataService = inject(AirDataReadService);
-
-  /**
-   * Inicjalizuje komponent i aktywuje pobranie danych startowych.
-   *
-   * @returns {void}
-   */
-  public ngOnInit(): void {
-    this.airDataService.loadCurrentAir();
-  }
 
   /**
    * Dynamiczny status komfortu termicznego:
