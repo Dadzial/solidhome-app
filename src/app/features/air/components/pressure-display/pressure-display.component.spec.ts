@@ -33,4 +33,37 @@ describe('PressureDisplayComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should return normal status when pressure is null or between 1005 and 1020', () => {
+    expect(component.pressureStatusKey()).toBe('pressureDisplay.normal');
+
+    component.airDataService.currentAir.set({
+      _id: '1',
+      temperature: 22,
+      pressure: 1013,
+      humidity: 50,
+      createdAt: '',
+    });
+    expect(component.pressureStatusKey()).toBe('pressureDisplay.normal');
+  });
+
+  it('should return low status below 1005 and high status above 1020', () => {
+    component.airDataService.currentAir.set({
+      _id: '1',
+      temperature: 22,
+      pressure: 998,
+      humidity: 50,
+      createdAt: '',
+    });
+    expect(component.pressureStatusKey()).toBe('pressureDisplay.low');
+
+    component.airDataService.currentAir.set({
+      _id: '1',
+      temperature: 22,
+      pressure: 1028,
+      humidity: 50,
+      createdAt: '',
+    });
+    expect(component.pressureStatusKey()).toBe('pressureDisplay.high');
+  });
 });

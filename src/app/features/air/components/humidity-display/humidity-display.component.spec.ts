@@ -33,4 +33,37 @@ describe('HumidityDisplayComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should return optimal status when humidity is null or between 40 and 60', () => {
+    expect(component.humidityStatusKey()).toBe('humidityDisplay.optimal');
+
+    component.airDataService.currentAir.set({
+      _id: '1',
+      temperature: 22,
+      pressure: 1013,
+      humidity: 50,
+      createdAt: '',
+    });
+    expect(component.humidityStatusKey()).toBe('humidityDisplay.optimal');
+  });
+
+  it('should return dry status below 40 and humid status above 60', () => {
+    component.airDataService.currentAir.set({
+      _id: '1',
+      temperature: 22,
+      pressure: 1013,
+      humidity: 32,
+      createdAt: '',
+    });
+    expect(component.humidityStatusKey()).toBe('humidityDisplay.dry');
+
+    component.airDataService.currentAir.set({
+      _id: '1',
+      temperature: 22,
+      pressure: 1013,
+      humidity: 72,
+      createdAt: '',
+    });
+    expect(component.humidityStatusKey()).toBe('humidityDisplay.humid');
+  });
 });

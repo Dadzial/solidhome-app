@@ -361,9 +361,18 @@ describe('LightsScheduleService', () => {
   });
 
   describe('listenToSseUpdates', () => {
-    it('should set network errorMessage when SSE disconnects', () => {
+    it('should set server errorMessage when SSE disconnects while online', () => {
+      const onLineSpy = vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(true);
+      disconnectSubject.next();
+      expect(service.errorMessage()).toBe('apiErrors.server');
+      onLineSpy.mockRestore();
+    });
+
+    it('should set network errorMessage when SSE disconnects while offline', () => {
+      const onLineSpy = vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
       disconnectSubject.next();
       expect(service.errorMessage()).toBe('apiErrors.network');
+      onLineSpy.mockRestore();
     });
 
     it('should reload rules when SSE reconnects', () => {
