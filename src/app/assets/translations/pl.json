@@ -175,13 +175,22 @@
     "boardOnline": "Połączono"
   },
   "temperatureDisplay": {
-    "title": "Temperatura"
+    "title": "Temperatura",
+    "comfortable": "Komfortowa",
+    "neutral": "Umiarkowana",
+    "notComfortable": "Niekomfortowa"
   },
   "pressureDisplay": {
-    "title": "Ciśnienie"
+    "title": "Ciśnienie",
+    "normal": "W normie",
+    "low": "Niskie (niż)",
+    "high": "Wysokie (wyż)"
   },
   "humidityDisplay": {
-    "title": "Wilgotność"
+    "title": "Wilgotność",
+    "optimal": "Optymalna",
+    "dry": "Zbyt sucho",
+    "humid": "Zbyt wilgotno"
   },
   "outsideData": {
     "title": "Pogoda"
