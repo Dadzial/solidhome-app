@@ -1,18 +1,187 @@
 <div
   class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative"
 >
-  <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
-    <div class="flex items-center gap-2">
-      <svg-icon
-        src="assets/icons/air_history.svg"
-        [applyClass]="true"
-        class="w-8 h-8 text-accent"
-      ></svg-icon>
-      <h2
-        class="text-text-primary pt-0.5 text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs"
+  <div class="flex-1 min-h-0 flex flex-col gap-3">
+    <!-- Nagłówek -->
+    <div class="flex flex-row items-center justify-between shrink-0">
+      <div class="flex items-center gap-2">
+        <svg-icon
+          src="assets/icons/air_history.svg"
+          [applyClass]="true"
+          class="w-8 h-8 text-accent"
+        ></svg-icon>
+        <h2
+          class="text-text-primary pt-0.5 text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs"
+        >
+          {{ 'airCharts.title' | translate }}
+        </h2>
+      </div>
+    </div>
+
+    <!-- Wiersz dla opcji Dropdown -->
+    <div class="flex items-center gap-2 flex-wrap relative shrink-0">
+      <!-- Dropdown: Okres czasu -->
+      <div class="relative flex-1 min-w-32.5">
+        <button
+          type="button"
+          (click)="toggleDropdown('timeframe')"
+          class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer"
+        >
+          <span class="pt-0.5">{{ selectedTimeframeLabel() | translate }}</span>
+          <svg-icon
+            src="assets/icons/down_arrow.svg"
+            [applyClass]="true"
+            class="w-4 h-4 text-text-primary transition-transform duration-200"
+            [class.rotate-180]="activeDropdown() === 'timeframe'"
+          ></svg-icon>
+        </button>
+
+        @if (activeDropdown() === 'timeframe') {
+          <div
+            class="absolute top-full left-0 right-0 mt-2 bg-background-primary rounded-2xl shadow-xl p-1.5 z-50 flex flex-col gap-1"
+          >
+            @for (option of timeframeOptions; track option.value) {
+              <button
+                type="button"
+                (click)="selectTimeframe(option.value)"
+                class="w-full text-left px-3 py-2 rounded-xl text-body-14-medium transition-colors cursor-pointer"
+                [class.text-accent]="selectedTimeframe() === option.value"
+                [class.text-text-primary]="selectedTimeframe() !== option.value"
+                [class.hover:text-accent]="selectedTimeframe() !== option.value"
+              >
+                {{ option.labelKey | translate }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Dropdown: Parametr (Temperatura / Wilgotność / Ciśnienie) -->
+      <div class="relative flex-1 min-w-32.5">
+        <button
+          type="button"
+          (click)="toggleDropdown('metric')"
+          class="w-full flex items-center justify-between bg-background-primary text-text-primary text-body-14-medium px-3.5 py-2.5 rounded-2xl cursor-pointer"
+        >
+          <span class="pt-0.5">{{ selectedMetricLabel() | translate }}</span>
+          <svg-icon
+            src="assets/icons/down_arrow.svg"
+            [applyClass]="true"
+            class="w-4 h-4 text-text-primary transition-transform duration-200"
+            [class.rotate-180]="activeDropdown() === 'metric'"
+          ></svg-icon>
+        </button>
+
+        @if (activeDropdown() === 'metric') {
+          <div
+            class="absolute top-full left-0 right-0 mt-2 bg-background-primary rounded-2xl shadow-xl p-1.5 z-50 flex flex-col gap-1"
+          >
+            @for (option of metricOptions; track option.value) {
+              <button
+                type="button"
+                (click)="selectMetric(option.value)"
+                class="w-full text-left px-3 py-2 rounded-xl text-body-14-medium transition-colors cursor-pointer"
+                [class.text-accent]="selectedMetric() === option.value"
+                [class.text-text-primary]="selectedMetric() !== option.value"
+                [class.hover:text-accent]="selectedMetric() !== option.value"
+              >
+                {{ option.labelKey | translate }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Wiersz przycisków akcji -->
+    <div class="flex items-center gap-2 flex-wrap shrink-0">
+      <button
+        type="button"
+        class="flex-1 min-w-32.5 flex items-center justify-center bg-background-primary text-text-primary text-body-13-medium px-3.5 py-2.5 rounded-2xl cursor-pointer transition-all duration-200 hover:text-accent hover:brightness-95 dark:hover:brightness-110 active:scale-[0.98]"
       >
-        {{ 'airCharts.title' | translate }}
-      </h2>
+        <span class="pt-0.5">Resetuj wykres</span>
+      </button>
+
+      <button
+        type="button"
+        class="flex-1 min-w-32.5 flex items-center justify-center bg-background-primary text-text-primary text-body-13-medium px-3.5 py-2.5 rounded-2xl cursor-pointer transition-all duration-200 hover:text-accent hover:brightness-95 dark:hover:brightness-110 active:scale-[0.98]"
+      >
+        <span class="pt-0.5">Eksportuj dane</span>
+      </button>
+    </div>
+
+    <!-- Kontener wykresu -->
+    <div
+      class="flex-1 min-h-55 max-md:min-h-52 lg:min-h-0 bg-background-primary rounded-2xl p-3.5 flex flex-col justify-between relative overflow-hidden"
+    >
+      <div class="flex-1 min-h-0 my-1 flex items-center">
+        <svg
+          viewBox="0 0 320 120"
+          preserveAspectRatio="none"
+          class="w-full h-full overflow-visible"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="airChartGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="currentColor" stop-opacity="0.35" />
+              <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <!-- Linie pomocnicze siatki -->
+          <line
+            x1="0"
+            y1="20"
+            x2="320"
+            y2="20"
+            stroke="currentColor"
+            class="text-text-primary/10"
+            stroke-dasharray="4 4"
+          />
+          <line
+            x1="0"
+            y1="60"
+            x2="320"
+            y2="60"
+            stroke="currentColor"
+            class="text-text-primary/10"
+            stroke-dasharray="4 4"
+          />
+          <line
+            x1="0"
+            y1="100"
+            x2="320"
+            y2="100"
+            stroke="currentColor"
+            class="text-text-primary/10"
+            stroke-dasharray="4 4"
+          />
+          <!-- Wypełnienie pod wykresem -->
+          <path
+            d="M 0 88 C 35 84, 55 92, 80 78 C 110 62, 135 45, 165 40 C 195 35, 220 26, 250 38 C 280 50, 300 44, 320 48 L 320 120 L 0 120 Z"
+            fill="url(#airChartGradient)"
+            class="text-accent"
+          />
+          <!-- Linia wykresu -->
+          <path
+            d="M 0 88 C 35 84, 55 92, 80 78 C 110 62, 135 45, 165 40 C 195 35, 220 26, 250 38 C 280 50, 300 44, 320 48"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            class="text-accent"
+          />
+          <!-- Aktywny punkt pomiarowy -->
+          <circle cx="250" cy="38" r="4.5" fill="currentColor" class="text-accent" />
+        </svg>
+      </div>
+
+      <div class="flex items-center justify-between text-body-12-regular text-text-primary/50">
+        <span>00:00</span>
+        <span>06:00</span>
+        <span>12:00</span>
+        <span>18:00</span>
+        <span>23:59</span>
+      </div>
     </div>
   </div>
 </div>
