@@ -99,4 +99,40 @@ describe('AirChartsComponent', () => {
       expect(component.activeDropdown()).toBeNull();
     });
   });
+
+  describe('chart configuration', () => {
+    it('should initialize with empty chartSeries and area chart config', () => {
+      expect(component.chartSeries).toEqual([{ name: '', data: [] }]);
+      expect(component.chartConfig.type).toBe('area');
+      expect(component.chartConfig.toolbar?.show).toBe(false);
+    });
+
+    it('should update yaxisConfig range and formatter when metric changes', () => {
+      expect(component.yaxisConfig().min).toBe(0);
+      expect(component.yaxisConfig().max).toBe(40);
+      expect(component.yaxisConfig().tickAmount).toBe(4);
+      const tempFormatter = component.yaxisConfig().labels?.formatter;
+      expect(tempFormatter?.(22.5)).toBe('22.5');
+
+      component.selectMetric('humidity');
+      expect(component.yaxisConfig().min).toBe(0);
+      expect(component.yaxisConfig().max).toBe(100);
+      expect(component.yaxisConfig().tickAmount).toBe(4);
+      const humFormatter = component.yaxisConfig().labels?.formatter;
+      expect(humFormatter?.(55)).toBe('55.0');
+
+      component.selectMetric('pressure');
+      expect(component.yaxisConfig().min).toBe(960);
+      expect(component.yaxisConfig().max).toBe(1050);
+      expect(component.yaxisConfig().tickAmount).toBe(5);
+      const pressFormatter = component.yaxisConfig().labels?.formatter;
+      expect(pressFormatter?.(1013.4)).toBe('1013');
+    });
+
+    it('should render apx-chart element in template', () => {
+      fixture.detectChanges();
+      const chartEl = fixture.nativeElement.querySelector('apx-chart');
+      expect(chartEl).toBeTruthy();
+    });
+  });
 });
