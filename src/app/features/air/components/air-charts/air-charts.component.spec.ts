@@ -82,7 +82,9 @@ describe('AirChartsComponent', () => {
 
     it('should render dropdown menu options in DOM when opened and close on option click', () => {
       fixture.detectChanges();
-      const buttons = fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>;
+      const buttons = fixture.nativeElement.querySelectorAll(
+        'button',
+      ) as NodeListOf<HTMLButtonElement>;
 
       buttons[0].click();
       fixture.detectChanges();
