@@ -196,6 +196,8 @@
     "title": "Pogoda"
   },
   "airCharts": {
-    "title": "Historia"
+    "title": "Historia",
+    "resetChart": "Resetuj wykres",
+    "exportData": "Eksportuj dane"
   }
 }
