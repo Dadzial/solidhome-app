@@ -193,7 +193,12 @@
     "humid": "Too humid"
   },
   "outsideData": {
-    "title": "Weather"
+    "title": "Weather",
+    "feelsLike": "Feels like",
+    "wind": "Wind",
+    "cloudiness": "Cloudiness",
+    "forecast": "Forecast",
+    "tempDifference": "Temp. diff. (In/Out)"
   },
   "airCharts": {
     "title": "History",

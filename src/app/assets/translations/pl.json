@@ -193,7 +193,12 @@
     "humid": "Zbyt wilgotno"
   },
   "outsideData": {
-    "title": "Pogoda"
+    "title": "Pogoda",
+    "feelsLike": "Odczuwalna",
+    "wind": "Wiatr",
+    "cloudiness": "Zachmurzenie",
+    "forecast": "Prognoza",
+    "tempDifference": "Różn. temp. (Wewn./Zewn.)"
   },
   "airCharts": {
     "title": "Historia",

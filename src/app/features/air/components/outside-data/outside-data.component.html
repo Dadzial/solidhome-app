@@ -1,18 +1,158 @@
 <div
   class="@container w-full h-full p-4 max-md:p-4 flex flex-col bg-background-secondary rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative"
 >
-  <div class="flex flex-row items-center justify-between mb-4 max-md:mb-3">
-    <div class="flex items-center gap-2">
+  <div class="flex-1 min-h-0 flex flex-col gap-3">
+    <!-- Nagłówek -->
+    <div class="flex flex-row items-center justify-between shrink-0">
+      <div class="flex items-center gap-2">
+        <svg-icon
+          src="assets/icons/weather.svg"
+          [applyClass]="true"
+          class="w-8 h-8 text-accent"
+        ></svg-icon>
+        <h2
+          class="text-text-primary pt-0.5 text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs"
+        >
+          {{ 'outsideData.title' | translate }}
+        </h2>
+      </div>
+    </div>
+
+    <!-- Główny kafelek aktualnej pogody -->
+    <div
+      class="bg-background-primary rounded-2xl p-4 flex items-center justify-between gap-3 shrink-0"
+    >
+      <div class="flex flex-col gap-1.5">
+        <div class="flex items-baseline gap-1">
+          <span class="text-headline-h1-36-bold text-text-primary leading-none">14.3</span>
+          <span class="text-body-24-semibold text-text-primary/50 leading-none">°C</span>
+        </div>
+        <span class="text-body-14-medium text-accent">Zachmurzenie umiarkowane</span>
+        <span class="text-body-12-regular text-text-primary">
+          {{ 'outsideData.feelsLike' | translate }} 12.8 °C
+        </span>
+      </div>
       <svg-icon
-        src="assets/icons/weather.svg"
+        src="assets/icons/sun.svg"
         [applyClass]="true"
-        class="w-8 h-8 text-accent"
+        class="w-14 h-14 text-accent shrink-0"
       ></svg-icon>
-      <h2
-        class="text-text-primary pt-0.5 text-headline-h2-28-bold max-md:text-body-24-bold text-shadow-2xs"
-      >
-        {{ 'outsideData.title' | translate }}
-      </h2>
+    </div>
+
+    <!-- Siatka parametrów pogodowych -->
+    <div class="grid grid-cols-2 gap-2.5 shrink-0">
+      <!-- Wilgotność -->
+      <div class="bg-background-primary rounded-2xl p-3 flex flex-col gap-1.5">
+        <div class="flex items-center justify-between">
+          <span class="text-body-12-regular text-text-primary">
+            {{ 'humidityDisplay.title' | translate }}
+          </span>
+        </div>
+        <div class="flex items-baseline gap-0.5">
+          <span class="text-body-18-bold text-text-primary leading-none">62</span>
+          <span class="text-body-12-regular text-text-primary/50">%</span>
+        </div>
+      </div>
+
+      <!-- Ciśnienie -->
+      <div class="bg-background-primary rounded-2xl p-3 flex flex-col gap-1.5">
+        <div class="flex items-center justify-between">
+          <span class="text-body-12-regular text-text-primary">
+            {{ 'pressureDisplay.title' | translate }}
+          </span>
+        </div>
+        <div class="flex items-baseline gap-1">
+          <span class="text-body-18-bold text-text-primary leading-none">1016</span>
+          <span class="text-body-12-regular text-text-primary/50">hPa</span>
+        </div>
+      </div>
+
+      <!-- Wiatr -->
+      <div class="bg-background-primary rounded-2xl p-3 flex flex-col gap-1.5">
+        <div class="flex items-center justify-between">
+          <span class="text-body-12-regular text-text-primary">
+            {{ 'outsideData.wind' | translate }}
+          </span>
+        </div>
+        <div class="flex items-baseline gap-1">
+          <span class="text-body-18-bold text-text-primary leading-none">14.4</span>
+          <span class="text-body-12-regular text-text-primary/50">km/h</span>
+        </div>
+      </div>
+
+      <!-- Zachmurzenie -->
+      <div class="bg-background-primary rounded-2xl p-3 flex flex-col gap-1.5">
+        <div class="flex items-center justify-between">
+          <span class="text-body-12-regular text-text-primary">
+            {{ 'outsideData.cloudiness' | translate }}
+          </span>
+        </div>
+        <div class="flex items-baseline gap-0.5">
+          <span class="text-body-18-bold text-text-primary leading-none">40</span>
+          <span class="text-body-12-regular text-text-primary/50">%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prognoza -->
+    <div class="flex-1 min-h-0 flex flex-col justify-between gap-2">
+      <span class="text-text-primary text-body-18-bold shrink-0">
+        {{ 'outsideData.forecast' | translate }}
+      </span>
+      <div class="grid grid-cols-4 gap-2 flex-1 min-h-0">
+        <div
+          class="bg-background-primary rounded-2xl p-2.5 flex flex-col items-center justify-between gap-1.5"
+        >
+          <span class="text-body-12-regular text-text-primary">12:00</span>
+          <svg-icon
+            src="assets/icons/sun.svg"
+            [applyClass]="true"
+            class="w-6 h-6 text-accent"
+          ></svg-icon>
+          <span class="text-body-14-medium text-text-primary">14°</span>
+        </div>
+        <div
+          class="bg-background-primary rounded-2xl p-2.5 flex flex-col items-center justify-between gap-1.5"
+        >
+          <span class="text-body-12-regular text-text-primary">15:00</span>
+          <svg-icon
+            src="assets/icons/sun.svg"
+            [applyClass]="true"
+            class="w-6 h-6 text-accent"
+          ></svg-icon>
+          <span class="text-body-14-medium text-text-primary">16°</span>
+        </div>
+        <div
+          class="bg-background-primary rounded-2xl p-2.5 flex flex-col items-center justify-between gap-1.5"
+        >
+          <span class="text-body-12-regular text-text-primary">18:00</span>
+          <svg-icon
+            src="assets/icons/weather.svg"
+            [applyClass]="true"
+            class="w-6 h-6 text-accent"
+          ></svg-icon>
+          <span class="text-body-14-medium text-text-primary">13°</span>
+        </div>
+        <div
+          class="bg-background-primary rounded-2xl p-2.5 flex flex-col items-center justify-between gap-1.5"
+        >
+          <span class="text-body-12-regular text-text-primary">21:00</span>
+          <svg-icon
+            src="assets/icons/moon.svg"
+            [applyClass]="true"
+            class="w-6 h-6 text-accent"
+          ></svg-icon>
+          <span class="text-body-14-medium text-text-primary">10°</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Porównanie Dom vs Zewnątrz -->
+    <div
+      class="bg-background-primary rounded-2xl px-3.5 py-2.5 flex items-center justify-between shrink-0"
+    >
+      <span class="text-body-12-medium text-text-primary">{{ 'outsideData.tempDifference' | translate }}</span>
+      <span class="text-body-14-medium text-accent">+8.1 °C</span>
     </div>
   </div>
 </div>
